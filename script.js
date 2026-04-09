@@ -144,23 +144,34 @@ function updateMarketUI() {
 }
 
 function updateChart(coin) {
-    const ctx = document.getElementById('cryptoChart').getContext('2d');
-    if (chartInstance) chartInstance.destroy();
+    const canvas = document.getElementById('cryptoChart');
+    if (!canvas) return; // Защита от ошибок, если элемента нет
 
-    const isUp = coin.currentPrice >= (coin.history[coin.history.length - 2] || coin.currentPrice);
+    const ctx = canvas.getContext('2d');
+    
+    // Удаляем старый график, если есть
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    // Определяем цвет (зеленый если растет, красный если падает)
+    const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
+    const isUp = coin.currentPrice >= lastPrice;
     const color = isUp ? '#00ff88' : '#ff4444';
+    const bgColor = isUp ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)';
 
+    // Создаем новый график
     chartInstance = new Chart(ctx, {
         type: 'line',
-         {
+        data: {  // <--- ВАЖНО: Добавлено слово "data:"
             labels: coin.history.map((_, i) => i),
             datasets: [{
                 label: 'Цена',
-                 coin.history,
+                data: coin.history, // <--- ВАЖНО: Добавлено слово "data:" внутри массива
                 borderColor: color,
-                backgroundColor: isUp ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)',
+                backgroundColor: bgColor,
                 borderWidth: 2,
-                tension: 0.4,
+                tension: 0.4, // Плавность линий
                 pointRadius: 0,
                 fill: true
             }]
@@ -168,10 +179,15 @@ function updateChart(coin) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: { 
+                legend: { display: false } 
+            },
             scales: {
                 x: { display: false },
-                y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#aaa' } }
+                y: { 
+                    grid: { color: 'rgba(255,255,255,0.1)' },
+                    ticks: { color: '#aaa' }
+                }
             },
             animation: { duration: 0 }
         }
