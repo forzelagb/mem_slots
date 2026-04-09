@@ -123,16 +123,29 @@
             <div class="message-box" id="result-text">Удачи!</div>
 
             <!-- Выбор ставки через +/- -->
-            <div class="controls">
-                <div class="bet-adjuster">
-                    <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
-                    <div class="bet-display">
-                        <span class="bet-label">СТАВКА</span>
-                        <span id="bet-value-display">50</span> 💎
-                    </div>
-                    <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
-                </div>
-            </div>
+            <!-- Умный выбор ставки -->
+<div class="controls">
+    <div class="bet-adjuster">
+        <!-- Минус -->
+        <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
+        
+        <!-- Дисплей ставки -->
+        <div class="bet-display">
+            <span class="bet-label">СТАВКА</span>
+            <span id="bet-value-display">50</span> 💎
+        </div>
+        
+        <!-- Плюс -->
+        <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
+    </div>
+
+    <!-- Дополнительные кнопки управления ставкой -->
+    <div class="bet-quick-actions">
+        <button class="btn-quick" onclick="halveBet()">÷2</button>
+        <button class="btn-quick" onclick="doubleBet()">x2</button>
+        <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
+    </div>
+</div>
 
             <div class="spin-controls">
                 <button class="btn-spin" id="spin-btn" onclick="spin()">

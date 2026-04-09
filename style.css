@@ -481,6 +481,45 @@ body::before {
     transition: 0.2s;
 }
 
+
+/* Контейнер для быстрых действий */
+.bet-quick-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.btn-quick {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-quick:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--secondary);
+}
+
+.btn-max {
+    background: linear-gradient(to right, #ff00de, #aa0094);
+    border: none;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.btn-max:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 0, 222, 0.5);
+}
+
 .btn-collect:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);

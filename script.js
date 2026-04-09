@@ -110,13 +110,38 @@ function saveData() {
 function adjustBet(amount) {
     let newBet = currentBet + amount;
     
-    // Минимальная ставка 10 (или можно сделать 1, если хочешь совсем хардкор)
+    // Не даем уйти ниже минимума (10)
     if (newBet < 10) newBet = 10;
     
-    // Максимальная ставка = Весь текущий баланс (All-in)
+    // Не даем превысить баланс
     if (newBet > gems) newBet = gems;
     
     currentBet = newBet;
+    saveData();
+    updateUI();
+}
+
+// Удвоить ставку
+function doubleBet() {
+    let newBet = currentBet * 2;
+    if (newBet > gems) newBet = gems; // Если удвоение больше баланса, ставим макс
+    currentBet = newBet;
+    saveData();
+    updateUI();
+}
+
+// Уменьшить ставку в 2 раза
+function halveBet() {
+    let newBet = Math.floor(currentBet / 2);
+    if (newBet < 10) newBet = 10; // Не меньше минимума
+    currentBet = newBet;
+    saveData();
+    updateUI();
+}
+
+// Поставить ВСЁ (All-in)
+function maxBet() {
+    currentBet = gems;
     saveData();
     updateUI();
 }
@@ -154,16 +179,28 @@ function updateUI() {
     
     currentCostEl.innerText = currentBet;
     
+    // Блокировка +/- 
     const btnMinus = document.querySelector('.btn-adjust:first-child');
     const btnPlus = document.querySelector('.btn-adjust:last-child');
     
-    // Кнопка "-" активна, если ставка больше минимума (10)
     if (btnMinus) btnMinus.disabled = (currentBet <= 10);
-    
-    // Кнопка "+" активна, если ставка меньше баланса
-    // Если ставка равна балансу (All-in), плюс блокируем
     if (btnPlus) btnPlus.disabled = (currentBet >= gems);
 
+    // Блокировка кнопки MAX, если ставка уже максимальна (равна балансу)
+    const btnMax = document.querySelector('.btn-max');
+    if (btnMax) {
+        if (currentBet >= gems) {
+            btnMax.disabled = true;
+            btnMax.style.opacity = "0.5";
+            btnMax.style.cursor = "not-allowed";
+        } else {
+            btnMax.disabled = false;
+            btnMax.style.opacity = "1";
+            btnMax.style.cursor = "pointer";
+        }
+    }
+
+    // Блокировка SPIN, если денег нет
     if (gems < currentBet) {
         spinBtn.disabled = true;
         spinBtn.innerHTML = `НЕ ХВАТАЕТ<br><span class="cost">Нужно ${currentBet} 💎</span>`;
