@@ -110,14 +110,11 @@ function saveData() {
 function adjustBet(amount) {
     let newBet = currentBet + amount;
     
-    // Ограничения: мин 10, макс 500
+    // Минимальная ставка 10 (или можно сделать 1, если хочешь совсем хардкор)
     if (newBet < 10) newBet = 10;
-    if (newBet > 500) newBet = 500;
     
-    // Дополнительная защита: ставка не больше половины баланса (если баланс >= 20)
-    if (gems >= 20 && newBet > Math.floor(gems / 2)) {
-        newBet = Math.floor(gems / 2);
-    }
+    // Максимальная ставка = Весь текущий баланс (All-in)
+    if (newBet > gems) newBet = gems;
     
     currentBet = newBet;
     saveData();
@@ -152,23 +149,20 @@ function updateUI() {
     document.getElementById('lobby-balance').innerText = gems;
     document.getElementById('game-balance').innerText = gems;
     
-    // Обновляем отображение ставки в игре
     const betDisplay = document.getElementById('bet-value-display');
     if (betDisplay) betDisplay.innerText = currentBet;
     
     currentCostEl.innerText = currentBet;
     
-    // Блокировка кнопок +/- если достигнут лимит
     const btnMinus = document.querySelector('.btn-adjust:first-child');
     const btnPlus = document.querySelector('.btn-adjust:last-child');
     
+    // Кнопка "-" активна, если ставка больше минимума (10)
     if (btnMinus) btnMinus.disabled = (currentBet <= 10);
     
-    // Максимум 500 или половина баланса
-    let maxBet = 500;
-    if (gems >= 20) maxBet = Math.min(500, Math.floor(gems / 2));
-    
-    if (btnPlus) btnPlus.disabled = (currentBet >= maxBet);
+    // Кнопка "+" активна, если ставка меньше баланса
+    // Если ставка равна балансу (All-in), плюс блокируем
+    if (btnPlus) btnPlus.disabled = (currentBet >= gems);
 
     if (gems < currentBet) {
         spinBtn.disabled = true;
@@ -176,7 +170,7 @@ function updateUI() {
         autoBtn.disabled = true;
     } else {
         spinBtn.disabled = false;
-        spinBtn.innerHTML = `SPIN<br><span class="cost">-${currentBet} 💎</span>`;
+        spinBtn.innerHTML = `SPIN <br><span class="cost">-${currentBet} 💎</span>`;
         autoBtn.disabled = false;
     }
 }
@@ -289,7 +283,9 @@ function spin() {
 
 function checkWins(grid) {
     let totalWin = 0;
+    let hasBigWin = false;
 
+    // Проверяем 4 горизонтальных ряда
     for (let row = 0; row < 4; row++) {
         let startIndex = row * 5;
         let rowItems = grid.slice(startIndex, startIndex + 5);
@@ -298,9 +294,11 @@ function checkWins(grid) {
             let matchCount = 1;
             let multiplier = 1;
             
+            // Считаем длину совпадения
             for (let k = col + 1; k < 5; k++) {
                 if (rowItems[k].src === rowItems[col].src) {
                     matchCount++;
+                    // Собираем множители только если это часть длинной комбинации
                     if (rowItems[k].mult) {
                         const multValue = parseInt(rowItems[k].mult.replace('x', ''));
                         multiplier *= multValue;
@@ -310,10 +308,28 @@ function checkWins(grid) {
                 }
             }
             
+            // === ЛОГИКА ВЫПЛАТ ===
             if (matchCount >= 3) {
-                let baseWin = currentBet * 2;
-                let finalWin = baseWin * matchCount * multiplier;
-                totalWin += finalWin;
+                let winAmount = 0;
+
+                if (matchCount === 3) {
+                    // 3 в ряд: Просто возвращаем ставку (x1)
+                    // Множители НЕ работают для 3-х в ряд (усложнение)
+                    winAmount = currentBet * 1; 
+                } 
+                else if (matchCount === 4) {
+                    // 4 в ряд: Ставка * 5 * Множители
+                    winAmount = currentBet * 5 * multiplier;
+                } 
+                else if (matchCount === 5) {
+                    // 5 в ряд (ДЖЕКПОТ): Ставка * 50 * Множители
+                    winAmount = currentBet * 50 * multiplier;
+                    hasBigWin = true; // Флаг для конфетти
+                }
+
+                totalWin += winAmount;
+                
+                // Пропускаем проверенные ячейки
                 col += matchCount - 1;
             }
         }
@@ -324,7 +340,8 @@ function checkWins(grid) {
         resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
         animateBalanceChange('win');
         
-        if (totalWin >= currentBet * 10) {
+        // Показываем Big Win, если выпало 5 в ряд или огромный множитель
+        if (hasBigWin || totalWin >= currentBet * 20) {
             showBigWin(totalWin);
         }
     } else {
