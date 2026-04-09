@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     
-    <!-- === МЕСТО ДЛЯ АНАЛИТИКИ (ВСТАВЬ СЮДА КОД СЧЕТЧИКА) === -->
-    <!-- Пример для Counter.dev: -->
-    <!-- <script async src="https://cdn.counter.dev/script.js" data-id="ТВОЙ_ID" data-utcoffset="3"></script> -->
-    <!-- ======================================================= -->
+    <!-- Аналитика GoatCounter -->
+    <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -32,61 +30,51 @@
                 <div class="card-image brain-bg"></div>
                 <div class="card-content"><h3>🧠 BRAIN</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Helin -->
             <div class="game-card" onclick="startGame('helin')">
                 <div class="card-image helin-bg"></div>
                 <div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Lexa Paws -->
             <div class="game-card" onclick="startGame('lexapaws')">
                 <div class="card-image lexapaws-bg"></div>
                 <div class="card-content"><h3>🐾 LEXA PAWS</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Litwin -->
             <div class="game-card" onclick="startGame('litwin')">
                 <div class="card-image litwin-bg"></div>
                 <div class="card-content"><h3>🎮 LITWIN</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Mellstroy -->
             <div class="game-card" onclick="startGame('melstroy')">
                 <div class="card-image melstroy-bg"></div>
                 <div class="card-content"><h3>👑 MELLSTROY</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Nikkifn -->
             <div class="game-card" onclick="startGame('nikkifn')">
                 <div class="card-image nikkifn-bg"></div>
                 <div class="card-content"><h3>🎯 NIKKIFN</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Rejiboi -->
             <div class="game-card" onclick="startGame('rejiboi')">
                 <div class="card-image rejiboi-bg"></div>
                 <div class="card-content"><h3>🕺 REJIBOI</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Rostick -->
             <div class="game-card" onclick="startGame('rostick')">
                 <div class="card-image rostick-bg"></div>
                 <div class="card-content"><h3>🌭 ROSTICK</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Sasich -->
             <div class="game-card" onclick="startGame('sasich')">
                 <div class="card-image sasich-bg"></div>
                 <div class="card-content"><h3>🗣️ SASICH</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Skibidi Toilet -->
             <div class="game-card" onclick="startGame('skibiditoilet')">
                 <div class="card-image skibiditoilet-bg"></div>
                 <div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div>
             </div>
-
             <!-- Slovo Patsana -->
             <div class="game-card" onclick="startGame('slovopatsana')">
                 <div class="card-image slovopatsana-bg"></div>
@@ -94,15 +82,63 @@
             </div>
         </div>
 
-        <button class="btn-refill" onclick="addGems()">+ Бесплатные Гемы</button>
+        <!-- Блок Накопительного Бонуса -->
+        <div class="bonus-panel">
+            <h3>⏳ Ежечасный Бонус</h3>
+            <p id="bonus-timer">Проверка...</p>
+            <button id="claim-bonus-btn" class="btn-bonus" disabled>Загрузка...</button>
+        </div>
+
+        <!-- Блок Мем-Биржи PRO -->
+        <div class="market-panel-pro">
+            <div class="market-header">
+                <h3>📈 МЕМ-БИРЖА PRO</h3>
+                <span class="live-indicator">● LIVE</span>
+            </div>
+
+            <!-- Выбор монеты -->
+            <div class="coin-selector">
+                <button class="coin-tab active" onclick="selectCoin('burmal', this)">БурмалCOIN</button>
+                <button class="coin-tab" onclick="selectCoin('burmaldook', this)">БурмалДук</button>
+                <button class="coin-tab" onclick="selectCoin('hecio', this)">HeCION</button>
+                <button class="coin-tab" onclick="selectCoin('ciondic', this)">CIONдиции</button>
+                <button class="coin-tab" onclick="selectCoin('analdoc', this)">ANalDOCion</button>
+                <button class="coin-tab" onclick="selectCoin('tuncion', this)">TunCION</button>
+            </div>
+
+            <!-- График -->
+            <div class="chart-container">
+                <canvas id="cryptoChart"></canvas>
+            </div>
+
+            <!-- Информация о текущей монете -->
+            <div class="current-coin-info">
+                <div class="price-block">
+                    <span class="coin-name-display" id="display-name">БурмалCOIN</span>
+                    <span class="coin-price-display" id="display-price">Загрузка...</span>
+                    <span class="coin-change" id="display-change">0%</span>
+                </div>
+                
+                <div class="portfolio-block">
+                    <p>В портфеле: <span id="display-amount">0</span> шт.</p>
+                    <p>Стоимость портфеля: <span id="display-value">0</span> ₽</p>
+                </div>
+
+                <div class="trade-buttons">
+                    <input type="number" id="trade-amount" placeholder="Кол-во" value="1" min="1">
+                    <button class="btn-trade buy" onclick="tradeCoin('buy')">КУПИТЬ</button>
+                    <button class="btn-trade sell" onclick="tradeCoin('sell')">ПРОДАТЬ</button>
+                </div>
+            </div>
+        </div>
         
-        <!-- Кнопка поддержки (ЗАМЕНИ ССЫЛКУ НА СВОЮ BOOSTY/DONATION ALERTS) -->
+        <!-- Кнопка поддержки -->
         <a href="https://boosty.to/ТВОЙ_НИК" target="_blank" class="btn-support">
             ☕ Поддержать проект
         </a>
     </div>
 
-    <!-- ИГРА -->
+    <!-- ИГРА (без изменений в структуре, только логика) -->
     <div id="game-screen" class="screen">
         <div class="game-header">
             <button class="btn-back" onclick="goBack()">← НАЗАД</button>
@@ -115,37 +151,25 @@
         <div class="slot-container">
             <div class="slot-title" id="slot-title">SLOT NAME</div>
             
-            <!-- Сетка 5x4 -->
-            <div class="grid-wrapper" id="grid">
-                <!-- Ячейки генерируются JS -->
-            </div>
+            <div class="grid-wrapper" id="grid"></div>
 
             <div class="message-box" id="result-text">Удачи!</div>
 
-            <!-- Выбор ставки через +/- -->
-            <!-- Умный выбор ставки -->
-<div class="controls">
-    <div class="bet-adjuster">
-        <!-- Минус -->
-        <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
-        
-        <!-- Дисплей ставки -->
-        <div class="bet-display">
-            <span class="bet-label">СТАВКА</span>
-            <span id="bet-value-display">50</span> 💎
-        </div>
-        
-        <!-- Плюс -->
-        <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
-    </div>
-
-    <!-- Дополнительные кнопки управления ставкой -->
-    <div class="bet-quick-actions">
-        <button class="btn-quick" onclick="halveBet()">÷2</button>
-        <button class="btn-quick" onclick="doubleBet()">x2</button>
-        <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
-    </div>
-</div>
+            <div class="controls">
+                <div class="bet-adjuster">
+                    <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
+                    <div class="bet-display">
+                        <span class="bet-label">СТАВКА</span>
+                        <span id="bet-value-display">50</span> 💎
+                    </div>
+                    <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
+                </div>
+                <div class="bet-quick-actions">
+                    <button class="btn-quick" onclick="halveBet()">÷2</button>
+                    <button class="btn-quick" onclick="doubleBet()">x2</button>
+                    <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
+                </div>
+            </div>
 
             <div class="spin-controls">
                 <button class="btn-spin" id="spin-btn" onclick="spin()">
@@ -168,10 +192,7 @@
 
     <!-- Скрипты -->
     <script src="script.js"></script>
-    <!-- Библиотека для конфетти -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <script data-goatcounter="https://forzelag.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

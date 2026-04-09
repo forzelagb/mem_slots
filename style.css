@@ -525,6 +525,168 @@ body::before {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
 }
 
+
+
+
+
+/* === СТИЛИ ДЛЯ МЕМ-БИРЖИ PRO === */
+.market-panel-pro {
+    background: rgba(20, 20, 30, 0.95);
+    border: 2px solid var(--gold);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 100%;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.market-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.live-indicator {
+    color: #00ff88;
+    font-size: 12px;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+}
+
+.coin-selector {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    scrollbar-width: none; /* Firefox */
+}
+.coin-selector::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+.coin-tab {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid transparent;
+    color: #aaa;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s;
+    font-family: inherit;
+}
+
+.coin-tab.active, .coin-tab:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255, 0, 222, 0.4);
+}
+
+.chart-container {
+    height: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+.price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.coin-name-display { font-size: 24px; font-weight: bold; color: #fff; }
+.coin-price-display { font-size: 20px; color: var(--gold); font-family: monospace; }
+.coin-change { font-size: 16px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+.coin-change.up { color: #00ff88; background: rgba(0, 255, 136, 0.1); }
+.coin-change.down { color: #ff4444; background: rgba(255, 68, 68, 0.1); }
+
+.portfolio-block {
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.trade-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#trade-amount {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #555;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 80px;
+    text-align: center;
+    font-family: inherit;
+}
+
+.btn-trade {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    font-family: inherit;
+    transition: transform 0.1s;
+}
+
+.btn-trade:active { transform: scale(0.95); }
+.btn-trade.buy { background: #00ff88; color: #000; }
+.btn-trade.sell { background: #ff4444; }
+
+/* Бонус панель */
+.bonus-panel {
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid #00ff88;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.btn-bonus {
+    background: #00ff88;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    font-family: inherit;
+}
+
+.btn-bonus:disabled {
+    background: #555;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+
+
+
+
+
 /* Фоны для карточек */
 .brain-bg { background: url('image/brain/1.jpg') center/cover; }
 .helin-bg { background: url('image/helin/1.jpg') center/cover; }
