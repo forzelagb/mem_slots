@@ -220,14 +220,37 @@ function addGems() {
 }
 
 function startGame(themeName) {
-    if (gems < currentBet) { alert("Не хватает гемов!"); return; }
+    // 1. АВТО-СБРОС СТАВКИ ЕСЛИ ОНА СЛИШКОМ ВЫСОКАЯ
+    if (currentBet > gems) {
+        currentBet = 50; // Сбрасываем до минимума
+        saveData();
+    }
+
+    // 2. ПРОВЕРКА БАЛАНСА И СПАСЕНИЕ БАНКРОТА
+    if (gems < currentBet) {
+        // Если денег совсем нет (0 или меньше), даем бонус
+        if (gems <= 0) {
+            gems += 100;
+            saveData();
+            updateUI(); // Обновляем цифры сразу
+            alert("Ты банкрот! 📉 Мы дали тебе 100 гемов на старт. 💎");
+        } else {
+            // Если деньги есть, но их мало для текущей ставки — просто не пускаем
+            // Игрок увидит свой баланс в лобби и поймет, что нужно добавить денег
+            return; 
+        }
+    }
+
+    // 3. ЗАПУСК ИГРЫ
     currentTheme = themeName;
     slotTitle.innerText = titles[themeName];
     
     lobbyScreen.classList.remove('active');
     gameScreen.classList.add('active');
+    
     createGrid();
-    updateUI();
+    updateUI(); // Важно: обновляет ставку и кнопки внутри игры
+    
     resultText.innerText = "Нажми SPIN!";
     autoSpinActive = false;
     autoBtn.innerText = "AUTO";
