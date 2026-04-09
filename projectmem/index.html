@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEME SPIN PRO 💎</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    
+    <!-- === МЕСТО ДЛЯ АНАЛИТИКИ (ВСТАВЬ СЮДА КОД СЧЕТЧИКА) === -->
+    <!-- Пример для Counter.dev: -->
+    <!-- <script async src="https://cdn.counter.dev/script.js" data-id="ТВОЙ_ID" data-utcoffset="3"></script> -->
+    <!-- ======================================================= -->
+</head>
+<body>
+
+    <!-- ЛОББИ -->
+    <div id="lobby-screen" class="screen active">
+        <div class="header-bar">
+            <div class="logo">MEME SPIN PRO</div>
+            <div class="balance-container">
+                <span class="gem-icon">💎</span>
+                <span id="lobby-balance">1000</span>
+            </div>
+        </div>
+        
+        <h2 class="section-title">ВЫБЕРИ ТЕМУ</h2>
+        
+        <div class="games-grid">
+            <!-- Brain -->
+            <div class="game-card" onclick="startGame('brain')">
+                <div class="card-image brain-bg"></div>
+                <div class="card-content"><h3>🧠 BRAIN</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Helin -->
+            <div class="game-card" onclick="startGame('helin')">
+                <div class="card-image helin-bg"></div>
+                <div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Lexa Paws -->
+            <div class="game-card" onclick="startGame('lexapaws')">
+                <div class="card-image lexapaws-bg"></div>
+                <div class="card-content"><h3>🐾 LEXA PAWS</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Litwin -->
+            <div class="game-card" onclick="startGame('litwin')">
+                <div class="card-image litwin-bg"></div>
+                <div class="card-content"><h3>🎮 LITWIN</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Mellstroy -->
+            <div class="game-card" onclick="startGame('melstroy')">
+                <div class="card-image melstroy-bg"></div>
+                <div class="card-content"><h3>👑 MELLSTROY</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Nikkifn -->
+            <div class="game-card" onclick="startGame('nikkifn')">
+                <div class="card-image nikkifn-bg"></div>
+                <div class="card-content"><h3>🎯 NIKKIFN</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Rejiboi -->
+            <div class="game-card" onclick="startGame('rejiboi')">
+                <div class="card-image rejiboi-bg"></div>
+                <div class="card-content"><h3>🕺 REJIBOI</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Rostick -->
+            <div class="game-card" onclick="startGame('rostick')">
+                <div class="card-image rostick-bg"></div>
+                <div class="card-content"><h3>🌭 ROSTICK</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Sasich -->
+            <div class="game-card" onclick="startGame('sasich')">
+                <div class="card-image sasich-bg"></div>
+                <div class="card-content"><h3>🗣️ SASICH</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Skibidi Toilet -->
+            <div class="game-card" onclick="startGame('skibiditoilet')">
+                <div class="card-image skibiditoilet-bg"></div>
+                <div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+
+            <!-- Slovo Patsana -->
+            <div class="game-card" onclick="startGame('slovopatsana')">
+                <div class="card-image slovopatsana-bg"></div>
+                <div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div>
+            </div>
+        </div>
+
+        <button class="btn-refill" onclick="addGems()">+ Бесплатные Гемы</button>
+        
+        <!-- Кнопка поддержки (ЗАМЕНИ ССЫЛКУ НА СВОЮ BOOSTY/DONATION ALERTS) -->
+        <a href="https://boosty.to/ТВОЙ_НИК" target="_blank" class="btn-support">
+            ☕ Поддержать проект
+        </a>
+    </div>
+
+    <!-- ИГРА -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <button class="btn-back" onclick="goBack()">← НАЗАД</button>
+            <div class="balance-container small">
+                <span class="gem-icon">💎</span>
+                <span id="game-balance">1000</span>
+            </div>
+        </div>
+
+        <div class="slot-container">
+            <div class="slot-title" id="slot-title">SLOT NAME</div>
+            
+            <!-- Сетка 5x4 -->
+            <div class="grid-wrapper" id="grid">
+                <!-- Ячейки генерируются JS -->
+            </div>
+
+            <div class="message-box" id="result-text">Удачи!</div>
+
+            <!-- Выбор ставки через +/- -->
+            <div class="controls">
+                <div class="bet-adjuster">
+                    <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
+                    <div class="bet-display">
+                        <span class="bet-label">СТАВКА</span>
+                        <span id="bet-value-display">50</span> 💎
+                    </div>
+                    <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
+                </div>
+            </div>
+
+            <div class="spin-controls">
+                <button class="btn-spin" id="spin-btn" onclick="spin()">
+                    SPIN <br><span class="cost">-<span id="current-cost">50</span> 💎</span>
+                </button>
+                <button class="btn-auto" id="auto-btn" onclick="toggleAuto()">AUTO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО ВЫИГРЫША -->
+    <div id="win-modal" class="modal">
+        <div class="modal-content">
+            <h1 class="win-title">BIG WIN!</h1>
+            <div class="win-amount" id="modal-amount">0</div>
+            <div class="win-subtitle">GEMS</div>
+            <button class="btn-collect" onclick="closeModal()">ЗАБРАТЬ</button>
+        </div>
+    </div>
+
+    <!-- Скрипты -->
+    <script src="script.js"></script>
+    <!-- Библиотека для конфетти -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>
