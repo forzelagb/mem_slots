@@ -697,12 +697,13 @@ const vipCodes = {
 let hasVIPAccess = localStorage.getItem('memeVIPAccess') === 'true';
 
 function checkSecretAccess() {
-    openTab('secret'); // Открываем вкладку
-    
-    if (hasVIPAccess) {
+    // Открываем вкладку secret
+    openTab('secret');
+
+    if (vipLevel >= 1) {
         document.getElementById('secret-lock-screen').style.display = 'none';
         document.getElementById('secret-content').style.display = 'block';
-        updateVIPBonusButton(); // Проверяем таймер бонуса
+        updateSecretContentByLevel();
     } else {
         document.getElementById('secret-lock-screen').style.display = 'block';
         document.getElementById('secret-content').style.display = 'none';
