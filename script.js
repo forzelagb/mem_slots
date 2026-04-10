@@ -660,20 +660,28 @@ function activateVIPCode() {
     const messageEl = document.getElementById('vip-message');
 
     if (vipCodes[code]) {
+        // Код верный!
         hasVIPAccess = true;
         localStorage.setItem('memeVIPAccess', 'true');
         
         messageEl.style.color = '#00ff88';
         messageEl.innerText = "✅ Доступ разрешен! Добро пожаловать.";
         
-        setTimeout(() => {
-            checkSecretAccess();
-            input.value = '';
-            fireConfetti(); // Если есть функция конфетти
-        }, 1000);
+        // Сразу показываем контент
+        document.getElementById('secret-lock-screen').style.display = 'none';
+        document.getElementById('secret-content').style.display = 'block';
+        
+        // Обновляем кнопку бонуса
+        updateVIPBonusButton();
+        
+        // Эффект конфетти
+        if (typeof fireConfetti === 'function') fireConfetti();
+        
+        // Очищаем поле ввода
+        input.value = '';
     } else {
         messageEl.style.color = '#ff4444';
-        messageEl.innerText = "❌ Неверный код!";
+        messageEl.innerText = "❌ Неверный код! Попробуйте еще раз.";
     }
 }
 
