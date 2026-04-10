@@ -994,6 +994,15 @@ body::before {
     box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
 }
 
+
+
+.spin-limit-display {
+    background: rgba(0,0,0,0.5);
+    padding: 5px 10px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
 /* Фоны для карточек */
 .brain-bg { background: url('image/brain/1.jpg') center/cover; }
 .helin-bg { background: url('image/helin/1.jpg') center/cover; }
