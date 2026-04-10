@@ -54,13 +54,6 @@ let autoSpinActive = false; // <-- ОБЪЯВЛЕНО ДО ИСПОЛЬЗОВА�
 let autoSpinCount = 0;
 let isSpinning = false;
 let currentTheme = '';
-// === ЛИМИТ СПИНОВ ДЛЯ RONALDO ===
-
-// === ЛИМИТ ВЫИГРЫША В ДЕНЬ ДЛЯ RONALDO ===
-// === ЛИМИТ ВЫИГРЫША В ДЕНЬ ДЛЯ RONALDO (5 МИЛЛИОНОВ) ===
-let todayRonaldoWinnings = parseInt(localStorage.getItem('todayRonaldoWinnings')) || 0;
-let lastRonaldoWinDate = localStorage.getItem('lastRonaldoWinDate') || '';
-const MAX_RONALDO_WIN_PER_DAY = 5000000; 
 // === ТЕМЫ ИГРЫ ===
 const themes = {
     brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: "x2"}, {src: "image/brain/4.jpg", mult: ""}, {src: "image/brain/5.jpg", mult: "x3"}, {src: "image/brain/6.jpg", mult: ""}, {src: "image/brain/7.jpg", mult: ""}, {src: "image/brain/8.jpg", mult: "x5"}],
@@ -430,16 +423,7 @@ function updateUI() {
 }
 
 function startGame(themeName) {
-    // Проверка лимита для Ronaldo
-    if (themeName === 'ronaldo') {
-        checkAndResetDailyWinLimit();
-        
-        if (todayRonaldoWinnings >= MAX_RONALDO_WIN_PER_DAY) {
-            alert(`❌ Вы уже выиграли ${MAX_RONALDO_WIN_PER_DAY.toLocaleString()} гемов сегодня!\nДневной лимит исчерпан. Возвращайтесь завтра!`);
-            return; // Не открываем игру
-        }
-    }
-
+    // Проверка баланса
     if (currentBet > gems) { 
         currentBet = 50; 
         saveData(); 
@@ -456,29 +440,37 @@ function startGame(themeName) {
         }
     }
 
+    // Устанавливаем тему
     currentTheme = themeName;
     slotTitle.innerText = titles[themeName];
+    
+    // Переключаем экраны
     lobbyScreen.classList.remove('active');
     gameScreen.classList.add('active');
+    
+    // Создаём сетку и обновляем UI
     createGrid();
     updateUI();
     resultText.innerText = "Нажми SPIN!";
+    
+    // Сбрасываем авто-спин
     autoSpinActive = false;
     autoBtn.innerText = "AUTO";
 
-    // Показываем счётчик лимита только для Ronaldo
-    if (themeName === 'ronaldo') {
-        const limitEl = document.getElementById('ronaldo-win-limit-display');
-        const leftEl = document.getElementById('win-limit-left');
-        
-        if (limitEl && leftEl) {
-            limitEl.style.display = 'block';
-            leftEl.innerText = (MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings).toLocaleString();
+    // Показываем счётчик лимита ТОЛЬКО если это Ronaldo (опционально)
+    const limitEl = document.getElementById('ronaldo-win-limit-display');
+    if (limitEl) {
+        if (themeName === 'ronaldo') {
+            // Если хочешь показать лимит — раскомментируй следующие строки
+            // checkAndResetDailyWinLimit();
+            // const leftEl = document.getElementById('win-limit-left');
+            // if (leftEl) {
+            //     limitEl.style.display = 'block';
+            //     leftEl.innerText = (MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings).toLocaleString();
+            // }
+        } else {
+            limitEl.style.display = 'none';
         }
-    } else {
-        // Скрываем, если это не Ronaldo
-        const limitEl = document.getElementById('ronaldo-win-limit-display');
-        if (limitEl) limitEl.style.display = 'none';
     }
 }
 
@@ -531,23 +523,6 @@ function toggleAuto() {
 function spin() {
     if (isSpinning || !currentTheme || gems < currentBet) return;
 
-    // Если это Ronaldo — проверяем лимит ещё раз (на всякий случай)
-    if (currentTheme === 'ronaldo') {
-        if (ronaldoSpinsToday >= MAX_RONALDO_SPINS_PER_DAY) {
-            alert("❌ Лимит спинов исчерпан!");
-            return;
-        }
-        
-        // Увеличиваем счётчик
-        ronaldoSpinsToday++;
-        localStorage.setItem('ronaldoSpinsToday', ronaldoSpinsToday.toString());
-                // Обновляем отображение счётчика на экране
-        const spinsLeftEl = document.getElementById('spins-left');
-        if (spinsLeftEl) {
-            spinsLeftEl.innerText = MAX_RONALDO_SPINS_PER_DAY - ronaldoSpinsToday;
-        }
-    }
-
     gems -= currentBet;
     updateUI();
     animateBalanceChange('loss');
@@ -586,74 +561,50 @@ function spin() {
 
 function checkWins(grid) {
     let totalWin = 0;
-    let hasBigWin = false;
-    for (let row = 0; row < 4; row++) {
-        let startIndex = row * 5;
-        let rowItems = grid.slice(startIndex, startIndex + 5);
-        for (let col = 0; col <= 2; col++) {
-            let matchCount = 1;
-            let multiplier = 1;
-            for (let k = col + 1; k < 5; k++) {
-                if (rowItems[k].src === rowItems[col].src) {
-                    matchCount++;
-                    if (rowItems[k].mult) multiplier *= parseInt(rowItems[k].mult.replace('x', ''));
-                } else break;
-            }
-            if (matchCount >= 3) {
+    const rows = 4;
+    const cols = 5;
+
+    // Проверка по строкам
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols - 2; col++) {
+            const idx = row * cols + col;
+            const item1 = grid[idx];
+            const item2 = grid[idx + 1];
+            const item3 = grid[idx + 2];
+
+            if (item1.src === item2.src && item2.src === item3.src) {
+                let matchCount = 3;
+                if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
+                if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
+
+                const multiplier = parseFloat(item1.mult) || 1;
                 let winAmount = 0;
-                if (matchCount === 3) winAmount = currentBet * 1;
+
+                if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
                 else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
-                else if (matchCount === 5) { winAmount = currentBet * 50 * multiplier; hasBigWin = true; }
+                else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
+
                 totalWin += winAmount;
                 col += matchCount - 1;
             }
         }
     }
-                if (totalWin > 0) {
-        // Логика ограничения выигрыша для VIP слота Ronaldo
-        if (currentTheme === 'ronaldo') {
-            const remaining = MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings;
-            
-            if (remaining <= 0) {
-                // На всякий случай блокируем, если вдруг просочилось
-                alert("❌ Лимит выигрыша исчерпан!");
-                totalWin = 0; 
-            } else {
-                // Если текущий выигрыш больше остатка лимита — обрезаем его
-                if (totalWin > remaining) {
-                    totalWin = remaining;
-                    resultText.innerText = `ВЫИГРЫШ! +${totalWin.toLocaleString()} 💎 (ЛИМИТ ДНЯ!)`;
-                }
-                
-                // Добавляем к общему счётчику дня
-                todayRonaldoWinnings += totalWin;
-                localStorage.setItem('todayRonaldoWinnings', todayRonaldoWinnings.toString());
 
-                // Обновляем отображение на экране
-                const leftEl = document.getElementById('win-limit-left');
-                if (leftEl) {
-                    leftEl.innerText = (MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings).toLocaleString();
-                }
-            }
+    // Начисляем выигрыш
+    if (totalWin > 0) {
+        gems += totalWin;
+        resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
+        animateBalanceChange('win');
+
+        if (totalWin >= currentBet * 5) {
+            addToLeaderboard(totalWin);
         }
 
-        // Начисляем гемы игроку (если totalWin > 0 после всех проверок)
-        if (totalWin > 0) {
-            gems += totalWin;
-            animateBalanceChange('win');
-            
-            // Таблица лидеров
-            if (totalWin >= currentBet * 5) {
-                addToLeaderboard(totalWin);
-            }
-            
-            // Большой выигрыш (анимация)
-            if (hasBigWin || totalWin >= currentBet * 20) showBigWin(totalWin);
-        }
+        if (totalWin >= currentBet * 20) showBigWin(totalWin);
     } else {
         resultText.innerText = "Попробуй еще...";
     }
-    
+
     saveData();
 }
 
