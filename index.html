@@ -6,31 +6,43 @@
     <title>MEME SPIN PRO 💎</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <!-- Аналитика GoatCounter -->
     <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
     <!-- ЛОББИ -->
     <div id="lobby-screen" class="screen active">
+        
+        <!-- ШАПКА С БАЛАНСОМ И КНОПКОЙ ПОКУПКИ -->
         <div class="header-bar">
             <div class="logo">MEME SPIN PRO</div>
             <div class="balance-container">
                 <span class="gem-icon">💎</span>
                 <span id="lobby-balance">10000</span>
+                <!-- КНОПКА ПОДДЕРЖКИ ПРОЕКТА -->
+                <a href="https://www.donationalerts.com/r/forzelagb?amount=10&message=ХОЧУ+ГЕМЫ" target="_blank" class="btn-buy-gems">
+                    + Купить
+                </a>
             </div>
         </div>
         
-        <!-- Навигация по вкладкам -->
+        <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ -->
         <div class="tabs-nav">
             <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
             <button class="tab-btn" onclick="openTab('market')">📈 Биржа</button>
             <button class="tab-btn" onclick="openTab('business')">🏭 Бизнес</button>
+            <!-- КНОПКА СЕКРЕТНОЙ ЗОНЫ -->
+            <button id="btn-secret" class="tab-btn btn-secret" onclick="checkSecretAccess()">
+                🔒 SECRET
+            </button>
         </div>
 
-        <!-- Вкладка 1: ИГРЫ -->
+        <!-- === ВКЛАДКА 1: ИГРЫ === -->
         <div id="tab-games" class="tab-content active">
             <h2 class="section-title">ВЫБЕРИ ТЕМУ</h2>
             <div class="games-grid">
+                <!-- Карточки игр -->
                 <div class="game-card" onclick="startGame('brain')"><div class="card-image brain-bg"></div><div class="card-content"><h3>🧠 BRAIN</h3><p>Ставка настраивается в игре</p></div></div>
                 <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div></div>
                 <div class="game-card" onclick="startGame('lexapaws')"><div class="card-image lexapaws-bg"></div><div class="card-content"><h3>🐾 LEXA PAWS</h3><p>Ставка настраивается в игре</p></div></div>
@@ -43,26 +55,26 @@
                 <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div></div>
                 <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
             </div>
-             <!-- БЛОК ТАБЛИЦЫ ЛИДЕРОВ -->
-    <div class="leaderboard-panel">
-        <h3>🏆 ТВОЙ ТОП-5 РЕКОРДОВ</h3>
-        <table class="leaderboard-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Выигрыш</th>
-                    <th>Дата</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body">
-                <!-- Сюда JS вставит строки -->
-            </tbody>
-        </table>
-    </div>
 
+            <!-- ТАБЛИЦА ЛИДЕРОВ (ЛОКАЛЬНАЯ) -->
+            <div class="leaderboard-panel">
+                <h3>🏆 ТВОЙ ТОП-5 РЕКОРДОВ</h3>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Выигрыш</th>
+                            <th>Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Сюда JS вставит строки -->
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <!-- Вкладка 2: БИРЖА -->
+        <!-- === ВКЛАДКА 2: БИРЖА === -->
         <div id="tab-market" class="tab-content">
             <div class="market-panel-pro">
                 <div class="market-header">
@@ -99,27 +111,89 @@
             </div>
         </div>
 
-        <!-- Вкладка 3: БИЗНЕС -->
+        <!-- === ВКЛАДКА 3: БИЗНЕС === -->
         <div id="tab-business" class="tab-content">
-    <div class="business-panel">
-        <div class="market-header">
-            <h3>🏭 МЕМ-БИЗНЕС</h3>
-            <span class="income-display">Общий доход: <span id="total-passive-income">0</span> 💎/сек</span>
+            <div class="business-panel">
+                <div class="market-header">
+                    <h3>🏭 МЕМ-БИЗНЕС</h3>
+                    <span class="income-display">Общий доход: <span id="total-passive-income">0</span> 💎/сек</span>
+                </div>
+                
+                <!-- Контейнер для карточек бизнесов (заполняется JS) -->
+                <div class="biz-row">
+                    <div id="biz-murino" class="biz-card"></div>
+                    <div id="biz-elgeeika" class="biz-card"></div>
+                    <div id="biz-poteryaevka" class="biz-card"></div>
+                </div>
+            </div>
         </div>
-        
-        <!-- Каждый бизнес — отдельный блок -->
-        <div class="biz-row">
-            <div id="biz-murino" class="biz-card"></div>
-            <div id="biz-elgeeika" class="biz-card"></div>
-            <div id="biz-poteryaevka" class="biz-card"></div>
+
+        <!-- === ВКЛАДКА 4: СЕКРЕТНАЯ ЗОНА (VIP) === -->
+        <div id="tab-secret" class="tab-content">
+            <div class="secret-panel">
+                
+                <!-- ЭКРАН БЛОКИРОВКИ (Если нет кода) -->
+                <div id="secret-lock-screen">
+                    <h2 class="secret-title">⚠️ ЗАПРЕТНАЯ ЗОНА ⚠️</h2>
+                    <p>Здесь находится эксклюзивный контент для избранных.</p>
+                    <p>Чтобы получить доступ, поддержи проект и получи <b>VIP-Ключ</b>.</p>
+                    
+                    <a href="https://www.donationalerts.com/r/forzelagb?amount=50&message=ХОЧУ+VIP+КЛЮЧ" target="_blank" class="btn-buy-key">
+                        💸 Поддержать и получить ключ (50₽)
+                    </a>
+                    
+                    <div class="promo-input-group">
+                        <input type="text" id="vip-code-input" placeholder="Введите VIP-код...">
+                        <button class="btn-unlock" onclick="activateVIPCode()">Открыть</button>
+                    </div>
+                    <p id="vip-message" style="margin-top: 10px; font-weight: bold;"></p>
+                </div>
+
+                <!-- ЭКРАН КОНТЕНТА (Если код введен верно) -->
+                <div id="secret-content" style="display: none;">
+                    <h2 class="secret-title-open">👑 ДОБРО ПОЖАЛОВАТЬ, VIP!</h2>
+                    
+                    <!-- Блок 1: Ежедневный бонус -->
+                    <div class="vip-bonus-block">
+                        <h3>🎁 Ежедневный VIP-Бонус</h3>
+                        <p>Забирай <b>1000 гемов</b> каждые 24 часа!</p>
+                        <button id="btn-daily-vip" class="btn-claim-bonus" onclick="claimDailyVIPBonus()">
+                            Забрать 1000 💎
+                        </button>
+                        <p id="vip-timer-msg" style="font-size: 12px; color: #aaa; margin-top: 5px;"></p>
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+
+                    <!-- Блок 2: Эксклюзивный слот Ronaldo -->
+                    <h3>🐐 Эксклюзивный слот: RONALDO</h3>
+                    <p>Только для VIP! Повышенные множители и уникальные мемы.</p>
+                    
+                    <div class="game-card vip-card" onclick="startGame('ronaldo')">
+                        <!-- Заглушка картинки. Замени на свою image/ronaldo/1.jpg -->
+                        <div class="card-image ronaldo-bg"></div> 
+                        <div class="card-content">
+                            <h3 style="color: gold;">SIUUU JACKPOT</h3>
+                            <p>Макс. выигрыш x50!</p>
+                        </div>
+                    </div>
+
+                    <!-- Блок 3: Заглушка на будущее -->
+                    <div class="coming-soon-block">
+                        <h3>🛒 Скоро: VIP-Маркет</h3>
+                        <p>Покупай уникальные монеты для игры за реальные деньги.</p>
+                        <button class="btn-soon" disabled>В разработке...</button>
+                    </div>
+                    
+                    <!-- Кнопка сброса для тестов -->
+                    <button class="btn-reset-vip" onclick="resetVIPTest()">[Тест] Сбросить доступ</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-        <a href="https://www.donationalerts.com/r/forzelagb" target="_blank" class="btn-support">☕ Поддержать проект</a>
     </div>
 
-    <!-- ЭКРАН ИГРЫ -->
+    <!-- ЭКРАН ИГРЫ (САМИ СЛОТЫ) -->
     <div id="game-screen" class="screen">
         <div class="game-header">
             <button class="btn-back" onclick="goBack()">← НАЗАД</button>
@@ -132,6 +206,7 @@
             <div class="slot-title" id="slot-title">SLOT NAME</div>
             <div class="grid-wrapper" id="grid"></div>
             <div class="message-box" id="result-text">Удачи!</div>
+            
             <div class="controls">
                 <div class="bet-adjuster">
                     <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
@@ -147,8 +222,11 @@
                     <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
                 </div>
             </div>
+
             <div class="spin-controls">
-                <button class="btn-spin" id="spin-btn" onclick="spin()">SPIN <br><span class="cost">-<span id="current-cost">50</span> 💎</span></button>
+                <button class="btn-spin" id="spin-btn" onclick="spin()">
+                    SPIN <br><span class="cost">-<span id="current-cost">50</span> 💎</span>
+                </button>
                 <button class="btn-auto" id="auto-btn" onclick="toggleAuto()">AUTO</button>
             </div>
         </div>
@@ -164,6 +242,7 @@
         </div>
     </div>
 
+    <!-- СКРИПТЫ -->
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -65,7 +65,16 @@ const themes = {
     rostick: [{src: "image/rostick/1.jpg", mult: ""}, {src: "image/rostick/2.jpg", mult: ""}, {src: "image/rostick/3.jpg", mult: "x2"}, {src: "image/rostick/4.jpg", mult: ""}, {src: "image/rostick/5.jpg", mult: "x3"}, {src: "image/rostick/6.jpg", mult: ""}, {src: "image/rostick/7.jpg", mult: ""}, {src: "image/rostick/8.jpg", mult: "x5"}],
     sasich: [{src: "image/sasich/1.jpg", mult: ""}, {src: "image/sasich/2.jpg", mult: ""}, {src: "image/sasich/3.jpg", mult: "x2"}, {src: "image/sasich/4.jpg", mult: ""}, {src: "image/sasich/5.jpg", mult: "x3"}, {src: "image/sasich/6.jpg", mult: ""}, {src: "image/sasich/7.jpg", mult: ""}, {src: "image/sasich/8.jpg", mult: "x5"}],
     skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: "x2"}, {src: "image/skibiditoilet/4.jpg", mult: ""}, {src: "image/skibiditoilet/5.jpg", mult: "x3"}, {src: "image/skibiditoilet/6.jpg", mult: ""}, {src: "image/skibiditoilet/7.jpg", mult: ""}, {src: "image/skibiditoilet/8.jpg", mult: "x5"}],
-    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}]
+    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}],
+    ronaldo: [
+        {src: "image/ronaldo/1.jpg", mult: ""}, 
+        {src: "image/ronaldo/2.jpg", mult: "x2"}, 
+        {src: "image/ronaldo/3.jpg", mult: "x3"}, 
+        {src: "image/ronaldo/4.jpg", mult: "x5"}, 
+        {src: "image/ronaldo/5.jpg", mult: "x10"}, 
+        {src: "image/ronaldo/6.jpg", mult: "x20"}, 
+        {src: "image/ronaldo/7.jpg", mult: "x50"} // SIUUU JACKPOT!
+    ]
 };
 
 const titles = { 
@@ -79,7 +88,8 @@ const titles = {
     rostick: "🌭 ROSTICK", 
     sasich: "🗣️ SASICH", 
     skibiditoilet: "🚽 SKIBIDI", 
-    slovopatsana: "👊 SLOVO PATSANA" 
+    slovopatsana: "👊 SLOVO PATSANA",
+    ronaldo: "🐐 RONALDO VIP"
 };
 
 // === ЭЛЕМЕНТЫ DOM ===
@@ -247,6 +257,9 @@ function openTab(tabName) {
     if(tabName === 'business') buttons[2].classList.add('active');
     if(tabName === 'market') updateMarketUI();
     if(tabName === 'business') updateBusinessUI();
+    if (tabName === 'secret') {
+        checkSecretAccess();
+    }
 }
 
 // === ЛОГИКА БИРЖИ ===
@@ -617,6 +630,102 @@ function updateLeaderboardUI() {
         tbody.appendChild(row);
     });
 }
+
+
+
+// === СИСТЕМА VIP КОДОВ ===
+const vipCodes = {
+    "TEST-VIP": true,       // Для теста
+    "RONALDO-FAN": true     // Пример реального кода
+};
+
+let hasVIPAccess = localStorage.getItem('memeVIPAccess') === 'true';
+
+function checkSecretAccess() {
+    openTab('secret'); // Открываем вкладку
+    
+    if (hasVIPAccess) {
+        document.getElementById('secret-lock-screen').style.display = 'none';
+        document.getElementById('secret-content').style.display = 'block';
+        updateVIPBonusButton(); // Проверяем таймер бонуса
+    } else {
+        document.getElementById('secret-lock-screen').style.display = 'block';
+        document.getElementById('secret-content').style.display = 'none';
+    }
+}
+
+function activateVIPCode() {
+    const input = document.getElementById('vip-code-input');
+    const code = input.value.trim().toUpperCase();
+    const messageEl = document.getElementById('vip-message');
+
+    if (vipCodes[code]) {
+        hasVIPAccess = true;
+        localStorage.setItem('memeVIPAccess', 'true');
+        
+        messageEl.style.color = '#00ff88';
+        messageEl.innerText = "✅ Доступ разрешен! Добро пожаловать.";
+        
+        setTimeout(() => {
+            checkSecretAccess();
+            input.value = '';
+            fireConfetti(); // Если есть функция конфетти
+        }, 1000);
+    } else {
+        messageEl.style.color = '#ff4444';
+        messageEl.innerText = "❌ Неверный код!";
+    }
+}
+
+// === ЕЖЕДНЕВНЫЙ БОНУС VIP ===
+function claimDailyVIPBonus() {
+    const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 часа в миллисекундах
+
+    if (now - lastClaim > oneDay) {
+        gems += 1000;
+        localStorage.setItem('lastVIPBonusTime', now);
+        saveData();
+        updateUI();
+        
+        alert("🎉 Вы получили 1000 гемов! SIUUU!");
+        updateVIPBonusButton();
+    } else {
+        alert("⏳ Бонус доступен только раз в 24 часа.");
+    }
+}
+
+function updateVIPBonusButton() {
+    const btn = document.getElementById('btn-daily-vip');
+    const msg = document.getElementById('vip-timer-msg');
+    if (!btn) return;
+
+    const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (now - lastClaim > oneDay) {
+        btn.disabled = false;
+        btn.innerText = "Забрать 1000 💎";
+        msg.innerText = "";
+    } else {
+        btn.disabled = true;
+        btn.innerText = "Уже получено";
+        const timeLeft = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
+        msg.innerText = `Следующий бонус через ${timeLeft} ч.`;
+    }
+}
+
+function resetVIPTest() {
+    if(confirm("Сбросить VIP статус для теста?")) {
+        localStorage.removeItem('memeVIPAccess');
+        localStorage.removeItem('lastVIPBonusTime');
+        hasVIPAccess = false;
+        location.reload();
+    }
+}
+
 
 
 // === ЗАПУСК ===
