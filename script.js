@@ -75,7 +75,47 @@ const themes = {
         {src: "image/ronaldo/5.jpg", mult: "x10"}, 
         {src: "image/ronaldo/6.jpg", mult: "x20"}, 
         {src: "image/ronaldo/7.jpg", mult: "x50"} // SIUUU JACKPOT!
-    ]
+    ],
+    // === НОВЫЕ VIP СЛОТЫ ===
+patorka: [
+    {src: "image/patorka/1.jpg", mult: ""},
+    {src: "image/patorka/2.jpg", mult: "x2"},
+    {src: "image/patorka/3.jpg", mult: "x3"},
+    {src: "image/patorka/4.jpg", mult: "x5"},
+    {src: "image/patorka/5.jpg", mult: "x10"},
+    {src: "image/patorka/6.jpg", mult: "x20"},
+    {src: "image/patorka/7.jpg", mult: "x50"}
+],
+
+goobka: [
+    {src: "image/goobka/1.jpg", mult: ""},
+    {src: "image/goobka/2.jpg", mult: "x2"},
+    {src: "image/goobka/3.jpg", mult: "x3"},
+    {src: "image/goobka/4.jpg", mult: "x5"},
+    {src: "image/goobka/5.jpg", mult: "x10"},
+    {src: "image/goobka/6.jpg", mult: "x25"},
+    {src: "image/goobka/7.jpg", mult: "x75"}
+],
+
+kaka: [
+    {src: "image/kaka/1.jpg", mult: ""},
+    {src: "image/kaka/2.jpg", mult: "x3"},
+    {src: "image/kaka/3.jpg", mult: "x5"},
+    {src: "image/kaka/4.jpg", mult: "x10"},
+    {src: "image/kaka/5.jpg", mult: "x25"},
+    {src: "image/kaka/6.jpg", mult: "x50"},
+    {src: "image/kaka/7.jpg", mult: "x100"}
+],
+
+zidane: [
+    {src: "image/zidane/1.jpg", mult: ""},
+    {src: "image/zidane/2.jpg", mult: "x3"},
+    {src: "image/zidane/3.jpg", mult: "x5"},
+    {src: "image/zidane/4.jpg", mult: "x10"},
+    {src: "image/zidane/5.jpg", mult: "x25"},
+    {src: "image/zidane/6.jpg", mult: "x50"},
+    {src: "image/zidane/7.jpg", mult: "x150"} // ЛЕГЕНДАРНЫЙ ДЖЕКПОТ!
+]
 };
 
 const titles = { 
@@ -90,7 +130,11 @@ const titles = {
     sasich: "🗣️ SASICH", 
     skibiditoilet: "🚽 SKIBIDI", 
     slovopatsana: "👊 SLOVO PATSANA",
-    ronaldo: "🐐 RONALDO VIP"
+    ronaldo: "🐐 RONALDO VIP",
+    patorka: "🐐 PATORKA VIP",
+    goobka: "🐐 GOOBKA GOLD",
+    kaka: "✨ KAKA PLATINUM",
+    zidane: "👑 ZIDANE LEGEND"
 };
 
 // === ЭЛЕМЕНТЫ DOM ===
@@ -717,20 +761,25 @@ function updateLeaderboardUI() {
 
 // === СИСТЕМА VIP КОДОВ ===
 const vipCodes = {
-    "TEST-VIP": true,       // Для теста
-    "RONALDO-FAN": true     // Пример реального кода
+    "TEST-VIP": 1,           // Для теста
+    "VIP-BRONZE": 1,         // 50₽ → Bronze
+    "VIP-SILVER": 2,         // 100₽ → Silver
+    "VIP-GOLD": 3,           // 200₽ → Gold
+    "VIP-PLATINUM": 4        // 500₽ → Platinum
 };
 
 let hasVIPAccess = localStorage.getItem('memeVIPAccess') === 'true';
 
 function checkSecretAccess() {
-    // Открываем вкладку secret
     openTab('secret');
-
+    
     if (vipLevel >= 1) {
         document.getElementById('secret-lock-screen').style.display = 'none';
         document.getElementById('secret-content').style.display = 'block';
-        updateSecretContentByLevel();
+        
+        // 👇 ВОТ ЭТА СТРОКА ВАЖНА
+        updateSecretContentByLevel(); 
+        
     } else {
         document.getElementById('secret-lock-screen').style.display = 'block';
         document.getElementById('secret-content').style.display = 'none';
@@ -742,29 +791,60 @@ function activateVIPCode() {
     const code = input.value.trim().toUpperCase();
     const messageEl = document.getElementById('vip-message');
 
+    // Проверка: есть ли такой код в списке vipCodes
     if (vipCodes[code]) {
-        // Код верный!
-        hasVIPAccess = true;
-        localStorage.setItem('memeVIPAccess', 'true');
+        const newLevel = vipCodes[code];
         
-        messageEl.style.color = '#00ff88';
-        messageEl.innerText = "✅ Доступ разрешен! Добро пожаловать.";
-        
-        // Сразу показываем контент
-        document.getElementById('secret-lock-screen').style.display = 'none';
-        document.getElementById('secret-content').style.display = 'block';
-        
-        // Обновляем кнопку бонуса
-        updateVIPBonusButton();
-        
-        // Эффект конфетти
-        if (typeof fireConfetti === 'function') fireConfetti();
-        
-        // Очищаем поле ввода
-        input.value = '';
+        // Если новый уровень выше текущего — обновляем
+        if (newLevel > vipLevel) {
+            vipLevel = newLevel;
+            localStorage.setItem('memeVIPLevel', vipLevel.toString());
+            
+            let levelName = getLevelName(vipLevel);
+            
+            messageEl.style.color = '#00ff88';
+            messageEl.innerText = `✅ Поздравляем! Вы получили уровень ${levelName}!`;
+            
+            // Скрываем экран блокировки, показываем контент
+            document.getElementById('secret-lock-screen').style.display = 'none';
+            document.getElementById('secret-content').style.display = 'block';
+            
+            // 👇 ГЛАВНОЕ: Генерируем контент под новый уровень
+            updateSecretContentByLevel();
+            
+            // Эффект конфетти
+            if (typeof fireConfetti === 'function') fireConfetti();
+            
+            // Очищаем поле ввода
+            input.value = '';
+        } else {
+            messageEl.style.color = '#ffa500';
+            messageEl.innerText = `⚠️ У вас уже есть уровень ${getLevelName(vipLevel)} или выше.`;
+        }
     } else {
         messageEl.style.color = '#ff4444';
         messageEl.innerText = "❌ Неверный код! Попробуйте еще раз.";
+    }
+}
+
+// Вспомогательная функция для получения названия уровня
+function getLevelName(level) {
+    switch(level) {
+        case 1: return "Bronze";
+        case 2: return "Silver";
+        case 3: return "Gold";
+        case 4: return "Platinum";
+        default: return "Игрок";
+    }
+}
+
+function getLevelName(level) {
+    switch(level) {
+        case 1: return "Bronze";
+        case 2: return "Silver";
+        case 3: return "Gold";
+        case 4: return "Platinum";
+        default: return "Обычный";
     }
 }
 
@@ -843,6 +923,146 @@ function checkAndResetDailyWinLimit() {
         localStorage.setItem('lastRonaldoWinDate', today);
     }
 }
+
+
+function updateSecretContentByLevel() {
+    const contentDiv = document.getElementById('secret-content');
+    if (!contentDiv) return;
+
+    // Очищаем контент
+    contentDiv.innerHTML = '';
+
+    // === ЗАГОЛОВОК ===
+    const title = document.createElement('h2');
+    title.className = 'secret-title-open';
+    title.innerText = `👑 ВАШ VIP СТАТУС: ${getLevelName(vipLevel)}`;
+    contentDiv.appendChild(title);
+
+    // === ТАБЛИЦА ТАРИФОВ ===
+    const pricingContainer = document.createElement('div');
+    pricingContainer.className = 'pricing-grid';
+    
+    // Данные уровней
+    const levels = [
+        { id: 1, name: "Bronze", price: 50, color: "#cd7f32", perks: ["Слот Ronaldo", "1000 гемов/день", "20 спинов/день"] },
+        { id: 2, name: "Silver", price: 100, color: "#c0c0c0", perks: ["Всё из Bronze", "+ Слот Messi", "x2 множитель", "30 спинов/день"] },
+        { id: 3, name: "Gold", price: 200, color: "#ffd700", perks: ["Всё из Silver", "+ Слот Neymar", "x3 множитель", "Доступ к Сапёру"] },
+        { id: 4, name: "Platinum", price: 500, color: "#e5e4e2", perks: ["Всё из Gold", "+ Слоты Kaka & Zidane", "x5 множитель", "Доступ к Ракетке"] }
+    ];
+
+    levels.forEach(lvl => {
+        const isCurrent = vipLevel === lvl.id;
+        const isLocked = vipLevel > lvl.id; // Если уровень уже выше, показываем как полученный
+        
+        let statusText = "";
+        let btnClass = "btn-buy-level";
+        let btnAction = `window.open('https://www.donationalerts.com/r/forzelagb?amount=${lvl.price}&message=ХОЧУ+${lvl.name.toUpperCase()}', '_blank')`;
+
+        if (isCurrent) {
+            statusText = "<span style='color:#00ff88'>✅ АКТИВЕН</span>";
+            btnClass = "btn-current-level";
+            btnAction = "alert('У вас уже есть этот уровень!')";
+        } else if (isLocked) {
+            statusText = "<span style='color:#aaa'>🔒 ПОЛУЧЕН</span>";
+            btnClass = "btn-locked-level";
+            btnAction = "return false";
+        } else {
+            statusText = `<span style='color:${lvl.color}'>💎 ${lvl.price}₽</span>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = `pricing-card ${isCurrent ? 'active-card' : ''}`;
+        card.style.borderColor = lvl.color;
+        
+        // Генерируем список преимуществ
+        const perksList = lvl.perks.map(p => `<li>✔️ ${p}</li>`).join('');
+
+        card.innerHTML = `
+            <div class="card-header" style="background:${lvl.color}; color: #000;">
+                <h3>${lvl.name}</h3>
+                <div class="price">${statusText}</div>
+            </div>
+            <div class="card-body">
+                <ul class="perks-list">
+                    ${perksList}
+                </ul>
+                <button class="${btnClass}" onclick="${btnAction}" ${isLocked || isCurrent ? 'disabled' : ''}>
+                    ${isCurrent ? 'Текущий уровень' : (isLocked ? 'Доступно' : 'Купить доступ')}
+                </button>
+            </div>
+        `;
+        pricingContainer.appendChild(card);
+    });
+
+    contentDiv.appendChild(pricingContainer);
+
+    // === РАЗДЕЛИТЕЛЬ ===
+    contentDiv.appendChild(document.createElement('hr')).style.borderColor = 'rgba(255,255,255,0.1)';
+
+    // === БЛОК СЛОТОВ (Как было раньше, но короче) ===
+    const slotsTitle = document.createElement('h3');
+    slotsTitle.innerText = "🎮 Ваши эксклюзивные слоты:";
+    contentDiv.appendChild(slotsTitle);
+
+    const slotsGrid = document.createElement('div');
+    slotsGrid.className = 'vip-slots-grid';
+    
+    if (vipLevel >= 1) addMiniSlotCard(slotsGrid, 'ronaldo', 'Ronaldo', 'ronaldo-bg');
+    if (vipLevel >= 2) addMiniSlotCard(slotsGrid, 'messi', 'Messi', 'messi-bg');
+    if (vipLevel >= 3) addMiniSlotCard(slotsGrid, 'neymar', 'Neymar', 'neymar-bg');
+    if (vipLevel >= 4) {
+        addMiniSlotCard(slotsGrid, 'kaka', 'Kaka', 'kaka-bg');
+        addMiniSlotCard(slotsGrid, 'zidane', 'Zidane', 'zidane-bg');
+    }
+    
+    contentDiv.appendChild(slotsGrid);
+
+    // === КНОПКА СБРОСА ===
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'btn-reset-vip';
+    resetBtn.innerText = '[Тест] Сбросить прогресс';
+    resetBtn.onclick = () => { localStorage.clear(); location.reload(); };
+    contentDiv.appendChild(resetBtn);
+}
+
+// Вспомогательная функция для маленьких карточек слотов
+function addMiniSlotCard(parent, themeId, name, bgClass) {
+    const div = document.createElement('div');
+    div.className = 'mini-slot-card';
+    div.onclick = () => startGame(themeId);
+    div.innerHTML = `
+        <div class="mini-img ${bgClass}"></div>
+        <span>${name}</span>
+    `;
+    parent.appendChild(div);
+}
+// Вспомогательная функция для создания карточки слота
+function addSlotCard(parent, themeId, titleText, subTitle, desc, color) {
+    const card = document.createElement('div');
+    card.className = 'game-card vip-card';
+    card.style.marginBottom = '15px';
+    card.onclick = () => startGame(themeId);
+    
+    // Определяем класс фона в зависимости от темы
+    let bgClass = '';
+    if (themeId === 'ronaldo') bgClass = 'ronaldo-bg';
+    if (themeId === 'messi') bgClass = 'messi-bg';
+    if (themeId === 'neymar') bgClass = 'neymar-bg';
+    if (themeId === 'kaka') bgClass = 'kaka-bg';
+    if (themeId === 'zidane') bgClass = 'zidane-bg';
+
+    card.innerHTML = `
+        <div class="card-image ${bgClass}"></div> 
+        <div class="card-content">
+            <h3 style="color: ${color};">${titleText}</h3>
+            <p><b>${subTitle}</b></p>
+            <p>${desc}</p>
+        </div>
+    `;
+    parent.appendChild(card);
+}
+
+
 
 
 // === ЗАПУСК ===

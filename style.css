@@ -1013,6 +1013,157 @@ body::before {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
+
+/* === СЕТКА ТАРИФОВ === */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.pricing-card {
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid #555;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.active-card {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    border-color: gold !important;
+    transform: scale(1.02);
+}
+
+.card-header {
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.price {
+    font-size: 20px;
+    margin-top: 5px;
+    font-weight: 800;
+}
+
+.card-body {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.perks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    font-size: 13px;
+    text-align: left;
+}
+
+.perks-list li {
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+.btn-buy-level {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #00ff88, #00cc6a);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-buy-level:hover {
+    opacity: 0.9;
+}
+
+.btn-current-level {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #555;
+    color: #fff;
+    font-weight: bold;
+    cursor: default;
+}
+
+.btn-locked-level {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #333;
+    color: #888;
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+/* === СЕТКА СЛОТОВ ВНУТРИ VIP === */
+.vip-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.mini-slot-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.mini-slot-card:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.mini-img {
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 600px) {
+    .pricing-grid {
+        grid-template-columns: 1fr; /* Одна колонка на телефоне */
+    }
+}
+
+
+
+
+.messi-bg { background: url('image/messi/1.jpg') center/cover; }
+.neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
+.kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
+.zidane-bg { background: url('image/zidane/1.jpg') center/cover; }
+
 /* Фоны для карточек */
 .brain-bg { background: url('image/brain/1.jpg') center/cover; }
 .helin-bg { background: url('image/helin/1.jpg') center/cover; }
