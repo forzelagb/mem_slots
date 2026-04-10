@@ -1003,6 +1003,16 @@ body::before {
     display: inline-block;
 }
 
+
+#ronaldo-win-limit-display {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    border: 1px solid #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
 /* Фоны для карточек */
 .brain-bg { background: url('image/brain/1.jpg') center/cover; }
 .helin-bg { background: url('image/helin/1.jpg') center/cover; }

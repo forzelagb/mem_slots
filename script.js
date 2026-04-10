@@ -55,10 +55,12 @@ let autoSpinCount = 0;
 let isSpinning = false;
 let currentTheme = '';
 // === ЛИМИТ СПИНОВ ДЛЯ RONALDO ===
-let ronaldoSpinsToday = parseInt(localStorage.getItem('ronaldoSpinsToday')) || 0;
-let lastRonaldoResetDate = localStorage.getItem('lastRonaldoResetDate') || '';
-const MAX_RONALDO_SPINS_PER_DAY = 20;
 
+// === ЛИМИТ ВЫИГРЫША В ДЕНЬ ДЛЯ RONALDO ===
+// === ЛИМИТ ВЫИГРЫША В ДЕНЬ ДЛЯ RONALDO (5 МИЛЛИОНОВ) ===
+let todayRonaldoWinnings = parseInt(localStorage.getItem('todayRonaldoWinnings')) || 0;
+let lastRonaldoWinDate = localStorage.getItem('lastRonaldoWinDate') || '';
+const MAX_RONALDO_WIN_PER_DAY = 5000000; 
 // === ТЕМЫ ИГРЫ ===
 const themes = {
     brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: "x2"}, {src: "image/brain/4.jpg", mult: ""}, {src: "image/brain/5.jpg", mult: "x3"}, {src: "image/brain/6.jpg", mult: ""}, {src: "image/brain/7.jpg", mult: ""}, {src: "image/brain/8.jpg", mult: "x5"}],
@@ -73,7 +75,8 @@ const themes = {
     skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: "x2"}, {src: "image/skibiditoilet/4.jpg", mult: ""}, {src: "image/skibiditoilet/5.jpg", mult: "x3"}, {src: "image/skibiditoilet/6.jpg", mult: ""}, {src: "image/skibiditoilet/7.jpg", mult: ""}, {src: "image/skibiditoilet/8.jpg", mult: "x5"}],
     slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}],
     ronaldo: [
-        {src: "image/ronaldo/1.jpg", mult: ""}, 
+        {src: "image/ronaldo/1.jpg", mult: ""},
+        {src: "image/ronaldo/8.jpg", mult: ""}, 
         {src: "image/ronaldo/2.jpg", mult: "x2"}, 
         {src: "image/ronaldo/3.jpg", mult: "x3"}, 
         {src: "image/ronaldo/4.jpg", mult: "x5"}, 
@@ -426,29 +429,32 @@ function updateUI() {
 }
 
 function startGame(themeName) {
+    // Проверка лимита для Ronaldo
     if (themeName === 'ronaldo') {
-        checkAndResetRonaldoLimit();
+        checkAndResetDailyWinLimit();
         
-        if (ronaldoSpinsToday >= MAX_RONALDO_SPINS_PER_DAY) {
-            alert(`❌ Лимит спинов для RONALDO исчерпан!\nВы использовали ${MAX_RONALDO_SPINS_PER_DAY} попыток сегодня.\nВозвращайтесь завтра!`);
+        if (todayRonaldoWinnings >= MAX_RONALDO_WIN_PER_DAY) {
+            alert(`❌ Вы уже выиграли ${MAX_RONALDO_WIN_PER_DAY.toLocaleString()} гемов сегодня!\nДневной лимит исчерпан. Возвращайтесь завтра!`);
             return; // Не открываем игру
         }
     }
-    if (currentBet > gems) { currentBet = 50; saveData(); }
-    if (gems < currentBet) {
-        if (gems <= 0) { gems += 100; saveData(); updateUI(); alert("Банкрот! Дали 100 гемов."); }
-        else { return; }
+
+    if (currentBet > gems) { 
+        currentBet = 50; 
+        saveData(); 
     }
-        // === ПОКАЗЫВАЕМ СЧЁТЧИК СПИНОВ ДЛЯ RONALDO ===
-    if (themeName === 'ronaldo') {
-        const counterEl = document.getElementById('ronaldo-spin-counter');
-        const spinsLeftEl = document.getElementById('spins-left');
-        
-        if (counterEl && spinsLeftEl) {
-            counterEl.style.display = 'block'; // Показываем блок
-            spinsLeftEl.innerText = MAX_RONALDO_SPINS_PER_DAY - ronaldoSpinsToday; // Обновляем число
+    
+    if (gems < currentBet) {
+        if (gems <= 0) { 
+            gems += 100; 
+            saveData(); 
+            updateUI(); 
+            alert("Банкрот! Дали 100 гемов."); 
+        } else { 
+            return; 
         }
     }
+
     currentTheme = themeName;
     slotTitle.innerText = titles[themeName];
     lobbyScreen.classList.remove('active');
@@ -458,6 +464,21 @@ function startGame(themeName) {
     resultText.innerText = "Нажми SPIN!";
     autoSpinActive = false;
     autoBtn.innerText = "AUTO";
+
+    // Показываем счётчик лимита только для Ronaldo
+    if (themeName === 'ronaldo') {
+        const limitEl = document.getElementById('ronaldo-win-limit-display');
+        const leftEl = document.getElementById('win-limit-left');
+        
+        if (limitEl && leftEl) {
+            limitEl.style.display = 'block';
+            leftEl.innerText = (MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings).toLocaleString();
+        }
+    } else {
+        // Скрываем, если это не Ronaldo
+        const limitEl = document.getElementById('ronaldo-win-limit-display');
+        if (limitEl) limitEl.style.display = 'none';
+    }
 }
 
 function goBack() {
@@ -465,10 +486,10 @@ function goBack() {
     lobbyScreen.classList.add('active');
     autoSpinActive = false;
 
-    // Скрываем счётчик спинов Ronaldo
-    const counterEl = document.getElementById('ronaldo-spin-counter');
-    if (counterEl) {
-        counterEl.style.display = 'none';
+    // Скрываем счётчик лимита Ronaldo
+    const limitEl = document.getElementById('ronaldo-win-limit-display');
+    if (limitEl) {
+        limitEl.style.display = 'none';
     }
 }
 
@@ -587,20 +608,51 @@ function checkWins(grid) {
             }
         }
     }
-        if (totalWin > 0) {
-        gems += totalWin;
-        resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
-        animateBalanceChange('win');
-        
-        // Если выигрыш значительный (больше 5 ставок) — добавляем в топ
-        if (totalWin >= currentBet * 5) {
-            addToLeaderboard(totalWin);
+                if (totalWin > 0) {
+        // Логика ограничения выигрыша для VIP слота Ronaldo
+        if (currentTheme === 'ronaldo') {
+            const remaining = MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings;
+            
+            if (remaining <= 0) {
+                // На всякий случай блокируем, если вдруг просочилось
+                alert("❌ Лимит выигрыша исчерпан!");
+                totalWin = 0; 
+            } else {
+                // Если текущий выигрыш больше остатка лимита — обрезаем его
+                if (totalWin > remaining) {
+                    totalWin = remaining;
+                    resultText.innerText = `ВЫИГРЫШ! +${totalWin.toLocaleString()} 💎 (ЛИМИТ ДНЯ!)`;
+                }
+                
+                // Добавляем к общему счётчику дня
+                todayRonaldoWinnings += totalWin;
+                localStorage.setItem('todayRonaldoWinnings', todayRonaldoWinnings.toString());
+
+                // Обновляем отображение на экране
+                const leftEl = document.getElementById('win-limit-left');
+                if (leftEl) {
+                    leftEl.innerText = (MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings).toLocaleString();
+                }
+            }
         }
-        
-        if (hasBigWin || totalWin >= currentBet * 20) showBigWin(totalWin);
+
+        // Начисляем гемы игроку (если totalWin > 0 после всех проверок)
+        if (totalWin > 0) {
+            gems += totalWin;
+            animateBalanceChange('win');
+            
+            // Таблица лидеров
+            if (totalWin >= currentBet * 5) {
+                addToLeaderboard(totalWin);
+            }
+            
+            // Большой выигрыш (анимация)
+            if (hasBigWin || totalWin >= currentBet * 20) showBigWin(totalWin);
+        }
     } else {
         resultText.innerText = "Попробуй еще...";
     }
+    
     saveData();
 }
 
@@ -803,6 +855,19 @@ function checkAndResetRonaldoLimit() {
         lastRonaldoResetDate = today;
         localStorage.setItem('ronaldoSpinsToday', '0');
         localStorage.setItem('lastRonaldoResetDate', today);
+    }
+}
+
+
+function checkAndResetDailyWinLimit() {
+    const today = new Date().toLocaleDateString(); 
+    
+    // Если наступил новый день — сбрасываем счётчик
+    if (lastRonaldoWinDate !== today) {
+        todayRonaldoWinnings = 0;
+        lastRonaldoWinDate = today;
+        localStorage.setItem('todayRonaldoWinnings', '0');
+        localStorage.setItem('lastRonaldoWinDate', today);
     }
 }
 
