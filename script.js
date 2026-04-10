@@ -1,3 +1,37 @@
+// === КОНФИГУРАЦИЯ БИЗНЕСОВ ===
+const businessesConfig = [
+    { 
+        id: 'murino', 
+        name: "Мурино", 
+        img: "image/murino.jpg", 
+        baseCost: 1000, 
+        baseIncome: 0.1,   // <-- ДОХОД В СЕКУНДУ (было 50 в минуту)
+        level: 1, 
+        accumulated: 0,
+        lastCollect: Date.now()
+    },
+    { 
+        id: 'elgeeika', 
+        name: "Элджеевка", 
+        img: "image/elgeeika.jpg", 
+        baseCost: 5000, 
+        baseIncome: 0.5,   // <-- ДОХОД В СЕКУНДУ (было 300 в минуту)
+        level: 1, 
+        accumulated: 0,
+        lastCollect: Date.now()
+    },
+    { 
+        id: 'poteryaevka', 
+        name: "Потеряевка", 
+        img: "image/poteryaevka.jpg", 
+        baseCost: 20000, 
+        baseIncome: 2.0,   // <-- ДОХОД В СЕКУНДУ (было 1500 в минуту)
+        level: 1, 
+        accumulated: 0,
+        lastCollect: Date.now()
+    }
+];
+
 // === КОНФИГУРАЦИЯ МОНЕТ ===
 const coinsConfig = {
     burmal: { name: "БурмалCOIN", basePrice: 100, volatility: 0.05, amount: 0, history: [], currentPrice: 100 },
@@ -9,14 +43,11 @@ const coinsConfig = {
 };
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
-let gems = parseInt(localStorage.getItem('memeGems')) || 1000;
+let gems = parseInt(localStorage.getItem('memeGems')) || 10000;
 let currentBet = parseInt(localStorage.getItem('memeBet')) || 50;
 let currentSelectedCoin = 'burmal';
 let marketInterval;
 let chartInstance = null;
-let lastBonusTime = parseInt(localStorage.getItem('lastBonusTime')) || 0;
-const BONUS_AMOUNT = 500;
-const BONUS_COOLDOWN = 30 * 60 * 1000; // 30 минут
 
 // === ТЕМЫ ИГРЫ ===
 const themes = {
@@ -33,11 +64,7 @@ const themes = {
     slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}]
 };
 
-const titles = {
-    brain: "🧠 BRAIN ROT", helin: "🎤 HELIN", lexapaws: "🐾 LEXA PAWS", litwin: "🎮 LITWIN",
-    melstroy: "👑 MELLSTROY", nikkifn: "🎯 NIKKIFN", rejiboi: "🕺 REJIBOI", rostick: "🌭 ROSTICK",
-    sasich: "🗣️ SASICH", skibiditoilet: "🚽 SKIBIDI", slovopatsana: "👊 SLOVO PATSANA"
-};
+const titles = { brain: "🧠 BRAIN ROT", helin: "🎤 HELIN", lexapaws: "🐾 LEXA PAWS", litwin: "🎮 LITWIN", melstroy: "👑 MELLSTROY", nikkifn: "🎯 NIKKIFN", rejiboi: "🕺 REJIBOI", rostick: "🌭 ROSTICK", sasich: "🗣️ SASICH", skibiditoilet: "🚽 SKIBIDI", slovopatsana: "👊 SLOVO PATSANA" };
 
 // === ЭЛЕМЕНТЫ DOM ===
 const lobbyScreen = document.getElementById('lobby-screen');
@@ -56,7 +83,7 @@ function saveData() {
     localStorage.setItem('memeGems', gems);
     localStorage.setItem('memeBet', currentBet);
     localStorage.setItem('memeCoinsPro', JSON.stringify(coinsConfig));
-    localStorage.setItem('lastBonusTime', lastBonusTime);
+    saveBusinesses();
 }
 
 function loadData() {
@@ -78,6 +105,125 @@ function loadData() {
     }
 }
 
+// === ЛОГИКА БИЗНЕСА ===
+function loadBusinesses() {
+    const savedBiz = JSON.parse(localStorage.getItem('memeBusinesses'));
+    if (savedBiz) {
+        savedBiz.forEach(sb => {
+            const biz = businessesConfig.find(b => b.id === sb.id);
+            if (biz) {
+                biz.level = sb.level;
+                biz.accumulated = sb.accumulated;
+                biz.lastCollect = sb.lastCollect;
+            }
+        });
+    }
+}
+
+function saveBusinesses() {
+    localStorage.setItem('memeBusinesses', JSON.stringify(businessesConfig));
+}
+
+function getBizStats(biz) {
+    let cost = Math.floor(biz.baseCost * Math.pow(1.5, biz.level - 1));
+    let income = biz.baseIncome * Math.pow(1.4, biz.level - 1); // <-- УБРАЛИ Math.floor, чтобы были дробные числа
+    return { cost, income };
+}
+
+function upgradeBusiness(id) {
+    const biz = businessesConfig.find(b => b.id === id);
+    if (!biz) return;
+    if (biz.level >= 5) { alert("Максимальный уровень!"); return; }
+    const stats = getBizStats(biz);
+    if (gems >= stats.cost) {
+        gems -= stats.cost;
+        biz.level++;
+        saveData();
+        updateUI();
+        updateBusinessUI();
+    } else { alert("Не хватает гемов!"); }
+}
+
+const collected = Math.floor(biz.accumulated);
+if (collected > 0) {
+    gems += collected;
+    biz.accumulated = 0;
+    biz.lastCollect = Date.now();
+    saveData();
+    updateUI();
+    updateBusinessUI();
+    alert(`Собрано ${collected} 💎 из ${biz.name}!`);
+}
+
+function calculateOfflineProfit(biz) {
+    const now = Date.now();
+    const timeDiff = now - biz.lastCollect;
+    const minutesPassed = timeDiff / 60000;
+    const stats = getBizStats(biz);
+    const profit = stats.income * minutesPassed;
+    biz.accumulated += profit;
+}
+
+function updateBusinessUI() {
+    const list = document.getElementById('business-list');
+    if (!list) return;
+    list.innerHTML = '';
+    let totalIncome = 0;
+    businessesConfig.forEach(biz => {
+        calculateOfflineProfit(biz);
+        const stats = getBizStats(biz);
+        totalIncome += stats.income;
+        const card = document.createElement('div');
+        card.className = 'biz-card';
+        const isMaxLevel = biz.level >= 5;
+        const upgradeBtnText = isMaxLevel ? "МАКС" : `Улучшить (Ур. ${biz.level + 1})`;
+        const upgradeCost = isMaxLevel ? 0 : stats.cost;
+        card.innerHTML = `
+            <img src="${biz.img}" alt="${biz.name}" class="biz-image" onerror="this.src='https://via.placeholder.com/300x120?text=${biz.name}'">
+            <div class="biz-body">
+                <div class="biz-info">
+                    <h4>${biz.name}</h4>
+                    <span class="biz-level">Уровень: ${biz.level}/5</span>
+                    <p>Доход: ${stats.income.toFixed(2)} 💎/сек</p>
+                    <p style="color:#00ff88">Накоплено: ${Math.floor(biz.accumulated)} 💎</p>
+                </div>
+                <div class="biz-actions">
+                    <button class="btn-collect-profit" onclick="collectProfit('${biz.id}')" ${biz.accumulated < 1 ? 'disabled' : ''}>СОБРАТЬ</button>
+                    <button class="btn-upgrade-biz" onclick="upgradeBusiness('${biz.id}')" ${isMaxLevel || gems < upgradeCost ? 'disabled' : ''}>${upgradeBtnText}<br>${isMaxLevel ? '' : upgradeCost + ' 💎'}</button>
+                </div>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+    const incomeEl = document.getElementById('total-passive-income');
+if(incomeEl) incomeEl.innerText = totalIncome.toFixed(2);
+}
+
+// Таймер пассивного дохода (обновляет цифры каждую секунду)
+setInterval(() => {
+    businessesConfig.forEach(biz => {
+        const stats = getBizStats(biz);
+        biz.accumulated += stats.income; // <-- УБРАЛИ "/ 60", потому что теперь income — это доход в секунду
+    });
+    saveBusinesses();
+    if(document.getElementById('tab-business') && document.getElementById('tab-business').classList.contains('active')) {
+        updateBusinessUI();
+    }
+}, 1000); // Каждую секунду
+
+// === ЛОГИКА ВКЛАДОК ===
+function openTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('tab-' + tabName).classList.add('active');
+    const buttons = document.querySelectorAll('.tab-btn');
+    if(tabName === 'games') buttons[0].classList.add('active');
+    if(tabName === 'market') buttons[1].classList.add('active');
+    if(tabName === 'business') buttons[2].classList.add('active');
+    if(tabName === 'market') updateMarketUI();
+    if(tabName === 'business') updateBusinessUI();
+}
+
 // === ЛОГИКА БИРЖИ ===
 function simulateMarket() {
     for (let key in coinsConfig) {
@@ -85,7 +231,6 @@ function simulateMarket() {
         let change = 1 + (Math.random() * coin.volatility * 2 - coin.volatility);
         coin.currentPrice *= change;
         if (coin.currentPrice < coin.basePrice * 0.01) coin.currentPrice = coin.basePrice * 0.01;
-
         coin.history.push(coin.currentPrice);
         if (coin.history.length > 50) coin.history.shift();
     }
@@ -104,22 +249,14 @@ function tradeCoin(type) {
     const amountInput = document.getElementById('trade-amount');
     const amount = parseInt(amountInput.value);
     if (!amount || amount <= 0) return;
-
     const coin = coinsConfig[currentSelectedCoin];
     const totalCost = coin.currentPrice * amount;
-
     if (type === 'buy') {
-        if (gems >= totalCost) {
-            gems -= totalCost;
-            coin.amount += amount;
-            alert(`Куплено ${amount} ${coin.name}`);
-        } else { alert("Недостаточно средств!"); }
+        if (gems >= totalCost) { gems -= totalCost; coin.amount += amount; }
+        else { alert("Недостаточно средств!"); return; }
     } else if (type === 'sell') {
-        if (coin.amount >= amount) {
-            gems += totalCost;
-            coin.amount -= amount;
-            alert(`Продано ${amount} ${coin.name}`);
-        } else { alert("Недостаточно монет!"); }
+        if (coin.amount >= amount) { gems += totalCost; coin.amount -= amount; }
+        else { alert("Недостаточно монет!"); return; }
     }
     saveData();
     updateUI();
@@ -128,109 +265,72 @@ function tradeCoin(type) {
 
 function updateMarketUI() {
     const coin = coinsConfig[currentSelectedCoin];
-    document.getElementById('display-name').innerText = coin.name;
-    document.getElementById('display-price').innerText = coin.currentPrice.toFixed(2) + ' ₽';
-    document.getElementById('display-amount').innerText = coin.amount;
-    document.getElementById('display-value').innerText = (coin.amount * coin.currentPrice).toFixed(2);
-
-    const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
-    const changePercent = ((coin.currentPrice - lastPrice) / lastPrice) * 100;
+    const nameEl = document.getElementById('display-name');
+    const priceEl = document.getElementById('display-price');
+    const amountEl = document.getElementById('display-amount');
+    const valueEl = document.getElementById('display-value');
     const changeEl = document.getElementById('display-change');
-    
-    changeEl.innerText = (changePercent >= 0 ? '+' : '') + changePercent.toFixed(2) + '%';
-    changeEl.className = 'coin-change ' + (changePercent >= 0 ? 'up' : 'down');
-
+    if(nameEl) nameEl.innerText = coin.name;
+    if(priceEl) priceEl.innerText = coin.currentPrice.toFixed(2) + ' ₽';
+    if(amountEl) amountEl.innerText = coin.amount;
+    if(valueEl) valueEl.innerText = (coin.amount * coin.currentPrice).toFixed(2);
+    if(changeEl) {
+        const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
+        const changePercent = ((coin.currentPrice - lastPrice) / lastPrice) * 100;
+        changeEl.innerText = (changePercent >= 0 ? '+' : '') + changePercent.toFixed(2) + '%';
+        changeEl.className = 'coin-change ' + (changePercent >= 0 ? 'up' : 'down');
+    }
     updateChart(coin);
 }
 
 function updateChart(coin) {
     const canvas = document.getElementById('cryptoChart');
-    if (!canvas) return; // Защита от ошибок, если элемента нет
+    if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     
-    // Удаляем старый график, если есть
-    if (chartInstance) {
-        chartInstance.destroy();
-    }
+    // Удаляем старый график, если он есть
+    if (chartInstance) chartInstance.destroy();
 
-    // Определяем цвет (зеленый если растет, красный если падает)
+    // Определяем цвет линии (зеленый если растет, красный если падает)
     const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
     const isUp = coin.currentPrice >= lastPrice;
     const color = isUp ? '#00ff88' : '#ff4444';
     const bgColor = isUp ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)';
 
-    // Создаем новый график
+    // Рисуем новый график с ПРАВИЛЬНЫМ синтаксисом
     chartInstance = new Chart(ctx, {
         type: 'line',
-        data: {  // <--- ВАЖНО: Добавлено слово "data:"
+         data: {                          // ← ВОТ ЭТО БЫЛО ПРОПУЩЕНО РАНЬШЕ
             labels: coin.history.map((_, i) => i),
             datasets: [{
-                label: 'Цена',
-                data: coin.history, // <--- ВАЖНО: Добавлено слово "data:" внутри массива
+                label: 'Цена',// ← И ВОТ ЭТО ТОЖЕ
                 borderColor: color,
                 backgroundColor: bgColor,
                 borderWidth: 2,
-                tension: 0.4, // Плавность линий
-                pointRadius: 0,
-                fill: true
+                tension: 0.4,       // Плавность линий
+                pointRadius: 0,     // Убираем точки, оставляем только линию
+                fill: true          // Закраска под линией
             }]
-        },
+        },                           // ← Закрываем data
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: { 
-                legend: { display: false } 
+                legend: { display: false } // Скрываем легенду
             },
-            scales: {
-                x: { display: false },
+            scales: { 
+                x: { display: false }, // Скрываем ось X
                 y: { 
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    ticks: { color: '#aaa' }
-                }
+                    grid: { color: 'rgba(255,255,255,0.1)' }, 
+                    ticks: { color: '#aaa' } 
+                } 
             },
-            animation: { duration: 0 }
+            animation: { duration: 0 } // Отключаем анимацию для быстродействия
         }
     });
 }
-
-// === НАКОПИТЕЛЬНЫЙ БОНУС ===
-function checkAndGiveBonus() {
-    let now = Date.now();
-    let timePassed = now - lastBonusTime;
-    const bonusBtn = document.getElementById('claim-bonus-btn');
-    const timerDisplay = document.getElementById('bonus-timer');
-
-    if (timePassed >= BONUS_COOLDOWN) {
-        if (bonusBtn) {
-            bonusBtn.disabled = false;
-            bonusBtn.innerText = `ЗАБРАТЬ ${BONUS_AMOUNT} 💎`;
-            bonusBtn.onclick = () => {
-                gems += BONUS_AMOUNT;
-                lastBonusTime = Date.now();
-                saveData();
-                updateUI();
-                checkAndGiveBonus();
-                alert(`Бонус получен!`);
-            };
-        }
-        if (timerDisplay) timerDisplay.innerText = "Готово!";
-    } else {
-        let timeLeft = Math.ceil((BONUS_COOLDOWN - timePassed) / 1000);
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        
-        if (bonusBtn) {
-            bonusBtn.disabled = true;
-            bonusBtn.innerText = `ЖДИ: ${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
-            bonusBtn.onclick = null;
-        }
-        if (timerDisplay) timerDisplay.innerText = `${minutes}м ${seconds}с`;
-        setTimeout(checkAndGiveBonus, 1000);
-    }
-}
-
-// === ЛОГИКА ИГРЫ (СТАВКИ И СПИН) ===
+// === ЛОГИКА ИГРЫ ===
 function adjustBet(amount) {
     let newBet = currentBet + amount;
     if (newBet < 10) newBet = 10;
@@ -286,43 +386,37 @@ function animateBalanceChange(type) {
 }
 
 function updateUI() {
-    document.getElementById('lobby-balance').innerText = gems;
-    document.getElementById('game-balance').innerText = gems;
+    const lobbyBal = document.getElementById('lobby-balance');
+    const gameBal = document.getElementById('game-balance');
+    if(lobbyBal) lobbyBal.innerText = gems;
+    if(gameBal) gameBal.innerText = gems;
     const betDisplay = document.getElementById('bet-value-display');
     if (betDisplay) betDisplay.innerText = currentBet;
-    currentCostEl.innerText = currentBet;
-    
+    if(currentCostEl) currentCostEl.innerText = currentBet;
     const btnMinus = document.querySelector('.btn-adjust:first-child');
     const btnPlus = document.querySelector('.btn-adjust:last-child');
     if (btnMinus) btnMinus.disabled = (currentBet <= 10);
     if (btnPlus) btnPlus.disabled = (currentBet >= gems);
-
     const btnMax = document.querySelector('.btn-max');
     if (btnMax) {
         btnMax.disabled = (currentBet >= gems);
         btnMax.style.opacity = (currentBet >= gems) ? "0.5" : "1";
     }
-
     if (gems < currentBet) {
-        spinBtn.disabled = true;
-        spinBtn.innerHTML = `НЕ ХВАТАЕТ<br><span class="cost">Нужно ${currentBet} 💎</span>`;
-        autoBtn.disabled = true;
+        if(spinBtn) { spinBtn.disabled = true; spinBtn.innerHTML = `НЕ ХВАТАЕТ<br><span class="cost">Нужно ${currentBet} 💎</span>`; }
+        if(autoBtn) autoBtn.disabled = true;
     } else {
-        spinBtn.disabled = false;
-        spinBtn.innerHTML = `SPIN <br><span class="cost">-${currentBet} 💎</span>`;
-        autoBtn.disabled = false;
+        if(spinBtn) { spinBtn.disabled = false; spinBtn.innerHTML = `SPIN <br><span class="cost">-${currentBet} 💎</span>`; }
+        if(autoBtn) autoBtn.disabled = false;
     }
 }
 
 function startGame(themeName) {
     if (currentBet > gems) { currentBet = 50; saveData(); }
     if (gems < currentBet) {
-        if (gems <= 0) {
-            gems += 100; saveData(); updateUI();
-            alert("Банкрот! Дали 100 гемов.");
-        } else { return; }
+        if (gems <= 0) { gems += 100; saveData(); updateUI(); alert("Банкрот! Дали 100 гемов."); }
+        else { return; }
     }
-
     currentTheme = themeName;
     slotTitle.innerText = titles[themeName];
     lobbyScreen.classList.remove('active');
@@ -387,12 +481,10 @@ function spin() {
     spinBtn.disabled = true;
     autoBtn.disabled = true;
     resultText.innerText = "Крутим...";
-
     const items = themes[currentTheme];
     const cells = document.querySelectorAll('.cell img');
     const finalGrid = [];
     for(let i=0; i<20; i++) finalGrid.push(getRandomItem(items));
-
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
         isSpinning = false;
@@ -436,9 +528,7 @@ function checkWins(grid) {
         resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
         animateBalanceChange('win');
         if (hasBigWin || totalWin >= currentBet * 20) showBigWin(totalWin);
-    } else {
-        resultText.innerText = "Попробуй еще...";
-    }
+    } else { resultText.innerText = "Попробуй еще..."; }
     saveData();
 }
 
@@ -471,16 +561,16 @@ function closeModal() {
 
 // === ЗАПУСК ===
 window.onload = () => {
-    setBet(currentBet); // Функция setBet теперь просто обновляет UI, так как логика в adjustBet
+    setBet(currentBet);
     createGrid();
     updateUI();
     loadData();
+    loadBusinesses();
     updateMarketUI();
-    checkAndGiveBonus();
+    updateBusinessUI();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 
-// Вспомогательная функция для начальной ставки
 function setBet(bet) {
     currentBet = bet;
     updateUI();
