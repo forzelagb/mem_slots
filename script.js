@@ -44,6 +44,8 @@ const coinsConfig = {
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
 let gems = parseInt(localStorage.getItem('memeGems')) || 10000;
+// === VIP УРОВНИ ===
+let vipLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
 let currentBet = parseInt(localStorage.getItem('memeBet')) || 50;
 let currentSelectedCoin = 'burmal';
 let marketInterval;
