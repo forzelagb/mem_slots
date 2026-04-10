@@ -3,9 +3,9 @@ const businessesConfig = [
     { 
         id: 'murino', 
         name: "Мурино", 
-        img: "https://via.placeholder.com/300x120?text=Мурино", // ЗАГЛУШКА
+        img: "1.png", 
         baseCost: 1000, 
-        baseIncome: 0.01,   // <-- ОЧЕНЬ МЕДЛЕННО: 0.01/сек → 0.6/мин
+        baseIncome: 0.001,   // <-- БЫЛО 0.01, СТАЛО 0.001 (в 10 раз меньше!)
         level: 1, 
         accumulated: 0,
         lastCollect: Date.now()
@@ -13,9 +13,9 @@ const businessesConfig = [
     { 
         id: 'elgeeika', 
         name: "Элджеевка", 
-        img: "https://via.placeholder.com/300x120?text=Элджеевка", // ЗАГЛУШКА
+        img: "2026-04-10_13-13-20.png", 
         baseCost: 5000, 
-        baseIncome: 0.05,   // <-- 0.05/сек → 3/мин
+        baseIncome: 0.005,   // <-- БЫЛО 0.05, СТАЛО 0.005
         level: 1, 
         accumulated: 0,
         lastCollect: Date.now()
@@ -23,9 +23,9 @@ const businessesConfig = [
     { 
         id: 'poteryaevka', 
         name: "Потеряевка", 
-        img: "https://via.placeholder.com/300x120?text=Потеряевка", // ЗАГЛУШКА
+        img: "poteraevka.png", 
         baseCost: 20000, 
-        baseIncome: 0.2,    // <-- 0.2/сек → 12/мин
+        baseIncome: 0.02,    // <-- БЫЛО 0.2, СТАЛО 0.02
         level: 1, 
         accumulated: 0,
         lastCollect: Date.now()
@@ -142,7 +142,7 @@ function saveBusinesses() {
 
 function getBizStats(biz) {
     let cost = Math.floor(biz.baseCost * Math.pow(1.5, biz.level - 1));
-    let income = biz.baseIncome * Math.pow(1.4, biz.level - 1); // Дробные числа разрешены
+    let income = biz.baseIncome * Math.pow(1.1, biz.level - 1); // гораздо медленнее растёт
     return { cost, income };
 }
 
@@ -303,37 +303,23 @@ function updateMarketUI() {
 }
 
 function updateChart(coin) {
-    const canvas = document.getElementById('cryptoChart');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (chartInstance) chartInstance.destroy();
-    const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
-    const isUp = coin.currentPrice >= lastPrice;
-    const color = isUp ? '#00ff88' : '#ff4444';
-    const bgColor = isUp ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)';
-    chartInstance = new Chart(ctx, {
-        type: 'line',
-         {
-            labels: coin.history.map((_, i) => i),
-            datasets: [{
-                label: 'Цена',
-                 coin.history,
-                borderColor: color,
-                backgroundColor: bgColor,
-                borderWidth: 2,
-                tension: 0.4,
-                pointRadius: 0,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#aaa' } } },
-            animation: { duration: 0 }
-        }
-    });
+    // Просто обновляем цену и процент изменения — без графика
+    const priceEl = document.getElementById('display-price');
+    const changeEl = document.getElementById('display-change');
+    
+    if (priceEl) {
+        priceEl.innerText = coin.currentPrice.toFixed(2) + ' ₽';
+    }
+    
+    if (changeEl) {
+        const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
+        const changePercent = ((coin.currentPrice - lastPrice) / lastPrice) * 100;
+        changeEl.innerText = (changePercent >= 0 ? '+' : '') + changePercent.toFixed(2) + '%';
+        changeEl.className = 'coin-change ' + (changePercent >= 0 ? 'up' : 'down');
+    }
+
+    // Если хочешь, можно добавить простую визуализацию цены через прогресс-бар
+    // Но это опционально
 }
 
 // === ЛОГИКА ИГРЫ ===
