@@ -261,9 +261,6 @@ function openTab(tabName) {
     if(tabName === 'business') buttons[2].classList.add('active');
     if(tabName === 'market') updateMarketUI();
     if(tabName === 'business') updateBusinessUI();
-    if (tabName === 'secret') {
-        checkSecretAccess();
-    }
 }
 
 // === ЛОГИКА БИРЖИ ===
