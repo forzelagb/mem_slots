@@ -3,9 +3,9 @@ const businessesConfig = [
     { 
         id: 'murino', 
         name: "Мурино", 
-        img: "image/murino.jpg", 
+        img: "https://via.placeholder.com/300x120?text=Мурино", // ЗАГЛУШКА
         baseCost: 1000, 
-        baseIncome: 0.1,   // <-- ДОХОД В СЕКУНДУ (было 50 в минуту)
+        baseIncome: 0.01,   // <-- ОЧЕНЬ МЕДЛЕННО: 0.01/сек → 0.6/мин
         level: 1, 
         accumulated: 0,
         lastCollect: Date.now()
@@ -13,9 +13,9 @@ const businessesConfig = [
     { 
         id: 'elgeeika', 
         name: "Элджеевка", 
-        img: "image/elgeeika.jpg", 
+        img: "https://via.placeholder.com/300x120?text=Элджеевка", // ЗАГЛУШКА
         baseCost: 5000, 
-        baseIncome: 0.5,   // <-- ДОХОД В СЕКУНДУ (было 300 в минуту)
+        baseIncome: 0.05,   // <-- 0.05/сек → 3/мин
         level: 1, 
         accumulated: 0,
         lastCollect: Date.now()
@@ -23,9 +23,9 @@ const businessesConfig = [
     { 
         id: 'poteryaevka', 
         name: "Потеряевка", 
-        img: "image/poteryaevka.jpg", 
+        img: "https://via.placeholder.com/300x120?text=Потеряевка", // ЗАГЛУШКА
         baseCost: 20000, 
-        baseIncome: 2.0,   // <-- ДОХОД В СЕКУНДУ (было 1500 в минуту)
+        baseIncome: 0.2,    // <-- 0.2/сек → 12/мин
         level: 1, 
         accumulated: 0,
         lastCollect: Date.now()
@@ -48,6 +48,10 @@ let currentBet = parseInt(localStorage.getItem('memeBet')) || 50;
 let currentSelectedCoin = 'burmal';
 let marketInterval;
 let chartInstance = null;
+let autoSpinActive = false; // <-- ОБЪЯВЛЕНО ДО ИСПОЛЬЗОВАНИЯ
+let autoSpinCount = 0;
+let isSpinning = false;
+let currentTheme = '';
 
 // === ТЕМЫ ИГРЫ ===
 const themes = {
@@ -64,7 +68,19 @@ const themes = {
     slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}]
 };
 
-const titles = { brain: "🧠 BRAIN ROT", helin: "🎤 HELIN", lexapaws: "🐾 LEXA PAWS", litwin: "🎮 LITWIN", melstroy: "👑 MELLSTROY", nikkifn: "🎯 NIKKIFN", rejiboi: "🕺 REJIBOI", rostick: "🌭 ROSTICK", sasich: "🗣️ SASICH", skibiditoilet: "🚽 SKIBIDI", slovopatsana: "👊 SLOVO PATSANA" };
+const titles = { 
+    brain: "🧠 BRAIN ROT", 
+    helin: "🎤 HELIN", 
+    lexapaws: "🐾 LEXA PAWS", 
+    litwin: "🎮 LITWIN", 
+    melstroy: "👑 MELLSTROY", 
+    nikkifn: "🎯 NIKKIFN", 
+    rejiboi: "🕺 REJIBOI", 
+    rostick: "🌭 ROSTICK", 
+    sasich: "🗣️ SASICH", 
+    skibiditoilet: "🚽 SKIBIDI", 
+    slovopatsana: "👊 SLOVO PATSANA" 
+};
 
 // === ЭЛЕМЕНТЫ DOM ===
 const lobbyScreen = document.getElementById('lobby-screen');
@@ -126,7 +142,7 @@ function saveBusinesses() {
 
 function getBizStats(biz) {
     let cost = Math.floor(biz.baseCost * Math.pow(1.5, biz.level - 1));
-    let income = biz.baseIncome * Math.pow(1.4, biz.level - 1); // <-- УБРАЛИ Math.floor, чтобы были дробные числа
+    let income = biz.baseIncome * Math.pow(1.4, biz.level - 1); // Дробные числа разрешены
     return { cost, income };
 }
 
@@ -144,23 +160,28 @@ function upgradeBusiness(id) {
     } else { alert("Не хватает гемов!"); }
 }
 
-const collected = Math.floor(biz.accumulated);
-if (collected > 0) {
-    gems += collected;
-    biz.accumulated = 0;
-    biz.lastCollect = Date.now();
-    saveData();
-    updateUI();
-    updateBusinessUI();
-    alert(`Собрано ${collected} 💎 из ${biz.name}!`);
+function collectProfit(id) {
+    const biz = businessesConfig.find(b => b.id === id);
+    if (!biz) return;
+    calculateOfflineProfit(biz);
+    const collected = Math.floor(biz.accumulated);
+    if (collected > 0) {
+        gems += collected;
+        biz.accumulated = 0;
+        biz.lastCollect = Date.now();
+        saveData();
+        updateUI();
+        updateBusinessUI();
+        alert(`Собрано ${collected} 💎 из ${biz.name}!`);
+    }
 }
 
 function calculateOfflineProfit(biz) {
     const now = Date.now();
     const timeDiff = now - biz.lastCollect;
-    const minutesPassed = timeDiff / 60000;
+    const secondsPassed = timeDiff / 1000; // <-- ТЕПЕРЬ В СЕКУНДАХ!
     const stats = getBizStats(biz);
-    const profit = stats.income * minutesPassed;
+    const profit = stats.income * secondsPassed;
     biz.accumulated += profit;
 }
 
@@ -196,20 +217,18 @@ function updateBusinessUI() {
         list.appendChild(card);
     });
     const incomeEl = document.getElementById('total-passive-income');
-if(incomeEl) incomeEl.innerText = totalIncome.toFixed(2);
+    if(incomeEl) incomeEl.innerText = totalIncome.toFixed(2);
 }
 
-// Таймер пассивного дохода (обновляет цифры каждую секунду)
+// Таймер пассивного дохода (обновляет каждую секунду, даже если вкладка не активна)
 setInterval(() => {
     businessesConfig.forEach(biz => {
         const stats = getBizStats(biz);
-        biz.accumulated += stats.income; // <-- УБРАЛИ "/ 60", потому что теперь income — это доход в секунду
+        biz.accumulated += stats.income;
     });
     saveBusinesses();
-    if(document.getElementById('tab-business') && document.getElementById('tab-business').classList.contains('active')) {
-        updateBusinessUI();
-    }
-}, 1000); // Каждую секунду
+    updateBusinessUI(); // <-- ОБНОВЛЯЕМ ВСЕГДА, ЧТОБЫ ВИДЕТЬ ИЗМЕНЕНИЯ
+}, 1000);
 
 // === ЛОГИКА ВКЛАДОК ===
 function openTab(tabName) {
@@ -286,50 +305,37 @@ function updateMarketUI() {
 function updateChart(coin) {
     const canvas = document.getElementById('cryptoChart');
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
-    
-    // Удаляем старый график, если он есть
     if (chartInstance) chartInstance.destroy();
-
-    // Определяем цвет линии (зеленый если растет, красный если падает)
     const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
     const isUp = coin.currentPrice >= lastPrice;
     const color = isUp ? '#00ff88' : '#ff4444';
     const bgColor = isUp ? 'rgba(0, 255, 136, 0.1)' : 'rgba(255, 68, 68, 0.1)';
-
-    // Рисуем новый график с ПРАВИЛЬНЫМ синтаксисом
     chartInstance = new Chart(ctx, {
         type: 'line',
-         data: {                          // ← ВОТ ЭТО БЫЛО ПРОПУЩЕНО РАНЬШЕ
+         {
             labels: coin.history.map((_, i) => i),
             datasets: [{
-                label: 'Цена',// ← И ВОТ ЭТО ТОЖЕ
+                label: 'Цена',
+                 coin.history,
                 borderColor: color,
                 backgroundColor: bgColor,
                 borderWidth: 2,
-                tension: 0.4,       // Плавность линий
-                pointRadius: 0,     // Убираем точки, оставляем только линию
-                fill: true          // Закраска под линией
+                tension: 0.4,
+                pointRadius: 0,
+                fill: true
             }]
-        },                           // ← Закрываем data
+        },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { 
-                legend: { display: false } // Скрываем легенду
-            },
-            scales: { 
-                x: { display: false }, // Скрываем ось X
-                y: { 
-                    grid: { color: 'rgba(255,255,255,0.1)' }, 
-                    ticks: { color: '#aaa' } 
-                } 
-            },
-            animation: { duration: 0 } // Отключаем анимацию для быстродействия
+            plugins: { legend: { display: false } },
+            scales: { x: { display: false }, y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#aaa' } } },
+            animation: { duration: 0 }
         }
     });
 }
+
 // === ЛОГИКА ИГРЫ ===
 function adjustBet(amount) {
     let newBet = currentBet + amount;
@@ -453,10 +459,6 @@ function animateDrop(cells, items, callback) {
     });
     setTimeout(() => callback(), 20 * 30 + 500);
 }
-
-let isSpinning = false;
-let autoSpinActive = false;
-let autoSpinCount = 0;
 
 function toggleAuto() {
     if (autoSpinActive) {
