@@ -188,34 +188,45 @@ function calculateOfflineProfit(biz) {
 function updateBusinessUI() {
     const list = document.getElementById('business-list');
     if (!list) return;
+    
     list.innerHTML = '';
     let totalIncome = 0;
+
     businessesConfig.forEach(biz => {
         calculateOfflineProfit(biz);
         const stats = getBizStats(biz);
         totalIncome += stats.income;
+
         const card = document.createElement('div');
         card.className = 'biz-card';
+        
         const isMaxLevel = biz.level >= 5;
         const upgradeBtnText = isMaxLevel ? "МАКС" : `Улучшить (Ур. ${biz.level + 1})`;
         const upgradeCost = isMaxLevel ? 0 : stats.cost;
+
         card.innerHTML = `
             <img src="${biz.img}" alt="${biz.name}" class="biz-image" onerror="this.src='https://via.placeholder.com/300x120?text=${biz.name}'">
             <div class="biz-body">
                 <div class="biz-info">
                     <h4>${biz.name}</h4>
                     <span class="biz-level">Уровень: ${biz.level}/5</span>
-                    <p>Доход: ${stats.income.toFixed(2)} 💎/сек</p>
-                    <p style="color:#00ff88">Накоплено: ${Math.floor(biz.accumulated)} 💎</p>
+                    <p class="biz-income">Доход: ${stats.income.toFixed(2)} 💎/сек</p>
+                    <p class="biz-accumulated">Накоплено: ${Math.floor(biz.accumulated)} 💎</p>
                 </div>
                 <div class="biz-actions">
-                    <button class="btn-collect-profit" onclick="collectProfit('${biz.id}')" ${biz.accumulated < 1 ? 'disabled' : ''}>СОБРАТЬ</button>
-                    <button class="btn-upgrade-biz" onclick="upgradeBusiness('${biz.id}')" ${isMaxLevel || gems < upgradeCost ? 'disabled' : ''}>${upgradeBtnText}<br>${isMaxLevel ? '' : upgradeCost + ' 💎'}</button>
+                    <button class="btn-collect-profit" onclick="collectProfit('${biz.id}')" ${biz.accumulated < 1 ? 'disabled' : ''}>
+                        СОБРАТЬ
+                    </button>
+                    <button class="btn-upgrade-biz" onclick="upgradeBusiness('${biz.id}')" ${isMaxLevel || gems < upgradeCost ? 'disabled' : ''}>
+                        ${upgradeBtnText}<br>${isMaxLevel ? '' : upgradeCost + ' 💎'}
+                    </button>
                 </div>
             </div>
         `;
+        
         list.appendChild(card);
     });
+
     const incomeEl = document.getElementById('total-passive-income');
     if(incomeEl) incomeEl.innerText = totalIncome.toFixed(2);
 }

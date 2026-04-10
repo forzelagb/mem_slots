@@ -729,21 +729,21 @@ body::before {
     padding: 20px;
     width: 100%;
     color: white;
-}
+}   
 
 .income-display {
     font-size: 14px;
     color: #00ff88;
     font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .business-list {
     display: flex;
-    flex-direction: column;
     gap: 15px;
-    max-height: 500px;
-    overflow-y: auto;
-    padding-right: 5px;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Чтобы на мобильных переносилось */
 }
 
 .biz-card {
@@ -753,6 +753,14 @@ body::before {
     border: 1px solid rgba(255,255,255,0.1);
     display: flex;
     flex-direction: column;
+    width: calc(33.33% - 10px); /* 3 в ряд с отступами */
+    min-width: 250px; /* Минимальная ширина для мобильных */
+    transition: transform 0.2s;
+}
+
+.biz-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .biz-image {
@@ -765,19 +773,44 @@ body::before {
 .biz-body {
     padding: 15px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.biz-info h4 { margin: 0 0 5px 0; font-size: 18px; color: var(--gold); }
+.biz-info h4 { 
+    margin: 0; 
+    font-size: 18px; 
+    color: var(--gold); 
+    text-align: center;
+}
 .biz-info p { margin: 0; font-size: 13px; color: #ccc; }
-.biz-level { color: var(--secondary); font-weight: bold; font-size: 12px; margin-top: 5px; display: block;}
+
+.biz-level { 
+    color: var(--secondary); 
+    font-weight: bold; 
+    font-size: 12px; 
+    text-align: center;
+    display: block;
+}
+
+.biz-income {
+    text-align: center;
+    font-size: 13px;
+    color: #ccc;
+}
+
+.biz-accumulated {
+    text-align: center;
+    font-size: 13px;
+    color: #00ff88;
+    font-weight: bold;
+}
 
 .biz-actions {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    min-width: 120px;
+    margin-top: auto; /* Прижимает кнопки к низу */
 }
 
 .btn-collect-profit {
@@ -789,6 +822,12 @@ body::before {
     font-weight: bold;
     cursor: pointer;
     font-size: 12px;
+    transition: 0.2s;
+}
+
+.btn-collect-profit:hover:not(:disabled) {
+    background: #00cc6a;
+    transform: scale(1.02);
 }
 
 .btn-upgrade-biz {
@@ -800,14 +839,27 @@ body::before {
     font-weight: bold;
     cursor: pointer;
     font-size: 12px;
+    transition: 0.2s;
+}
+
+.btn-upgrade-biz:hover:not(:disabled) {
+    background: #cc00b3;
+    transform: scale(1.02);
 }
 
 .btn-upgrade-biz:disabled, .btn-collect-profit:disabled {
     background: #555;
     cursor: not-allowed;
     opacity: 0.7;
+    transform: none;
 }
 
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .biz-card {
+        width: 100%; /* На телефонах — одна колонка */
+    }
+}
 
 
 /* Фоны для карточек */
