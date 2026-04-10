@@ -43,6 +43,23 @@
                 <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div></div>
                 <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
             </div>
+             <!-- БЛОК ТАБЛИЦЫ ЛИДЕРОВ -->
+    <div class="leaderboard-panel">
+        <h3>🏆 ТВОЙ ТОП-5 РЕКОРДОВ</h3>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Выигрыш</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <!-- Сюда JS вставит строки -->
+            </tbody>
+        </table>
+    </div>
+
         </div>
 
         <!-- Вкладка 2: БИРЖА -->
@@ -89,7 +106,13 @@
             <h3>🏭 МЕМ-БИЗНЕС</h3>
             <span class="income-display">Общий доход: <span id="total-passive-income">0</span> 💎/сек</span>
         </div>
-        <div class="business-list" id="business-list"></div>
+        
+        <!-- Каждый бизнес — отдельный блок -->
+        <div class="biz-row">
+            <div id="biz-murino" class="biz-card"></div>
+            <div id="biz-elgeeika" class="biz-card"></div>
+            <div id="biz-poteryaevka" class="biz-card"></div>
+        </div>
     </div>
 </div>
 

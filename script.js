@@ -186,10 +186,6 @@ function calculateOfflineProfit(biz) {
 }
 
 function updateBusinessUI() {
-    const list = document.getElementById('business-list');
-    if (!list) return;
-    
-    list.innerHTML = '';
     let totalIncome = 0;
 
     businessesConfig.forEach(biz => {
@@ -197,14 +193,15 @@ function updateBusinessUI() {
         const stats = getBizStats(biz);
         totalIncome += stats.income;
 
-        const card = document.createElement('div');
-        card.className = 'biz-card';
-        
+        // Находим нужный блок по ID
+        const cardEl = document.getElementById(`biz-${biz.id}`);
+        if (!cardEl) return;
+
         const isMaxLevel = biz.level >= 5;
         const upgradeBtnText = isMaxLevel ? "МАКС" : `Улучшить (Ур. ${biz.level + 1})`;
         const upgradeCost = isMaxLevel ? 0 : stats.cost;
 
-        card.innerHTML = `
+        cardEl.innerHTML = `
             <img src="${biz.img}" alt="${biz.name}" class="biz-image" onerror="this.src='https://via.placeholder.com/300x120?text=${biz.name}'">
             <div class="biz-body">
                 <div class="biz-info">
@@ -223,8 +220,6 @@ function updateBusinessUI() {
                 </div>
             </div>
         `;
-        
-        list.appendChild(card);
     });
 
     const incomeEl = document.getElementById('total-passive-income');
@@ -522,12 +517,20 @@ function checkWins(grid) {
             }
         }
     }
-    if (totalWin > 0) {
+        if (totalWin > 0) {
         gems += totalWin;
         resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
         animateBalanceChange('win');
+        
+        // Если выигрыш значительный (больше 5 ставок) — добавляем в топ
+        if (totalWin >= currentBet * 5) {
+            addToLeaderboard(totalWin);
+        }
+        
         if (hasBigWin || totalWin >= currentBet * 20) showBigWin(totalWin);
-    } else { resultText.innerText = "Попробуй еще..."; }
+    } else {
+        resultText.innerText = "Попробуй еще...";
+    }
     saveData();
 }
 
@@ -558,6 +561,64 @@ function closeModal() {
     if (slotContainer) slotContainer.classList.remove('win-pulse');
 }
 
+
+// === ТАБЛИЦА ЛИДЕРОВ ===
+let leaderboard = JSON.parse(localStorage.getItem('memeLeaderboard')) || [];
+
+function addToLeaderboard(amount) {
+    if (amount <= 0) return;
+    
+    const now = new Date();
+    // Форматируем дату: ДД.ММ ЧЧ:ММ
+    const dateStr = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
+    
+    // Добавляем новый рекорд
+    leaderboard.push({ amount: amount, date: dateStr });
+    
+    // Сортируем по сумме (по убыванию)
+    leaderboard.sort((a, b) => b.amount - a.amount);
+    
+    // Оставляем только топ-5
+    if (leaderboard.length > 5) {
+        leaderboard = leaderboard.slice(0, 5);
+    }
+    
+    // Сохраняем в память браузера
+    localStorage.setItem('memeLeaderboard', JSON.stringify(leaderboard));
+    
+    // Обновляем отображение
+    updateLeaderboardUI();
+}
+
+function updateLeaderboardUI() {
+    const tbody = document.getElementById('leaderboard-body');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    
+    if (leaderboard.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="leaderboard-empty">Пока нет рекордов. Крути слоты!</td></tr>';
+        return;
+    }
+    
+    leaderboard.forEach((record, index) => {
+        const row = document.createElement('tr');
+        // Добавляем медальки для топ-3
+        let rankIcon = index + 1;
+        if (index === 0) rankIcon = '🥇';
+        if (index === 1) rankIcon = '🥈';
+        if (index === 2) rankIcon = '🥉';
+
+        row.innerHTML = `
+            <td>${rankIcon}</td>
+            <td>${record.amount.toLocaleString()} 💎</td>
+            <td style="color:#aaa; font-size:14px;">${record.date}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+
 // === ЗАПУСК ===
 window.onload = () => {
     setBet(currentBet);
@@ -567,6 +628,7 @@ window.onload = () => {
     loadBusinesses();
     updateMarketUI();
     updateBusinessUI();
+    updateLeaderboardUI();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 
