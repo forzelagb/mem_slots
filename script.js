@@ -372,15 +372,21 @@ function maxBet() {
 }
 
 function createGrid() {
-    gridEl.innerHTML = '';
+    gridEl.innerHTML = ''; // Очищаем сетку
+    
     for (let i = 0; i < 20; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
+        
         const img = document.createElement('img');
-        img.src = ""; 
-img.style.background = "#1a1a1a";
-img.style.borderRadius = "5px";
-        img.style.opacity = '0';
+        img.className = 'slot-img';
+        img.style.opacity = '0'; // Скрываем до анимации
+        img.style.background = '#1a1a1a'; // Тёмный фон вместо белой заглушки
+        img.style.borderRadius = '5px';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
+        
         cell.appendChild(img);
         gridEl.appendChild(cell);
     }
@@ -486,23 +492,33 @@ function goBack() {
     }
 }
 
-function getRandomItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function getRandomItem(arr) {
+    if (!arr || arr.length === 0) return null;
+    return arr[Math.floor(Math.random() * arr.length)];
+}
 
 function animateDrop(cells, items, callback) {
     cells.forEach((img, index) => {
         const item = items[index];
+        if (!item) return; // Защита от undefined
+        
         img.style.transition = 'none';
         img.style.transform = 'translateY(-200px)';
         img.style.opacity = '0';
-        img.src = item.src;
+        img.src = item.src; // ← здесь загружается реальная картинка
+        img.style.background = 'transparent'; // Убираем тёмный фон
+        
         const cell = img.parentElement;
         cell.setAttribute('data-multiplier', item.mult || '');
+        
         setTimeout(() => {
             img.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
             img.style.transform = 'translateY(0)';
             img.style.opacity = '1';
         }, index * 30);
     });
+    
+    // Вызываем callback после завершения анимации
     setTimeout(() => callback(), 20 * 30 + 500);
 }
 
@@ -523,34 +539,38 @@ function toggleAuto() {
 function spin() {
     if (isSpinning || !currentTheme || gems < currentBet) return;
 
-    gems -= currentBet;
-    updateUI();
-    animateBalanceChange('loss');
-    isSpinning = true;
-    spinBtn.disabled = true;
-    
-    autoBtn.disabled = true;
-    resultText.innerText = "Крутим...";
-
-
-
-    if (isSpinning || !currentTheme || gems < currentBet) return;
-    gems -= currentBet;
-    updateUI();
-    animateBalanceChange('loss');
-    isSpinning = true;
-    spinBtn.disabled = true;
-    autoBtn.disabled = true;
-    resultText.innerText = "Крутим...";
+    // Генерируем результат спина
     const items = themes[currentTheme];
-    const cells = document.querySelectorAll('.cell img');
+    if (!items || items.length === 0) {
+        alert("Ошибка: тема не найдена!");
+        return;
+    }
+
     const finalGrid = [];
-    for(let i=0; i<20; i++) finalGrid.push(getRandomItem(items));
+    for (let i = 0; i < 20; i++) {
+        finalGrid.push(getRandomItem(items));
+    }
+
+    // Списываем ставку
+    gems -= currentBet;
+    updateUI();
+    animateBalanceChange('loss');
+    
+    isSpinning = true;
+    spinBtn.disabled = true;
+    autoBtn.disabled = true;
+    resultText.innerText = "Крутим...";
+
+    // Получаем ячейки сетки
+    const cells = Array.from(gridEl.querySelectorAll('.slot-img'));
+
+    // Запускаем анимацию
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
         isSpinning = false;
         spinBtn.disabled = false;
         autoBtn.disabled = false;
+        
         if (autoSpinActive && autoSpinCount > 0) {
             autoSpinCount--;
             if (autoSpinCount === 0) toggleAuto();
@@ -564,7 +584,6 @@ function checkWins(grid) {
     const rows = 4;
     const cols = 5;
 
-    // Проверка по строкам
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols - 2; col++) {
             const idx = row * cols + col;
@@ -572,7 +591,10 @@ function checkWins(grid) {
             const item2 = grid[idx + 1];
             const item3 = grid[idx + 2];
 
-            if (item1.src === item2.src && item2.src === item3.src) {
+            if (item1 && item2 && item3 && 
+                item1.src === item2.src && 
+                item2.src === item3.src) {
+                
                 let matchCount = 3;
                 if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
                 if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
@@ -590,7 +612,6 @@ function checkWins(grid) {
         }
     }
 
-    // Начисляем выигрыш
     if (totalWin > 0) {
         gems += totalWin;
         resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
