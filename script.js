@@ -76,7 +76,6 @@ const themes = {
     slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}],
     ronaldo: [
         {src: "image/ronaldo/1.jpg", mult: ""},
-        {src: "image/ronaldo/8.jpg", mult: ""}, 
         {src: "image/ronaldo/2.jpg", mult: "x2"}, 
         {src: "image/ronaldo/3.jpg", mult: "x3"}, 
         {src: "image/ronaldo/4.jpg", mult: "x5"}, 
@@ -221,7 +220,7 @@ function updateBusinessUI() {
         const upgradeCost = isMaxLevel ? 0 : stats.cost;
 
         cardEl.innerHTML = `
-            <img src="${biz.img}" alt="${biz.name}" class="biz-image" onerror="this.src='https://via.placeholder.com/300x120?text=${biz.name}'">
+            <img src="${biz.img}" alt="${biz.name}" class="biz-image">
             <div class="biz-body">
                 <div class="biz-info">
                     <h4>${biz.name}</h4>
@@ -385,7 +384,9 @@ function createGrid() {
         const cell = document.createElement('div');
         cell.className = 'cell';
         const img = document.createElement('img');
-        img.src = "https://via.placeholder.com/150/000000/FFFFFF?text=?";
+        img.src = ""; 
+img.style.background = "#1a1a1a";
+img.style.borderRadius = "5px";
         img.style.opacity = '0';
         cell.appendChild(img);
         gridEl.appendChild(cell);
