@@ -657,8 +657,6 @@ function checkWins(grid) {
                 else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
                 else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
 
-                console.log(`[VERTICAL] Найдено ${matchCount} в ряд. Множитель картинки: ${multiplier}. Выигрыш: ${winAmount}`);
-                
                 totalWin += winAmount;
                 col += matchCount - 1; // Пропускаем проверенные ячейки
             }
