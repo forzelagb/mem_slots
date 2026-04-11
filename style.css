@@ -1359,21 +1359,23 @@ body::before {
 .pilot {
     position: absolute;
     width: 100px;       /* Размер лица */
-    top: 75px;          /* Подними выше, чтобы было видно */
+    top: 50px;          /* Подними выше, чтобы было видно */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 3;         /* Поверх ракеты */
+    z-index: 10;        /* 👈 ВАЖНО: больше, чем у ракеты */
     display: block;     /* Убедись, что не hidden */
-    opacity: 1;         /* Не прозрачный */
-    border: 2px solid red; /* Чтобы видеть, где находится элемент */
-    z-index: 10;
+    opacity: 1;         /* Не прозрачный */   
+}
+
+.pilot {
+    border: 3px solid red; /* Красная рамка вокруг лица */
 }
 
 .rocket-body {
     width: 100%;
     height: auto;
     position: relative;
-    z-index: 2;
+    z-index: 2;         /* 👈 Меньше, чем у пилота */
     filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.5));
 }
 
