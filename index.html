@@ -13,24 +13,6 @@
 
     <!-- ЛОББИ -->
     <div id="lobby-screen" class="screen active">
-        <!-- Карточка Ракетки -->
-<div class="game-card" onclick="openCrashGame()">
-    <div class="card-image" style="background: linear-gradient(45deg, #ff00de, #00ccff);"></div>
-    <div class="card-content">
-        <h3>🚀 CRASH</h3>
-        <p>Успей забрать до взрыва!</p>
-    </div>
-</div>
-
-<!-- Карточка Сапёра -->
-<div class="game-card" onclick="openMinesGame()">
-    <div class="card-image" style="background: linear-gradient(45deg, #00ff88, #ffd700);"></div>
-    <div class="card-content">
-        <h3>💣 MINES</h3>
-        <p>Не подорвись на мине!</p>
-    </div>
-</div>
-        
         <!-- ШАПКА С БАЛАНСОМ И КНОПКОЙ ПОКУПКИ -->
         <div class="header-bar">
             <div class="logo">MEME SPIN PRO</div>
@@ -54,11 +36,29 @@
                 🔒 SECRET
             </button>
         </div>
+        
 
         <!-- === ВКЛАДКА 1: ИГРЫ === -->
         <div id="tab-games" class="tab-content active">
             <h2 class="section-title">ВЫБЕРИ ТЕМУ</h2>
             <div class="games-grid">
+                <!-- Карточка Ракетки -->
+<div class="game-card" onclick="openCrashGame()">
+    <div class="card-image crash-bg"></div>
+    <div class="card-content">
+        <h3>🚀 CRASH GAME</h3>
+        <p>Успей забрать до взрыва!</p>
+    </div>
+</div>
+
+<!-- Карточка Сапёра -->
+<div class="game-card" onclick="openMinesGame()">
+    <div class="card-image mines-bg"></div>
+    <div class="card-content">
+        <h3>💣 MINESWEEPER</h3>
+        <p>Не подорвись на мине!</p>
+    </div>
+</div>
                 <!-- Карточки игр -->
                 <div class="game-card" onclick="startGame('brain')"><div class="card-image brain-bg"></div><div class="card-content"><h3>🧠 BRAIN</h3><p>Ставка настраивается в игре</p></div></div>
                 <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div></div>
