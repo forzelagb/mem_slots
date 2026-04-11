@@ -56,65 +56,65 @@ let isSpinning = false;
 let currentTheme = '';
 // === ТЕМЫ ИГРЫ ===
 const themes = {
-    brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: "x2"}, {src: "image/brain/4.jpg", mult: ""}, {src: "image/brain/5.jpg", mult: "x3"}, {src: "image/brain/6.jpg", mult: ""}, {src: "image/brain/7.jpg", mult: ""}, {src: "image/brain/8.jpg", mult: "x5"}],
-    helin: [{src: "image/helin/1.jpg", mult: ""}, {src: "image/helin/2.jpg", mult: ""}, {src: "image/helin/3.jpg", mult: "x2"}, {src: "image/helin/4.jpg", mult: ""}, {src: "image/helin/5.jpg", mult: "x3"}, {src: "image/helin/6.jpg", mult: ""}, {src: "image/helin/7.jpg", mult: ""}, {src: "image/helin/8.jpg", mult: "x5"}],
-    lexapaws: [{src: "image/lexapaws/1.jpg", mult: ""}, {src: "image/lexapaws/2.jpg", mult: ""}, {src: "image/lexapaws/3.jpg", mult: "x2"}, {src: "image/lexapaws/4.jpg", mult: ""}, {src: "image/lexapaws/5.jpg", mult: "x3"}, {src: "image/lexapaws/6.jpg", mult: ""}, {src: "image/lexapaws/7.jpg", mult: ""}, {src: "image/lexapaws/8.jpg", mult: "x5"}],
-    litwin: [{src: "image/litwin/1.jpg", mult: ""}, {src: "image/litwin/2.jpg", mult: ""}, {src: "image/litwin/3.jpg", mult: "x2"}, {src: "image/litwin/4.jpg", mult: ""}, {src: "image/litwin/5.jpg", mult: "x3"}, {src: "image/litwin/6.jpg", mult: ""}, {src: "image/litwin/7.jpg", mult: ""}, {src: "image/litwin/8.jpg", mult: "x5"}],
-    melstroy: [{src: "image/melstroy/1.jpg", mult: ""}, {src: "image/melstroy/2.jpg", mult: ""}, {src: "image/melstroy/3.jpg", mult: "x2"}, {src: "image/melstroy/4.jpg", mult: ""}, {src: "image/melstroy/5.jpg", mult: "x3"}, {src: "image/melstroy/6.jpg", mult: ""}, {src: "image/melstroy/7.jpg", mult: ""}, {src: "image/melstroy/8.jpg", mult: "x5"}],
-    nikkifn: [{src: "image/nikkifn/1.jpg", mult: ""}, {src: "image/nikkifn/2.jpg", mult: ""}, {src: "image/nikkifn/3.jpg", mult: "x2"}, {src: "image/nikkifn/4.jpg", mult: ""}, {src: "image/nikkifn/5.jpg", mult: "x3"}, {src: "image/nikkifn/6.jpg", mult: ""}, {src: "image/nikkifn/7.jpg", mult: ""}, {src: "image/nikkifn/8.jpg", mult: "x5"}],
-    rejiboi: [{src: "image/rejiboi/1.jpg", mult: ""}, {src: "image/rejiboi/2.jpg", mult: ""}, {src: "image/rejiboi/3.jpg", mult: "x2"}, {src: "image/rejiboi/4.jpg", mult: ""}, {src: "image/rejiboi/5.jpg", mult: "x3"}, {src: "image/rejiboi/6.jpg", mult: ""}, {src: "image/rejiboi/7.jpg", mult: ""}, {src: "image/rejiboi/8.jpg", mult: "x5"}],
-    rostick: [{src: "image/rostick/1.jpg", mult: ""}, {src: "image/rostick/2.jpg", mult: ""}, {src: "image/rostick/3.jpg", mult: "x2"}, {src: "image/rostick/4.jpg", mult: ""}, {src: "image/rostick/5.jpg", mult: "x3"}, {src: "image/rostick/6.jpg", mult: ""}, {src: "image/rostick/7.jpg", mult: ""}, {src: "image/rostick/8.jpg", mult: "x5"}],
-    sasich: [{src: "image/sasich/1.jpg", mult: ""}, {src: "image/sasich/2.jpg", mult: ""}, {src: "image/sasich/3.jpg", mult: "x2"}, {src: "image/sasich/4.jpg", mult: ""}, {src: "image/sasich/5.jpg", mult: "x3"}, {src: "image/sasich/6.jpg", mult: ""}, {src: "image/sasich/7.jpg", mult: ""}, {src: "image/sasich/8.jpg", mult: "x5"}],
-    skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: "x2"}, {src: "image/skibiditoilet/4.jpg", mult: ""}, {src: "image/skibiditoilet/5.jpg", mult: "x3"}, {src: "image/skibiditoilet/6.jpg", mult: ""}, {src: "image/skibiditoilet/7.jpg", mult: ""}, {src: "image/skibiditoilet/8.jpg", mult: "x5"}],
-    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: "x2"}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: "x3"}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: "x5"}],
+    brain: [{src: "image/brain/1.jpg", mult: 1}, {src: "image/brain/2.jpg", mult: 1}, {src: "image/brain/3.jpg", mult: 2}, {src: "image/brain/4.jpg", mult: 1}, {src: "image/brain/5.jpg", mult: 3}, {src: "image/brain/6.jpg", mult: 1}, {src: "image/brain/7.jpg", mult: 1}, {src: "image/brain/8.jpg", mult: 5}],
+    helin: [{src: "image/helin/1.jpg", mult: 1}, {src: "image/helin/2.jpg", mult: 1}, {src: "image/helin/3.jpg", mult: 2}, {src: "image/helin/4.jpg", mult: 1}, {src: "image/helin/5.jpg", mult: 3}, {src: "image/helin/6.jpg", mult: 1}, {src: "image/helin/7.jpg", mult: 1}, {src: "image/helin/8.jpg", mult: 5}],
+    lexapaws: [{src: "image/lexapaws/1.jpg", mult: 1}, {src: "image/lexapaws/2.jpg", mult: 1}, {src: "image/lexapaws/3.jpg", mult: 2}, {src: "image/lexapaws/4.jpg", mult: 1}, {src: "image/lexapaws/5.jpg", mult: 3}, {src: "image/lexapaws/6.jpg", mult: 1}, {src: "image/lexapaws/7.jpg", mult: 1}, {src: "image/lexapaws/8.jpg", mult: 5}],
+    litwin: [{src: "image/litwin/1.jpg", mult: 1}, {src: "image/litwin/2.jpg", mult: 1}, {src: "image/litwin/3.jpg", mult: 2}, {src: "image/litwin/4.jpg", mult: 1}, {src: "image/litwin/5.jpg", mult: 3}, {src: "image/litwin/6.jpg", mult: 1}, {src: "image/litwin/7.jpg", mult: 1}, {src: "image/litwin/8.jpg", mult: 5}],
+    melstroy: [{src: "image/melstroy/1.jpg", mult: 1}, {src: "image/melstroy/2.jpg", mult: 1}, {src: "image/melstroy/3.jpg", mult: 2}, {src: "image/melstroy/4.jpg", mult: 1}, {src: "image/melstroy/5.jpg", mult: 3}, {src: "image/melstroy/6.jpg", mult: 1}, {src: "image/melstroy/7.jpg", mult: 1}, {src: "image/melstroy/8.jpg", mult: 5}],
+    nikkifn: [{src: "image/nikkifn/1.jpg", mult: 1}, {src: "image/nikkifn/2.jpg", mult: 1}, {src: "image/nikkifn/3.jpg", mult: 2}, {src: "image/nikkifn/4.jpg", mult: 1}, {src: "image/nikkifn/5.jpg", mult: 3}, {src: "image/nikkifn/6.jpg", mult: 1}, {src: "image/nikkifn/7.jpg", mult: 1}, {src: "image/nikkifn/8.jpg", mult: 5}],
+    rejiboi: [{src: "image/rejiboi/1.jpg", mult: 1}, {src: "image/rejiboi/2.jpg", mult: 1}, {src: "image/rejiboi/3.jpg", mult: 2}, {src: "image/rejiboi/4.jpg", mult: 1}, {src: "image/rejiboi/5.jpg", mult: 3}, {src: "image/rejiboi/6.jpg", mult: 1}, {src: "image/rejiboi/7.jpg", mult: 1}, {src: "image/rejiboi/8.jpg", mult: 5}],
+    rostick: [{src: "image/rostick/1.jpg", mult: 1}, {src: "image/rostick/2.jpg", mult: 1}, {src: "image/rostick/3.jpg", mult: 2}, {src: "image/rostick/4.jpg", mult: 1}, {src: "image/rostick/5.jpg", mult: 3}, {src: "image/rostick/6.jpg", mult: 1}, {src: "image/rostick/7.jpg", mult: 1}, {src: "image/rostick/8.jpg", mult: 5}],
+    sasich: [{src: "image/sasich/1.jpg", mult: 1}, {src: "image/sasich/2.jpg", mult: 1}, {src: "image/sasich/3.jpg", mult: 2}, {src: "image/sasich/4.jpg", mult: 1}, {src: "image/sasich/5.jpg", mult: 3}, {src: "image/sasich/6.jpg", mult: 1}, {src: "image/sasich/7.jpg", mult: 1}, {src: "image/sasich/8.jpg", mult: 5}],
+    skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: 1}, {src: "image/skibiditoilet/2.jpg", mult: 1}, {src: "image/skibiditoilet/3.jpg", mult: 2}, {src: "image/skibiditoilet/4.jpg", mult: 1}, {src: "image/skibiditoilet/5.jpg", mult: 3}, {src: "image/skibiditoilet/6.jpg", mult: 1}, {src: "image/skibiditoilet/7.jpg", mult: 1}, {src: "image/skibiditoilet/8.jpg", mult: 5}],
+    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: 1}, {src: "image/slovopatsana/2.jpg", mult: 1}, {src: "image/slovopatsana/3.jpg", mult: 2}, {src: "image/slovopatsana/4.jpg", mult: 1}, {src: "image/slovopatsana/5.jpg", mult: 3}, {src: "image/slovopatsana/6.jpg", mult: 1}, {src: "image/slovopatsana/7.jpg", mult: 1}, {src: "image/slovopatsana/8.jpg", mult: 5}],
     ronaldo: [
-        {src: "image/ronaldo/1.jpg", mult: ""},
-        {src: "image/ronaldo/2.jpg", mult: "x2"}, 
-        {src: "image/ronaldo/3.jpg", mult: "x3"}, 
-        {src: "image/ronaldo/4.jpg", mult: "x5"}, 
-        {src: "image/ronaldo/5.jpg", mult: "x10"}, 
-        {src: "image/ronaldo/6.jpg", mult: "x20"}, 
-        {src: "image/ronaldo/7.jpg", mult: "x50"} // SIUUU JACKPOT!
+        {src: "image/ronaldo/1.jpg", mult: 1},
+        {src: "image/ronaldo/2.jpg", mult: 2}, 
+        {src: "image/ronaldo/3.jpg", mult: 3}, 
+        {src: "image/ronaldo/4.jpg", mult: 5}, 
+        {src: "image/ronaldo/5.jpg", mult: 10}, 
+        {src: "image/ronaldo/6.jpg", mult: 20}, 
+        {src: "image/ronaldo/7.jpg", mult: 50} // SIUUU JACKPOT!
     ],
     // === НОВЫЕ VIP СЛОТЫ ===
 patorka: [
-    {src: "image/patorka/1.jpg", mult: ""},
-    {src: "image/patorka/2.jpg", mult: "x2"},
-    {src: "image/patorka/3.jpg", mult: "x3"},
-    {src: "image/patorka/4.jpg", mult: "x5"},
-    {src: "image/patorka/5.jpg", mult: "x10"},
-    {src: "image/patorka/6.jpg", mult: "x20"},
-    {src: "image/patorka/7.jpg", mult: "x50"}
+    {src: "image/patorka/1.jpg", mult: 1},
+    {src: "image/patorka/2.jpg", mult: 2},
+    {src: "image/patorka/3.jpg", mult: 3},
+    {src: "image/patorka/4.jpg", mult: 5},
+    {src: "image/patorka/5.jpg", mult: 10},
+    {src: "image/patorka/6.jpg", mult: 20},
+    {src: "image/patorka/7.jpg", mult: 50}
 ],
 
 goobka: [
-    {src: "image/goobka/1.jpg", mult: ""},
-    {src: "image/goobka/2.jpg", mult: "x2"},
-    {src: "image/goobka/3.jpg", mult: "x3"},
-    {src: "image/goobka/4.jpg", mult: "x5"},
-    {src: "image/goobka/5.jpg", mult: "x10"},
-    {src: "image/goobka/6.jpg", mult: "x25"},
-    {src: "image/goobka/7.jpg", mult: "x75"}
+    {src: "image/goobka/1.jpg", mult: 1},
+    {src: "image/goobka/2.jpg", mult: 2},
+    {src: "image/goobka/3.jpg", mult: 3},
+    {src: "image/goobka/4.jpg", mult: 5},
+    {src: "image/goobka/5.jpg", mult: 10},
+    {src: "image/goobka/6.jpg", mult: 25},
+    {src: "image/goobka/7.jpg", mult: 75}
 ],
 
 kaka: [
-    {src: "image/kaka/1.jpg", mult: ""},
-    {src: "image/kaka/2.jpg", mult: "x3"},
-    {src: "image/kaka/3.jpg", mult: "x5"},
-    {src: "image/kaka/4.jpg", mult: "x10"},
-    {src: "image/kaka/5.jpg", mult: "x25"},
-    {src: "image/kaka/6.jpg", mult: "x50"},
-    {src: "image/kaka/7.jpg", mult: "x100"}
+    {src: "image/kaka/1.jpg", mult: 1},
+    {src: "image/kaka/2.jpg", mult: 3},
+    {src: "image/kaka/3.jpg", mult: 5},
+    {src: "image/kaka/4.jpg", mult: 10},
+    {src: "image/kaka/5.jpg", mult: 25},
+    {src: "image/kaka/6.jpg", mult: 50},
+    {src: "image/kaka/7.jpg", mult: 100}
 ],
 
 zidane: [
-    {src: "image/zidane/1.jpg", mult: ""},
-    {src: "image/zidane/2.jpg", mult: "x3"},
-    {src: "image/zidane/3.jpg", mult: "x5"},
-    {src: "image/zidane/4.jpg", mult: "x10"},
-    {src: "image/zidane/5.jpg", mult: "x25"},
-    {src: "image/zidane/6.jpg", mult: "x50"},
-    {src: "image/zidane/7.jpg", mult: "x150"} // ЛЕГЕНДАРНЫЙ ДЖЕКПОТ!
+    {src: "image/zidane/1.jpg", mult: 1},
+    {src: "image/zidane/2.jpg", mult: 3},
+    {src: "image/zidane/3.jpg", mult: 5},
+    {src: "image/zidane/4.jpg", mult: 10},
+    {src: "image/zidane/5.jpg", mult: 25},
+    {src: "image/zidane/6.jpg", mult: 50},
+    {src: "image/zidane/7.jpg", mult: 150} // ЛЕГЕНДАРНЫЙ ДЖЕКПОТ!
 ]
 };
 
@@ -643,7 +643,7 @@ function checkWins(grid) {
                 if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
                 if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
 
-                // 👇 ВАЖНО: Берём множитель из картинки
+                // 👇 ВАЖНО: Парсим множитель как число
                 const multiplier = parseFloat(item1.mult) || 1;
 
                 let winAmount = 0;
