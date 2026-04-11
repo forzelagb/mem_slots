@@ -593,9 +593,9 @@ function spin() {
     }
 
     const finalGrid = [];
-    for (let i = 0; i < 20; i++) {
-        finalGrid.push(getRandomItem(items));
-    }
+for (let i = 0; i < 25; i++) {  // 👇 ИЗМЕНЕНИЕ: было 20, стало 25
+    finalGrid.push(getRandomWeightedItem(items));
+}
 
     // Списываем ставку
     gems -= currentBet;
