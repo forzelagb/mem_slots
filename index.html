@@ -199,6 +199,48 @@
 
     <!-- ЭКРАН ИГРЫ (САМИ СЛОТЫ) -->
     <div id="game-screen" class="screen">
+        <!-- === ЭКРАН РАКЕТКИ (CRASH) === -->
+<div id="crash-screen" style="display: none; text-align: center; padding: 20px;">
+    <h2 style="color: #ffd700;">🚀 CRASH GAME</h2>
+    <div class="crash-display-box">
+        <span id="crash-multiplier" style="font-size: 48px; font-weight: bold; color: #fff;">1.00x</span>
+    </div>
+    
+    <div class="crash-controls" style="margin-top: 20px;">
+        <input type="number" id="crash-bet-input" placeholder="Ставка" value="100" style="padding: 10px; width: 100px; border-radius: 5px; border: none;">
+        <button id="crash-btn" class="btn-crash-start" onclick="playCrash()">СТАРТ</button>
+    </div>
+    
+    <button class="btn-back-game" onclick="goBackToLobby()" style="margin-top: 20px;">← Назад в лобби</button>
+</div>
+
+<!-- === ЭКРАН САПЁРА (MINES) === -->
+<div id="mines-screen" style="display: none; text-align: center; padding: 20px;">
+    <h2 style="color: #00ff88;">💣 MINESWEEPER</h2>
+    
+    <div class="mines-setup" style="margin-bottom: 15px;">
+        <input type="number" id="mines-bet" placeholder="Ставка" value="100" style="padding: 8px; width: 80px; margin-right: 10px;">
+        <select id="mines-count" style="padding: 8px; border-radius: 5px;">
+            <option value="1">1 Мина</option>
+            <option value="3" selected>3 Мины</option>
+            <option value="5">5 Мин</option>
+            <option value="10">10 Мин</option>
+            <option value="20">20 Мин</option>
+        </select>
+        <button class="btn-mine-start" onclick="startMinesRound()">ИГРАТЬ</button>
+    </div>
+
+    <div id="mines-grid" class="mines-grid-container">
+        <!-- Ячейки генерируются JS -->
+    </div>
+
+    <div class="mines-info" style="margin-top: 15px;">
+        <p>Текущий выигрыш: <span id="mines-current-win" style="color: gold; font-weight: bold;">0</span> 💎</p>
+        <button id="mines-cashout-btn" class="btn-cashout" onclick="cashOutMines()" disabled>ЗАБРАТЬ</button>
+    </div>
+
+    <button class="btn-back-game" onclick="goBackToLobby()" style="margin-top: 20px;">← Назад в лобби</button>
+</div>
         <div class="game-header">
             <button class="btn-back" onclick="goBack()">← НАЗАД</button>
             <div class="balance-container small">

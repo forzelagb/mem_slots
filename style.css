@@ -1209,6 +1209,112 @@ body::before {
 
 
 
+
+/* === ОБЩИЕ КНОПКИ НАЗАД === */
+.btn-back-game {
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.btn-back-game:hover {
+    border-color: #fff;
+    color: #fff;
+}
+
+/* === РАКЕТКА (CRASH) === */
+.crash-display-box {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px solid #333;
+    margin: 20px auto;
+    width: fit-content;
+    min-width: 200px;
+}
+
+.btn-crash-start {
+    background: linear-gradient(to bottom, #00ff88, #00cc6a);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+}
+
+/* === САПЁР (MINES) === */
+.mines-grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    max-width: 300px;
+    margin: 0 auto;
+    background: #111;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.mine-cell {
+    width: 50px;
+    height: 50px;
+    background: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: background 0.2s;
+}
+
+.mine-cell:hover {
+    background: #444;
+}
+
+.mine-cell.revealed {
+    cursor: default;
+}
+
+.mine-cell.safe {
+    background: #00ff88; /* Зеленый при успехе */
+    box-shadow: 0 0 10px #00ff88;
+}
+
+.mine-cell.mine {
+    background: #ff4444; /* Красный при взрыве */
+    box-shadow: 0 0 10px #ff4444;
+}
+
+.btn-mine-start {
+    background: #ffd700;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-cashout {
+    background: #00ccff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+}
+.btn-cashout:disabled {
+    background: #555;
+    color: #888;
+    cursor: not-allowed;
+}
+
+
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

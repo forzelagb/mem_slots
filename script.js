@@ -474,6 +474,10 @@ function updateUI() {
 }
 
 function startGame(themeName) {
+     if (themeName === 'ronaldo') {
+        alert("❌ Слот Ronaldo временно недоступен.");
+        return; // Не открываем игру
+    }
     // Проверка баланса
     if (currentBet > gems) { 
         currentBet = 50; 
@@ -1203,12 +1207,27 @@ function showVIPDashboard() {
 function getRandomWeightedItem(items) {
     if (!items || items.length === 0) return null;
 
-    // Создаём веса: чем больше множитель — тем меньше шанс
+    // 1. ОПРЕДЕЛЯЕМ СЛОЖНОСТЬ В ЗАВИСИМОСТИ ОТ СТАВКИ
+    let difficultyFactor = 1;
+    
+    if (currentBet > 1000) difficultyFactor = 2;    // Ставка > 1к: сложнее в 2 раза
+    if (currentBet > 5000) difficultyFactor = 5;    // Ставка > 5к: сложнее в 5 раз
+    if (currentBet > 20000) difficultyFactor = 10;  // Ставка > 20к: сложнее в 10 раз
+    if (currentBet > 100000) difficultyFactor = 50; // Ставка > 100к: почти невозможно выбить джекпот
+
     const weights = items.map(item => {
         const mult = parseFloat(item.mult) || 1;
-        // Формула: базовый вес 100, делим на множитель
-        // x1 → 100, x2 → 50, x5 → 20, x10 → 10, x20 → 5, x50 → 2
-        return Math.max(1, 100 / mult);
+        
+        // Базовый вес: 100 / множитель. 
+        // x1 -> вес 100. x50 -> вес 2.
+        let weight = 100 / mult;
+        
+        // ЕСЛИ КАРТИНКА РЕДКАЯ (множитель > 5), ПРИМЕНЯЕМ ШТРАФ ЗА ВЫСОКУЮ СТАВКУ
+        if (mult > 5) {
+            weight = weight / difficultyFactor;
+        }
+        
+        return Math.max(0.1, weight); // Вес не может быть меньше 0.1
     });
 
     const totalWeight = weights.reduce((a, b) => a + b, 0);
@@ -1219,13 +1238,240 @@ function getRandomWeightedItem(items) {
         if (random <= 0) return items[i];
     }
 
-    return items[0]; // fallback
+    return items[0];
 }
 
 // === ОБЫЧНАЯ СЛУЧАЙНОСТЬ (для совместимости) ===
 function getRandomItem(arr) {
     if (!arr || arr.length === 0) return null;
     return arr[Math.floor(Math.random() * arr.length)];
+}
+
+
+
+function goBackToLobby() {
+    // Скрываем все экраны игр
+    document.getElementById('game-screen').style.display = 'none';
+    document.getElementById('crash-screen').style.display = 'none';
+    document.getElementById('mines-screen').style.display = 'none';
+    
+    // Показываем лобби
+    document.getElementById('lobby-screen').classList.add('active');
+    
+    // Сбрасываем состояния
+    autoSpinActive = false;
+    clearInterval(crashInterval); // Останавливаем ракетку если шла
+}
+
+
+
+
+// === ПЕРЕМЕННЫЕ РАКЕТКИ ===
+let crashGameActive = false;
+let currentCrashMultiplier = 1.00;
+let crashPoint = 0;
+let crashInterval;
+let crashBet = 0;
+
+function playCrash() {
+    const betInput = document.getElementById('crash-bet-input');
+    const bet = parseInt(betInput.value);
+    const btn = document.getElementById('crash-btn');
+    const display = document.getElementById('crash-multiplier');
+
+    if (bet > gems || bet <= 0) {
+        alert("Недостаточно гемов или неверная ставка!");
+        return;
+    }
+
+    // Если игра уже идет - это кнопка "ЗАБРАТЬ"
+    if (crashGameActive) {
+        cashOutCrash();
+        return;
+    }
+
+    // Старт новой игры
+    gems -= bet;
+    crashBet = bet;
+    updateUI();
+
+    // Генерация точки краша (алгоритм)
+    // Шанс мгновенного краха (x1.00) ~ 3%
+    crashPoint = (0.99 / (1 - Math.random())).toFixed(2);
+    if (Math.random() < 0.03) crashPoint = 1.00; 
+
+    currentCrashMultiplier = 1.00;
+    crashGameActive = true;
+    
+    display.innerText = "1.00x";
+    display.style.color = "#fff";
+    btn.innerText = "ЗАБРАТЬ";
+    btn.style.background = "#ffaa00"; // Желтый для действия
+
+    crashInterval = setInterval(() => {
+        currentCrashMultiplier += 0.01 + (currentCrashMultiplier * 0.008); // Экспоненциальный рост
+        
+        display.innerText = currentCrashMultiplier.toFixed(2) + "x";
+
+        if (currentCrashMultiplier >= crashPoint) {
+            endCrashGame(false); // Взрыв
+        }
+    }, 50);
+}
+
+function cashOutCrash() {
+    if (!crashGameActive) return;
+    endCrashGame(true);
+}
+
+function endCrashGame(win) {
+    clearInterval(crashInterval);
+    crashGameActive = false;
+    const btn = document.getElementById('crash-btn');
+    const display = document.getElementById('crash-multiplier');
+
+    if (win) {
+        const winAmount = Math.floor(crashBet * currentCrashMultiplier);
+        gems += winAmount;
+        display.style.color = "#00ff88";
+        display.innerText = `WIN: ${winAmount}`;
+        btn.innerText = "ПОБЕДА!";
+        btn.style.background = "#00ff88";
+    } else {
+        display.style.color = "#ff4444";
+        display.innerText = `CRASHED @ ${crashPoint}x`;
+        btn.innerText = "ВЗРЫВ!";
+        btn.style.background = "#ff4444";
+    }
+    
+    updateUI();
+    
+    setTimeout(() => {
+        display.style.color = "#fff";
+        btn.innerText = "СТАРТ";
+        btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
+    }, 2000);
+}
+
+
+
+// === ПЕРЕМЕННЫЕ САПЁРА ===
+let minesGrid = [];
+let minesCount = 3;
+let minesBet = 0;
+let minesActive = false;
+let openedCells = 0;
+let minesCurrentWin = 0;
+
+function startMinesRound() {
+    const betInput = document.getElementById('mines-bet');
+    const countSelect = document.getElementById('mines-count');
+    const bet = parseInt(betInput.value);
+    minesCount = parseInt(countSelect.value);
+
+    if (bet > gems || bet <= 0) {
+        alert("Недостаточно гемов!");
+        return;
+    }
+
+    gems -= bet;
+    minesBet = bet;
+    minesActive = true;
+    openedCells = 0;
+    minesCurrentWin = 0;
+    updateUI();
+
+    // Генерация поля
+    minesGrid = Array(25).fill('safe');
+    let placed = 0;
+    while(placed < minesCount) {
+        let idx = Math.floor(Math.random() * 25);
+        if(minesGrid[idx] === 'safe') {
+            minesGrid[idx] = 'mine';
+            placed++;
+        }
+    }
+
+    renderMinesGridVisuals();
+    
+    document.getElementById('mines-current-win').innerText = "0";
+    document.getElementById('mines-cashout-btn').disabled = true;
+}
+
+function renderMinesGridVisuals() {
+    const container = document.getElementById('mines-grid');
+    container.innerHTML = '';
+    for(let i=0; i<25; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'mine-cell';
+        cell.dataset.index = i;
+        cell.onclick = () => clickMineCell(i);
+        container.appendChild(cell);
+    }
+}
+
+function clickMineCell(index) {
+    if(!minesActive) return;
+    const cell = document.querySelector(`.mine-cell[data-index="${index}"]`);
+    if(cell.classList.contains('revealed')) return;
+
+    cell.classList.add('revealed');
+
+    if(minesGrid[index] === 'mine') {
+        // ПРОИГРЫШ
+        cell.classList.add('mine');
+        cell.innerHTML = '💣';
+        minesActive = false;
+        revealAllMines();
+        document.getElementById('mines-cashout-btn').disabled = true;
+    } else {
+        // УСПЕХ
+        cell.classList.add('safe');
+        cell.innerHTML = '💎';
+        openedCells++;
+        
+        // Расчет множителя
+        // Формула: Чем больше мин и открытых клеток, тем выше риск и награда
+        let multiplier = 1;
+        for(let i=0; i<openedCells; i++) {
+            // Вероятность попасть на пустую клетку уменьшается
+            let safeRemaining = 25 - minesCount - i;
+            let totalRemaining = 25 - i;
+            multiplier *= (totalRemaining / safeRemaining);
+        }
+        
+        // Небольшой коэффициент коррекции, чтобы не было слишком сложно
+        multiplier = multiplier * 0.95; 
+
+        minesCurrentWin = Math.floor(minesBet * multiplier);
+        document.getElementById('mines-current-win').innerText = minesCurrentWin;
+        document.getElementById('mines-cashout-btn').disabled = false;
+        
+        if(openedCells === (25 - minesCount)) {
+            cashOutMines(); // Автовыигрыш если открыл всё
+        }
+    }
+}
+
+function cashOutMines() {
+    if(!minesActive) return;
+    gems += minesCurrentWin;
+    minesActive = false;
+    updateUI();
+    revealAllMines();
+    document.getElementById('mines-cashout-btn').disabled = true;
+    alert(`Вы забрали ${minesCurrentWin} гемов!`);
+}
+
+function revealAllMines() {
+    minesGrid.forEach((type, idx) => {
+        const cell = document.querySelector(`.mine-cell[data-index="${idx}"]`);
+        if(type === 'mine' && !cell.classList.contains('revealed')) {
+            cell.innerHTML = '💣';
+            cell.style.opacity = '0.5';
+            cell.classList.add('revealed');
+        }
+    });
 }
 
 // === ЗАПУСК ===
