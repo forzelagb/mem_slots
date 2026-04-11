@@ -578,6 +578,12 @@ function toggleAuto() {
 }
 
 function spin() {
+    
+    console.log("=== DEBUG SPIN ===");
+console.log("Тема:", currentTheme);
+console.log("Количество картинок в теме:", themes[currentTheme]?.length);
+console.log("Функция getRandomWeightedItem существует?", typeof getRandomWeightedItem === 'function');
+
     if (isSpinning || !currentTheme || gems < currentBet) return;
 
     // Генерируем результат спина
@@ -1160,7 +1166,6 @@ function getRandomWeightedItem(items) {
 
     return items[0]; // fallback
 }
-
 
 // === ОБЫЧНАЯ СЛУЧАЙНОСТЬ (для совместимости) ===
 function getRandomItem(arr) {
