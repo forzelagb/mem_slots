@@ -1289,6 +1289,7 @@ const bet = parseInt(document.getElementById('crash-bet-input').value);
     }
 
     gems -= bet;
+    updateCrashBalance();
     crashBet = bet;
     updateUI();
 
@@ -1343,6 +1344,7 @@ function endCrashGame(win) {
     if (win) {
         const winAmount = Math.floor(crashBet * currentCrashMultiplier);
         gems += winAmount;
+        updateCrashBalance();
         display.style.color = "#00ff88";
         display.innerText = `WIN: ${winAmount}`;
         btn.innerText = "ПОБЕДА!";
@@ -1498,6 +1500,7 @@ function openCrashGame() {
     
     // Показываем экран ракетки
     document.getElementById('crash-screen').style.display = 'block';
+    updateCrashBalance();
 }
 
 function openMinesGame() {
@@ -1536,6 +1539,25 @@ function changeCrashBet(multiplier) {
     if (newBet < 10) newBet = 10;
     if (newBet > gems) newBet = gems;
     
+    input.value = newBet;
+}
+
+function setMaxCrashBet() {
+    const input = document.getElementById('crash-bet-input');
+    if (!crashGameActive) {
+        input.value = gems;
+    }
+}
+
+
+function changeCrashBet(multiplier) {
+    const input = document.getElementById('crash-bet-input');
+    let currentBet = parseInt(input.value);
+    if (crashGameActive) return;
+
+    let newBet = Math.floor(currentBet * multiplier);
+    if (newBet < 10) newBet = 10;
+    if (newBet > gems) newBet = gems;
     input.value = newBet;
 }
 
