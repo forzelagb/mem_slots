@@ -629,7 +629,7 @@ for (let i = 0; i < 25; i++) {  // 👇 ИЗМЕНЕНИЕ: было 20, ста�
 function checkWins(grid) {
     console.log("=== ПРОВЕРКА ВЫИГРЫШЕЙ ===");
     console.log("Ставка:", currentBet);
-    console.log(`[VERTICAL] Найдено ${matchCount} в ряд. Множитель картинки: ${multiplier}. Выигрыш: ${winAmount}`);
+
     let totalWin = 0;
     const rows = 5;
     const cols = 5;
@@ -657,6 +657,8 @@ function checkWins(grid) {
                 else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
                 else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
 
+                console.log(`[VERTICAL] Найдено ${matchCount} в ряд. Множитель картинки: ${multiplier}. Выигрыш: ${winAmount}`);
+                
                 totalWin += winAmount;
                 col += matchCount - 1; // Пропускаем проверенные ячейки
             }
