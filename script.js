@@ -418,14 +418,15 @@ function maxBet() {
 function createGrid() {
     gridEl.innerHTML = ''; // Очищаем сетку
     
-    for (let i = 0; i < 20; i++) {
+    // 👇 ИЗМЕНЕНИЕ: было 20, стало 25 (5 строк * 5 столбцов)
+    for (let i = 0; i < 25; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
         
         const img = document.createElement('img');
         img.className = 'slot-img';
-        img.style.opacity = '0'; // Скрываем до анимации
-        img.style.background = '#1a1a1a'; // Тёмный фон вместо белой заглушки
+        img.style.opacity = '0'; 
+        img.style.background = '#1a1a1a'; 
         img.style.borderRadius = '5px';
         img.style.width = '100%';
         img.style.height = '100%';
@@ -562,8 +563,9 @@ function animateDrop(cells, items, callback) {
         }, index * 30);
     });
     
-    // Вызываем callback после завершения анимации
-    setTimeout(() => callback(), 20 * 30 + 500);
+// 👇 ИЗМЕНЕНИЕ: используем длину массива cells вместо хардкода 20
+const animationTime = cells.length * 30 + 500;
+setTimeout(() => callback(), animationTime);
 }
 
 function toggleAuto() {
@@ -625,53 +627,65 @@ function spin() {
 
 function checkWins(grid) {
     let totalWin = 0;
-    const rows = 4;
+    
+    // 👇 ИЗМЕНЕНИЕ: размеры сетки теперь 5x5
+    const rows = 5;
     const cols = 5;
 
+    // Проходим по каждой строке
     for (let row = 0; row < rows; row++) {
+        // Проходим по каждому столбцу (останавливаемся за 3 до конца, т.к. мин. совпадение 3)
         for (let col = 0; col < cols - 2; col++) {
+            
+            // Вычисляем индекс первой ячейки в ряду
             const idx = row * cols + col;
+            
             const item1 = grid[idx];
             const item2 = grid[idx + 1];
             const item3 = grid[idx + 2];
 
+            // Проверяем, что картинки существуют и совпадают
             if (item1 && item2 && item3 && 
                 item1.src === item2.src && 
                 item2.src === item3.src) {
                 
                 let matchCount = 3;
+                
+                // Проверяем 4-ю картинку, если есть место
                 if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
+                
+                // Проверяем 5-ю картинку, если есть место
                 if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
 
-                // 👇 ВАЖНО: Парсим множитель как число
-                const multiplier = parseFloat(item1.mult) || 1;
+                // Берём множитель
+                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
 
                 let winAmount = 0;
 
+                // Формула выигрыша
                 if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
                 else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
                 else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
 
                 totalWin += winAmount;
+                
+                // Пропускаем проверенные ячейки, чтобы не считать одни и те же дважды
                 col += matchCount - 1;
             }
         }
     }
 
+    // ... остальной код начисления гемов без изменений ...
     if (totalWin > 0) {
         gems += totalWin;
         resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
         animateBalanceChange('win');
 
-        if (totalWin >= currentBet * 5) {
-            addToLeaderboard(totalWin);
-        }
-
+        if (totalWin >= currentBet * 5) addToLeaderboard(totalWin);
         if (totalWin >= currentBet * 20) showBigWin(totalWin);
     } else {
         resultText.innerText = "Попробуй еще...";
     }
-
     saveData();
 }
 
