@@ -537,11 +537,6 @@ function goBack() {
     }
 }
 
-function getRandomItem(arr) {
-    if (!arr || arr.length === 0) return null;
-    return arr[Math.floor(Math.random() * arr.length)];
-}
-
 function animateDrop(cells, items, callback) {
     cells.forEach((img, index) => {
         const item = items[index];
@@ -1142,6 +1137,36 @@ function showVIPDashboard() {
 }
 
 
+
+// === ВЗВЕШЕННАЯ СЛУЧАЙНОСТЬ ДЛЯ КАРТИНОК ===
+function getRandomWeightedItem(items) {
+    if (!items || items.length === 0) return null;
+
+    // Создаём веса: чем больше множитель — тем меньше шанс
+    const weights = items.map(item => {
+        const mult = parseFloat(item.mult) || 1;
+        // Формула: базовый вес 100, делим на множитель
+        // x1 → 100, x2 → 50, x5 → 20, x10 → 10, x20 → 5, x50 → 2
+        return Math.max(1, 100 / mult);
+    });
+
+    const totalWeight = weights.reduce((a, b) => a + b, 0);
+    let random = Math.random() * totalWeight;
+
+    for (let i = 0; i < items.length; i++) {
+        random -= weights[i];
+        if (random <= 0) return items[i];
+    }
+
+    return items[0]; // fallback
+}
+
+
+// === ОБЫЧНАЯ СЛУЧАЙНОСТЬ (для совместимости) ===
+function getRandomItem(arr) {
+    if (!arr || arr.length === 0) return null;
+    return arr[Math.floor(Math.random() * arr.length)];
+}
 
 // === ЗАПУСК ===
 window.onload = () => {
