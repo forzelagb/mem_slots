@@ -1358,11 +1358,15 @@ body::before {
 
 .pilot {
     position: absolute;
-    width: 100px;
-    top: 50px;
+    width: 100px;       /* Размер лица */
+    top: 75px;          /* Подними выше, чтобы было видно */
     left: 50%;
     transform: translateX(-50%);
-    z-index: 3;
+    z-index: 3;         /* Поверх ракеты */
+    display: block;     /* Убедись, что не hidden */
+    opacity: 1;         /* Не прозрачный */
+    border: 2px solid red; /* Чтобы видеть, где находится элемент */
+    z-index: 10;
 }
 
 .rocket-body {
