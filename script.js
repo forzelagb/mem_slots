@@ -1256,7 +1256,8 @@ function goBackToLobby() {
     document.getElementById('mines-screen').style.display = 'none';
     
     // Показываем лобби
-    document.getElementById('lobby-screen').classList.add('active');
+    const lobby = document.getElementById('lobby-screen');
+    lobby.classList.add('active'); // Убедимся, что лобби активно
     
     // Сбрасываем состояния
     autoSpinActive = false;
@@ -1473,6 +1474,32 @@ function revealAllMines() {
         }
     });
 }
+
+
+function openCrashGame() {
+    // Скрываем лобби и слоты
+    document.getElementById('lobby-screen').classList.remove('active');
+    document.getElementById('game-screen').style.display = 'none';
+    
+    // Показываем экран ракетки
+    document.getElementById('crash-screen').style.display = 'block';
+}
+
+function openMinesGame() {
+    // Скрываем лобби и слоты
+    document.getElementById('lobby-screen').classList.remove('active');
+    document.getElementById('game-screen').style.display = 'none';
+    
+    // Показываем экран сапёра
+    document.getElementById('mines-screen').style.display = 'block';
+    
+    // Инициализируем сетку сапёра при первом открытии
+    if (!document.getElementById('mines-grid').hasChildNodes()) {
+        renderMinesGridVisuals();
+    }
+}
+
+
 
 // === ЗАПУСК ===
 window.onload = () => {
