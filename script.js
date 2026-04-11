@@ -643,7 +643,9 @@ function checkWins(grid) {
                 if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
                 if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
 
+                // 👇 ВАЖНО: Берём множитель из картинки
                 const multiplier = parseFloat(item1.mult) || 1;
+
                 let winAmount = 0;
 
                 if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
