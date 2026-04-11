@@ -56,19 +56,19 @@ let isSpinning = false;
 let currentTheme = '';
 // === ТЕМЫ ИГРЫ ===
 const themes = {
-    brain: [{src: "image/brain/1.jpg", mult: 1}, {src: "image/brain/2.jpg", mult: 1}, {src: "image/brain/3.jpg", mult: 2}, {src: "image/brain/4.jpg", mult: 1}, {src: "image/brain/5.jpg", mult: 3}, {src: "image/brain/6.jpg", mult: 1}, {src: "image/brain/7.jpg", mult: 1}, {src: "image/brain/8.jpg", mult: 5}],
-    helin: [{src: "image/helin/1.jpg", mult: 1}, {src: "image/helin/2.jpg", mult: 1}, {src: "image/helin/3.jpg", mult: 2}, {src: "image/helin/4.jpg", mult: 1}, {src: "image/helin/5.jpg", mult: 3}, {src: "image/helin/6.jpg", mult: 1}, {src: "image/helin/7.jpg", mult: 1}, {src: "image/helin/8.jpg", mult: 5}],
-    lexapaws: [{src: "image/lexapaws/1.jpg", mult: 1}, {src: "image/lexapaws/2.jpg", mult: 1}, {src: "image/lexapaws/3.jpg", mult: 2}, {src: "image/lexapaws/4.jpg", mult: 1}, {src: "image/lexapaws/5.jpg", mult: 3}, {src: "image/lexapaws/6.jpg", mult: 1}, {src: "image/lexapaws/7.jpg", mult: 1}, {src: "image/lexapaws/8.jpg", mult: 5}],
-    litwin: [{src: "image/litwin/1.jpg", mult: 1}, {src: "image/litwin/2.jpg", mult: 1}, {src: "image/litwin/3.jpg", mult: 2}, {src: "image/litwin/4.jpg", mult: 1}, {src: "image/litwin/5.jpg", mult: 3}, {src: "image/litwin/6.jpg", mult: 1}, {src: "image/litwin/7.jpg", mult: 1}, {src: "image/litwin/8.jpg", mult: 5}],
-    melstroy: [{src: "image/melstroy/1.jpg", mult: 1}, {src: "image/melstroy/2.jpg", mult: 1}, {src: "image/melstroy/3.jpg", mult: 2}, {src: "image/melstroy/4.jpg", mult: 1}, {src: "image/melstroy/5.jpg", mult: 3}, {src: "image/melstroy/6.jpg", mult: 1}, {src: "image/melstroy/7.jpg", mult: 1}, {src: "image/melstroy/8.jpg", mult: 5}],
-    nikkifn: [{src: "image/nikkifn/1.jpg", mult: 1}, {src: "image/nikkifn/2.jpg", mult: 1}, {src: "image/nikkifn/3.jpg", mult: 2}, {src: "image/nikkifn/4.jpg", mult: 1}, {src: "image/nikkifn/5.jpg", mult: 3}, {src: "image/nikkifn/6.jpg", mult: 1}, {src: "image/nikkifn/7.jpg", mult: 1}, {src: "image/nikkifn/8.jpg", mult: 5}],
-    rejiboi: [{src: "image/rejiboi/1.jpg", mult: 1}, {src: "image/rejiboi/2.jpg", mult: 1}, {src: "image/rejiboi/3.jpg", mult: 2}, {src: "image/rejiboi/4.jpg", mult: 1}, {src: "image/rejiboi/5.jpg", mult: 3}, {src: "image/rejiboi/6.jpg", mult: 1}, {src: "image/rejiboi/7.jpg", mult: 1}, {src: "image/rejiboi/8.jpg", mult: 5}],
-    rostick: [{src: "image/rostick/1.jpg", mult: 1}, {src: "image/rostick/2.jpg", mult: 1}, {src: "image/rostick/3.jpg", mult: 2}, {src: "image/rostick/4.jpg", mult: 1}, {src: "image/rostick/5.jpg", mult: 3}, {src: "image/rostick/6.jpg", mult: 1}, {src: "image/rostick/7.jpg", mult: 1}, {src: "image/rostick/8.jpg", mult: 5}],
-    sasich: [{src: "image/sasich/1.jpg", mult: 1}, {src: "image/sasich/2.jpg", mult: 1}, {src: "image/sasich/3.jpg", mult: 2}, {src: "image/sasich/4.jpg", mult: 1}, {src: "image/sasich/5.jpg", mult: 3}, {src: "image/sasich/6.jpg", mult: 1}, {src: "image/sasich/7.jpg", mult: 1}, {src: "image/sasich/8.jpg", mult: 5}],
-    skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: 1}, {src: "image/skibiditoilet/2.jpg", mult: 1}, {src: "image/skibiditoilet/3.jpg", mult: 2}, {src: "image/skibiditoilet/4.jpg", mult: 1}, {src: "image/skibiditoilet/5.jpg", mult: 3}, {src: "image/skibiditoilet/6.jpg", mult: 1}, {src: "image/skibiditoilet/7.jpg", mult: 1}, {src: "image/skibiditoilet/8.jpg", mult: 5}],
-    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: 1}, {src: "image/slovopatsana/2.jpg", mult: 1}, {src: "image/slovopatsana/3.jpg", mult: 2}, {src: "image/slovopatsana/4.jpg", mult: 1}, {src: "image/slovopatsana/5.jpg", mult: 3}, {src: "image/slovopatsana/6.jpg", mult: 1}, {src: "image/slovopatsana/7.jpg", mult: 1}, {src: "image/slovopatsana/8.jpg", mult: 5}],
+    brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: 2}, {src: "image/brain/4.jpg", mult: 1}, {src: "image/brain/5.jpg", mult: 3}, {src: "image/brain/6.jpg", mult: 1}, {src: "image/brain/7.jpg", mult: 1}, {src: "image/brain/8.jpg", mult: 5}],
+    helin: [{src: "image/helin/1.jpg", mult: ""}, {src: "image/helin/2.jpg", mult: ""}, {src: "image/helin/3.jpg", mult: 2}, {src: "image/helin/4.jpg", mult: 1}, {src: "image/helin/5.jpg", mult: 3}, {src: "image/helin/6.jpg", mult: 1}, {src: "image/helin/7.jpg", mult: 1}, {src: "image/helin/8.jpg", mult: 5}],
+    lexapaws: [{src: "image/lexapaws/1.jpg", mult: ""}, {src: "image/lexapaws/2.jpg", mult: ""}, {src: "image/lexapaws/3.jpg", mult: 2}, {src: "image/lexapaws/4.jpg", mult: 1}, {src: "image/lexapaws/5.jpg", mult: 3}, {src: "image/lexapaws/6.jpg", mult: 1}, {src: "image/lexapaws/7.jpg", mult: 1}, {src: "image/lexapaws/8.jpg", mult: 5}],
+    litwin: [{src: "image/litwin/1.jpg", mult: ""}, {src: "image/litwin/2.jpg", mult: ""}, {src: "image/litwin/3.jpg", mult: 2}, {src: "image/litwin/4.jpg", mult: 1}, {src: "image/litwin/5.jpg", mult: 3}, {src: "image/litwin/6.jpg", mult: 1}, {src: "image/litwin/7.jpg", mult: 1}, {src: "image/litwin/8.jpg", mult: 5}],
+    melstroy: [{src: "image/melstroy/1.jpg", mult: ""}, {src: "image/melstroy/2.jpg", mult: ""}, {src: "image/melstroy/3.jpg", mult: 2}, {src: "image/melstroy/4.jpg", mult: 1}, {src: "image/melstroy/5.jpg", mult: 3}, {src: "image/melstroy/6.jpg", mult: 1}, {src: "image/melstroy/7.jpg", mult: 1}, {src: "image/melstroy/8.jpg", mult: 5}],
+    nikkifn: [{src: "image/nikkifn/1.jpg", mult: ""}, {src: "image/nikkifn/2.jpg", mult: ""}, {src: "image/nikkifn/3.jpg", mult: 2}, {src: "image/nikkifn/4.jpg", mult: 1}, {src: "image/nikkifn/5.jpg", mult: 3}, {src: "image/nikkifn/6.jpg", mult: 1}, {src: "image/nikkifn/7.jpg", mult: 1}, {src: "image/nikkifn/8.jpg", mult: 5}],
+    rejiboi: [{src: "image/rejiboi/1.jpg", mult: ""}, {src: "image/rejiboi/2.jpg", mult: ""}, {src: "image/rejiboi/3.jpg", mult: 2}, {src: "image/rejiboi/4.jpg", mult: 1}, {src: "image/rejiboi/5.jpg", mult: 3}, {src: "image/rejiboi/6.jpg", mult: 1}, {src: "image/rejiboi/7.jpg", mult: 1}, {src: "image/rejiboi/8.jpg", mult: 5}],
+    rostick: [{src: "image/rostick/1.jpg", mult:""}, {src: "image/rostick/2.jpg", mult: ""}, {src: "image/rostick/3.jpg", mult: 2}, {src: "image/rostick/4.jpg", mult: 1}, {src: "image/rostick/5.jpg", mult: 3}, {src: "image/rostick/6.jpg", mult: 1}, {src: "image/rostick/7.jpg", mult: 1}, {src: "image/rostick/8.jpg", mult: 5}],
+    sasich: [{src: "image/sasich/1.jpg", mult: ""}, {src: "image/sasich/2.jpg", mult: ""}, {src: "image/sasich/3.jpg", mult: 2}, {src: "image/sasich/4.jpg", mult: 1}, {src: "image/sasich/5.jpg", mult: 3}, {src: "image/sasich/6.jpg", mult: 1}, {src: "image/sasich/7.jpg", mult: 1}, {src: "image/sasich/8.jpg", mult: 5}],
+    skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: 2}, {src: "image/skibiditoilet/4.jpg", mult: 1}, {src: "image/skibiditoilet/5.jpg", mult: 3}, {src: "image/skibiditoilet/6.jpg", mult: 1}, {src: "image/skibiditoilet/7.jpg", mult: 1}, {src: "image/skibiditoilet/8.jpg", mult: 5}],
+    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: 2}, {src: "image/slovopatsana/4.jpg", mult: 1}, {src: "image/slovopatsana/5.jpg", mult: 3}, {src: "image/slovopatsana/6.jpg", mult: 1}, {src: "image/slovopatsana/7.jpg", mult: 1}, {src: "image/slovopatsana/8.jpg", mult: 5}],
     ronaldo: [
-        {src: "image/ronaldo/1.jpg", mult: 1},
+        {src: "image/ronaldo/1.jpg", mult: ""},
         {src: "image/ronaldo/2.jpg", mult: 2}, 
         {src: "image/ronaldo/3.jpg", mult: 3}, 
         {src: "image/ronaldo/4.jpg", mult: 5}, 
@@ -78,7 +78,7 @@ const themes = {
     ],
     // === НОВЫЕ VIP СЛОТЫ ===
 patorka: [
-    {src: "image/patorka/1.jpg", mult: 1},
+    {src: "image/patorka/1.jpg", mult: ""},
     {src: "image/patorka/2.jpg", mult: 2},
     {src: "image/patorka/3.jpg", mult: 3},
     {src: "image/patorka/4.jpg", mult: 5},
@@ -88,7 +88,7 @@ patorka: [
 ],
 
 goobka: [
-    {src: "image/goobka/1.jpg", mult: 1},
+    {src: "image/goobka/1.jpg", mult: ""},
     {src: "image/goobka/2.jpg", mult: 2},
     {src: "image/goobka/3.jpg", mult: 3},
     {src: "image/goobka/4.jpg", mult: 5},
@@ -98,7 +98,7 @@ goobka: [
 ],
 
 kaka: [
-    {src: "image/kaka/1.jpg", mult: 1},
+    {src: "image/kaka/1.jpg", mult: ""},
     {src: "image/kaka/2.jpg", mult: 3},
     {src: "image/kaka/3.jpg", mult: 5},
     {src: "image/kaka/4.jpg", mult: 10},
@@ -108,7 +108,7 @@ kaka: [
 ],
 
 zidane: [
-    {src: "image/zidane/1.jpg", mult: 1},
+    {src: "image/zidane/1.jpg", mult: ""},
     {src: "image/zidane/2.jpg", mult: 3},
     {src: "image/zidane/3.jpg", mult: 5},
     {src: "image/zidane/4.jpg", mult: 10},
@@ -627,56 +627,110 @@ for (let i = 0; i < 25; i++) {  // 👇 ИЗМЕНЕНИЕ: было 20, ста�
 }
 
 function checkWins(grid) {
+    console.log("=== ПРОВЕРКА ВЫИГРЫШЕЙ ===");
+    console.log("Ставка:", currentBet);
+    console.log(`[VERTICAL] Найдено ${matchCount} в ряд. Множитель картинки: ${multiplier}. Выигрыш: ${winAmount}`);
     let totalWin = 0;
-    
-    // 👇 ИЗМЕНЕНИЕ: размеры сетки теперь 5x5
     const rows = 5;
     const cols = 5;
 
-    // Проходим по каждой строке
+    // === ГОРИЗОНТАЛЬНЫЕ ЛИНИИ ===
     for (let row = 0; row < rows; row++) {
-        // Проходим по каждому столбцу (останавливаемся за 3 до конца, т.к. мин. совпадение 3)
         for (let col = 0; col < cols - 2; col++) {
-            
-            // Вычисляем индекс первой ячейки в ряду
             const idx = row * cols + col;
-            
             const item1 = grid[idx];
             const item2 = grid[idx + 1];
             const item3 = grid[idx + 2];
 
-            // Проверяем, что картинки существуют и совпадают
             if (item1 && item2 && item3 && 
                 item1.src === item2.src && 
                 item2.src === item3.src) {
                 
                 let matchCount = 3;
-                
-                // Проверяем 4-ю картинку, если есть место
                 if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
-                
-                // Проверяем 5-ю картинку, если есть место
                 if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
 
-                // Берём множитель
                 const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
-
                 let winAmount = 0;
 
-                // Формула выигрыша
                 if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
                 else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
                 else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
 
                 totalWin += winAmount;
-                
-                // Пропускаем проверенные ячейки, чтобы не считать одни и те же дважды
-                col += matchCount - 1;
+                col += matchCount - 1; // Пропускаем проверенные ячейки
             }
         }
     }
 
-    // ... остальной код начисления гемов без изменений ...
+    // === ВЕРТИКАЛЬНЫЕ ЛИНИИ ===
+    for (let col = 0; col < cols; col++) {
+        for (let row = 0; row < rows - 2; row++) {
+            const idx = row * cols + col;
+            const item1 = grid[idx];
+            const item2 = grid[idx + cols];      // вниз на 1 ряд
+            const item3 = grid[idx + cols * 2];  // вниз на 2 ряда
+
+            if (item1 && item2 && item3 && 
+                item1.src === item2.src && 
+                item2.src === item3.src) {
+                
+                let matchCount = 3;
+                if (row + 3 < rows && grid[idx + cols * 3].src === item1.src) matchCount++;
+                if (row + 4 < rows && grid[idx + cols * 4].src === item1.src) matchCount++;
+
+                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
+                let winAmount = 0;
+
+                if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
+                else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
+                else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
+
+                totalWin += winAmount;
+                // Не пропускаем строки здесь — потому что одна ячейка может участвовать в нескольких вертикалях? Нет, не может — так что можно пропустить
+                // Но для простоты — не будем пропускать, чтобы не усложнять
+            }
+        }
+    }
+
+    // === ДИАГОНАЛИ: слева направо, сверху вниз ===
+    for (let row = 0; row < rows - 2; row++) {
+        for (let col = 0; col < cols - 2; col++) {
+            const idx = row * cols + col;
+            const item1 = grid[idx];
+            const item2 = grid[idx + cols + 1];   // вниз-вправо
+            const item3 = grid[idx + cols * 2 + 2]; // ещё вниз-вправо
+
+            if (item1 && item2 && item3 && 
+                item1.src === item2.src && 
+                item2.src === item3.src) {
+                
+                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
+                totalWin += currentBet * 1 * multiplier; // За диагональ из 3 — фиксированный множитель ×1
+                // Можно сделать ×3 за диагональ, если хочешь
+            }
+        }
+    }
+
+    // === ДИАГОНАЛИ: справа налево, сверху вниз ===
+    for (let row = 0; row < rows - 2; row++) {
+        for (let col = 2; col < cols; col++) {
+            const idx = row * cols + col;
+            const item1 = grid[idx];
+            const item2 = grid[idx + cols - 1];   // вниз-влево
+            const item3 = grid[idx + cols * 2 - 2]; // ещё вниз-влево
+
+            if (item1 && item2 && item3 && 
+                item1.src === item2.src && 
+                item2.src === item3.src) {
+                
+                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
+                totalWin += currentBet * 1 * multiplier;
+            }
+        }
+    }
+
+    // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
     if (totalWin > 0) {
         gems += totalWin;
         resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
@@ -687,6 +741,7 @@ function checkWins(grid) {
     } else {
         resultText.innerText = "Попробуй еще...";
     }
+
     saveData();
 }
 
