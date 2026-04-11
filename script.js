@@ -1305,7 +1305,6 @@ function playCrash() {
     // Сброс визуала ракеты
     rocket.style.bottom = '20px';
     rocket.classList.remove('frozen');
-    rocket.classList.add('shaking'); // Тряска при взлете
     
     // Запуск фонового видео
     if (stars && stars.tagName === 'VIDEO') {
@@ -1368,7 +1367,7 @@ function endCrashGame(win) {
         updateCrashBalance(); // 👈 Обновляем баланс после выигрыша
     } else {
         display.style.color = "#ff4444";
-        display.innerText = `CRASHED @ ${crashPoint}x`;
+        display.innerText = `CRASHED ${crashPoint}x`;
         btn.innerText = "ВЗРЫВ!";
         btn.style.background = "#ff4444";
         document.getElementById('crash-scene').style.boxShadow = "inset 0 0 100px rgba(255,0,0,0.5)";

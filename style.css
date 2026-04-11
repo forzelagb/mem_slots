@@ -1405,7 +1405,7 @@ body::before {
     height: 10px;
     transition: all 0.3s ease;
 }
-
+/*
 .shaking {
     animation: shake 0.5s infinite;
 }
@@ -1416,7 +1416,7 @@ body::before {
     50% { transform: translateX(-48%) rotate(2deg); }
     75% { transform: translateX(-51%) rotate(-1deg); }
     100% { transform: translateX(-50%) rotate(0deg); }
-}
+}*/
 
 .btn-crash-start {
     background: linear-gradient(to bottom, #00ff88, #00cc6a);
@@ -1438,6 +1438,20 @@ body::before {
     object-fit: cover; /* Растягивает видео на весь контейнер */
     z-index: 0; /* Самый нижний слой */
 }
+
+
+.top-decoration {
+    position: absolute;
+    top: 20px; /* Отступ сверху */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px; /* Подбери размер */
+    z-index: 5; /* Поверх всего, но ниже текста множителя */
+    opacity: 0.9;
+}
+
+
+
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
