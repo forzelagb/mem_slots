@@ -1250,18 +1250,14 @@ function getRandomItem(arr) {
 
 
 function goBackToLobby() {
-    // Скрываем все экраны игр
     document.getElementById('game-screen').style.display = 'none';
     document.getElementById('crash-screen').style.display = 'none';
     document.getElementById('mines-screen').style.display = 'none';
     
-    // Показываем лобби
-    const lobby = document.getElementById('lobby-screen');
-    lobby.classList.add('active'); // Убедимся, что лобби активно
+    document.getElementById('lobby-screen').classList.add('active');
     
-    // Сбрасываем состояния
     autoSpinActive = false;
-    clearInterval(crashInterval); // Останавливаем ракетку если шла
+    clearInterval(crashInterval);
 }
 
 
@@ -1279,43 +1275,51 @@ function playCrash() {
     const bet = parseInt(betInput.value);
     const btn = document.getElementById('crash-btn');
     const display = document.getElementById('crash-multiplier');
+    const rocket = document.getElementById('rocket-obj');
+    const stars = document.querySelector('.stars');
 
     if (bet > gems || bet <= 0) {
-        alert("Недостаточно гемов или неверная ставка!");
+        alert("Недостаточно гемов!");
         return;
     }
 
-    // Если игра уже идет - это кнопка "ЗАБРАТЬ"
     if (crashGameActive) {
         cashOutCrash();
         return;
     }
 
-    // Старт новой игры
     gems -= bet;
     crashBet = bet;
     updateUI();
 
-    // Генерация точки краша (алгоритм)
-    // Шанс мгновенного краха (x1.00) ~ 3%
     crashPoint = (0.99 / (1 - Math.random())).toFixed(2);
     if (Math.random() < 0.03) crashPoint = 1.00; 
 
     currentCrashMultiplier = 1.00;
     crashGameActive = true;
     
+    rocket.style.bottom = '20px';
+    rocket.classList.remove('frozen');
+    rocket.classList.add('shaking');
+    stars.style.animationPlayState = 'running';
+    
     display.innerText = "1.00x";
     display.style.color = "#fff";
     btn.innerText = "ЗАБРАТЬ";
-    btn.style.background = "#ffaa00"; // Желтый для действия
+    btn.style.background = "#ffaa00";
 
     crashInterval = setInterval(() => {
-        currentCrashMultiplier += 0.01 + (currentCrashMultiplier * 0.008); // Экспоненциальный рост
+        currentCrashMultiplier += 0.01 + (currentCrashMultiplier * 0.008); 
         
         display.innerText = currentCrashMultiplier.toFixed(2) + "x";
 
+        let newBottom = 20 + (currentCrashMultiplier * 15); 
+        if(newBottom > 250) newBottom = 250;
+        
+        rocket.style.bottom = newBottom + 'px';
+
         if (currentCrashMultiplier >= crashPoint) {
-            endCrashGame(false); // Взрыв
+            endCrashGame(false);
         }
     }, 50);
 }
@@ -1330,6 +1334,11 @@ function endCrashGame(win) {
     crashGameActive = false;
     const btn = document.getElementById('crash-btn');
     const display = document.getElementById('crash-multiplier');
+    const rocket = document.getElementById('rocket-obj');
+    const stars = document.querySelector('.stars');
+
+    rocket.classList.add('frozen');
+    stars.style.animationPlayState = 'paused';
 
     if (win) {
         const winAmount = Math.floor(crashBet * currentCrashMultiplier);
@@ -1338,20 +1347,26 @@ function endCrashGame(win) {
         display.innerText = `WIN: ${winAmount}`;
         btn.innerText = "ПОБЕДА!";
         btn.style.background = "#00ff88";
+        document.getElementById('crash-scene').style.boxShadow = "inset 0 0 100px rgba(0,255,0,0.3)";
     } else {
         display.style.color = "#ff4444";
         display.innerText = `CRASHED @ ${crashPoint}x`;
         btn.innerText = "ВЗРЫВ!";
         btn.style.background = "#ff4444";
+        document.getElementById('crash-scene').style.boxShadow = "inset 0 0 100px rgba(255,0,0,0.5)";
+        rocket.style.filter = "grayscale(100%) brightness(0.5)";
     }
     
     updateUI();
     
     setTimeout(() => {
         display.style.color = "#fff";
+        document.getElementById('crash-scene').style.boxShadow = "inset 0 0 50px rgba(0,0,0,0.8)";
+        rocket.style.filter = "";
+        rocket.classList.remove('shaking', 'frozen');
         btn.innerText = "СТАРТ";
         btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
-    }, 2000);
+    }, 2500);
 }
 
 
