@@ -1272,7 +1272,7 @@ let crashBet = 0;
 
 function playCrash() {
     const betInput = document.getElementById('crash-bet-input');
-    const bet = parseInt(betInput.value);
+const bet = parseInt(document.getElementById('crash-bet-input').value);
     const btn = document.getElementById('crash-btn');
     const display = document.getElementById('crash-multiplier');
     const rocket = document.getElementById('rocket-obj');
@@ -1514,7 +1514,37 @@ function openMinesGame() {
     }
 }
 
+function updateCrashBalance() {
+    const crashBalEl = document.getElementById('crash-balance-display');
+    if (crashBalEl) {
+        crashBalEl.innerText = gems.toLocaleString();
+    }
+}
 
+
+
+function changeCrashBet(multiplier) {
+    const input = document.getElementById('crash-bet-input');
+    let currentBet = parseInt(input.value);
+    
+    // Если игра идет, менять ставку нельзя
+    if (crashGameActive) return;
+
+    let newBet = Math.floor(currentBet * multiplier);
+    
+    // Ограничения
+    if (newBet < 10) newBet = 10;
+    if (newBet > gems) newBet = gems;
+    
+    input.value = newBet;
+}
+
+function setMaxCrashBet() {
+    const input = document.getElementById('crash-bet-input');
+    if (!crashGameActive) {
+        input.value = gems;
+    }
+}
 
 // === ЗАПУСК ===
 window.onload = () => {

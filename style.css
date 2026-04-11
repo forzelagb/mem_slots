@@ -1319,7 +1319,7 @@ body::before {
 .crash-scene {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 500px;
     background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
     border-radius: 15px;
     overflow: hidden;
@@ -1348,8 +1348,8 @@ body::before {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 180px;
+    width: 200px;
+    height: 3000px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -1358,8 +1358,8 @@ body::before {
 
 .pilot {
     position: absolute;
-    width: 70px;
-    top: 30px;
+    width: 100px;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
@@ -1375,11 +1375,11 @@ body::before {
 
 .engine-fire {
     position: absolute;
-    bottom: -25px;
+    bottom: -40px;
     left: 50%;
     transform: translateX(-50%);
-    width: 15px;
-    height: 30px;
+    width: 30px;
+    height: 60px;
     background: linear-gradient(to bottom, #ffeb3b, #ff9800, #f44336, transparent);
     border-radius: 50% 50% 20% 20%;
     filter: blur(3px);
