@@ -774,56 +774,48 @@ function checkSecretAccess() {
     openTab('secret');
     
     if (vipLevel >= 1) {
+        // Если есть VIP - сразу показываем кабинет
         document.getElementById('secret-lock-screen').style.display = 'none';
         document.getElementById('secret-content').style.display = 'block';
-        
-        // 👇 ВОТ ЭТА СТРОКА ВАЖНА
-        updateSecretContentByLevel(); 
-        
+        showVIPDashboard();
     } else {
-        document.getElementById('secret-lock-screen').style.display = 'block';
-        document.getElementById('secret-content').style.display = 'none';
+        // Если нет VIP - показываем витрину
+        document.getElementById('secret-lock-screen').style.display = 'none';
+        document.getElementById('secret-content').style.display = 'block';
+        showVIPStorefront();
     }
 }
 
-function activateVIPCode() {
-    const input = document.getElementById('vip-code-input');
+function activateVIPCodeFromStore() {
+    const input = document.getElementById('vip-code-input-activate');
     const code = input.value.trim().toUpperCase();
-    const messageEl = document.getElementById('vip-message');
+    const messageEl = document.getElementById('store-message');
 
-    // Проверка: есть ли такой код в списке vipCodes
     if (vipCodes[code]) {
         const newLevel = vipCodes[code];
         
-        // Если новый уровень выше текущего — обновляем
         if (newLevel > vipLevel) {
             vipLevel = newLevel;
             localStorage.setItem('memeVIPLevel', vipLevel.toString());
             
-            let levelName = getLevelName(vipLevel);
-            
             messageEl.style.color = '#00ff88';
-            messageEl.innerText = `✅ Поздравляем! Вы получили уровень ${levelName}!`;
+            messageEl.innerText = `✅ Код принят! Уровень ${getLevelName(vipLevel)} активирован.`;
             
-            // Скрываем экран блокировки, показываем контент
-            document.getElementById('secret-lock-screen').style.display = 'none';
-            document.getElementById('secret-content').style.display = 'block';
+            // Через секунду переключаем на кабинет
+            setTimeout(() => {
+                showVIPDashboard();
+                messageEl.innerText = '';
+                input.value = '';
+                if (typeof fireConfetti === 'function') fireConfetti();
+            }, 1500);
             
-            // 👇 ГЛАВНОЕ: Генерируем контент под новый уровень
-            updateSecretContentByLevel();
-            
-            // Эффект конфетти
-            if (typeof fireConfetti === 'function') fireConfetti();
-            
-            // Очищаем поле ввода
-            input.value = '';
         } else {
             messageEl.style.color = '#ffa500';
             messageEl.innerText = `⚠️ У вас уже есть уровень ${getLevelName(vipLevel)} или выше.`;
         }
     } else {
         messageEl.style.color = '#ff4444';
-        messageEl.innerText = "❌ Неверный код! Попробуйте еще раз.";
+        messageEl.innerText = "❌ Неверный код!";
     }
 }
 
@@ -1062,6 +1054,76 @@ function addSlotCard(parent, themeId, titleText, subTitle, desc, color) {
     parent.appendChild(card);
 }
 
+
+function renderVIPStorefront() {
+    const container = document.getElementById('pricing-cards-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const levels = [
+        { id: 1, name: "Bronze", price: 50, color: "#cd7f32", perks: ["Слот Ronaldo", "1000 гемов/день", "20 спинов/день"] },
+        { id: 2, name: "Silver", price: 100, color: "#c0c0c0", perks: ["Всё из Bronze", "+ Слот Messi", "x2 множитель", "30 спинов/день"] },
+        { id: 3, name: "Gold", price: 200, color: "#ffd700", perks: ["Всё из Silver", "+ Слот Neymar", "x3 множитель", "Доступ к Сапёру"] },
+        { id: 4, name: "Platinum", price: 500, color: "#e5e4e2", perks: ["Всё из Gold", "+ Слоты Kaka & Zidane", "x5 множитель", "Доступ к Ракетке"] }
+    ];
+
+    levels.forEach(lvl => {
+        const card = document.createElement('div');
+        card.className = 'pricing-card';
+        card.style.borderColor = lvl.color;
+        
+        // Ссылка на донат с предзаполненной суммой и сообщением
+        const donateLink = `https://www.donationalerts.com/r/forzelagb?amount=${lvl.price}&message=ХОЧУ+VIP+${lvl.name.toUpperCase()}`;
+
+        card.innerHTML = `
+            <div class="card-header" style="background:${lvl.color};">
+                <h3>${lvl.name}</h3>
+                <div class="price-tag">${lvl.price}₽</div>
+            </div>
+            <div class="card-body">
+                <ul class="perks-list">
+                    ${lvl.perks.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+                <a href="${donateLink}" target="_blank" class="btn-buy-vip" style="text-decoration:none; display:block; text-align:center;">
+                    Поддержать и получить ключ
+                </a>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+
+// Показать витрину (магазин)
+function showVIPStorefront() {
+    document.getElementById('vip-storefront').style.display = 'block';
+    document.getElementById('vip-dashboard').style.display = 'none';
+    renderVIPStorefront(); // Перерисовываем карточки
+}
+
+// Показать личный кабинет (после активации)
+function showVIPDashboard() {
+    document.getElementById('vip-storefront').style.display = 'none';
+    document.getElementById('vip-dashboard').style.display = 'block';
+    
+    // Заполняем данные кабинета
+    document.getElementById('dashboard-level-name').innerText = getLevelName(vipLevel).toUpperCase();
+    document.getElementById('dash-bonus').innerText = (vipLevel * 1000).toLocaleString();
+    
+    // Генерируем слоты
+    const slotsContainer = document.getElementById('dash-slots-container');
+    slotsContainer.innerHTML = '';
+    
+    if (vipLevel >= 1) addMiniSlotCard(slotsContainer, 'ronaldo', 'Ronaldo', 'ronaldo-bg');
+    if (vipLevel >= 2) addMiniSlotCard(slotsContainer, 'messi', 'Messi', 'messi-bg');
+    if (vipLevel >= 3) addMiniSlotCard(slotsContainer, 'neymar', 'Neymar', 'neymar-bg');
+    if (vipLevel >= 4) {
+        addMiniSlotCard(slotsContainer, 'kaka', 'Kaka', 'kaka-bg');
+        addMiniSlotCard(slotsContainer, 'zidane', 'Zidane', 'zidane-bg');
+    }
+    
+    updateVIPBonusButton(); // Обновляем кнопку бонуса
+}
 
 
 
