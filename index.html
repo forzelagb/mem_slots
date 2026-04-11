@@ -199,7 +199,47 @@
 
     <!-- ЭКРАН ИГРЫ (САМИ СЛОТЫ) -->
     <div id="game-screen" class="screen">
-        <!-- === ЭКРАН РАКЕТКИ (CRASH) === -->
+        <div class="game-header">
+            <button class="btn-back" onclick="goBack()">← НАЗАД</button>
+            <div class="balance-container small">
+                <span class="gem-icon">💎</span>
+                <span id="game-balance">10000</span>
+            </div>
+        </div>
+        <div class="slot-container">
+            <!-- Счётчик дневного лимита для Ronaldo -->
+<div id="ronaldo-win-limit-display" style="display:none; text-align:center; color:#ffd700; font-weight:bold; margin-bottom:10px; font-size: 14px;">
+    Осталось выиграть сегодня: <span id="win-limit-left">5000000</span> 💎
+</div>
+            <div class="slot-title" id="slot-title">SLOT NAME</div>
+            <div class="grid-wrapper" id="grid"></div>
+            <div class="message-box" id="result-text">Удачи!</div>
+            
+            <div class="controls">
+                <div class="bet-adjuster">
+                    <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
+                    <div class="bet-display">
+                        <span class="bet-label">СТАВКА</span>
+                        <span id="bet-value-display">50</span> 💎
+                    </div>
+                    <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
+                </div>
+                <div class="bet-quick-actions">
+                    <button class="btn-quick" onclick="halveBet()">÷2</button>
+                    <button class="btn-quick" onclick="doubleBet()">x2</button>
+                    <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
+                </div>
+            </div>
+
+            <div class="spin-controls">
+                <button class="btn-spin" id="spin-btn" onclick="spin()">
+                    SPIN <br><span class="cost">-<span id="current-cost">50</span> 💎</span>
+                </button>
+                <button class="btn-auto" id="auto-btn" onclick="toggleAuto()">AUTO</button>
+            </div>
+        </div>
+    </div>
+    <!-- === ЭКРАН РАКЕТКИ (CRASH) === -->
 <div id="crash-screen" style="display: none; text-align: center; padding: 20px;">
     <h2 style="color: #ffd700;">🚀 CRASH GAME</h2>
     <div class="crash-display-box">
@@ -241,46 +281,6 @@
 
     <button class="btn-back-game" onclick="goBackToLobby()" style="margin-top: 20px;">← Назад в лобби</button>
 </div>
-        <div class="game-header">
-            <button class="btn-back" onclick="goBack()">← НАЗАД</button>
-            <div class="balance-container small">
-                <span class="gem-icon">💎</span>
-                <span id="game-balance">10000</span>
-            </div>
-        </div>
-        <div class="slot-container">
-            <!-- Счётчик дневного лимита для Ronaldo -->
-<div id="ronaldo-win-limit-display" style="display:none; text-align:center; color:#ffd700; font-weight:bold; margin-bottom:10px; font-size: 14px;">
-    Осталось выиграть сегодня: <span id="win-limit-left">5000000</span> 💎
-</div>
-            <div class="slot-title" id="slot-title">SLOT NAME</div>
-            <div class="grid-wrapper" id="grid"></div>
-            <div class="message-box" id="result-text">Удачи!</div>
-            
-            <div class="controls">
-                <div class="bet-adjuster">
-                    <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
-                    <div class="bet-display">
-                        <span class="bet-label">СТАВКА</span>
-                        <span id="bet-value-display">50</span> 💎
-                    </div>
-                    <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
-                </div>
-                <div class="bet-quick-actions">
-                    <button class="btn-quick" onclick="halveBet()">÷2</button>
-                    <button class="btn-quick" onclick="doubleBet()">x2</button>
-                    <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
-                </div>
-            </div>
-
-            <div class="spin-controls">
-                <button class="btn-spin" id="spin-btn" onclick="spin()">
-                    SPIN <br><span class="cost">-<span id="current-cost">50</span> 💎</span>
-                </button>
-                <button class="btn-auto" id="auto-btn" onclick="toggleAuto()">AUTO</button>
-            </div>
-        </div>
-    </div>
 
     <!-- ОКНО ВЫИГРЫША -->
     <div id="win-modal" class="modal">
