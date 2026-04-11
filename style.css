@@ -1317,10 +1317,10 @@ body::before {
 
 /* === СЦЕНА КОСМОСА ДЛЯ CRASH === */
 .crash-scene {
-    position: relative;
+    position: relative; /* 👈 Обязательно! */
     width: 100%;
     height: 500px;
-    background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Можно оставить как подстраховку */
     border-radius: 15px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -1428,7 +1428,16 @@ body::before {
     color: #000;
 }
 
-
+/* === ФОН СО ЗВЕЗДАМИ (ВИДЕО) === */
+.space-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Растягивает видео на весь контейнер */
+    z-index: 0; /* Самый нижний слой */
+}
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
