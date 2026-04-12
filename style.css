@@ -1452,22 +1452,55 @@ body::before {
 /* === ДЕКОРАТИВНЫЙ МЕЛСТРОЙ СВЕРХУ === */
 .melstroy-top-decor {
     position: absolute;
-    top: 10px;          /* Отступ от верхнего края поля */
+    top: 55%;          /* Отступ от верхнего края поля */
     left: 50%;          /* Центрирование по горизонтали */
     transform: translateX(-50%);
     
-    width: 120px;       /* Размер картинки (подбери под себя: 100-150px) */
+    width: 200px;       /* Размер картинки (подбери под себя: 100-150px) */
     height: auto;       /* Сохраняем пропорции */
     
     z-index: 5;         /* Поверх видео, но ниже цифр множителя */
     
     /* Опционально: если зеленый фон мешает, можно попробовать его смягчить */
-    /* mix-blend-mode: screen;  <-- Раскомментируй, если хочешь сделать зеленый фон прозрачным (работает не всегда идеально) */
     
     /* Тень для объема */
     filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5)); 
 }
 
+
+
+/* === LUCKYJET STYLE CRASH GAME === */
+
+/* Анимация пульсации для множителя */
+@keyframes pulseMultiplier {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#multiplier-display.crashing {
+    color: #ff4444 !important;
+    text-shadow: 0 0 20px #ff0000 !important;
+    animation: shake 0.5s infinite;
+}
+
+#multiplier-display.winning {
+    color: #00ff88 !important;
+    text-shadow: 0 0 20px #00ff00 !important;
+}
+
+/* Пилот (Мелстрой) */
+#pilot-jet {
+    transition: all 0.1s linear;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+/* Траектория */
+#flight-path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 0.1s linear;
+}
 
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }

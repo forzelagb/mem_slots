@@ -1258,6 +1258,7 @@ function goBackToLobby() {
     
     autoSpinActive = false;
     clearInterval(crashInterval);
+    cancelAnimationFrame(animationFrameId); // 👈 Добавь это, если используешь requestAnimationFrame
 }
 
 
@@ -1269,69 +1270,87 @@ let currentCrashMultiplier = 1.00;
 let crashPoint = 0;
 let crashInterval;
 let crashBet = 0;
+let animationFrameId;
 
 function playCrash() {
     const betInput = document.getElementById('crash-bet-input');
     const bet = parseInt(betInput.value);
     const btn = document.getElementById('crash-btn');
-    const display = document.getElementById('crash-multiplier');
-    const rocket = document.getElementById('rocket-obj');
-    const stars = document.querySelector('.space-bg'); // 👈 Теперь это video
+    const display = document.getElementById('multiplier-display');
+    const pilot = document.getElementById('pilot-jet');
+    const path = document.getElementById('flight-path');
 
     if (bet > gems || bet <= 0) {
-        alert("Недостаточно гемов или неверная ставка!");
+        alert("Недостаточно гемов!");
         return;
     }
 
-    // Если игра уже идет — это кнопка "ЗАБРАТЬ"
     if (crashGameActive) {
         cashOutCrash();
         return;
     }
 
-    // Списываем ставку
     gems -= bet;
     crashBet = bet;
     updateUI();
-    updateCrashBalance(); // 👈 Обновляем баланс в игре Crash
+    updateCrashBalance();
 
-    // Генерация точки краша (алгоритм с преимуществом казино)
     crashPoint = (0.99 / (1 - Math.random())).toFixed(2);
-    if (Math.random() < 0.03) crashPoint = 1.00; // Мгновенный краш ~3%
+    if (Math.random() < 0.03) crashPoint = 1.00;
 
     currentCrashMultiplier = 1.00;
     crashGameActive = true;
-    
-    // Сброс визуала ракеты
-    rocket.style.bottom = '20px';
-    rocket.classList.remove('frozen');
-    
-    // Запуск фонового видео
-    if (stars && stars.tagName === 'VIDEO') {
-        stars.currentTime = 0;
-        stars.play().catch(e => console.log("Autoplay blocked:", e));
-    }
-    
+
+    // Сброс визуала
+    display.classList.remove('crashing', 'winning');
     display.innerText = "1.00x";
     display.style.color = "#fff";
+    
+    pilot.style.display = 'block';
+    pilot.style.left = '0px';
+    pilot.style.bottom = '0px';
+    pilot.style.transform = 'rotate(0deg)';
+
     btn.innerText = "ЗАБРАТЬ";
-    btn.style.background = "#ffaa00"; // Желтый для действия
+    btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
 
-    crashInterval = setInterval(() => {
-        currentCrashMultiplier += 0.01 + (currentCrashMultiplier * 0.008); 
+    // Запуск анимации
+    let startTime = Date.now();
+    
+    function animate() {
+        if (!crashGameActive) return;
+
+        let elapsed = (Date.now() - startTime) / 1000; // секунды
         
-        display.innerText = currentCrashMultiplier.toFixed(2) + "x";
-
-        // Движение ракеты вверх (до 250px)
-        let newBottom = 20 + (currentCrashMultiplier * 15); 
-        if(newBottom > 250) newBottom = 250;
+        // Рост множителя (экспоненциальный, как в LuckyJet)
+        currentCrashMultiplier = Math.pow(Math.E, 0.15 * elapsed).toFixed(2);
         
-        rocket.style.bottom = newBottom + 'px';
+        display.innerText = currentCrashMultiplier + "x";
 
-        if (currentCrashMultiplier >= crashPoint) {
-            endCrashGame(false); // Взрыв
+        // Движение пилота по кривой Безье
+        // Простая аппроксимация: X растет линейно, Y растет экспоненциально
+        let progress = Math.min(elapsed / 10, 1); // 10 секунд макс
+        
+        let x = progress * 800; // Ширина экрана
+        let y = 600 - (Math.pow(progress, 2) * 500); // Высота подъема
+
+        pilot.style.left = x + 'px';
+        pilot.style.bottom = y + 'px';
+        
+        // Наклон пилота в зависимости от скорости подъема
+        let angle = Math.atan2(500 * 2 * progress, 800) * (180 / Math.PI);
+        pilot.style.transform = `rotate(-${angle}deg)`;
+
+        // Проверка на краш
+        if (parseFloat(currentCrashMultiplier) >= parseFloat(crashPoint)) {
+            endCrashGame(false);
+            return;
         }
-    }, 50);
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    animate();
 }
 
 function cashOutCrash() {
@@ -1340,52 +1359,43 @@ function cashOutCrash() {
 }
 
 function endCrashGame(win) {
-    clearInterval(crashInterval);
     crashGameActive = false;
+    cancelAnimationFrame(animationFrameId);
+    
     const btn = document.getElementById('crash-btn');
-    const display = document.getElementById('crash-multiplier');
-    const rocket = document.getElementById('rocket-obj');
-    const stars = document.querySelector('.space-bg'); // 👈 Видео фона
-
-    // ОСТАНАВЛИВАЕМ ВИДЕО ПРИ КОНЦЕ ИГРЫ
-    if (stars && stars.tagName === 'VIDEO') {
-        stars.pause();
-    }
-
-    // ЗАМОРАЖИВАЕМ РАКЕТУ
-    rocket.classList.add('frozen'); // Гасит огонь и тряску
+    const display = document.getElementById('multiplier-display');
+    const pilot = document.getElementById('pilot-jet');
 
     if (win) {
         const winAmount = Math.floor(crashBet * currentCrashMultiplier);
         gems += winAmount;
-        display.style.color = "#00ff88";
+        display.classList.add('winning');
         display.innerText = `WIN: ${winAmount}`;
         btn.innerText = "ПОБЕДА!";
-        btn.style.background = "#00ff88";
-        document.getElementById('crash-scene').style.boxShadow = "inset 0 0 100px rgba(0,255,0,0.3)";
-        
-        updateCrashBalance(); // 👈 Обновляем баланс после выигрыша
+        updateCrashBalance();
     } else {
-        display.style.color = "#ff4444";
-        display.innerText = `CRASHED ${crashPoint}x`;
+        display.classList.add('crashing');
+        display.innerText = `CRASHED @ ${crashPoint}x`;
         btn.innerText = "ВЗРЫВ!";
         btn.style.background = "#ff4444";
-        document.getElementById('crash-scene').style.boxShadow = "inset 0 0 100px rgba(255,0,0,0.5)";
-        rocket.style.filter = "grayscale(100%) brightness(0.5)"; // Ракета сереет при краше
+        
+        // Эффект взрыва пилота
+        pilot.style.filter = "grayscale(100%) brightness(0.5)";
+        setTimeout(() => { pilot.style.display = 'none'; }, 500);
     }
-    
+
     updateUI();
-    
+
     setTimeout(() => {
+        display.classList.remove('crashing', 'winning');
         display.style.color = "#fff";
-        document.getElementById('crash-scene').style.boxShadow = "inset 0 0 50px rgba(0,0,0,0.8)";
-        rocket.style.filter = "";
-        rocket.classList.remove('shaking', 'frozen');
+        display.innerText = "1.00x";
         btn.innerText = "СТАРТ";
-        btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
+        btn.style.background = "linear-gradient(to bottom, #9d4edd, #7b2cbf)";
+        pilot.style.filter = "";
+        pilot.style.display = 'none';
     }, 2500);
 }
-
 
 
 // === ПЕРЕМЕННЫЕ САПЁРА ===
@@ -1543,17 +1553,15 @@ function updateCrashBalance() {
 
 function changeCrashBet(multiplier) {
     const input = document.getElementById('crash-bet-input');
-    let currentBet = parseInt(input.value);
-    
-    // Если игра идет, менять ставку нельзя
-    if (crashGameActive) return;
+    if (crashGameActive) return; // Нельзя менять ставку во время игры
 
+    let currentBet = parseInt(input.value);
     let newBet = Math.floor(currentBet * multiplier);
-    
+
     // Ограничения
     if (newBet < 10) newBet = 10;
     if (newBet > gems) newBet = gems;
-    
+
     input.value = newBet;
 }
 
