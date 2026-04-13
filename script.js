@@ -1272,127 +1272,6 @@ let crashInterval;
 let crashBet = 0;
 let animationFrameId;
 
-
-// === ПЕРЕМЕННЫЕ САПЁРА ===
-let minesGrid = [];
-let minesCount = 3;
-let minesBet = 0;
-let minesActive = false;
-let openedCells = 0;
-let minesCurrentWin = 0;
-
-function startMinesRound() {
-    const betInput = document.getElementById('mines-bet');
-    const countSelect = document.getElementById('mines-count');
-    const bet = parseInt(betInput.value);
-    minesCount = parseInt(countSelect.value);
-
-    if (bet > gems || bet <= 0) {
-        alert("Недостаточно гемов!");
-        return;
-    }
-
-    gems -= bet;
-    minesBet = bet;
-    minesActive = true;
-    openedCells = 0;
-    minesCurrentWin = 0;
-    updateUI();
-
-    // Генерация поля
-    minesGrid = Array(25).fill('safe');
-    let placed = 0;
-    while(placed < minesCount) {
-        let idx = Math.floor(Math.random() * 25);
-        if(minesGrid[idx] === 'safe') {
-            minesGrid[idx] = 'mine';
-            placed++;
-        }
-    }
-
-    renderMinesGridVisuals();
-    
-    document.getElementById('mines-current-win').innerText = "0";
-    document.getElementById('mines-cashout-btn').disabled = true;
-}
-
-function renderMinesGridVisuals() {
-    const container = document.getElementById('mines-grid');
-    container.innerHTML = '';
-    for(let i=0; i<25; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'mine-cell';
-        cell.dataset.index = i;
-        cell.onclick = () => clickMineCell(i);
-        container.appendChild(cell);
-    }
-}
-
-function clickMineCell(index) {
-    if(!minesActive) return;
-    const cell = document.querySelector(`.mine-cell[data-index="${index}"]`);
-    if(cell.classList.contains('revealed')) return;
-
-    cell.classList.add('revealed');
-
-    if(minesGrid[index] === 'mine') {
-        // ПРОИГРЫШ
-        cell.classList.add('mine');
-        cell.innerHTML = '💣';
-        minesActive = false;
-        revealAllMines();
-        document.getElementById('mines-cashout-btn').disabled = true;
-    } else {
-        // УСПЕХ
-        cell.classList.add('safe');
-        cell.innerHTML = '💎';
-        openedCells++;
-        
-        // Расчет множителя
-        // Формула: Чем больше мин и открытых клеток, тем выше риск и награда
-        let multiplier = 1;
-        for(let i=0; i<openedCells; i++) {
-            // Вероятность попасть на пустую клетку уменьшается
-            let safeRemaining = 25 - minesCount - i;
-            let totalRemaining = 25 - i;
-            multiplier *= (totalRemaining / safeRemaining);
-        }
-        
-        // Небольшой коэффициент коррекции, чтобы не было слишком сложно
-        multiplier = multiplier * 0.95; 
-
-        minesCurrentWin = Math.floor(minesBet * multiplier);
-        document.getElementById('mines-current-win').innerText = minesCurrentWin;
-        document.getElementById('mines-cashout-btn').disabled = false;
-        
-        if(openedCells === (25 - minesCount)) {
-            cashOutMines(); // Автовыигрыш если открыл всё
-        }
-    }
-}
-
-function cashOutMines() {
-    if(!minesActive) return;
-    gems += minesCurrentWin;
-    minesActive = false;
-    updateUI();
-    revealAllMines();
-    document.getElementById('mines-cashout-btn').disabled = true;
-    alert(`Вы забрали ${minesCurrentWin} гемов!`);
-}
-
-function revealAllMines() {
-    minesGrid.forEach((type, idx) => {
-        const cell = document.querySelector(`.mine-cell[data-index="${idx}"]`);
-        if(type === 'mine' && !cell.classList.contains('revealed')) {
-            cell.innerHTML = '💣';
-            cell.style.opacity = '0.5';
-            cell.classList.add('revealed');
-        }
-    });
-}
-
-
 function openCrashGame() {
     // Скрываем лобби и слоты
     document.getElementById('lobby-screen').classList.remove('active');
@@ -1656,6 +1535,224 @@ function updateCrashBalance() {
     const el = document.getElementById('crash-balance-display');
     if (el) el.innerText = gems.toLocaleString();
 }
+
+
+
+// === MINES GAME VARIABLES ===
+let minesGrid = [];
+let minesCount = 3;
+let minesBet = 0;
+let minesActive = false;
+let openedCells = 0;
+let minesCurrentWin = 0;
+
+function startMinesGame() {
+    const betInput = document.getElementById('mines-bet-input');
+    const bet = parseInt(betInput.value);
+
+    if (bet > gems || bet <= 0) {
+        alert("Недостаточно гемов!");
+        return;
+    }
+
+    gems -= bet;
+    minesBet = bet;
+    minesActive = true;
+    openedCells = 0;
+    minesCurrentWin = 0;
+    updateUI();
+    updateMinesBalance();
+
+    // Генерация поля
+    minesGrid = Array(25).fill('safe');
+    let placed = 0;
+    while (placed < minesCount) {
+        let idx = Math.floor(Math.random() * 25);
+        if (minesGrid[idx] === 'safe') {
+            minesGrid[idx] = 'mine';
+            placed++;
+        }
+    }
+
+    renderMinesGrid();
+    calculateMultipliers();
+    updateMinesInfo();
+    
+    document.getElementById('mines-current-win').innerText = "0";
+    document.getElementById('mines-cashout-btn').style.display = 'none';
+    document.getElementById('mines-start-btn').style.display = 'none';
+}
+
+function renderMinesGrid() {
+    const container = document.getElementById('mines-grid');
+    container.innerHTML = '';
+    for (let i = 0; i < 25; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'mine-cell';
+        cell.dataset.index = i;
+        cell.onclick = () => clickMineCell(i);
+        container.appendChild(cell);
+    }
+}
+
+function clickMineCell(index) {
+    if (!minesActive) return;
+    const cell = document.querySelector(`.mine-cell[data-index="${index}"]`);
+    if (cell.classList.contains('revealed')) return;
+
+    cell.classList.add('revealed');
+
+    if (minesGrid[index] === 'mine') {
+        // ПРОИГРЫШ
+        cell.classList.add('mine-hit');
+        cell.innerHTML = getMineEmoji();
+        minesActive = false;
+        showMineExplosion();
+        revealAllMines();
+        document.getElementById('mines-cashout-btn').style.display = 'none';
+        setTimeout(() => {
+            document.getElementById('mines-start-btn').style.display = 'block';
+        }, 2000);
+    } else {
+        // УСПЕХ
+        cell.innerHTML = getSafeEmoji();
+        openedCells++;
+        
+        // Расчет текущего выигрыша
+        if (openedCells <= multipliers.length) {
+            minesCurrentWin = Math.floor(minesBet * multipliers[openedCells - 1]);
+        } else {
+            minesCurrentWin = Math.floor(minesBet * multipliers[multipliers.length - 1]);
+        }
+
+        document.getElementById('mines-current-win').innerText = minesCurrentWin;
+        document.getElementById('mines-cashout-btn').style.display = 'block';
+        updateMinesInfo();
+        
+        // Подсветка активного множителя
+        highlightMultiplier(openedCells);
+        
+        if (openedCells === (25 - minesCount)) {
+            cashOutMines(); // Автовыигрыш если открыл всё
+        }
+    }
+}
+
+function cashOutMines() {
+    if (!minesActive) return;
+    gems += minesCurrentWin;
+    minesActive = false;
+    updateUI();
+    updateMinesBalance();
+    revealAllMines();
+    document.getElementById('mines-cashout-btn').style.display = 'none';
+    document.getElementById('mines-start-btn').style.display = 'block';
+    alert(`Вы забрали ${minesCurrentWin} гемов!`);
+}
+
+function revealAllMines() {
+    minesGrid.forEach((type, idx) => {
+        const cell = document.querySelector(`.mine-cell[data-index="${idx}"]`);
+        if (type === 'mine' && !cell.classList.contains('revealed')) {
+            cell.innerHTML = getMineEmoji();
+            cell.style.opacity = '0.5';
+            cell.classList.add('revealed');
+        }
+    });
+}
+
+function calculateMultipliers() {
+    multipliers = [];
+    let multiplier = 1;
+    for (let i = 0; i < 25 - minesCount; i++) {
+        let safeRemaining = 25 - minesCount - i;
+        let totalRemaining = 25 - i;
+        multiplier *= (totalRemaining / safeRemaining);
+        multiplier = multiplier * 0.95; // Коррекция
+        multipliers.push(parseFloat(multiplier.toFixed(2)));
+    }
+    renderMultipliers();
+}
+
+function renderMultipliers() {
+    const container = document.getElementById('multipliers-row');
+    container.innerHTML = '';
+    multipliers.forEach((mult, index) => {
+        const badge = document.createElement('div');
+        badge.className = 'multiplier-badge';
+        badge.innerText = `x${mult}`;
+        badge.id = `mult-${index + 1}`;
+        container.appendChild(badge);
+    });
+}
+
+function highlightMultiplier(count) {
+    document.querySelectorAll('.multiplier-badge').forEach(b => b.classList.remove('active'));
+    const activeBadge = document.getElementById(`mult-${count}`);
+    if (activeBadge) activeBadge.classList.add('active');
+}
+
+function updateMinesInfo() {
+    document.getElementById('diamonds-left').innerText = 25 - minesCount - openedCells;
+    document.getElementById('tiles-opened').innerText = `${openedCells}/25`;
+    
+    let risk = 0;
+    if (openedCells < 25 - minesCount) {
+        risk = ((minesCount / (25 - openedCells)) * 100).toFixed(2);
+    }
+    document.getElementById('mine-risk').innerText = `${risk}%`;
+}
+
+function getMineEmoji() {
+    const emojis = ['🤡', '', '🍞', '📉', ''];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
+function getSafeEmoji() {
+    const emojis = ['💎', '', '🏆', '🔥', '🐱'];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
+function showMineExplosion() {
+    const overlay = document.createElement('div');
+    overlay.className = 'mine-explosion-overlay';
+    overlay.innerText = getRandomExplosionText();
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.remove(), 1000);
+}
+
+function getRandomExplosionText() {
+    const texts = ["ЛОХ!", "ЗАБАНЕН!", "РУБЛЬ УПАЛ!", "ТОСТЕР ПРИЛЕТЕЛ!", "КАКАШКА!"];
+    return texts[Math.floor(Math.random() * texts.length)];
+}
+
+function updateMinesBalance() {
+    const el = document.getElementById('mines-balance-display');
+    if (el) el.innerText = gems.toLocaleString();
+}
+
+// Вспомогательные функции для ставок
+function changeMinesBet(multiplier) {
+    const input = document.getElementById('mines-bet-input');
+    if (minesActive) return;
+    let newBet = Math.floor(parseInt(input.value) * multiplier);
+    if (newBet < 10) newBet = 10;
+    if (newBet > gems) newBet = gems;
+    input.value = newBet;
+}
+
+function setMaxMinesBet() {
+    if (!minesActive) {
+        document.getElementById('mines-bet-input').value = gems;
+    }
+}
+
+function setMinesCount(count) {
+    if (minesActive) return;
+    minesCount = count;
+    // Можно добавить визуальное выделение выбранной кнопки
+}
+
 
 
 
