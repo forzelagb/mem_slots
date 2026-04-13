@@ -1479,7 +1479,7 @@ body::before {
 
 #engine-effects {
     position: absolute;
-    bottom: 0px;     /* 👈 Ниже сопла */
+    bottom: 40px;     /* 👈 Ниже сопла */
     left: 50%;
     transform: translateX(-50%);
     width: 80px;       /* 👈 Шире область для частиц */
@@ -1489,15 +1489,17 @@ body::before {
 
 #multiplier-display {
     position: absolute;
-    top: 15%;          /* 👈 БЫЛО 25%, СТАЛО 15% — выше */
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 100px;  /* 👈 БЫЛО 140px, СТАЛО 100px — меньше */
+    top: 20%;          /* Можно чуть ниже, если нужно */
+    right: 10%;        /* 👈 Вместо left: 50%, ставим right: 10% — справа */
+    left: auto;        /* 👈 Сбрасываем left */
+    transform: none;   /* 👈 Убираем центрирование */
+    font-size: 80px;   /* 👈 Уменьшаем размер, чтобы не была огромной */
     font-weight: bold;
     color: #fff;
     text-shadow: 0 0 30px #9d4edd, 0 0 60px rgba(157, 78, 221, 0.5);
     z-index: 5;
     pointer-events: none;
+    text-align: right; /* Выравниваем текст по правому краю */
 }
 
 #control-panel {
@@ -1590,7 +1592,6 @@ body::before {
 #multiplier-display.crashing {
     color: #ff4444 !important;
     text-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255, 0, 0, 0.5) !important;
-    animation: shake 0.5s infinite;
 }
 
 #multiplier-display.winning {
