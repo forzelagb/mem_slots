@@ -2171,6 +2171,85 @@ button:hover,
     }
 }
 
+.daily-panel {
+    margin-bottom: 20px;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.08), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    border-radius: 20px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: var(--shadow-gold);
+    width: 100%;
+}
+
+.daily-panel h3 {
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+.daily-panel p {
+    color: var(--text-soft);
+    margin-bottom: 12px;
+}
+
+#daily-reward-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.market-shop-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+}
+
+.shop-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border-radius: 20px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    text-align: center;
+}
+
+.shop-card h3 {
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+.shop-card p {
+    color: var(--text-soft);
+    margin-bottom: 12px;
+}
+
+.shop-btn {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 6px 0 #6f0053, var(--shadow-pink);
+}
+
+.shop-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+@media (min-width: 700px) {
+    .market-shop-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }

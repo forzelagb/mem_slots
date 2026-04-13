@@ -24,6 +24,13 @@
         </a>
     </div>
 </div>
+<div class="bonus-panel daily-panel">
+    <h3>🎁 Ежедневный бонус</h3>
+    <p id="daily-reward-text">Забери бесплатные гемы каждый день</p>
+    <button class="btn-bonus" id="daily-reward-btn" onclick="claimDailyReward()">
+        Забрать бонус
+    </button>
+</div>
 
 <div class="hero-banner">
     <div class="hero-badge">🔥 MEME CASINO OF THE INTERNET</div>
@@ -41,7 +48,7 @@
         <div class="tabs-nav">
             <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
             <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
-            <button class="tab-btn" onclick="openTab('market')">📈 Биржа</button>
+            <button class="tab-btn" onclick="openTab('market')">🛒 Black Market</button>
             <!-- КНОПКА СЕКРЕТНОЙ ЗОНЫ -->
             <button id="btn-secret" class="tab-btn btn-secret" onclick="checkSecretAccess()">
                 🔒 SECRET
@@ -160,41 +167,43 @@
 </div>
 
         <!-- === ВКЛАДКА 2: БИРЖА === -->
-        <div id="tab-market" class="tab-content">
-            <div class="market-panel-pro">
-                <div class="market-header">
-                    <h3>📈 МЕМ-БИРЖА PRO</h3>
-                    <span class="live-indicator">● LIVE</span>
-                </div>
-                <div class="coin-selector">
-                    <button class="coin-tab active" onclick="selectCoin('burmal', this)">БурмалCOIN</button>
-                    <button class="coin-tab" onclick="selectCoin('burmaldook', this)">БурмалДук</button>
-                    <button class="coin-tab" onclick="selectCoin('hecio', this)">HeCION</button>
-                    <button class="coin-tab" onclick="selectCoin('ciondic', this)">CIONдиции</button>
-                    <button class="coin-tab" onclick="selectCoin('analdoc', this)">ANalDOCion</button>
-                    <button class="coin-tab" onclick="selectCoin('tuncion', this)">TunCION</button>
-                </div>
-                <div class="chart-container">
-                    <canvas id="cryptoChart"></canvas>
-                </div>
-                <div class="current-coin-info">
-                    <div class="price-block">
-                        <span class="coin-name-display" id="display-name">БурмалCOIN</span>
-                        <span class="coin-price-display" id="display-price">Загрузка...</span>
-                        <span class="coin-change" id="display-change">0%</span>
-                    </div>
-                    <div class="portfolio-block">
-                        <p>В портфеле: <span id="display-amount">0</span> шт.</p>
-                        <p>Стоимость: <span id="display-value">0</span> ₽</p>
-                    </div>
-                    <div class="trade-buttons">
-                        <input type="number" id="trade-amount" placeholder="Кол-во" value="1" min="1">
-                        <button class="btn-trade buy" onclick="tradeCoin('buy')">КУПИТЬ</button>
-                        <button class="btn-trade sell" onclick="tradeCoin('sell')">ПРОДАТЬ</button>
-                    </div>
-                </div>
-            </div>
+<div id="tab-market" class="tab-content">
+    <h2 class="section-title">🛒 BLACK MARKET</h2>
+
+    <div class="market-shop-grid">
+        <div class="shop-card">
+            <h3>🎟 Lucky Ticket</h3>
+            <p>+10% к следующему выигрышу в слотах</p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('luckyTicket')">
+                Купить за 150000 💎
+            </button>
         </div>
+
+        <div class="shop-card">
+            <h3>⚡ Auto Spin Pack</h3>
+            <p>+20 автоспинов на следующий запуск</p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('autoPack')">
+                Купить за 100000 💎
+            </button>
+        </div>
+
+        <div class="shop-card">
+            <h3>🛡 Mega Shield</h3>
+            <p>1 защита от проигрышного спина</p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('shield')">
+                Купить за 250000 💎
+            </button>
+        </div>
+
+        <div class="shop-card">
+            <h3>💎 High Roller Pass</h3>
+            <p>Доступ к дорогому слоту на 1 запуск</p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('highRollerPass')">
+                Купить за 300000 💎
+            </button>
+        </div>
+    </div>
+</div>
 
         <!-- === ВКЛАДКА 4: СЕКРЕТНАЯ ЗОНА (VIP) === -->
         <div id="tab-secret" class="tab-content">

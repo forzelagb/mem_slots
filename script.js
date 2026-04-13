@@ -326,6 +326,15 @@ function updateUI() {
 }
 
 function startGame(themeName) {
+    if (themeName === 'kaka' && upgrades.highroller < 1) {
+    if (blackMarketItems.highRollerPass > 0) {
+        blackMarketItems.highRollerPass -= 1;
+        saveBlackMarket();
+    } else {
+        alert("❌ Открой High Roller в улучшениях или купи пропуск в Black Market!");
+        return;
+    }
+}
      if (themeName === 'ronaldo') {
         alert("❌ Слот Ronaldo временно недоступен.");
         return; // Не открываем игру
@@ -427,6 +436,12 @@ function toggleAuto() {
     } else {
         autoSpinActive = true;
     autoSpinCount = 10 + upgrades.auto * 5;
+
+    if (blackMarketItems.autoPack > 0) {
+    autoSpinCount += 20;
+    blackMarketItems.autoPack -= 1;
+    saveBlackMarket();
+    }
         autoBtn.innerText = "STOP";
         autoBtn.style.background = "linear-gradient(to bottom, #ff4444, #cc0000)";
         spin();
@@ -509,9 +524,9 @@ function checkWins(grid) {
                 const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
                 let winAmount = 0;
 
-                if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
-                else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
-                else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
+                if (matchCount === 3) winAmount = currentBet * 1.2 * multiplier;
+                else if (matchCount === 4) winAmount = currentBet * 3 * multiplier;
+                else if (matchCount === 5) winAmount = currentBet * 20 * multiplier;
 
                 totalWin += winAmount;
                 col += matchCount - 1; // Пропускаем проверенные ячейки
@@ -538,9 +553,9 @@ function checkWins(grid) {
                 const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
                 let winAmount = 0;
 
-                if (matchCount === 3) winAmount = currentBet * 1 * multiplier;
-                else if (matchCount === 4) winAmount = currentBet * 5 * multiplier;
-                else if (matchCount === 5) winAmount = currentBet * 50 * multiplier;
+                if (matchCount === 3) winAmount = currentBet * 1.2 * multiplier;
+                else if (matchCount === 4) winAmount = currentBet * 3 * multiplier;
+                else if (matchCount === 5) winAmount = currentBet * 20 * multiplier;
 
                 totalWin += winAmount;
                 // Не пропускаем строки здесь — потому что одна ячейка может участвовать в нескольких вертикалях? Нет, не может — так что можно пропустить
@@ -601,7 +616,18 @@ if (totalWin > 0) {
     if (totalWin >= currentBet * 20) showBigWin(totalWin);
 
 } else {
-    resultText.innerText = "Попробуй еще...";
+    if (blackMarketItems.shield > 0) {
+        const refund = Math.floor(currentBet * 0.5);
+        gems += refund;
+        blackMarketItems.shield -= 1;
+        saveBlackMarket();
+        saveData();
+        updateUI();
+        resultText.innerText = `🛡 Щит спас ${refund} 💎`;
+        animateBalanceChange('win');
+    } else {
+        resultText.innerText = "Попробуй еще...";
+    }
 }
 
     saveData();
@@ -1713,7 +1739,93 @@ function buyUpgrade(type) {
 }
 
 
+function claimDailyReward() {
+    const lastClaim = parseInt(localStorage.getItem('dailyRewardTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
 
+    if (now - lastClaim < oneDay) {
+        updateDailyRewardUI();
+        alert("⏳ Ты уже забрал бонус сегодня");
+        return;
+    }
+
+    const baseReward = 500;
+    const bonusFromUpgrade = upgrades.daily * 250;
+    const reward = baseReward + bonusFromUpgrade;
+
+    gems += reward;
+    localStorage.setItem('dailyRewardTime', now);
+
+    saveData();
+    updateUI();
+    updateDailyRewardUI();
+    animateBalanceChange('win');
+
+    alert(`🎁 Ты получил ${reward} 💎`);
+}
+
+function updateDailyRewardUI() {
+    const btn = document.getElementById('daily-reward-btn');
+    const text = document.getElementById('daily-reward-text');
+    if (!btn || !text) return;
+
+    const lastClaim = parseInt(localStorage.getItem('dailyRewardTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    const reward = 500 + upgrades.daily * 250;
+
+    if (now - lastClaim >= oneDay) {
+        btn.disabled = false;
+        btn.innerText = `Забрать ${reward} 💎`;
+        text.innerText = "Забери бесплатные гемы каждый день";
+    } else {
+        btn.disabled = true;
+        const hoursLeft = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
+        btn.innerText = "Уже получено";
+        text.innerText = `Следующий бонус через ${hoursLeft} ч.`;
+    }
+}
+
+
+
+let blackMarketItems = JSON.parse(localStorage.getItem('memeBlackMarket')) || {
+    luckyTicket: 0,
+    autoPack: 0,
+    shield: 0,
+    highRollerPass: 0
+};
+
+function saveBlackMarket() {
+    localStorage.setItem('memeBlackMarket', JSON.stringify(blackMarketItems));
+}
+
+function buyBlackMarketItem(type) {
+    const prices = {
+        luckyTicket: 150000,
+        autoPack: 100000,
+        shield: 250000,
+        highRollerPass: 300000
+    };
+
+    const cost = prices[type];
+
+    if (gems < cost) {
+        alert("Недостаточно гемов!");
+        return;
+    }
+
+    gems -= cost;
+    blackMarketItems[type] += 1;
+
+    saveBlackMarket();
+    saveData();
+    updateUI();
+    animateBalanceChange('loss');
+
+    alert("Покупка успешна!");
+}
 
 // === ЗАПУСК ===
 window.onload = () => {
@@ -1724,6 +1836,7 @@ window.onload = () => {
     updateMarketUI();
     updateLeaderboardUI();
     updateUpgradesUI();
+    updateDailyRewardUI();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 
