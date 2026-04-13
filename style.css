@@ -2251,6 +2251,58 @@ button:hover,
 }
 
 
+.market-inventory {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+.inventory-pill {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 999px;
+    padding: 10px 14px;
+    color: var(--text-white);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    font-size: 14px;
+}
+
+.shop-owned {
+    margin-bottom: 12px;
+    color: var(--gold);
+    font-size: 14px;
+}
+
+.wheel-panel {
+    text-align: center;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-wheel {
+    margin-top: 15px;
+    padding: 16px 24px;
+    border-radius: 14px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    box-shadow: 0 6px 0 #a56e00;
+}
+
+.wheel-result {
+    margin-top: 20px;
+    font-size: 20px;
+    color: var(--gold);
+}
+
+
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }

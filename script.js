@@ -154,6 +154,8 @@ function openTab(tabName) {
     if (tabName === 'games') buttons[0].classList.add('active');
     if (tabName === 'upgrades') buttons[1].classList.add('active');
     if (tabName === 'market') buttons[2].classList.add('active');
+    if (tabName === 'secret') buttons[3].classList.add('active');
+    if (tabName === 'wheel') buttons[4].classList.add('active');
 }
 
 // === ЛОГИКА БИРЖИ ===
@@ -330,6 +332,7 @@ function startGame(themeName) {
     if (blackMarketItems.highRollerPass > 0) {
         blackMarketItems.highRollerPass -= 1;
         saveBlackMarket();
+        updateBlackMarketUI();
     } else {
         alert("❌ Открой High Roller в улучшениях или купи пропуск в Black Market!");
         return;
@@ -441,6 +444,7 @@ function toggleAuto() {
     autoSpinCount += 20;
     blackMarketItems.autoPack -= 1;
     saveBlackMarket();
+    updateBlackMarketUI();
     }
         autoBtn.innerText = "STOP";
         autoBtn.style.background = "linear-gradient(to bottom, #ff4444, #cc0000)";
@@ -513,15 +517,23 @@ function checkWins(grid) {
             const item2 = grid[idx + 1];
             const item3 = grid[idx + 2];
 
-            if (item1 && item2 && item3 && 
-                item1.src === item2.src && 
-                item2.src === item3.src) {
-                
+            if (
+                item1 &&
+                item2 &&
+                item3 &&
+                item1.src === item2.src &&
+                item2.src === item3.src
+            ) {
                 let matchCount = 3;
+
                 if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
                 if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
 
-                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
+                const multiplier =
+                    item1.mult && !isNaN(parseFloat(item1.mult))
+                        ? parseFloat(item1.mult)
+                        : 1;
+
                 let winAmount = 0;
 
                 if (matchCount === 3) winAmount = currentBet * 1.2 * multiplier;
@@ -529,7 +541,9 @@ function checkWins(grid) {
                 else if (matchCount === 5) winAmount = currentBet * 20 * multiplier;
 
                 totalWin += winAmount;
-                col += matchCount - 1; // Пропускаем проверенные ячейки
+
+                // Пропускаем уже проверенные ячейки
+                col += matchCount - 1;
             }
         }
     }
@@ -539,18 +553,26 @@ function checkWins(grid) {
         for (let row = 0; row < rows - 2; row++) {
             const idx = row * cols + col;
             const item1 = grid[idx];
-            const item2 = grid[idx + cols];      // вниз на 1 ряд
-            const item3 = grid[idx + cols * 2];  // вниз на 2 ряда
+            const item2 = grid[idx + cols];
+            const item3 = grid[idx + cols * 2];
 
-            if (item1 && item2 && item3 && 
-                item1.src === item2.src && 
-                item2.src === item3.src) {
-                
+            if (
+                item1 &&
+                item2 &&
+                item3 &&
+                item1.src === item2.src &&
+                item2.src === item3.src
+            ) {
                 let matchCount = 3;
+
                 if (row + 3 < rows && grid[idx + cols * 3].src === item1.src) matchCount++;
                 if (row + 4 < rows && grid[idx + cols * 4].src === item1.src) matchCount++;
 
-                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
+                const multiplier =
+                    item1.mult && !isNaN(parseFloat(item1.mult))
+                        ? parseFloat(item1.mult)
+                        : 1;
+
                 let winAmount = 0;
 
                 if (matchCount === 3) winAmount = currentBet * 1.2 * multiplier;
@@ -558,77 +580,106 @@ function checkWins(grid) {
                 else if (matchCount === 5) winAmount = currentBet * 20 * multiplier;
 
                 totalWin += winAmount;
-                // Не пропускаем строки здесь — потому что одна ячейка может участвовать в нескольких вертикалях? Нет, не может — так что можно пропустить
-                // Но для простоты — не будем пропускать, чтобы не усложнять
             }
         }
     }
 
-    // === ДИАГОНАЛИ: слева направо, сверху вниз ===
+    // === ДИАГОНАЛИ: слева направо ===
     for (let row = 0; row < rows - 2; row++) {
         for (let col = 0; col < cols - 2; col++) {
             const idx = row * cols + col;
             const item1 = grid[idx];
-            const item2 = grid[idx + cols + 1];   // вниз-вправо
-            const item3 = grid[idx + cols * 2 + 2]; // ещё вниз-вправо
+            const item2 = grid[idx + cols + 1];
+            const item3 = grid[idx + cols * 2 + 2];
 
-            if (item1 && item2 && item3 && 
-                item1.src === item2.src && 
-                item2.src === item3.src) {
-                
-                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
-                totalWin += currentBet * 1 * multiplier; // За диагональ из 3 — фиксированный множитель ×1
-                // Можно сделать ×3 за диагональ, если хочешь
-            }
-        }
-    }
+            if (
+                item1 &&
+                item2 &&
+                item3 &&
+                item1.src === item2.src &&
+                item2.src === item3.src
+            ) {
+                const multiplier =
+                    item1.mult && !isNaN(parseFloat(item1.mult))
+                        ? parseFloat(item1.mult)
+                        : 1;
 
-    // === ДИАГОНАЛИ: справа налево, сверху вниз ===
-    for (let row = 0; row < rows - 2; row++) {
-        for (let col = 2; col < cols; col++) {
-            const idx = row * cols + col;
-            const item1 = grid[idx];
-            const item2 = grid[idx + cols - 1];   // вниз-влево
-            const item3 = grid[idx + cols * 2 - 2]; // ещё вниз-влево
-
-            if (item1 && item2 && item3 && 
-                item1.src === item2.src && 
-                item2.src === item3.src) {
-                
-                const multiplier = (item1.mult && !isNaN(parseFloat(item1.mult))) ? parseFloat(item1.mult) : 1;
                 totalWin += currentBet * 1 * multiplier;
             }
         }
     }
-// === НАЧИСЛЕНИЕ ВЫИГРЫША ===
-if (totalWin > 0) {
 
-    // 🔥 ДОБАВЛЯЕМ ЭТО:
-    const luckBonus = 1 + upgrades.luck * 0.02; // +2% за уровень
-    totalWin = Math.floor(totalWin * luckBonus);
+    // === ДИАГОНАЛИ: справа налево ===
+    for (let row = 0; row < rows - 2; row++) {
+        for (let col = 2; col < cols; col++) {
+            const idx = row * cols + col;
+            const item1 = grid[idx];
+            const item2 = grid[idx + cols - 1];
+            const item3 = grid[idx + cols * 2 - 2];
 
-    gems += totalWin;
+            if (
+                item1 &&
+                item2 &&
+                item3 &&
+                item1.src === item2.src &&
+                item2.src === item3.src
+            ) {
+                const multiplier =
+                    item1.mult && !isNaN(parseFloat(item1.mult))
+                        ? parseFloat(item1.mult)
+                        : 1;
 
-    resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
-    animateBalanceChange('win');
-
-    if (totalWin >= currentBet * 5) addToLeaderboard(totalWin);
-    if (totalWin >= currentBet * 20) showBigWin(totalWin);
-
-} else {
-    if (blackMarketItems.shield > 0) {
-        const refund = Math.floor(currentBet * 0.5);
-        gems += refund;
-        blackMarketItems.shield -= 1;
-        saveBlackMarket();
-        saveData();
-        updateUI();
-        resultText.innerText = `🛡 Щит спас ${refund} 💎`;
-        animateBalanceChange('win');
-    } else {
-        resultText.innerText = "Попробуй еще...";
+                totalWin += currentBet * 1 * multiplier;
+            }
+        }
     }
-}
+
+    // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
+    if (totalWin > 0) {
+        const luckBonus = 1 + upgrades.luck * 0.02;
+
+        let blackMarketBonus = 1;
+        let usedLuckyTicket = false;
+
+        if (blackMarketItems.luckyTicket > 0) {
+            blackMarketBonus += 0.10; // +10% к следующему выигрышу
+            blackMarketItems.luckyTicket -= 1;
+            saveBlackMarket();
+            updateBlackMarketUI();
+            usedLuckyTicket = true;
+        }
+
+        totalWin = Math.floor(totalWin * luckBonus * blackMarketBonus);
+
+        gems += totalWin;
+
+        if (usedLuckyTicket) {
+            resultText.innerText = `🎟 LUCKY TICKET! +${totalWin} 💎`;
+        } else {
+            resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
+        }
+
+        animateBalanceChange('win');
+
+        if (totalWin >= currentBet * 5) addToLeaderboard(totalWin);
+        if (totalWin >= currentBet * 20) showBigWin(totalWin);
+    } else {
+        if (blackMarketItems.shield > 0) {
+            const refund = Math.floor(currentBet * 0.5);
+            gems += refund;
+            blackMarketItems.shield -= 1;
+
+            saveBlackMarket();
+            updateBlackMarketUI();
+            saveData();
+            updateUI();
+
+            resultText.innerText = `🛡 Щит спас ${refund} 💎`;
+            animateBalanceChange('win');
+        } else {
+            resultText.innerText = "Попробуй еще...";
+        }
+    }
 
     saveData();
 }
@@ -721,11 +772,11 @@ function updateLeaderboardUI() {
 
 // === СИСТЕМА VIP КОДОВ ===
 const vipCodes = {
-    "TEST-VIP": 1,           // Для теста
-    "VIP-BRONZE": 1,         // 50₽ → Bronze
-    "VIP-SILVER": 2,         // 100₽ → Silver
-    "VIP-GOLD": 3,           // 200₽ → Gold
-    "VIP-PLATINUM": 4        // 500₽ → Platinum
+    "TEST-VIP": 1,
+    "VIP-LUCKY": 1,
+    "VIP-HIGHROLLER": 2,
+    "VIP-MEMELORD": 3,
+    "VIP-VEGASLEGEND": 4
 };
 
 let hasVIPAccess = localStorage.getItem('memeVIPAccess') === 'true';
@@ -783,11 +834,11 @@ function activateVIPCodeFromStore() {
 
 function getLevelName(level) {
     switch(level) {
-        case 1: return "Bronze";
-        case 2: return "Silver";
-        case 3: return "Gold";
-        case 4: return "Platinum";
-        default: return "Обычный";
+        case 1: return "Lucky";
+        case 2: return "High Roller";
+        case 3: return "Meme Lord";
+        case 4: return "Vegas Legend";
+        default: return "Guest";
     }
 }
 
@@ -1822,10 +1873,143 @@ function buyBlackMarketItem(type) {
     saveBlackMarket();
     saveData();
     updateUI();
+    updateBlackMarketUI();
     animateBalanceChange('loss');
+    
 
     alert("Покупка успешна!");
 }
+
+
+
+function updateBlackMarketUI() {
+    const mapping = [
+        ['luckyTicket', 'owned-luckyTicket', 'inv-luckyTicket'],
+        ['autoPack', 'owned-autoPack', 'inv-autoPack'],
+        ['shield', 'owned-shield', 'inv-shield'],
+        ['highRollerPass', 'owned-highRollerPass', 'inv-highRollerPass']
+    ];
+
+    mapping.forEach(([key, ownedId, invId]) => {
+        const ownedEl = document.getElementById(ownedId);
+        const invEl = document.getElementById(invId);
+
+        if (ownedEl) ownedEl.innerText = blackMarketItems[key] || 0;
+        if (invEl) invEl.innerText = blackMarketItems[key] || 0;
+    });
+}
+
+function spinWheel() {
+    if (vipLevel < 3) {
+        alert("❌ Доступно только для Elite Meme и выше");
+        return;
+    }
+
+    const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (now - lastSpin < oneDay) {
+        alert("⏳ Ты уже крутил сегодня!");
+        return;
+    }
+
+    const rewards = [
+        { type: 'gems', value: 500, chance: 30 },
+        { type: 'gems', value: 1000, chance: 25 },
+        { type: 'ticket', value: 1, chance: 15 },
+        { type: 'auto', value: 1, chance: 10 },
+        { type: 'shield', value: 1, chance: 10 },
+        { type: 'gems', value: 5000, chance: 7 },
+        { type: 'gems', value: 10000, chance: 2.5 },
+        { type: 'vip', value: 1, chance: 0.5 }
+    ];
+
+    // VIP 4 буст шанса
+    if (vipLevel >= 4) {
+        rewards.forEach(r => {
+            if (r.chance < 10) r.chance *= 1.5;
+        });
+    }
+
+    const roll = Math.random() * 100;
+    let sum = 0;
+    let reward;
+
+    for (let r of rewards) {
+        sum += r.chance;
+        if (roll <= sum) {
+            reward = r;
+            break;
+        }
+    }
+
+    giveWheelReward(reward);
+
+    localStorage.setItem('wheelSpinTime', now);
+    updateWheelUI();
+}
+function giveWheelReward(reward) {
+    const resultEl = document.getElementById('wheel-result');
+
+    if (!reward) return;
+
+    if (reward.type === 'gems') {
+        gems += reward.value;
+        resultEl.innerText = `💎 +${reward.value}`;
+    }
+
+    if (reward.type === 'ticket') {
+        blackMarketItems.luckyTicket += 1;
+        resultEl.innerText = `🎟 Lucky Ticket`;
+    }
+
+    if (reward.type === 'auto') {
+        blackMarketItems.autoPack += 1;
+        resultEl.innerText = `⚡ Auto Pack`;
+    }
+
+    if (reward.type === 'shield') {
+        blackMarketItems.shield += 1;
+        resultEl.innerText = `🛡 Shield`;
+    }
+
+    if (reward.type === 'vip') {
+        vipLevel = Math.min(vipLevel + 1, 4);
+        resultEl.innerText = `👑 VIP UPGRADE!`;
+    }
+
+    saveData();
+    saveBlackMarket();
+    updateUI();
+    updateBlackMarketUI();
+}
+function updateWheelUI() {
+    const btn = document.getElementById('wheel-spin-btn');
+    const text = document.getElementById('wheel-status-text');
+
+    if (!btn || !text) return;
+
+    const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (vipLevel < 3) {
+        btn.disabled = true;
+        text.innerText = "Открывается с Elite Meme";
+        return;
+    }
+
+    if (now - lastSpin >= oneDay) {
+        btn.disabled = false;
+        text.innerText = "Можно крутить!";
+    } else {
+        btn.disabled = true;
+        const hours = Math.ceil((oneDay - (now - lastSpin)) / 3600000);
+        text.innerText = `Следующий спин через ${hours} ч`;
+    }
+}
+
 
 // === ЗАПУСК ===
 window.onload = () => {
@@ -1837,6 +2021,8 @@ window.onload = () => {
     updateLeaderboardUI();
     updateUpgradesUI();
     updateDailyRewardUI();
+    updateBlackMarketUI();
+    updateWheelUI();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 
