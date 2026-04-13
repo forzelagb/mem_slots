@@ -1429,7 +1429,180 @@ body::before {
 }
 
 
+/* === ШИРОКИЙ ЭКРАН CRASH GAME === */
 
+#crash-screen {
+    display: none;
+    position: fixed; /* 👈 Фиксируем на весь экран */
+    top: 0;
+    left: 0;
+    width: 100vw;      /* 👈 Вся ширина viewport */
+    height: 100vh;     /* 👈 Вся высота viewport */
+    background: linear-gradient(to bottom, #0f0c29, #302b63);
+    overflow: hidden;
+    z-index: 999;      /* Поверх всего */
+}
+
+#game-area {
+    position: relative;
+    width: 100%;       /* 👈 Полная ширина */
+    height: 75%;       /* 👈 Чуть больше места для полёта */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0 50px;   /* 👈 Отступы по бокам, чтобы ракета не прилипала к краям */
+    box-sizing: border-box;
+}
+
+#rocket-container {
+    position: relative;
+    width: 200px;      /* 👈 Увеличим ракету */
+    height: 250px;
+    transition: transform 0.1s linear;
+}
+
+#pilot-face {
+    position: absolute;
+    top: 30px;         /* 👈 Поднимем лицо повыше */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;       /* 👈 Увеличим лицо */
+    z-index: 3;
+}
+
+#rocket-body {
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 2;
+}
+
+#engine-effects {
+    position: absolute;
+    bottom: -30px;     /* 👈 Ниже сопла */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;       /* 👈 Шире область для частиц */
+    height: 60px;
+    z-index: 1;
+}
+
+#multiplier-display {
+    position: absolute;
+    top: 25%;          /* 👈 Повыше, чтобы не перекрывало ракету */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 140px;  /* 👈 Крупнее множитель */
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 30px #9d4edd, 0 0 60px rgba(157, 78, 221, 0.5);
+    z-index: 5;
+    pointer-events: none;
+}
+
+#control-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 25px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+    border-top: 3px solid #9d4edd;
+    box-sizing: border-box;
+}
+
+#crash-bet-input {
+    width: 120px;
+    padding: 12px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    background: #222;
+    color: #fff;
+    border: 2px solid #555;
+    border-radius: 8px;
+}
+
+#crash-btn {
+    padding: 18px 50px;
+    font-size: 22px;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #9d4edd, #7b2cbf);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 20px #9d4edd;
+    transition: all 0.2s ease;
+}
+
+#crash-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #9d4edd;
+}
+
+.btn-back-game {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    z-index: 100;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-back-game:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Частицы — оставляем маленькими, но увеличиваем разброс */
+.particle {
+    position: absolute;
+    width: 20px;       /* 👈 Чуть крупнее, чем было */
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 1;
+    animation: fallDown 1.5s forwards;
+}
+
+@keyframes fallDown {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(150px) scale(0.5); }
+}
+
+.coin { background-image: url('image/coin.png'); }
+.gem-particle { background-image: url('image/gem_particle.png'); }
+.fire-particle { background-image: url('image/fire_particle.png'); }
+.trophy { background-image: url('image/trophy.png'); }
+
+/* Анимации текста */
+#multiplier-display.crashing {
+    color: #ff4444 !important;
+    text-shadow: 0 0 30px #ff0000, 0 0 60px rgba(255, 0, 0, 0.5) !important;
+    animation: shake 0.5s infinite;
+}
+
+#multiplier-display.winning {
+    color: #00ff88 !important;
+    text-shadow: 0 0 30px #00ff00, 0 0 60px rgba(0, 255, 0, 0.5) !important;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(-50%) translateX(0); }
+    25% { transform: translateX(-50%) translateX(-8px); }
+    75% { transform: translateX(-50%) translateX(8px); }
+}
 
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
