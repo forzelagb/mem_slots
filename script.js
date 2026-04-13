@@ -1910,90 +1910,90 @@ function updateBlackMarketUI() {
 }
 
 function spinWheel() {
-    if (vipLevel < 3) {
-        alert("❌ Доступно только для Elite Meme и выше");
-        return;
+    if (isWheelSpinning) return;
+
+    const track = document.getElementById('wheel-track');
+    const resultEl = document.getElementById('wheel-result');
+    const btn = document.getElementById('wheel-spin-btn');
+
+    if (!track || !btn || !resultEl) return;
+    if (!track.dataset.ready) renderWheelTrack();
+
+    isWheelSpinning = true;
+    btn.disabled = true;
+    resultEl.innerText = 'Крутим...';
+
+    const rewardsSequence = [];
+    for (let i = 0; i < 60; i++) {
+        rewardsSequence.push(wheelRewards[i % wheelRewards.length]);
     }
 
-    const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
+    const chosenReward = getWeightedWheelReward();
 
-    if (now - lastSpin < oneDay) {
-        alert("⏳ Ты уже крутил сегодня!");
-        return;
-    }
+    const finalRewardIndexInBase = wheelRewards.findIndex(r => r.id === chosenReward.id);
+    const stopIndex = 40 + finalRewardIndexInBase;
 
-    const rewards = [
-        { type: 'gems', value: 500, chance: 30 },
-        { type: 'gems', value: 1000, chance: 25 },
-        { type: 'ticket', value: 1, chance: 15 },
-        { type: 'auto', value: 1, chance: 10 },
-        { type: 'shield', value: 1, chance: 10 },
-        { type: 'gems', value: 5000, chance: 7 },
-        { type: 'gems', value: 10000, chance: 2.5 },
-        { type: 'vip', value: 1, chance: 0.5 }
-    ];
+    track.innerHTML = '';
+    rewardsSequence.forEach(reward => {
+        const item = document.createElement('div');
+        item.className = `wheel-item ${reward.rarity}`;
+        item.innerHTML = `
+            <div class="wheel-item-icon">${reward.icon}</div>
+            <div class="wheel-item-label">${reward.label}</div>
+        `;
+        track.appendChild(item);
+    });
 
-    // VIP 4 буст шанса
-    if (vipLevel >= 4) {
-        rewards.forEach(r => {
-            if (r.chance < 10) r.chance *= 1.5;
+    const itemWidth = 122;
+    const windowWidth = 560;
+    const centerOffset = windowWidth / 2 - itemWidth / 2;
+    const finalX = -(stopIndex * itemWidth - centerOffset);
+
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            track.style.transition = 'transform 4.8s cubic-bezier(0.08, 0.82, 0.17, 1)';
+            track.style.transform = `translateX(${finalX}px)`;
         });
-    }
+    });
 
-    const roll = Math.random() * 100;
-    let sum = 0;
-    let reward;
-
-    for (let r of rewards) {
-        sum += r.chance;
-        if (roll <= sum) {
-            reward = r;
-            break;
-        }
-    }
-
-    giveWheelReward(reward);
-
-    localStorage.setItem('wheelSpinTime', now);
-    updateWheelUI();
+    setTimeout(() => {
+        giveWheelReward(chosenReward);
+        resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
+        btn.disabled = false;
+        isWheelSpinning = false;
+    }, 5000);
 }
 function giveWheelReward(reward) {
-    const resultEl = document.getElementById('wheel-result');
-
     if (!reward) return;
 
     if (reward.type === 'gems') {
         gems += reward.value;
-        resultEl.innerText = `💎 +${reward.value}`;
     }
 
     if (reward.type === 'ticket') {
         blackMarketItems.luckyTicket += 1;
-        resultEl.innerText = `🎟 Lucky Ticket`;
     }
 
     if (reward.type === 'auto') {
         blackMarketItems.autoPack += 1;
-        resultEl.innerText = `⚡ Auto Pack`;
     }
 
     if (reward.type === 'shield') {
         blackMarketItems.shield += 1;
-        resultEl.innerText = `🛡 Shield`;
-    }
-
-    if (reward.type === 'vip') {
-        vipLevel = Math.min(vipLevel + 1, 4);
-        resultEl.innerText = `👑 VIP UPGRADE!`;
     }
 
     saveData();
     saveBlackMarket();
     updateUI();
     updateBlackMarketUI();
+    animateBalanceChange('win');
 }
+
+
+
 function updateWheelUI() {
     const btn = document.getElementById('wheel-spin-btn');
     const text = document.getElementById('wheel-status-text');
@@ -2007,13 +2007,14 @@ function updateWheelUI() {
 
 
 const wheelRewards = [
-    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500 },
-    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000 },
-    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1 },
-    { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1 },
-    { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1 },
-    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000 },
-    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000 }
+    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500, weight: 35 },
+    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000, weight: 25 },
+    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 15 },
+    { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 10 },
+    { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 10 },
+    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 4 },
+    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000, weight: 1 },
+    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.2 }
 ];
 
 let isWheelSpinning = false;
@@ -2129,6 +2130,21 @@ function giveWheelReward(reward) {
     updateUI();
     updateBlackMarketUI();
     animateBalanceChange('win');
+}
+
+
+function getWeightedWheelReward() {
+    const totalWeight = wheelRewards.reduce((sum, reward) => sum + reward.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (const reward of wheelRewards) {
+        random -= reward.weight;
+        if (random <= 0) {
+            return reward;
+        }
+    }
+
+    return wheelRewards[0];
 }
 
 // === ЗАПУСК ===
