@@ -1479,7 +1479,7 @@ body::before {
 
 #engine-effects {
     position: absolute;
-    bottom: 40px;     /* 👈 Ниже сопла */
+    bottom: 150px;     /* 👈 Ниже сопла */
     left: 50%;
     transform: translateX(-50%);
     width: 80px;       /* 👈 Шире область для частиц */
