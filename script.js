@@ -2021,6 +2021,132 @@ function updateWheelUI() {
 }
 
 
+
+const wheelRewards = [
+    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500 },
+    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000 },
+    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1 },
+    { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1 },
+    { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1 },
+    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000 },
+    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000 }
+];
+
+let isWheelSpinning = false;
+
+function renderWheelTrack() {
+    const track = document.getElementById('wheel-track');
+    if (!track) return;
+
+    track.innerHTML = '';
+
+    const repeatedRewards = [];
+    for (let i = 0; i < 30; i++) {
+        repeatedRewards.push(wheelRewards[i % wheelRewards.length]);
+    }
+
+    repeatedRewards.forEach(reward => {
+        const item = document.createElement('div');
+        item.className = `wheel-item ${reward.rarity}`;
+        item.innerHTML = `
+            <div class="wheel-item-icon">${reward.icon}</div>
+            <div class="wheel-item-label">${reward.label}</div>
+        `;
+        track.appendChild(item);
+    });
+
+    track.style.transform = 'translateX(0px)';
+    track.dataset.ready = 'true';
+}
+
+
+function spinWheel() {
+    if (isWheelSpinning) return;
+
+    const track = document.getElementById('wheel-track');
+    const resultEl = document.getElementById('wheel-result');
+    const btn = document.getElementById('wheel-spin-btn');
+
+    if (!track) return;
+    if (!track.dataset.ready) renderWheelTrack();
+
+    isWheelSpinning = true;
+    btn.disabled = true;
+    resultEl.innerText = 'Крутим...';
+
+    const rewardsSequence = [];
+    for (let i = 0; i < 50; i++) {
+        rewardsSequence.push(wheelRewards[i % wheelRewards.length]);
+    }
+
+    track.innerHTML = '';
+    rewardsSequence.forEach(reward => {
+        const item = document.createElement('div');
+        item.className = `wheel-item ${reward.rarity}`;
+        item.innerHTML = `
+            <div class="wheel-item-icon">${reward.icon}</div>
+            <div class="wheel-item-label">${reward.label}</div>
+        `;
+        track.appendChild(item);
+    });
+
+    const finalRewardIndex = Math.floor(Math.random() * wheelRewards.length);
+    const stopIndex = 35 + finalRewardIndex;
+
+    const itemWidth = 122; // 110 + gap/padding примерно
+    const windowWidth = 560;
+    const centerOffset = windowWidth / 2 - itemWidth / 2;
+
+    const finalX = -(stopIndex * itemWidth - centerOffset);
+
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            track.style.transition = 'transform 4.8s cubic-bezier(0.08, 0.82, 0.17, 1)';
+            track.style.transform = `translateX(${finalX}px)`;
+        });
+    });
+
+    setTimeout(() => {
+        const reward = rewardsSequence[stopIndex];
+        giveWheelReward(reward);
+
+        resultEl.innerText = `Ты выбил: ${reward.icon} ${reward.label}`;
+        btn.disabled = false;
+        isWheelSpinning = false;
+    }, 5000);
+}
+
+
+
+function giveWheelReward(reward) {
+    if (!reward) return;
+
+    if (reward.type === 'gems') {
+        gems += reward.value;
+    }
+
+    if (reward.type === 'ticket') {
+        blackMarketItems.luckyTicket += 1;
+    }
+
+    if (reward.type === 'auto') {
+        blackMarketItems.autoPack += 1;
+    }
+
+    if (reward.type === 'shield') {
+        blackMarketItems.shield += 1;
+    }
+
+    saveData();
+    saveBlackMarket();
+    updateUI();
+    updateBlackMarketUI();
+    animateBalanceChange('win');
+}
+
 // === ЗАПУСК ===
 window.onload = () => {
     setBet(currentBet);
@@ -2033,6 +2159,7 @@ window.onload = () => {
     updateDailyRewardUI();
     updateBlackMarketUI();
     updateWheelUI();
+    renderWheelTrack();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 

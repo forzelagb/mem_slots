@@ -2303,6 +2303,130 @@ button:hover,
 }
 
 
+.wheel-panel {
+    text-align: center;
+    padding: 20px;
+    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.wheel-window {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    height: 120px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 2px solid rgba(255, 211, 106, 0.5);
+    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(255,255,255,0.03));
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.35), 0 0 18px rgba(255, 211, 106, 0.18);
+}
+
+.wheel-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 12px;
+    padding: 0 12px;
+    will-change: transform;
+}
+
+.wheel-item {
+    min-width: 110px;
+    height: 84px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+}
+
+.wheel-item-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.wheel-item-label {
+    font-size: 14px;
+    text-align: center;
+    padding: 0 6px;
+}
+
+.wheel-item.common {
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+}
+
+.wheel-item.rare {
+    background: linear-gradient(180deg, rgba(77,227,255,0.22), rgba(77,227,255,0.08));
+    border-color: rgba(77,227,255,0.4);
+}
+
+.wheel-item.epic {
+    background: linear-gradient(180deg, rgba(199,125,255,0.25), rgba(199,125,255,0.08));
+    border-color: rgba(199,125,255,0.5);
+}
+
+.wheel-item.legendary {
+    background: linear-gradient(180deg, rgba(255,211,106,0.28), rgba(255,184,0,0.12));
+    border-color: rgba(255,211,106,0.7);
+    box-shadow: 0 0 16px rgba(255,211,106,0.2);
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 20px solid var(--gold);
+    filter: drop-shadow(0 0 8px rgba(255, 211, 106, 0.45));
+    z-index: 3;
+}
+
+.btn-wheel {
+    margin-top: 10px;
+    padding: 16px 28px;
+    border-radius: 14px;
+    border: none;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    box-shadow: 0 6px 0 #a56e00, var(--shadow-gold);
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.btn-wheel:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.btn-wheel:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.wheel-result {
+    margin-top: 18px;
+    min-height: 28px;
+    font-size: 22px;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(255,211,106,0.3);
+}
+
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
