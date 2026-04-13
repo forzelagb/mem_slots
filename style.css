@@ -758,141 +758,6 @@ body::before {
     display: block;
 }
 
-/* === БИЗНЕС ПАНЕЛЬ === */
-.business-panel {
-    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 20px;
-    padding: 20px;
-    width: 100%;
-    color: white;
-    box-shadow: 0 18px 45px rgba(0,0,0,0.35), var(--shadow-blue);
-    backdrop-filter: blur(10px);
-}
-
-.income-display {
-    font-size: 14px;
-    color: #00ff88;
-    font-weight: bold;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.business-list {
-    display: flex;
-    gap: 15px;
-    justify-content: space-between;
-    flex-wrap: wrap; /* Чтобы на мобильных переносилось */
-}
-
-.biz-card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.10);
-    display: flex;
-    flex-direction: column;
-    width: calc(33.33% - 10px);
-    min-width: 250px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-}
-
-.biz-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-blue);
-}
-
-.biz-image {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
-    background: #333;
-}
-
-.biz-body {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.biz-info h4 { 
-    margin: 0; 
-    font-size: 18px; 
-    color: var(--gold); 
-    text-align: center;
-}
-.biz-info p { margin: 0; font-size: 13px; color: #ccc; }
-
-.biz-level { 
-    color: var(--secondary); 
-    font-weight: bold; 
-    font-size: 12px; 
-    text-align: center;
-    display: block;
-}
-
-.biz-income {
-    text-align: center;
-    font-size: 13px;
-    color: #ccc;
-}
-
-.biz-accumulated {
-    text-align: center;
-    font-size: 13px;
-    color: #00ff88;
-    font-weight: bold;
-}
-
-.biz-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: auto; /* Прижимает кнопки к низу */
-}
-
-.btn-collect-profit {
-    background: #00ff88;
-    color: #000;
-    border: none;
-    padding: 8px;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 12px;
-    transition: 0.2s;
-}
-
-.btn-collect-profit:hover:not(:disabled) {
-    background: #00cc6a;
-    transform: scale(1.02);
-}
-
-.btn-upgrade-biz {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 12px;
-    transition: 0.2s;
-}
-
-.btn-upgrade-biz:hover:not(:disabled) {
-    background: #cc00b3;
-    transform: scale(1.02);
-}
-
-.btn-upgrade-biz:disabled, .btn-collect-profit:disabled {
-    background: #555;
-    cursor: not-allowed;
-    opacity: 0.7;
-    transform: none;
-}
 
 /* Адаптивность для мобильных */
 /* Для экранов меньше 600px (мобильные) */
@@ -2251,6 +2116,62 @@ button:hover,
 .featured-grid .game-card:hover {
     box-shadow: 0 0 25px rgba(255, 211, 106, 0.6);
 }
+
+
+
+
+.upgrades-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+}
+
+.upgrade-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border-radius: 20px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    text-align: center;
+}
+
+.upgrade-card h3 {
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+.upgrade-card p {
+    color: var(--text-soft);
+    margin-bottom: 8px;
+}
+
+.btn-upgrade-main {
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    box-shadow:
+     0 6px 0 #a56e00, var(--shadow-gold);
+}
+.btn-upgrade-main:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+@media (min-width: 700px) {
+    .upgrades-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
