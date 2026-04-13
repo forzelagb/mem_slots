@@ -1662,6 +1662,253 @@ body::before {
 
 
 
+/* === НОВЫЙ ДИЗАЙН MINES (Фиолетово-серый) === */
+.mines-wrapper {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto 0;
+}
+
+/* Левая панель */
+.mines-controls-panel {
+    background: #1e1e24; /* Темно-серый фон */
+    padding: 20px;
+    border-radius: 16px;
+    width: 320px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.game-title-mines {
+    color: #bb86fc; /* Фиолетовый акцент */
+    text-align: center;
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.control-group label {
+    display: block;
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Поле ввода ставки */
+#mines-bet-input {
+    width: 100%;
+    background: #2b2b35;
+    border: 2px solid #3f3f4a;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+    outline: none;
+    transition: 0.3s;
+}
+
+#mines-bet-input:focus {
+    border-color: #bb86fc;
+}
+
+/* Кнопки /2 x2 MAX */
+.bet-actions-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s;
+    color: #000;
+}
+
+.btn-action:active { transform: scale(0.95); }
+
+.half { background: #cf6679; color: white; }   /* Красный оттенок */
+.double { background: #03dac6; color: black; } /* Бирюзовый */
+.max { background: #bb86fc; color: black; }    /* Фиолетовый */
+
+/* Кнопки выбора мин */
+.mines-count-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-mine-count {
+    flex: 1;
+    padding: 10px 0;
+    background: #2b2b35;
+    border: 1px solid #3f3f4a;
+    color: #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-mine-count:hover {
+    background: #383842;
+}
+
+.btn-mine-count.active {
+    background: #bb86fc; /* Активная кнопка фиолетовая */
+    color: #000;
+    border-color: #bb86fc;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(187, 134, 252, 0.4);
+}
+
+/* Кнопки Старт и Забрать */
+.btn-start-mines, .btn-cashout-mines {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: filter 0.2s;
+}
+
+.btn-start-mines {
+    background: linear-gradient(45deg, #bb86fc, #9d4edd);
+    color: white;
+    box-shadow: 0 4px 15px rgba(187, 134, 252, 0.3);
+}
+
+.btn-start-mines:hover { filter: brightness(1.1); }
+
+.btn-cashout-mines {
+    background: linear-gradient(45deg, #03dac6, #018786);
+    color: black;
+    box-shadow: 0 4px 15px rgba(3, 218, 198, 0.3);
+    animation: pulse-green 1.5s infinite;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(3, 218, 198, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(3, 218, 198, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(3, 218, 198, 0); }
+}
+
+/* Инфо блок */
+.mines-info-box {
+    background: #15151a;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    margin-top: 10px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.info-row:last-child { margin-bottom: 0; }
+
+/* Правая часть */
+.mines-game-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.balance-display-top {
+    font-size: 24px;
+    color: #bb86fc;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid #bb86fc;
+}
+
+.mines-grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1;
+}
+
+/* Ячейки поля */
+.mine-cell {
+    background: #2b2b35;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    transition: all 0.2s;
+    border: 2px solid #3f3f4a;
+    user-select: none;
+}
+
+.mine-cell:hover:not(.revealed) {
+    background: #383842;
+    border-color: #bb86fc;
+    transform: translateY(-2px);
+}
+
+.mine-cell.revealed {
+    background: #1a1a20;
+    border-color: #555;
+    cursor: default;
+}
+
+.mine-cell.gem {
+    background: #1a2e1a;
+    border-color: #03dac6;
+    box-shadow: inset 0 0 15px rgba(3, 218, 198, 0.2);
+}
+
+.mine-cell.mine-hit {
+    background: #2e1a1a;
+    border-color: #cf6679;
+    box-shadow: inset 0 0 15px rgba(207, 102, 121, 0.2);
+    animation: shakeCell 0.5s;
+}
+
+.current-win-display {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #fff;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .mines-wrapper {
+        flex-direction: column;
+    }
+    .mines-controls-panel {
+        width: 100%;
+    }
+}
+
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
