@@ -147,15 +147,25 @@ function openTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-    document.getElementById('tab-' + tabName).classList.add('active');
+    const tab = document.getElementById('tab-' + tabName);
+    if (tab) {
+        tab.classList.add('active');
+    }
 
-    const buttons = document.querySelectorAll('.tab-btn');
+    let activeBtn = null;
 
-    if (tabName === 'games') buttons[0].classList.add('active');
-    if (tabName === 'upgrades') buttons[1].classList.add('active');
-    if (tabName === 'market') buttons[2].classList.add('active');
-    if (tabName === 'secret') buttons[3].classList.add('active');
-    if (tabName === 'wheel') buttons[4].classList.add('active');
+    if (tabName === 'secret') {
+        activeBtn = document.getElementById('btn-secret');
+    } else {
+        activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => {
+            const onclick = btn.getAttribute('onclick') || '';
+            return onclick.includes(`openTab('${tabName}')`);
+        });
+    }
+
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
 }
 
 // === ЛОГИКА БИРЖИ ===
