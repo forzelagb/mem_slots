@@ -1456,17 +1456,17 @@ body::before {
 
 #rocket-container {
     position: relative;
-    width: 200px;      /* 👈 Увеличим ракету */
-    height: 250px;
+    width: 250px;      /* 👈 Увеличим ракету */
+    height: 300px;
     transition: transform 0.1s linear;
 }
 
 #pilot-face {
     position: absolute;
-    top: 30px;         /* 👈 Поднимем лицо повыше */
+    top: 40px;         /* 👈 Поднимем лицо повыше */
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;       /* 👈 Увеличим лицо */
+    width: 100px;       /* 👈 Увеличим лицо */
     z-index: 3;
 }
 
@@ -1479,20 +1479,20 @@ body::before {
 
 #engine-effects {
     position: absolute;
-    bottom: -30px;     /* 👈 Ниже сопла */
+    bottom: 0px;     /* 👈 Ниже сопла */
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;       /* 👈 Шире область для частиц */
-    height: 60px;
+    width: 80px;       /* 👈 Шире область для частиц */
+    height: 80px;
     z-index: 1;
 }
 
 #multiplier-display {
     position: absolute;
-    top: 25%;          /* 👈 Повыше, чтобы не перекрывало ракету */
+    top: 15%;          /* 👈 БЫЛО 25%, СТАЛО 15% — выше */
     left: 50%;
     transform: translateX(-50%);
-    font-size: 140px;  /* 👈 Крупнее множитель */
+    font-size: 100px;  /* 👈 БЫЛО 140px, СТАЛО 100px — меньше */
     font-weight: bold;
     color: #fff;
     text-shadow: 0 0 30px #9d4edd, 0 0 60px rgba(157, 78, 221, 0.5);
@@ -1506,17 +1506,17 @@ body::before {
     left: 0;
     width: 100%;
     background: rgba(0, 0, 0, 0.85);
-    padding: 25px 40px;
+    padding: 30px 50px;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 40px;
     align-items: center;
     border-top: 3px solid #9d4edd;
     box-sizing: border-box;
 }
 
 #crash-bet-input {
-    width: 120px;
+    width: 140px;
     padding: 12px;
     text-align: center;
     font-size: 20px;
@@ -1528,7 +1528,7 @@ body::before {
 }
 
 #crash-btn {
-    padding: 18px 50px;
+    padding: 20px 60px;
     font-size: 22px;
     font-weight: bold;
     background: linear-gradient(to bottom, #9d4edd, #7b2cbf);
@@ -1566,8 +1566,8 @@ body::before {
 /* Частицы — оставляем маленькими, но увеличиваем разброс */
 .particle {
     position: absolute;
-    width: 20px;       /* 👈 Чуть крупнее, чем было */
-    height: 20px;
+    width: 30px;       /* 👈 Чуть крупнее, чем было */
+    height: 30px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -1578,7 +1578,7 @@ body::before {
 
 @keyframes fallDown {
     0% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(150px) scale(0.5); }
+    100% { opacity: 0; transform: translateY(200px) scale(0.5); }
 }
 
 .coin { background-image: url('image/coin.png'); }
@@ -1604,6 +1604,13 @@ body::before {
     75% { transform: translateX(-50%) translateX(8px); }
 }
 
+
+
+#control-panel button:not(#crash-btn) {
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+}
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
