@@ -15,16 +15,27 @@
     <div id="lobby-screen" class="screen active">
         <!-- ШАПКА С БАЛАНСОМ И КНОПКОЙ ПОКУПКИ -->
         <div class="header-bar">
-            <div class="logo">MEME SPIN PRO</div>
-            <div class="balance-container">
-                <span class="gem-icon">💎</span>
-                <span id="lobby-balance">10000</span>
-                <!-- КНОПКА ПОДДЕРЖКИ ПРОЕКТА -->
-                <a href="https://www.donationalerts.com/r/forzelagb?amount=10&message=ХОЧУ+ГЕМЫ" target="_blank" class="btn-buy-gems">
-                    + Купить
-                </a>
-            </div>
-        </div>
+    <div class="logo">🎰 MEME VEGAS</div>
+    <div class="balance-container">
+        <span class="gem-icon">💎</span>
+        <span id="lobby-balance">10000</span>
+        <a href="https://www.donationalerts.com/r/forzelagb?amount=10&message=ХОЧУ+ГЕМЫ" target="_blank" class="btn-buy-gems">
+            + Купить
+        </a>
+    </div>
+</div>
+
+<div class="hero-banner">
+    <div class="hero-badge">🔥 MEME CASINO OF THE INTERNET</div>
+    <h1 class="hero-title">Крути. Фарми. Рискуй. Забирай джекпоты.</h1>
+    <p class="hero-subtitle">
+        Бесплатные алмазы, мем-слоты, мины, ракета и VIP режим.
+    </p>
+    <div class="hero-actions">
+        <button class="hero-btn hero-btn-primary" onclick="openTab('games')">🎰 Играть сейчас</button>
+        <button class="hero-btn hero-btn-secondary" onclick="openTab('market')">📈 Открыть биржу</button>
+    </div>
+</div>
         
         <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ -->
         <div class="tabs-nav">
@@ -39,57 +50,72 @@
         
 
         <!-- === ВКЛАДКА 1: ИГРЫ === -->
-        <div id="tab-games" class="tab-content active">
-            <h2 class="section-title">ВЫБЕРИ ТЕМУ</h2>
-            <div class="games-grid">
-                <!-- Карточка Ракетки -->
-<div class="game-card" onclick="openCrashGame()">
-    <div class="card-image crash-bg"></div>
-    <div class="card-content">
-        <h3>🚀 CRASH GAME</h3>
-        <p>Успей забрать до взрыва!</p>
-    </div>
-</div>
+<div id="tab-games" class="tab-content active">
+    <h2 class="section-title">🔥 ГЛАВНЫЕ РЕЖИМЫ</h2>
 
-<!-- Карточка Сапёра -->
-<div class="game-card" onclick="openMinesGame()">
-    <div class="card-image mines-bg"></div>
-    <div class="card-content">
-        <h3>💣 MINESWEEPER</h3>
-        <p>Не подорвись на мине!</p>
-    </div>
-</div>
-                <!-- Карточки игр -->
-                <div class="game-card" onclick="startGame('brain')"><div class="card-image brain-bg"></div><div class="card-content"><h3>🧠 BRAIN</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('lexapaws')"><div class="card-image lexapaws-bg"></div><div class="card-content"><h3>🐾 LEXA PAWS</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('litwin')"><div class="card-image litwin-bg"></div><div class="card-content"><h3>🎮 LITWIN</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('melstroy')"><div class="card-image melstroy-bg"></div><div class="card-content"><h3>👑 MELLSTROY</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('nikkifn')"><div class="card-image nikkifn-bg"></div><div class="card-content"><h3>🎯 NIKKIFN</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('rejiboi')"><div class="card-image rejiboi-bg"></div><div class="card-content"><h3>🕺 REJIBOI</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('rostick')"><div class="card-image rostick-bg"></div><div class="card-content"><h3>🌭 ROSTICK</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('sasich')"><div class="card-image sasich-bg"></div><div class="card-content"><h3>🗣️ SASICH</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div></div>
-                <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
-            </div>
-
-            <!-- ТАБЛИЦА ЛИДЕРОВ (ЛОКАЛЬНАЯ) -->
-            <div class="leaderboard-panel">
-                <h3>🏆 ТВОЙ ТОП-5 РЕКОРДОВ</h3>
-                <table class="leaderboard-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Выигрыш</th>
-                            <th>Дата</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-body">
-                        <!-- Сюда JS вставит строки -->
-                    </tbody>
-                </table>
+    <div class="games-grid featured-grid">
+        <div class="game-card" onclick="openCrashGame()">
+            <div class="card-image crash-bg"></div>
+            <div class="card-content">
+                <h3>🚀 CRASH GAME</h3>
+                <p>Успей забрать до взрыва!</p>
             </div>
         </div>
+
+        <div class="game-card" onclick="openMinesGame()">
+            <div class="card-image mines-bg"></div>
+            <div class="card-content">
+                <h3>💣 MINESWEEPER</h3>
+                <p>Не подорвись на мине!</p>
+            </div>
+        </div>
+
+        <div class="game-card" onclick="startGame('brain')">
+            <div class="card-image brain-bg"></div>
+            <div class="card-content">
+                <h3>🎰 CLASSIC SLOT</h3>
+                <p>Главный слот для быстрого старта</p>
+            </div>
+        </div>
+
+        <div class="game-card" onclick="checkSecretAccess()">
+            <div class="card-image ronaldo-bg"></div>
+            <div class="card-content">
+                <h3>👑 VIP ZONE</h3>
+                <p>Эксклюзивные режимы и бонусы</p>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="sub-section-title">🎰 МЕМ-СЛОТЫ</h3>
+
+    <div class="games-grid">
+        <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('lexapaws')"><div class="card-image lexapaws-bg"></div><div class="card-content"><h3>🐾 LEXA PAWS</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('litwin')"><div class="card-image litwin-bg"></div><div class="card-content"><h3>🎮 LITWIN</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('melstroy')"><div class="card-image melstroy-bg"></div><div class="card-content"><h3>👑 MELLSTROY</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('nikkifn')"><div class="card-image nikkifn-bg"></div><div class="card-content"><h3>🎯 NIKKIFN</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('rejiboi')"><div class="card-image rejiboi-bg"></div><div class="card-content"><h3>🕺 REJIBOI</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('rostick')"><div class="card-image rostick-bg"></div><div class="card-content"><h3>🌭 ROSTICK</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('sasich')"><div class="card-image sasich-bg"></div><div class="card-content"><h3>🗣️ SASICH</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
+    </div>
+
+    <div class="leaderboard-panel">
+        <h3>🏆 ТВОЙ ТОП-5 РЕКОРДОВ</h3>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Выигрыш</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+        </table>
+    </div>
+</div>
 
         <!-- === ВКЛАДКА 2: БИРЖА === -->
         <div id="tab-market" class="tab-content">
