@@ -1567,8 +1567,8 @@ body::before {
 }
 
 .mine-cell {
-    background: linear-gradient(145deg, #2a2d3a, #1a1d29);
-    border: 2px solid #444;
+    background: linear-gradient(145deg, #2a1b3d, #1a0b2e);
+    border: 2px solid #7b2cbf;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1576,21 +1576,19 @@ body::before {
     justify-content: center;
     align-items: center;
     font-size: 32px;
-    position: relative;
-    overflow: hidden;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .mine-cell:hover:not(.revealed) {
     transform: scale(1.05);
-    border-color: #ff6b35;
-    box-shadow: 0 0 15px #ff6b35;
+    border-color: #9d4edd;
+    box-shadow: 0 0 15px #9d4edd;
 }
 
 .mine-cell.revealed {
     cursor: default;
-    background: linear-gradient(145deg, #1a1d29, #0f1118);
-    border-color: #00ff88;
+    background: linear-gradient(145deg, #1a0b2e, #0f0518);
+    border-color: #00ff88; /* оставляем зелёным для успеха */
     box-shadow: 0 0 10px #00ff88;
 }
 
@@ -1632,19 +1630,33 @@ body::before {
 /* Множители */
 .multiplier-badge {
     padding: 8px 16px;
-    background: #2a2d3a;
-    border: 1px solid #ff6b35;
+    background: #2a1b3d;
+    border: 1px solid #9d4edd;
     border-radius: 8px;
-    color: #ff6b35;
+    color: #e0aaff;
     font-weight: bold;
     font-size: 14px;
     white-space: nowrap;
 }
 
+
 .multiplier-badge.active {
-    background: #ff6b35;
+    background: #9d4edd;
     color: #fff;
-    box-shadow: 0 0 10px #ff6b35;
+    box-shadow: 0 0 10px #9d4edd;
+}
+
+#mines-start-btn {
+    background: linear-gradient(to bottom, #9d4edd, #7b2cbf);
+    box-shadow: 0 0 20px #9d4edd;
+}
+
+#mines-cashout-btn {
+    background: linear-gradient(to bottom, #00ff88, #00cc6a);
+    box-shadow: 0 0 20px #00ff88;
+}
+#mines-screen {
+    background: linear-gradient(to bottom, #1a0b2e, #4a1c6d); /* фиолетовый градиент */
 }
 
 

@@ -1704,15 +1704,12 @@ function updateMinesInfo() {
 }
 
 function getMineEmoji() {
-    const emojis = ['🤡', '', '🍞', '📉', ''];
-    return emojis[Math.floor(Math.random() * emojis.length)];
+    return '💣'; // или '<img src="image/bomb.png" ...>'
 }
 
 function getSafeEmoji() {
-    const emojis = ['💎', '', '🏆', '🔥', '🐱'];
-    return emojis[Math.floor(Math.random() * emojis.length)];
+    return '<img src="image/money.png" style="width: 30px; height: 30px;">'; // 👈 Используем картинку денег
 }
-
 function showMineExplosion() {
     const overlay = document.createElement('div');
     overlay.className = 'mine-explosion-overlay';
@@ -1734,7 +1731,7 @@ function updateMinesBalance() {
 // Вспомогательные функции для ставок
 function changeMinesBet(multiplier) {
     const input = document.getElementById('mines-bet-input');
-    if (minesActive) return;
+    if (minesActive) return; // Нельзя менять ставку во время игры
     let newBet = Math.floor(parseInt(input.value) * multiplier);
     if (newBet < 10) newBet = 10;
     if (newBet > gems) newBet = gems;
@@ -1748,11 +1745,35 @@ function setMaxMinesBet() {
 }
 
 function setMinesCount(count) {
-    if (minesActive) return;
+    if (minesActive) return; // Нельзя менять во время игры
     minesCount = count;
-    // Можно добавить визуальное выделение выбранной кнопки
+
+    // Находим контейнер с кнопками
+    const container = document.getElementById('mines-count-buttons');
+    if (!container) return;
+
+    // Сбрасываем стиль у всех кнопок
+    container.querySelectorAll('button').forEach(btn => {
+        btn.style.background = '#1a1d29';
+        btn.style.borderColor = '#555';
+        btn.style.color = '#fff';
+    });
+
+    // Подсвечиваем нажатую кнопку
+    event.target.style.background = '#9d4edd';
+    event.target.style.borderColor = '#9d4edd';
+    event.target.style.color = '#fff';
 }
 
+
+// При загрузке страницы подсвечиваем кнопку "3" по умолчанию
+setTimeout(() => {
+    const defaultBtn = document.querySelector('#mines-count-buttons button:nth-child(2)');
+    if (defaultBtn) {
+        defaultBtn.style.background = '#9d4edd';
+        defaultBtn.style.borderColor = '#9d4edd';
+    }
+}, 100);
 
 
 
