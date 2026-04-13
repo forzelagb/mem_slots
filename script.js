@@ -2000,24 +2000,8 @@ function updateWheelUI() {
 
     if (!btn || !text) return;
 
-    const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
-
-    if (vipLevel < 3) {
-        btn.disabled = true;
-        text.innerText = "Открывается с Elite Meme";
-        return;
-    }
-
-    if (now - lastSpin >= oneDay) {
-        btn.disabled = false;
-        text.innerText = "Можно крутить!";
-    } else {
-        btn.disabled = true;
-        const hours = Math.ceil((oneDay - (now - lastSpin)) / 3600000);
-        text.innerText = `Следующий спин через ${hours} ч`;
-    }
+    btn.disabled = false;
+    text.innerText = "Тестовая рулетка. Крути сколько хочешь";
 }
 
 
