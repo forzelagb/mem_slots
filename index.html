@@ -305,20 +305,18 @@
 </div>
 
 <!-- ЭКРАН MINES -->
-<div id="mines-screen" class="screen">
+<!-- MINES SCREEN -->
+<div id="mines-screen">
     <button class="btn-back-game" onclick="goBackToLobby()">← Назад</button>
     
     <div class="mines-wrapper">
-        <!-- ЛЕВАЯ ПАНЕЛЬ УПРАВЛЕНИЯ -->
+        <!-- Левая панель управления -->
         <div class="mines-controls-panel">
             <h2 class="game-title-mines">💣 MINES</h2>
             
-            <!-- Блок ставки -->
             <div class="control-group">
                 <label>Сумма ставки</label>
                 <input type="number" id="mines-bet-input" value="100" min="10">
-                
-                <!-- Кнопки управления ставкой ПОД полем -->
                 <div class="bet-actions-row">
                     <button class="btn-action half" onclick="changeMinesBet(0.5)">/2</button>
                     <button class="btn-action double" onclick="changeMinesBet(2)">x2</button>
@@ -326,10 +324,9 @@
                 </div>
             </div>
 
-            <!-- Выбор количества мин -->
             <div class="control-group">
                 <label>Количество мин</label>
-                <div class="mines-count-buttons" id="mines-count-buttons">
+                <div class="mines-count-buttons">
                     <button class="btn-mine-count active" onclick="setMinesCount(1, this)">1</button>
                     <button class="btn-mine-count" onclick="setMinesCount(3, this)">3</button>
                     <button class="btn-mine-count" onclick="setMinesCount(5, this)">5</button>
@@ -338,15 +335,9 @@
                 </div>
             </div>
 
-            <!-- Кнопка старта -->
             <button id="mines-start-btn" class="btn-start-mines" onclick="startMinesGame()">НАЧАТЬ ИГРУ</button>
-            
-            <!-- Кнопка забрать выигрыш (скрыта по умолчанию) -->
-            <button id="mines-cashout-btn" class="btn-cashout-mines" style="display:none;" onclick="cashOutMines()">
-                ЗАБРАТЬ <span id="cashout-amount-display">0</span> 💎
-            </button>
+            <button id="mines-cashout-btn" class="btn-cashout-mines" onclick="cashOutMines()" style="display:none;">ЗАБРАТЬ <span id="cashout-amount-display">0</span> 💎</button>
 
-            <!-- Инфо о игре -->
             <div class="mines-info-box">
                 <div class="info-row">
                     <span>💎 Осталось:</span>
@@ -358,18 +349,17 @@
                 </div>
                 <div class="info-row">
                     <span>🔲 Открыто:</span>
-                    <span id="tiles-opened">0/25</span>
+                    <span id="tiles-opened">0/24</span>
                 </div>
             </div>
         </div>
 
-        <!-- ПРАВАЯ ЧАСТЬ: ИГРОВОЕ ПОЛЕ -->
+        <!-- Правая часть — поле игры -->
         <div class="mines-game-area">
             <div class="balance-display-top">
                 Баланс: <span id="mines-balance-display">0</span> 💎
             </div>
-            
-            <!-- Сетка 5x5 -->
+
             <div class="mines-grid-container" id="mines-grid">
                 <!-- Ячейки генерируются через JS -->
             </div>
