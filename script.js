@@ -1579,7 +1579,7 @@ function spawnParticle() {
     
     // Разброс влево-вправо
     let randomX = (Math.random() - 0.5) * 60;
-    particle.style.left = `calc(50% + ${randomX}px)`;
+    particle.style.left = `calc(50% - 15px + ${randomX}px)`;
     particle.style.bottom = '-10px';
     
     container.appendChild(particle);
@@ -1606,7 +1606,7 @@ function endCrashGame(win) {
         updateCrashBalance();
     } else {
         display.classList.add('crashing');
-        display.innerText = `CRASHED @ ${crashPoint}x`;
+        display.innerText = `CRASHED ${crashPoint}x`;
         btn.innerText = "ВЗРЫВ!";
         btn.style.background = "#ff4444";
         
