@@ -2428,6 +2428,16 @@ button:hover,
 }
 
 
+.wheel-result {
+    margin-top: 18px;
+    min-height: 28px;
+    font-size: 22px;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(255,211,106,0.3);
+    transition: all 0.25s ease;
+}
+
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

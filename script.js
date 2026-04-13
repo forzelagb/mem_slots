@@ -1961,11 +1961,19 @@ function spinWheel() {
 
     setTimeout(() => {
         giveWheelReward(chosenReward);
-        resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
+        if (chosenReward.rarity === 'legendary') {
+    resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+} else if (chosenReward.rarity === 'epic') {
+    resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+} else {
+    resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
+}
         btn.disabled = false;
         isWheelSpinning = false;
     }, 5000);
 }
+
+
 function giveWheelReward(reward) {
     if (!reward) return;
 
@@ -1974,15 +1982,23 @@ function giveWheelReward(reward) {
     }
 
     if (reward.type === 'ticket') {
-        blackMarketItems.luckyTicket += 1;
+        blackMarketItems.luckyTicket += reward.value;
     }
 
     if (reward.type === 'auto') {
-        blackMarketItems.autoPack += 1;
+        blackMarketItems.autoPack += reward.value;
     }
 
     if (reward.type === 'shield') {
-        blackMarketItems.shield += 1;
+        blackMarketItems.shield += reward.value;
+    }
+
+    if (reward.type === 'pass') {
+        blackMarketItems.highRollerPass += reward.value;
+    }
+
+    if (reward.type === 'vipTrial') {
+        localStorage.setItem('vipTrialUntil', Date.now() + 24 * 60 * 60 * 1000);
     }
 
     saveData();
@@ -2007,14 +2023,22 @@ function updateWheelUI() {
 
 
 const wheelRewards = [
-    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500, weight: 35 },
-    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000, weight: 25 },
-    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 15 },
+    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500, weight: 30 },
+    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000, weight: 24 },
+
+    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 14 },
     { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 10 },
     { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 10 },
-    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 4 },
-    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000, weight: 1 },
-    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.2 }
+
+    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 5 },
+    { id: 'doubleTicket', label: '2x Lucky Ticket', icon: '🎟', rarity: 'epic', type: 'ticket', value: 2, weight: 2.5 },
+    { id: 'doubleAuto', label: '2x Auto Pack', icon: '⚡', rarity: 'epic', type: 'auto', value: 2, weight: 1.8 },
+    { id: 'doubleShield', label: '2x Shield', icon: '🛡', rarity: 'epic', type: 'shield', value: 2, weight: 1.5 },
+
+    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000, weight: 0.9 },
+    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.2 },
+    { id: 'doublePass', label: '2x HR Pass', icon: '💎', rarity: 'legendary', type: 'pass', value: 2, weight: 0.8 },
+    { id: 'vipTrial', label: 'VIP Trial 1D', icon: '👑', rarity: 'legendary', type: 'vipTrial', value: 1, weight: 0.3 }
 ];
 
 let isWheelSpinning = false;
@@ -2114,15 +2138,29 @@ function giveWheelReward(reward) {
     }
 
     if (reward.type === 'ticket') {
-        blackMarketItems.luckyTicket += 1;
+        blackMarketItems.luckyTicket += reward.value;
     }
 
     if (reward.type === 'auto') {
-        blackMarketItems.autoPack += 1;
+        blackMarketItems.autoPack += reward.value;
     }
 
     if (reward.type === 'shield') {
-        blackMarketItems.shield += 1;
+        blackMarketItems.shield += reward.value;
+    }
+
+    if (reward.type === 'pass') {
+        blackMarketItems.highRollerPass += reward.value;
+    }
+
+    if (reward.type === 'vipTrial') {
+        const now = Date.now();
+        const currentTrial = parseInt(localStorage.getItem('vipTrialUntil')) || 0;
+
+        const oneDay = 24 * 60 * 60 * 1000;
+        const newUntil = Math.max(now, currentTrial) + oneDay;
+
+        localStorage.setItem('vipTrialUntil', newUntil.toString());
     }
 
     saveData();
