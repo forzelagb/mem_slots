@@ -1272,131 +1272,6 @@ let crashInterval;
 let crashBet = 0;
 let animationFrameId;
 
-function playCrash() {
-    const betInput = document.getElementById('crash-bet-input');
-    const bet = parseInt(betInput.value);
-    const btn = document.getElementById('crash-btn');
-    const display = document.getElementById('multiplier-display');
-    const pilot = document.getElementById('pilot-jet');
-    const path = document.getElementById('flight-path');
-
-    if (bet > gems || bet <= 0) {
-        alert("Недостаточно гемов!");
-        return;
-    }
-
-    if (crashGameActive) {
-        cashOutCrash();
-        return;
-    }
-
-    gems -= bet;
-    crashBet = bet;
-    updateUI();
-    updateCrashBalance();
-
-    crashPoint = (0.99 / (1 - Math.random())).toFixed(2);
-    if (Math.random() < 0.03) crashPoint = 1.00;
-
-    currentCrashMultiplier = 1.00;
-    crashGameActive = true;
-
-    // Сброс визуала
-    display.classList.remove('crashing', 'winning');
-    display.innerText = "1.00x";
-    display.style.color = "#fff";
-    
-    pilot.style.display = 'block';
-    pilot.style.left = '0px';
-    pilot.style.bottom = '0px';
-    pilot.style.transform = 'rotate(0deg)';
-
-    btn.innerText = "ЗАБРАТЬ";
-    btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
-
-    // Запуск анимации
-    let startTime = Date.now();
-    
-    function animate() {
-        if (!crashGameActive) return;
-
-        let elapsed = (Date.now() - startTime) / 1000; // секунды
-        
-        // Рост множителя (экспоненциальный, как в LuckyJet)
-        currentCrashMultiplier = Math.pow(Math.E, 0.15 * elapsed).toFixed(2);
-        
-        display.innerText = currentCrashMultiplier + "x";
-
-        // Движение пилота по кривой Безье
-        // Простая аппроксимация: X растет линейно, Y растет экспоненциально
-        let progress = Math.min(elapsed / 10, 1); // 10 секунд макс
-        
-        let x = progress * 800; // Ширина экрана
-        let y = 600 - (Math.pow(progress, 2) * 500); // Высота подъема
-
-        pilot.style.left = x + 'px';
-        pilot.style.bottom = y + 'px';
-        
-        // Наклон пилота в зависимости от скорости подъема
-        let angle = Math.atan2(500 * 2 * progress, 800) * (180 / Math.PI);
-        pilot.style.transform = `rotate(-${angle}deg)`;
-
-        // Проверка на краш
-        if (parseFloat(currentCrashMultiplier) >= parseFloat(crashPoint)) {
-            endCrashGame(false);
-            return;
-        }
-
-        animationFrameId = requestAnimationFrame(animate);
-    }
-
-    animate();
-}
-
-function cashOutCrash() {
-    if (!crashGameActive) return;
-    endCrashGame(true);
-}
-
-function endCrashGame(win) {
-    crashGameActive = false;
-    cancelAnimationFrame(animationFrameId);
-    
-    const btn = document.getElementById('crash-btn');
-    const display = document.getElementById('multiplier-display');
-    const pilot = document.getElementById('pilot-jet');
-
-    if (win) {
-        const winAmount = Math.floor(crashBet * currentCrashMultiplier);
-        gems += winAmount;
-        display.classList.add('winning');
-        display.innerText = `WIN: ${winAmount}`;
-        btn.innerText = "ПОБЕДА!";
-        updateCrashBalance();
-    } else {
-        display.classList.add('crashing');
-        display.innerText = `CRASHED @ ${crashPoint}x`;
-        btn.innerText = "ВЗРЫВ!";
-        btn.style.background = "#ff4444";
-        
-        // Эффект взрыва пилота
-        pilot.style.filter = "grayscale(100%) brightness(0.5)";
-        setTimeout(() => { pilot.style.display = 'none'; }, 500);
-    }
-
-    updateUI();
-
-    setTimeout(() => {
-        display.classList.remove('crashing', 'winning');
-        display.style.color = "#fff";
-        display.innerText = "1.00x";
-        btn.innerText = "СТАРТ";
-        btn.style.background = "linear-gradient(to bottom, #9d4edd, #7b2cbf)";
-        pilot.style.filter = "";
-        pilot.style.display = 'none';
-    }, 2500);
-}
-
 
 // === ПЕРЕМЕННЫЕ САПЁРА ===
 let minesGrid = [];
@@ -1597,6 +1472,189 @@ function updateCrashBalance() {
     if (crashBalEl) {
         crashBalEl.innerText = gems.toLocaleString();
     }
+}
+
+
+
+// === ОСНОВНАЯ ЛОГИКА CRASH GAME ===
+
+function playCrash() {
+    const betInput = document.getElementById('crash-bet-input');
+    const bet = parseInt(betInput.value);
+    const btn = document.getElementById('crash-btn');
+    const display = document.getElementById('multiplier-display');
+    const rocket = document.getElementById('rocket-container');
+    const pilotFace = document.getElementById('pilot-face');
+
+    if (bet > gems || bet <= 0) {
+        alert("Недостаточно гемов!");
+        return;
+    }
+
+    if (crashGameActive) {
+        cashOutCrash();
+        return;
+    }
+
+    gems -= bet;
+    crashBet = bet;
+    updateUI();
+    updateCrashBalance();
+
+    // Генерация точки краша
+    crashPoint = (0.99 / (1 - Math.random())).toFixed(2);
+    if (Math.random() < 0.03) crashPoint = 1.00;
+
+    currentCrashMultiplier = 1.00;
+    crashGameActive = true;
+
+    // Сброс визуала
+    display.classList.remove('crashing', 'winning');
+    display.innerText = "1.00x";
+    display.style.color = "#fff";
+    
+    rocket.style.transform = "translateY(0)";
+    rocket.style.display = 'block'; // Показываем ракету
+    pilotFace.src = "image/melstroy_calm.png";
+
+    btn.innerText = "ЗАБРАТЬ";
+    btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
+
+    let startTime = Date.now();
+    let particleInterval;
+
+    function animate() {
+        if (!crashGameActive) return;
+
+        let elapsed = (Date.now() - startTime) / 1000;
+        // Формула роста множителя
+        currentCrashMultiplier = Math.pow(Math.E, 0.15 * elapsed).toFixed(2);
+        
+        display.innerText = currentCrashMultiplier + "x";
+
+        // Движение ракеты вверх (до 80% высоты экрана)
+        let progress = Math.min(elapsed / 8, 1); 
+        let yOffset = progress * 80; 
+        rocket.style.transform = `translateY(-${yOffset}%)`;
+
+        // Смена эмоции Мелстроя
+        if (currentCrashMultiplier > 15) {
+            pilotFace.src = "image/melstroy_scared.png"; // Нужна картинка melstroy_scared.png
+        } else if (currentCrashMultiplier > 5) {
+            pilotFace.src = "image/melstroy_surprised.png"; // Нужна картинка melstroy_surprised.png
+        }
+
+        // Генерация частиц (монеты, гемы и т.д.)
+        if (Math.random() < 0.3) {
+            spawnParticle();
+        }
+
+        // Проверка на краш
+        if (parseFloat(currentCrashMultiplier) >= parseFloat(crashPoint)) {
+            endCrashGame(false);
+            clearInterval(particleInterval);
+            return;
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    // Запуск генерации частиц каждые 100мс
+    particleInterval = setInterval(() => {
+        if (crashGameActive) spawnParticle();
+    }, 100);
+
+    animate();
+}
+
+function spawnParticle() {
+    const container = document.getElementById('engine-effects');
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    // Случайный выбор: монета, гем, огонь или кубок
+    const types = ['coin', 'gem-particle', 'fire-particle', 'trophy'];
+    const randomType = types[Math.floor(Math.random() * types.length)];
+    particle.classList.add(randomType);
+    
+    // Разброс влево-вправо
+    let randomX = (Math.random() - 0.5) * 60;
+    particle.style.left = `calc(50% + ${randomX}px)`;
+    particle.style.bottom = '-10px';
+    
+    container.appendChild(particle);
+    
+    setTimeout(() => {
+        if (particle.parentNode) particle.parentNode.removeChild(particle);
+    }, 1200);
+}
+
+function endCrashGame(win) {
+    crashGameActive = false;
+    cancelAnimationFrame(animationFrameId);
+    
+    const btn = document.getElementById('crash-btn');
+    const display = document.getElementById('multiplier-display');
+    const pilotFace = document.getElementById('pilot-face');
+
+    if (win) {
+        const winAmount = Math.floor(crashBet * currentCrashMultiplier);
+        gems += winAmount;
+        display.classList.add('winning');
+        display.innerText = `WIN: ${winAmount}`;
+        btn.innerText = "ПОБЕДА!";
+        updateCrashBalance();
+    } else {
+        display.classList.add('crashing');
+        display.innerText = `CRASHED @ ${crashPoint}x`;
+        btn.innerText = "ВЗРЫВ!";
+        btn.style.background = "#ff4444";
+        
+        // Эффект при проигрыше
+        pilotFace.src = "image/melstroy_screaming.png"; // Нужна картинка melstroy_screaming.png
+        setTimeout(() => { 
+            document.getElementById('rocket-container').style.display = 'none'; 
+        }, 500);
+    }
+
+    updateUI();
+
+    setTimeout(() => {
+        display.classList.remove('crashing', 'winning');
+        display.style.color = "#fff";
+        display.innerText = "1.00x";
+        btn.innerText = "СТАРТ";
+        btn.style.background = "linear-gradient(to bottom, #9d4edd, #7b2cbf)";
+        document.getElementById('rocket-container').style.display = 'block';
+        pilotFace.src = "image/melstroy_calm.png";
+    }, 2500);
+}
+
+// === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ===
+
+function cashOutCrash() {
+    if (!crashGameActive) return;
+    endCrashGame(true);
+}
+
+function changeCrashBet(multiplier) {
+    const input = document.getElementById('crash-bet-input');
+    if (crashGameActive) return;
+    let newBet = Math.floor(parseInt(input.value) * multiplier);
+    if (newBet < 10) newBet = 10;
+    if (newBet > gems) newBet = gems;
+    input.value = newBet;
+}
+
+function setMaxCrashBet() {
+    if (!crashGameActive) {
+        document.getElementById('crash-bet-input').value = gems;
+    }
+}
+
+function updateCrashBalance() {
+    const el = document.getElementById('crash-balance-display');
+    if (el) el.innerText = gems.toLocaleString();
 }
 
 

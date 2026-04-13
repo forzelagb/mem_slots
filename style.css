@@ -1315,59 +1315,7 @@ body::before {
 
 
 
-/* === СЦЕНА КОСМОСА ДЛЯ CRASH === */
-.crash-scene {
-    position: relative; /* 👈 Обязательно! */
-    width: 100%;
-    height: 500px;
-    background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Можно оставить как подстраховку */
-    border-radius: 15px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-}
 
-.stars {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px);
-    background-size: 550px 550px, 350px 350px;
-    background-position: 0 0, 40px 60px;
-    animation: moveStars 5s linear infinite;
-}
-
-@keyframes moveStars {
-    from { transform: translateY(0); }
-    to { transform: translateY(550px); }
-}
-
-.rocket-container {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 3000px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    transition: bottom 0.1s linear;
-}
-
-.pilot {
-    position: absolute;
-    width: 80px;       /* 👈 Уменьши ширину (было 100-120px) */
-    top: -20px;        /* 👈 Сдвинь ВЫШЕ ракеты (отрицательное значение) */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;        /* Поверх ракеты */
-    /* Если убрал фон через remove.bg, убери mix-blend-mode */
-}
-.pilot {
-    border: 3px solid red; /* Красная рамка вокруг лица */
-}
 
 .rocket-body {
     width: 100%;
@@ -1377,44 +1325,13 @@ body::before {
     filter: drop-shadow(0 0 10px rgba(255, 100, 0, 0.5));
 }
 
-.engine-fire {
-    position: absolute;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30px;
-    height: 60px;
-    background: linear-gradient(to bottom, #ffeb3b, #ff9800, #f44336, transparent);
-    border-radius: 50% 50% 20% 20%;
-    filter: blur(3px);
-    opacity: 0.9;
-    z-index: 1;
-    animation: fireFlicker 0.1s infinite alternate;
-}
 
 @keyframes fireFlicker {
     0% { transform: translateX(-50%) scale(1); height: 30px; }
     100% { transform: translateX(-50%) scale(1.3); height: 40px; }
 }
 
-.frozen .engine-fire {
-    animation: none;
-    opacity: 0.3;
-    height: 10px;
-    transition: all 0.3s ease;
-}
-/*
-.shaking {
-    animation: shake 0.5s infinite;
-}
 
-@keyframes shake {
-    0% { transform: translateX(-50%) rotate(0deg); }
-    25% { transform: translateX(-52%) rotate(-2deg); }
-    50% { transform: translateX(-48%) rotate(2deg); }
-    75% { transform: translateX(-51%) rotate(-1deg); }
-    100% { transform: translateX(-50%) rotate(0deg); }
-}*/
 
 .btn-crash-start {
     background: linear-gradient(to bottom, #00ff88, #00cc6a);
@@ -1426,50 +1343,14 @@ body::before {
     color: #000;
 }
 
-/* === ФОН СО ЗВЕЗДАМИ (ВИДЕО) === */
-.space-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Растягивает видео на весь контейнер */
-    z-index: 0; /* Самый нижний слой */
-}
-
-
-.top-decoration {
-    position: absolute;
-    top: 20px; /* Отступ сверху */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 150px; /* Подбери размер */
-    z-index: 5; /* Поверх всего, но ниже текста множителя */
-    opacity: 0.9;
-}
-
-
-/* === ДЕКОРАТИВНЫЙ МЕЛСТРОЙ СВЕРХУ === */
-.melstroy-top-decor {
-    position: absolute;
-    top: 55%;          /* Отступ от верхнего края поля */
-    left: 50%;          /* Центрирование по горизонтали */
-    transform: translateX(-50%);
-    
-    width: 200px;       /* Размер картинки (подбери под себя: 100-150px) */
-    height: auto;       /* Сохраняем пропорции */
-    
-    z-index: 5;         /* Поверх видео, но ниже цифр множителя */
-    
-    /* Опционально: если зеленый фон мешает, можно попробовать его смягчить */
-    
-    /* Тень для объема */
-    filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.5)); 
-}
 
 
 
-/* === LUCKYJET STYLE CRASH GAME === */
+
+
+
+
+
 
 /* Анимация пульсации для множителя */
 @keyframes pulseMultiplier {
@@ -1501,6 +1382,54 @@ body::before {
     stroke-dashoffset: 1000;
     transition: stroke-dashoffset 0.1s linear;
 }
+
+
+
+
+/* === ЧАСТИЦЫ ДВИГАТЕЛЯ (МОНЕТЫ, ГЕМЫ, ОГОНЬ, КУБОК) === */
+.particle {
+    position: absolute;
+    width: 18px;       /* 👈 Размер частиц (маленькие) */
+    height: 18px;
+    background-size: contain; /* Вписывает картинку целиком */
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    z-index: 1;
+    animation: fallDown 1.2s forwards;
+}
+
+@keyframes fallDown {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(100px) scale(0.5); }
+}
+
+/* Привязка картинок к классам */
+.coin { background-image: url('image/coin.png'); }
+.gem-particle { background-image: url('image/gem_particle.png'); }
+.fire-particle { background-image: url('image/fire_particle.png'); }
+.trophy { background-image: url('image/trophy.png'); }
+
+/* Анимации текста множителя */
+#multiplier-display.crashing {
+    color: #ff4444 !important;
+    text-shadow: 0 0 20px #ff0000 !important;
+    animation: shake 0.5s infinite;
+}
+
+#multiplier-display.winning {
+    color: #00ff88 !important;
+    text-shadow: 0 0 20px #00ff00 !important;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(-50%) translateX(0); }
+    25% { transform: translateX(-50%) translateX(-5px); }
+    75% { transform: translateX(-50%) translateX(5px); }
+}
+
+
+
 
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
