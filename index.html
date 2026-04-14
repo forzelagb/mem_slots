@@ -222,127 +222,115 @@
 </div>
 
         <!-- === ВКЛАДКА 4: СЕКРЕТНАЯ ЗОНА (VIP) === -->
-        <div id="tab-secret" class="tab-content">
-            <div class="secret-panel">
-                
-                <!-- ЭКРАН БЛОКИРОВКИ (Если нет кода) -->
-                <div id="secret-lock-screen">
-                    <h2 class="secret-title">⚠️ ЗАПРЕТНАЯ ЗОНА ⚠️</h2>
-                    <p>Здесь находится эксклюзивный контент для избранных.</p>
-                    <p>Чтобы получить доступ, поддержи проект и получи <b>VIP-Ключ</b>.</p>
-                    
-                    <a href="https://www.donationalerts.com/r/forzelagb?amount=50&message=ХОЧУ+VIP+КЛЮЧ" target="_blank" class="btn-buy-key">
-                        💸 Поддержать и получить ключ (50₽)
-                    </a>
-                    
-                    <div class="promo-input-group">
-                        <input type="text" id="vip-code-input" placeholder="Введите VIP-код...">
-                        <button class="btn-unlock" onclick="activateVIPCode()">Открыть</button>
-                    </div>
-                    <p id="vip-message" style="margin-top: 10px; font-weight: bold;"></p>
-                </div>
-
-                <!-- ЭКРАН КОНТЕНТА (Если код введен верно) -->
-                <!-- ЭКРАН КОНТЕНТА (Если код введен верно) -->
-<div id="secret-content" style="display: none;">
-    
-    <!-- ЧАСТЬ 1: ВИТРИНА ТАРИФОВ (Показывается, если у игрока НЕТ VIP или он хочет увидеть цены) -->
-    <div id="vip-storefront">
-        <h2 class="secret-title-open">💎 ВЫБЕРИ СВОЙ VIP УРОВЕНЬ</h2>
-        <p style="color: #aaa; margin-bottom: 20px;">Выбери VIP-подписку, получи мгновенные бонусы и открой премиум-контент.</p>
-        
-<div class="pricing-grid">
-
-  <div class="vip-card vip-bronze">
-    <div class="vip-level-badge">VIP 1</div>
-    <h3 class="vip-title">🔥 VIP Ronaldo</h3>
-
-    <ul class="vip-benefits">
-      <li>+1000 💎 ежедневно</li>
-      <li>Доступ к слоту Ronaldo</li>
-      <li>+5 автоспинов</li>
-    </ul>
-
-    <div class="vip-price">49 ₽ / месяц</div>
-    <button class="vip-buy-btn" onclick="activateVIP('bronze')">Купить</button>
-  </div>
-
-  <div class="vip-card vip-silver">
-    <div class="vip-level-badge">VIP 2</div>
-    <h3 class="vip-title">🐸 Shrek Club</h3>
-
-    <ul class="vip-benefits">
-      <li>+5000 💎 ежедневно</li>
-      <li>+10 автоспинов</li>
-      <li>Доступ к слоту Shrek</li>
-    </ul>
-
-    <div class="vip-price">99 ₽ / месяц</div>
-    <button class="vip-buy-btn" onclick="activateVIP('silver')">Купить</button>
-  </div>
-
-  <div class="vip-card vip-gold">
-    <div class="vip-level-badge">VIP 3</div>
-    <h3 class="vip-title">👑 Elite Meme</h3>
-
-    <ul class="vip-benefits">
-      <li>+8500 💎 ежедневно</li>
-      <li>+20 автоспинов</li>
-      <li>Доступ к VIP-рулетке</li>
-    </ul>
-
-    <div class="vip-price">199 ₽ / месяц</div>
-    <button class="vip-buy-btn" onclick="activateVIP('gold')">Купить</button>
-  </div>
-
-  <div class="vip-card vip-legend">
-    <div class="vip-level-badge">VIP 4</div>
-    <h3 class="vip-title">💎 Vegas Legend</h3>
-
-    <ul class="vip-benefits">
-      <li>+15000 💎 ежедневно</li>
-      <li>Все VIP-бонусы</li>
-      <li>Максимальный статус</li>
-    </ul>
-
-    <div class="vip-price">399 ₽ / месяц</div>
-    <button class="vip-buy-btn" onclick="activateVIP('legend')">Купить</button>
-  </div>
-
-</div>
-        
-        <hr style="border-color: rgba(255,255,255,0.1); margin: 30px 0;">
-        
-        <h3 style="text-align: center;">Уже есть промокод?</h3>
-        <div class="promo-input-group" style="justify-content: center;">
-            <input type="text" id="vip-code-input-activate" placeholder="Введите ваш VIP-код...">
-            <button class="btn-unlock" onclick="activateVIPCodeFromStore()">Активировать</button>
-        </div>
-        <p id="store-message" style="text-align: center; margin-top: 10px; font-weight: bold;"></p>
-    </div>
-
-    <!-- ЧАСТЬ 2: ЛИЧНЫЙ КАБИНЕТ VIP (Показывается ТОЛЬКО после активации кода) -->
-    <div id="vip-dashboard" style="display: none;">
-        <h2 class="secret-title-open">👑 ВАШ VIP СТАТУС: <span id="dashboard-level-name">BRONZE</span></h2>
-        
-        <div class="vip-info-box">
-            <p>🎁 <b>Ежедневный бонус:</b> <span id="dash-bonus">1000</span> гемов</p>
-            <button id="btn-daily-vip-dash" class="btn-claim-bonus" onclick="claimDailyVIPBonus()">Забрать бонус</button>
-            <p id="vip-timer-msg-dash" style="font-size: 12px; color: #aaa;"></p>
+<div id="tab-secret" class="tab-content">
+    <div class="vip-store-panel">
+        <div class="vip-store-header">
+            <div class="vip-store-badge">🛒 VIP STORE</div>
+            <h2 class="vip-store-title">Выбери VIP-подписку</h2>
+            <p class="vip-store-subtitle">
+                Здесь можно посмотреть VIP-уровни, их бонусы, цены и активировать промокод.
+                Это витрина + донат-панель.
+            </p>
         </div>
 
-        <h3 style="margin-top: 20px;">🎮 Ваши эксклюзивные слоты:</h3>
-        <div class="vip-slots-grid" id="dash-slots-container">
-            <!-- Слоты генерируются через JS -->
+        <div class="vip-status-box">
+            <p class="vip-status-label">Твой текущий статус:</p>
+            <p class="vip-status-value" id="vip-current-status">Без VIP</p>
         </div>
 
-        <div style="margin-top: 30px; text-align: center;">
-            <button class="btn-back-to-store" onclick="showVIPStorefront()">← Вернуться к выбору тарифов</button>
-        </div>
-    </div>
-</div>
+        <div class="vip-products-grid">
+            <div class="vip-product-card vip-tier-1">
+                <div class="vip-product-level">VIP 1</div>
+                <h3 class="vip-product-title">👑 Ronaldo Pass</h3>
+                <div class="vip-product-price">49 ₽ / месяц</div>
+
+                <ul class="vip-product-benefits">
+                    <li>+1000 💎 каждый день</li>
+                    <li>Доступ к VIP ZONE</li>
+                    <li>Открывает слот Ronaldo</li>
+                    <li>+5 автоспинов ежедневно</li>
+                </ul>
+
+                <a href="https://www.donationalerts.com/r/forzelagb?amount=49&message=VIP1"
+                   target="_blank"
+                   class="vip-product-btn">
+                    Купить VIP 1
+                </a>
+            </div>
+
+            <div class="vip-product-card vip-tier-2">
+                <div class="vip-product-level">VIP 2</div>
+                <h3 class="vip-product-title">🟢 Shrek Club</h3>
+                <div class="vip-product-price">99 ₽ / месяц</div>
+
+                <ul class="vip-product-benefits">
+                    <li>+2500 💎 каждый день</li>
+                    <li>Все бонусы VIP 1</li>
+                    <li>Открывает слот Shrek</li>
+                    <li>VIP-рулетка</li>
+                </ul>
+
+                <a href="https://www.donationalerts.com/r/forzelagb?amount=99&message=VIP2"
+                   target="_blank"
+                   class="vip-product-btn">
+                    Купить VIP 2
+                </a>
+            </div>
+
+            <div class="vip-product-card vip-tier-3">
+                <div class="vip-product-level">VIP 3</div>
+                <h3 class="vip-product-title">🧽 SpongeBob Elite</h3>
+                <div class="vip-product-price">149 ₽ / месяц</div>
+
+                <ul class="vip-product-benefits">
+                    <li>+5000 💎 каждый день</li>
+                    <li>Все бонусы VIP 1–2</li>
+                    <li>Открывает слот SpongeBob</li>
+                    <li>Эксклюзивные VIP-награды</li>
+                </ul>
+
+                <a href="https://www.donationalerts.com/r/forzelagb?amount=149&message=VIP3"
+                   target="_blank"
+                   class="vip-product-btn">
+                    Купить VIP 3
+                </a>
+            </div>
+
+            <div class="vip-product-card vip-tier-4">
+                <div class="vip-product-level">VIP 4</div>
+                <h3 class="vip-product-title">⚡ Speed Legend</h3>
+                <div class="vip-product-price">199 ₽ / месяц</div>
+
+                <ul class="vip-product-benefits">
+                    <li>+10000 💎 каждый день</li>
+                    <li>Все VIP-бонусы сразу</li>
+                    <li>Открывает слот Speed</li>
+                    <li>Максимальные VIP-привилегии</li>
+                </ul>
+
+                <a href="https://www.donationalerts.com/r/forzelagb?amount=199&message=VIP4"
+                   target="_blank"
+                   class="vip-product-btn">
+                    Купить VIP 4
+                </a>
             </div>
         </div>
+
+        <div class="vip-promo-box">
+            <h3 class="vip-promo-title">🎟 Промокод</h3>
+            <p class="vip-promo-text">
+                Если у тебя есть промокод или VIP-код — введи его ниже.
+            </p>
+
+            <div class="vip-promo-form">
+                <input type="text" id="vip-code-input" placeholder="Введите промокод...">
+                <button class="vip-promo-btn" onclick="activateVIPCode()">Активировать</button>
+            </div>
+
+            <p id="vip-message" class="vip-message"></p>
+        </div>
+    </div>
+</div>
         <div id="tab-vipzone" class="tab-content">
     <div class="secret-panel">
         <div id="vip-zone-locked" style="display: none;">
