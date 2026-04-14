@@ -3642,6 +3642,217 @@ button:hover,
     margin-top: 2px;
 }
 
+
+/* === VIP SLOT THEMES === */
+
+body.vip-theme-ronaldo {
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.25), transparent 40%),
+        linear-gradient(180deg, #2b1a00, #090011);
+}
+
+body.vip-theme-shrek {
+    background:
+        radial-gradient(circle at top, rgba(52, 255, 156, 0.25), transparent 40%),
+        linear-gradient(180deg, #0f2a14, #090011);
+}
+
+body.vip-theme-spongebob {
+    background:
+        radial-gradient(circle at top, rgba(255, 230, 80, 0.25), transparent 40%),
+        linear-gradient(180deg, #2c2200, #090011);
+}
+
+body.vip-theme-speed {
+    background:
+        radial-gradient(circle at top, rgba(77, 227, 255, 0.25), transparent 40%),
+        linear-gradient(180deg, #001a24, #090011);
+}
+
+/* === VIP SLOT UI THEMES === */
+
+/* Общие переходы */
+.slot-container,
+.btn-spin,
+.win-amount,
+.win-title,
+.message-box,
+.cell,
+.grid-wrapper {
+    transition: all 0.25s ease;
+}
+
+/* ===== RONALDO ===== */
+body.vip-theme-ronaldo .slot-container {
+    border-color: rgba(255, 211, 106, 0.65);
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.45),
+        0 0 30px rgba(255, 211, 106, 0.22);
+}
+
+body.vip-theme-ronaldo .grid-wrapper {
+    border-color: rgba(255, 211, 106, 0.28);
+    box-shadow: inset 0 0 30px rgba(255, 211, 106, 0.08);
+}
+
+body.vip-theme-ronaldo .cell {
+    border-color: rgba(255, 211, 106, 0.20);
+}
+
+body.vip-theme-ronaldo .btn-spin {
+    background: linear-gradient(180deg, #ffe27a, #ffb800);
+    color: #1b1200;
+    box-shadow: 0 6px 0 #9a6a00, 0 0 22px rgba(255, 211, 106, 0.25);
+}
+
+body.vip-theme-ronaldo .message-box,
+body.vip-theme-ronaldo .win-title,
+body.vip-theme-ronaldo .win-amount,
+body.vip-theme-ronaldo .slot-title {
+    color: #ffd36a;
+    text-shadow: 0 0 14px rgba(255, 211, 106, 0.35);
+}
+
+/* ===== SHREK ===== */
+body.vip-theme-shrek .slot-container {
+    border-color: rgba(52, 255, 156, 0.55);
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.45),
+        0 0 30px rgba(52, 255, 156, 0.18);
+}
+
+body.vip-theme-shrek .grid-wrapper {
+    border-color: rgba(52, 255, 156, 0.22);
+    box-shadow: inset 0 0 30px rgba(52, 255, 156, 0.08);
+}
+
+body.vip-theme-shrek .cell {
+    border-color: rgba(52, 255, 156, 0.18);
+}
+
+body.vip-theme-shrek .btn-spin {
+    background: linear-gradient(180deg, #7dffb8, #25d67b);
+    color: #052111;
+    box-shadow: 0 6px 0 #0c8d4c, 0 0 22px rgba(52, 255, 156, 0.22);
+}
+
+body.vip-theme-shrek .message-box,
+body.vip-theme-shrek .win-title,
+body.vip-theme-shrek .win-amount,
+body.vip-theme-shrek .slot-title {
+    color: #7dffb8;
+    text-shadow: 0 0 14px rgba(52, 255, 156, 0.30);
+}
+
+/* ===== SPONGEBOB ===== */
+body.vip-theme-spongebob .slot-container {
+    border-color: rgba(255, 230, 80, 0.58);
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.45),
+        0 0 30px rgba(255, 230, 80, 0.18);
+}
+
+body.vip-theme-spongebob .grid-wrapper {
+    border-color: rgba(255, 230, 80, 0.24);
+    box-shadow: inset 0 0 30px rgba(255, 230, 80, 0.08);
+}
+
+body.vip-theme-spongebob .cell {
+    border-color: rgba(255, 230, 80, 0.18);
+}
+
+body.vip-theme-spongebob .btn-spin {
+    background: linear-gradient(180deg, #fff07a, #ffd24a);
+    color: #2a2200;
+    box-shadow: 0 6px 0 #b08a00, 0 0 22px rgba(255, 230, 80, 0.22);
+}
+
+body.vip-theme-spongebob .message-box,
+body.vip-theme-spongebob .win-title,
+body.vip-theme-spongebob .win-amount,
+body.vip-theme-spongebob .slot-title {
+    color: #ffe55e;
+    text-shadow: 0 0 14px rgba(255, 230, 80, 0.30);
+}
+
+/* ===== SPEED ===== */
+body.vip-theme-speed .slot-container {
+    border-color: rgba(77, 227, 255, 0.60);
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.45),
+        0 0 30px rgba(77, 227, 255, 0.18);
+}
+
+body.vip-theme-speed .grid-wrapper {
+    border-color: rgba(77, 227, 255, 0.25);
+    box-shadow: inset 0 0 30px rgba(77, 227, 255, 0.08);
+}
+
+body.vip-theme-speed .cell {
+    border-color: rgba(77, 227, 255, 0.20);
+}
+
+body.vip-theme-speed .btn-spin {
+    background: linear-gradient(180deg, #7cf0ff, #24cfff);
+    color: #021820;
+    box-shadow: 0 6px 0 #0c89a7, 0 0 22px rgba(77, 227, 255, 0.22);
+}
+
+body.vip-theme-speed .message-box,
+body.vip-theme-speed .win-title,
+body.vip-theme-speed .win-amount,
+body.vip-theme-speed .slot-title {
+    color: #7cf0ff;
+    text-shadow: 0 0 14px rgba(77, 227, 255, 0.30);
+}
+
+
+
+
+/* === VIP THEME ANIMATIONS === */
+@keyframes vipGlowGold {
+    0% { box-shadow: 0 0 18px rgba(255, 211, 106, 0.12); }
+    50% { box-shadow: 0 0 30px rgba(255, 211, 106, 0.22); }
+    100% { box-shadow: 0 0 18px rgba(255, 211, 106, 0.12); }
+}
+
+@keyframes vipGlowGreen {
+    0% { box-shadow: 0 0 18px rgba(52, 255, 156, 0.10); }
+    50% { box-shadow: 0 0 28px rgba(52, 255, 156, 0.20); }
+    100% { box-shadow: 0 0 18px rgba(52, 255, 156, 0.10); }
+}
+
+@keyframes vipGlowYellow {
+    0% { box-shadow: 0 0 18px rgba(255, 230, 80, 0.10); }
+    50% { box-shadow: 0 0 28px rgba(255, 230, 80, 0.20); }
+    100% { box-shadow: 0 0 18px rgba(255, 230, 80, 0.10); }
+}
+
+@keyframes vipGlowBlue {
+    0% { box-shadow: 0 0 18px rgba(77, 227, 255, 0.10); }
+    50% { box-shadow: 0 0 28px rgba(77, 227, 255, 0.20); }
+    100% { box-shadow: 0 0 18px rgba(77, 227, 255, 0.10); }
+}
+
+body.vip-theme-ronaldo .slot-container.win-pulse {
+    animation: vipGlowGold 1.1s infinite alternate;
+}
+
+body.vip-theme-shrek .slot-container.win-pulse {
+    animation: vipGlowGreen 1.1s infinite alternate;
+}
+
+body.vip-theme-spongebob .slot-container.win-pulse {
+    animation: vipGlowYellow 1.1s infinite alternate;
+}
+
+body.vip-theme-speed .slot-container.win-pulse {
+    animation: vipGlowBlue 0.8s infinite alternate;
+}
+
+
+
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

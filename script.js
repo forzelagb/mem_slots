@@ -82,7 +82,37 @@ zidane: [
     {src: "image/zidane/5.jpg", mult: 25},
     {src: "image/zidane/6.jpg", mult: 50},
     {src: "image/zidane/7.jpg", mult: 150} // ЛЕГЕНДАРНЫЙ ДЖЕКПОТ!
-]
+],
+shrek: [
+    {src: "image/shrek/1.jpg", mult: ""},
+    {src: "image/shrek/2.jpg", mult: ""},
+    {src: "image/shrek/3.jpg", mult: 2},
+    {src: "image/shrek/4.jpg", mult: ""},
+    {src: "image/shrek/5.jpg", mult: 3},
+    {src: "image/shrek/6.jpg", mult: ""},
+    {src: "image/shrek/7.jpg", mult: 5}
+],
+
+spongebob: [
+    {src: "image/spongebob/1.jpg", mult: ""},
+    {src: "image/spongebob/2.jpg", mult: ""},
+    {src: "image/spongebob/3.jpg", mult: 2},
+    {src: "image/spongebob/4.jpg", mult: ""},
+    {src: "image/spongebob/5.jpg", mult: 3},
+    {src: "image/spongebob/6.jpg", mult: ""},
+    {src: "image/spongebob/7.jpg", mult: 5}
+],
+
+speed: [
+    {src: "image/speed/1.jpg", mult: ""},
+    {src: "image/speed/2.jpg", mult: ""},
+    {src: "image/speed/3.jpg", mult: 2},
+    {src: "image/speed/4.jpg", mult: ""},
+    {src: "image/speed/5.jpg", mult: 3},
+    {src: "image/speed/6.jpg", mult: ""},
+    {src: "image/speed/7.jpg", mult: 5}
+],
+
 };
 
 const titles = { 
@@ -98,10 +128,9 @@ const titles = {
     skibiditoilet: "🚽 SKIBIDI", 
     slovopatsana: "👊 SLOVO PATSANA",
     ronaldo: "🐐 RONALDO VIP",
-    patorka: "🐐 PATORKA VIP",
-    goobka: "🐐 GOOBKA GOLD",
-    kaka: "✨ KAKA PLATINUM",
-    zidane: "👑 ZIDANE LEGEND"
+    shrek: "🟢 SHREK VIP",
+    spongebob: "🧽 SPONGEBOB VIP",
+    speed: "⚡ SPEED VIP",
 };
 
 // === ЭЛЕМЕНТЫ DOM ===
@@ -2458,7 +2487,7 @@ const vipSlotsConfig = [
         key: 'shrek',
         title: '🟢 Shrek',
         desc: 'Мемный премиум-слот второго уровня',
-        available: false,
+        available: true,
         themeClass: 'vip-preview-shrek'
     },
     {
@@ -2466,7 +2495,7 @@ const vipSlotsConfig = [
         key: 'spongebob',
         title: '🧽 SpongeBob',
         desc: 'Яркий VIP-слот с особыми наградами',
-        available: false,
+        available: true,
         themeClass: 'vip-preview-spongebob'
     },
     {
@@ -2474,7 +2503,7 @@ const vipSlotsConfig = [
         key: 'speed',
         title: '⚡ Speed',
         desc: 'Топовый слот для максимального VIP',
-        available: false,
+        available: true,
         themeClass: 'vip-preview-speed'
     }
 ];
