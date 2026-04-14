@@ -2438,6 +2438,52 @@ button:hover,
 }
 
 
+.vip-card {
+    background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 20px rgba(255,255,255,0.05);
+    transition: 0.3s;
+}
+
+.vip-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255,215,0,0.4);
+}
+
+.vip-card h3 {
+    margin-bottom: 10px;
+}
+
+.vip-card button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: gold;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.vip-bronze {
+    border: 2px solid #cd7f32;
+}
+
+.vip-silver {
+    border: 2px solid #c0c0c0;
+}
+
+.vip-gold {
+    border: 2px solid gold;
+}
+
+.vip-legend {
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 20px #00ffff;
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

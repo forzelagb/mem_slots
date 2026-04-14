@@ -2016,29 +2016,47 @@ function updateWheelUI() {
 
     if (!btn || !text) return;
 
-    btn.disabled = false;
-    text.innerText = "Тестовая рулетка. Крути сколько хочешь";
+    const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (vipLevel < 3) {
+        btn.disabled = true;
+        text.innerText = "Открывается с Elite Meme";
+        return;
+    }
+
+    if (now - lastSpin >= oneDay) {
+        btn.disabled = false;
+        text.innerText = vipLevel >= 4
+            ? "Vegas Legend: доступна ежедневная крутка с лучшими шансами"
+            : "Elite Meme: доступна 1 крутка в день";
+    } else {
+        btn.disabled = true;
+        const hours = Math.ceil((oneDay - (now - lastSpin)) / 3600000);
+        text.innerText = `Следующая крутка через ${hours} ч.`;
+    }
 }
 
 
 
 const wheelRewards = [
-    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500, weight: 30 },
-    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000, weight: 24 },
+    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500, weight: 38 },
+    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000, weight: 26 },
 
-    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 14 },
-    { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 10 },
-    { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 10 },
+    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 13 },
+    { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 9 },
+    { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 8 },
 
-    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 5 },
-    { id: 'doubleTicket', label: '2x Lucky Ticket', icon: '🎟', rarity: 'epic', type: 'ticket', value: 2, weight: 2.5 },
-    { id: 'doubleAuto', label: '2x Auto Pack', icon: '⚡', rarity: 'epic', type: 'auto', value: 2, weight: 1.8 },
-    { id: 'doubleShield', label: '2x Shield', icon: '🛡', rarity: 'epic', type: 'shield', value: 2, weight: 1.5 },
+    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 3 },
+    { id: 'doubleTicket', label: '2x Lucky Ticket', icon: '🎟', rarity: 'epic', type: 'ticket', value: 2, weight: 1.2 },
+    { id: 'doubleAuto', label: '2x Auto Pack', icon: '⚡', rarity: 'epic', type: 'auto', value: 2, weight: 0.8 },
+    { id: 'doubleShield', label: '2x Shield', icon: '🛡', rarity: 'epic', type: 'shield', value: 2, weight: 0.7 },
 
-    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000, weight: 0.9 },
-    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.2 },
-    { id: 'doublePass', label: '2x HR Pass', icon: '💎', rarity: 'legendary', type: 'pass', value: 2, weight: 0.8 },
-    { id: 'vipTrial', label: 'VIP Trial 1D', icon: '👑', rarity: 'legendary', type: 'vipTrial', value: 1, weight: 0.3 }
+    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000, weight: 0.25 },
+    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.05 },
+    { id: 'doublePass', label: '2x HR Pass', icon: '💎', rarity: 'legendary', type: 'pass', value: 2, weight: 0.2 },
+    { id: 'vipTrial', label: 'VIP Trial 1D', icon: '👑', rarity: 'legendary', type: 'vipTrial', value: 1, weight: 0.05 }
 ];
 
 let isWheelSpinning = false;
@@ -2070,6 +2088,19 @@ function renderWheelTrack() {
 
 
 function spinWheel() {
+    if (vipLevel < 3) {
+    alert("❌ Рулетка доступна только для Elite Meme и выше");
+    return;
+}
+
+const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
+const now = Date.now();
+const oneDay = 24 * 60 * 60 * 1000;
+
+if (now - lastSpin < oneDay) {
+    alert("⏳ Ты уже крутил сегодня!");
+    return;
+}
     if (isWheelSpinning) return;
 
     const track = document.getElementById('wheel-track');
@@ -2119,13 +2150,22 @@ function spinWheel() {
     });
 
     setTimeout(() => {
-        const reward = rewardsSequence[stopIndex];
-        giveWheelReward(reward);
+    giveWheelReward(chosenReward);
 
-        resultEl.innerText = `Ты выбил: ${reward.icon} ${reward.label}`;
-        btn.disabled = false;
-        isWheelSpinning = false;
-    }, 5000);
+    if (chosenReward.rarity === 'legendary') {
+        resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+    } else if (chosenReward.rarity === 'epic') {
+        resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+    } else {
+        resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
+    }
+
+    localStorage.setItem('wheelSpinTime', Date.now().toString());
+    updateWheelUI();
+
+    btn.disabled = false;
+    isWheelSpinning = false;
+}, 5000);
 }
 
 
@@ -2172,17 +2212,33 @@ function giveWheelReward(reward) {
 
 
 function getWeightedWheelReward() {
-    const totalWeight = wheelRewards.reduce((sum, reward) => sum + reward.weight, 0);
+    const adjustedRewards = wheelRewards.map(reward => {
+        let adjustedWeight = reward.weight;
+
+        if (vipLevel >= 4) {
+            if (reward.rarity === 'epic') adjustedWeight *= 1.25;
+            if (reward.rarity === 'legendary') adjustedWeight *= 1.4;
+        }
+
+        return { ...reward, adjustedWeight };
+    });
+
+    const totalWeight = adjustedRewards.reduce((sum, reward) => sum + reward.adjustedWeight, 0);
     let random = Math.random() * totalWeight;
 
-    for (const reward of wheelRewards) {
-        random -= reward.weight;
+    for (const reward of adjustedRewards) {
+        random -= reward.adjustedWeight;
         if (random <= 0) {
             return reward;
         }
     }
 
-    return wheelRewards[0];
+    return adjustedRewards[0];
+}
+
+function activateVIP(level) {
+    localStorage.setItem("vipLevel", level);
+    alert("VIP активирован: " + level);
 }
 
 // === ЗАПУСК ===
