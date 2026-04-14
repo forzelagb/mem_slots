@@ -430,6 +430,13 @@ function startGame(themeName) {
 }
 
 function goBack() {
+    document.body.classList.remove(
+        'vip-theme-ronaldo',
+        'vip-theme-shrek',
+        'vip-theme-spongebob',
+        'vip-theme-speed'
+    );
+
     gameScreen.classList.remove('active');
     lobbyScreen.classList.add('active');
     autoSpinActive = false;

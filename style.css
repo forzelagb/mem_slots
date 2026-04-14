@@ -3851,6 +3851,54 @@ body.vip-theme-speed .slot-container.win-pulse {
 }
 
 
+/* === VIP THEME OVERRIDE FIX === */
+
+body.vip-theme-ronaldo .slot-container {
+    border: 2px solid rgba(255, 211, 106, 0.85) !important;
+    box-shadow:
+        0 0 35px rgba(255, 211, 106, 0.35),
+        0 0 70px rgba(255, 211, 106, 0.18),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+body.vip-theme-ronaldo .grid-wrapper {
+    border: 1px solid rgba(255, 211, 106, 0.35) !important;
+    box-shadow:
+        inset 0 0 28px rgba(255, 211, 106, 0.10),
+        0 0 18px rgba(255, 211, 106, 0.08) !important;
+}
+
+body.vip-theme-ronaldo .cell {
+    border: 1px solid rgba(255, 211, 106, 0.22) !important;
+}
+
+body.vip-theme-ronaldo .btn-spin {
+    background: linear-gradient(180deg, #ffe27a, #ffb800) !important;
+    color: #1b1200 !important;
+    box-shadow:
+        0 0 20px rgba(255, 211, 106, 0.45),
+        0 6px 0 #9a6a00 !important;
+}
+
+body.vip-theme-ronaldo .slot-title,
+body.vip-theme-ronaldo .message-box,
+body.vip-theme-ronaldo .win-title,
+body.vip-theme-ronaldo .win-amount {
+    color: #ffd36a !important;
+    text-shadow:
+        0 0 16px rgba(255, 211, 106, 0.45),
+        0 0 32px rgba(255, 211, 106, 0.20) !important;
+}
+
+body.vip-theme-ronaldo .slot-container.win-pulse {
+    animation: none !important;
+    box-shadow:
+        0 0 45px rgba(255, 211, 106, 0.45),
+        0 0 85px rgba(255, 211, 106, 0.20),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+
 
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
