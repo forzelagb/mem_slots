@@ -2528,7 +2528,216 @@ updateVIPZoneAccess = function() {
     renderVIPZoneSlots();
 };
 
+/* === VIP 30-DAY REWARDS CALENDAR === */
+let selectedVIPRewardDay = null;
 
+const vipRewardTables = {
+    1: Array.from({ length: 30 }, (_, i) => 500 + i * 50),
+    2: Array.from({ length: 30 }, (_, i) => 1000 + i * 100),
+    3: Array.from({ length: 30 }, (_, i) => 2000 + i * 150),
+    4: Array.from({ length: 30 }, (_, i) => 4000 + i * 250)
+};
+
+function getVIPRewardStorageKey() {
+    return `memeVIPRewardProgress_${currentVIPLevel}`;
+}
+
+function getVIPRewardProgress() {
+    const saved = parseInt(localStorage.getItem(getVIPRewardStorageKey()), 10);
+    if (Number.isNaN(saved) || saved < 1) return 1;
+    if (saved > 30) return 30;
+    return saved;
+}
+
+function setVIPRewardProgress(day) {
+    localStorage.setItem(getVIPRewardStorageKey(), String(day));
+}
+
+function getVIPRewardAmount(day) {
+    const table = vipRewardTables[currentVIPLevel];
+    if (!table || day < 1 || day > 30) return 0;
+    return table[day - 1];
+}
+
+function openVIPRewardsModal() {
+    if (currentVIPLevel <= 0) {
+        const timerMsg = document.getElementById('vip-zone-timer-msg');
+        if (timerMsg) {
+            timerMsg.innerText = 'Сначала нужно получить VIP-статус.';
+        }
+        return;
+    }
+
+    const modal = document.getElementById('vip-rewards-modal');
+    if (!modal) return;
+
+    modal.classList.add('active');
+    selectedVIPRewardDay = getVIPRewardProgress();
+    renderVIPRewardsCalendar();
+}
+
+function closeVIPRewardsModal() {
+    const modal = document.getElementById('vip-rewards-modal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    selectedVIPRewardDay = null;
+}
+
+function renderVIPRewardsCalendar() {
+    const grid = document.getElementById('vip-rewards-grid');
+    const levelNameEl = document.getElementById('vip-rewards-level-name');
+    const currentDayEl = document.getElementById('vip-rewards-current-day');
+    const selectedTextEl = document.getElementById('vip-rewards-selected-text');
+    const claimBtn = document.getElementById('vip-rewards-claim-btn');
+
+    if (!grid || !levelNameEl || !currentDayEl || !selectedTextEl || !claimBtn) return;
+
+    const progressDay = getVIPRewardProgress();
+    const canClaimToday = canClaimVIPRewardToday();
+
+    levelNameEl.innerText = vipLevelNames[currentVIPLevel] || 'Без VIP';
+    currentDayEl.innerText = progressDay;
+
+    grid.innerHTML = '';
+
+    for (let day = 1; day <= 30; day++) {
+        const reward = getVIPRewardAmount(day);
+        const card = document.createElement('div');
+        card.className = 'vip-reward-day';
+
+        let statusText = '';
+
+if (day < progressDay) {
+    card.classList.add('claimed');
+    statusText = 'Забрано';
+} else if (day === progressDay) {
+    if (canClaimToday) {
+        card.classList.add('available');
+        statusText = 'Сегодня';
+    } else {
+        card.classList.add('claimed');
+        statusText = 'Получено';
+    }
+} else {
+    card.classList.add('locked');
+    statusText = 'Скоро';
+}
+
+        if (day === selectedVIPRewardDay) {
+            card.classList.add('selected');
+        }
+
+        card.innerHTML = `
+            <div class="vip-reward-day-number"><span>${day}</span> день</div>
+            <div class="vip-reward-status">${statusText}</div>
+            <div class="vip-reward-icon">💎</div>
+            <div class="vip-reward-amount">${reward}</div>
+            <div class="vip-reward-label">ежедневная награда</div>
+        `;
+
+        if (day === progressDay && canClaimToday) {
+            card.onclick = () => {
+                selectedVIPRewardDay = day;
+                renderVIPRewardsCalendar();
+            };
+        }
+
+        grid.appendChild(card);
+    }
+
+    if (selectedVIPRewardDay !== progressDay) {
+        selectedVIPRewardDay = progressDay;
+    }
+
+    const currentReward = getVIPRewardAmount(progressDay);
+
+    if (canClaimToday) {
+        selectedTextEl.innerText = `Сегодня доступна награда за ${progressDay}-й день: ${currentReward} 💎`;
+        claimBtn.disabled = false;
+        claimBtn.innerText = `Забрать ${currentReward} 💎`;
+    } else {
+        selectedTextEl.innerText = `Награда за ${progressDay}-й день уже получена сегодня. Возвращайся завтра.`;
+        claimBtn.disabled = true;
+        claimBtn.innerText = 'Уже получено сегодня';
+    }
+}
+
+function claimVIPCalendarReward() {
+    if (currentVIPLevel <= 0) return;
+
+    if (!canClaimVIPRewardToday()) {
+        const timerMsg = document.getElementById('vip-zone-timer-msg');
+        if (timerMsg) {
+            timerMsg.innerText = 'Сегодня VIP-награда уже получена.';
+        }
+        renderVIPRewardsCalendar();
+        return;
+    }
+
+    const progressDay = getVIPRewardProgress();
+    if (selectedVIPRewardDay !== progressDay) return;
+
+    const reward = getVIPRewardAmount(progressDay);
+    if (reward <= 0) return;
+
+    gems += reward;
+    setVIPRewardLastClaimDate(getTodayDateKey());
+
+    if (progressDay < 30) {
+        setVIPRewardProgress(progressDay + 1);
+    } else {
+        setVIPRewardProgress(30);
+    }
+
+    saveData();
+    updateUI();
+    updateVIPStatusUI();
+
+    if (typeof animateBalanceChange === 'function') {
+        animateBalanceChange('win');
+    }
+
+    const timerMsg = document.getElementById('vip-zone-timer-msg');
+    if (timerMsg) {
+        timerMsg.innerText = `Ты получил ${reward} 💎 за ${progressDay}-й VIP-день. Следующая награда будет доступна завтра.`;
+    }
+
+    renderVIPRewardsCalendar();
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeVIPRewardsModal();
+    }
+});
+
+
+/* === VIP REWARDS: ONCE PER DAY === */
+function getTodayDateKey() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function getVIPRewardLastClaimKey() {
+    return `memeVIPRewardLastClaim_${currentVIPLevel}`;
+}
+
+function getVIPRewardLastClaimDate() {
+    return localStorage.getItem(getVIPRewardLastClaimKey()) || '';
+}
+
+function setVIPRewardLastClaimDate(dateStr) {
+    localStorage.setItem(getVIPRewardLastClaimKey(), dateStr);
+}
+
+function canClaimVIPRewardToday() {
+    if (currentVIPLevel <= 0) return false;
+    return getVIPRewardLastClaimDate() !== getTodayDateKey();
+}
 // === ЗАПУСК ===
 window.onload = () => {
     setBet(currentBet);

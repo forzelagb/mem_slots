@@ -414,7 +414,7 @@
             <div class="vip-info-box">
                 <p>Текущий статус: <span id="vip-zone-level-name">Guest</span></p>
                 <p>Ежедневный бонус: <span id="vip-zone-daily-bonus">0</span> 💎</p>
-                <button id="btn-daily-vip-zone" class="btn-claim-bonus" onclick="claimDailyVIPBonus()">Забрать бонус</button>
+                <button id="btn-daily-vip-zone" class="btn-claim-bonus" onclick="openVIPRewardsModal()">Забрать ежедневный приз</button>
                 <p id="vip-zone-timer-msg" style="font-size: 12px; color: #aaa; margin-top: 8px;"></p>
             </div>
 
@@ -618,6 +618,50 @@
             <button class="btn-collect" onclick="closeModal()">ЗАБРАТЬ</button>
         </div>
     </div>
+    <!-- === VIP DAILY REWARDS MODAL === -->
+<div id="vip-rewards-modal" class="vip-rewards-modal">
+    <div class="vip-rewards-overlay" onclick="closeVIPRewardsModal()"></div>
+
+    <div class="vip-rewards-content">
+        <div class="vip-rewards-header">
+            <div>
+                <div class="vip-rewards-badge">👑 VIP DAILY REWARDS</div>
+                <h2 class="vip-rewards-title">Ежедневные VIP-награды</h2>
+                <p class="vip-rewards-subtitle">
+                    Календарь наград на 30 дней. Каждый день можно забрать один приз.
+                </p>
+            </div>
+
+            <button class="vip-rewards-close" onclick="closeVIPRewardsModal()">✕</button>
+        </div>
+
+        <div class="vip-rewards-topbar">
+            <div class="vip-rewards-level">
+                Текущий уровень:
+                <span id="vip-rewards-level-name">Без VIP</span>
+            </div>
+
+            <div class="vip-rewards-current-day">
+                День:
+                <span id="vip-rewards-current-day">1</span> / 30
+            </div>
+        </div>
+
+        <div id="vip-rewards-grid" class="vip-rewards-grid"></div>
+
+        <div class="vip-rewards-footer">
+            <div id="vip-rewards-selected-text" class="vip-rewards-selected-text">
+                Выбери доступный день
+            </div>
+
+            <button id="vip-rewards-claim-btn" class="vip-rewards-claim-btn" onclick="claimVIPCalendarReward()">
+                Забрать награду
+            </button>
+        </div>
+    </div>
+</div>
+
+
 
     <!-- СКРИПТЫ -->
     <script src="script.js"></script>

@@ -3111,6 +3111,404 @@ button:hover,
     cursor: not-allowed;
 }
 
+
+/* === VIP DAILY REWARDS MODAL === */
+.vip-rewards-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+}
+
+.vip-rewards-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vip-rewards-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(8px);
+}
+
+.vip-rewards-content {
+    position: relative;
+    z-index: 2;
+    width: min(1100px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    border-radius: 28px;
+    padding: 24px;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.10), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.45), var(--shadow-gold);
+    backdrop-filter: blur(14px);
+}
+
+.vip-rewards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.vip-rewards-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 211, 106, 0.12);
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.vip-rewards-title {
+    font-size: 32px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.vip-rewards-subtitle {
+    color: var(--text-soft);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 720px;
+}
+
+.vip-rewards-close {
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 22px;
+    color: white;
+    background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 6px 0 #6f0053, var(--shadow-pink);
+    flex-shrink: 0;
+}
+
+.vip-rewards-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+}
+
+.vip-rewards-level,
+.vip-rewards-current-day {
+    color: var(--text-soft);
+    font-size: 15px;
+}
+
+.vip-rewards-level span,
+.vip-rewards-current-day span {
+    color: var(--gold);
+    font-weight: bold;
+}
+
+.vip-rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.vip-reward-day {
+    position: relative;
+    min-height: 130px;
+    padding: 14px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+    transition: 0.2s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.vip-reward-day:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 211, 106, 0.40);
+}
+
+.vip-reward-day.locked {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.vip-reward-day.claimed {
+    border-color: rgba(52, 255, 156, 0.45);
+    box-shadow: 0 0 18px rgba(52, 255, 156, 0.16);
+}
+
+.vip-reward-day.available {
+    border-color: rgba(255, 211, 106, 0.45);
+    box-shadow: 0 0 18px rgba(255, 211, 106, 0.16);
+}
+
+.vip-reward-day.selected {
+    transform: translateY(-3px);
+    border-color: rgba(77, 227, 255, 0.55);
+    box-shadow: 0 0 20px rgba(77, 227, 255, 0.18);
+}
+
+.vip-reward-day-number {
+    font-size: 14px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+}
+
+.vip-reward-day-number span {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+
+.vip-reward-icon {
+    font-size: 34px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 10px rgba(77, 227, 255, 0.18));
+}
+
+.vip-reward-amount {
+    font-size: 20px;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.vip-reward-label {
+    color: var(--text-soft);
+    font-size: 13px;
+}
+
+.vip-reward-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+}
+
+.vip-reward-day.claimed .vip-reward-status {
+    background: rgba(52, 255, 156, 0.16);
+    color: var(--success);
+}
+
+.vip-reward-day.available .vip-reward-status {
+    background: rgba(255, 211, 106, 0.16);
+    color: var(--gold);
+}
+
+.vip-reward-day.locked .vip-reward-status {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.65);
+}
+
+.vip-rewards-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+}
+
+.vip-rewards-selected-text {
+    color: var(--text-soft);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.vip-rewards-claim-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 14px 22px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    color: #1b1200;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    box-shadow: 0 6px 0 #a56e00, var(--shadow-gold);
+    min-width: 220px;
+}
+
+.vip-rewards-claim-btn:disabled {
+    background: #555;
+    color: #bbb;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+    .vip-rewards-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .vip-rewards-content {
+        width: calc(100vw - 20px);
+        max-height: calc(100vh - 20px);
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .vip-rewards-title {
+        font-size: 26px;
+    }
+
+    .vip-rewards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .vip-reward-day {
+        min-height: 120px;
+        padding: 12px;
+    }
+
+    .vip-reward-amount {
+        font-size: 18px;
+    }
+
+    .vip-rewards-claim-btn {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+
+/* === VIP REWARDS VISUAL UPGRADE === */
+.vip-reward-day {
+    backdrop-filter: blur(10px);
+}
+
+.vip-reward-day.available {
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.14), transparent 45%),
+        linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    border-color: rgba(255, 211, 106, 0.55);
+    box-shadow:
+        0 0 22px rgba(255, 211, 106, 0.14),
+        0 8px 22px rgba(0,0,0,0.24);
+    animation: vipRewardPulse 1.8s infinite;
+}
+
+.vip-reward-day.claimed {
+    background:
+        radial-gradient(circle at top, rgba(52, 255, 156, 0.10), transparent 45%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border-color: rgba(52, 255, 156, 0.40);
+}
+
+.vip-reward-day.claimed .vip-reward-icon {
+    filter: grayscale(0.15) drop-shadow(0 0 8px rgba(52, 255, 156, 0.18));
+}
+
+.vip-reward-day.locked {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border-color: rgba(255,255,255,0.08);
+    opacity: 0.42;
+    filter: grayscale(0.15);
+}
+
+.vip-reward-day.selected {
+    transform: translateY(-4px) scale(1.015);
+}
+
+.vip-reward-day.available.selected {
+    border-color: rgba(77, 227, 255, 0.60);
+    box-shadow:
+        0 0 26px rgba(77, 227, 255, 0.16),
+        0 10px 24px rgba(0,0,0,0.25);
+}
+
+.vip-reward-day-number {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.vip-reward-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.vip-reward-day.available .vip-reward-icon {
+    background: rgba(255, 211, 106, 0.10);
+    border-color: rgba(255, 211, 106, 0.24);
+}
+
+.vip-reward-amount {
+    letter-spacing: 0.4px;
+}
+
+.vip-reward-label {
+    opacity: 0.9;
+}
+
+.vip-reward-status {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.vip-rewards-selected-text {
+    font-size: 15px;
+}
+
+.vip-rewards-footer {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+@keyframes vipRewardPulse {
+    0% {
+        transform: translateY(0);
+        box-shadow:
+            0 0 18px rgba(255, 211, 106, 0.10),
+            0 8px 22px rgba(0,0,0,0.24);
+    }
+    50% {
+        transform: translateY(-2px);
+        box-shadow:
+            0 0 28px rgba(255, 211, 106, 0.18),
+            0 10px 26px rgba(0,0,0,0.26);
+    }
+    100% {
+        transform: translateY(0);
+        box-shadow:
+            0 0 18px rgba(255, 211, 106, 0.10),
+            0 8px 22px rgba(0,0,0,0.24);
+    }
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
