@@ -866,12 +866,6 @@ body::before {
 }
 .vip-card:hover { transform: scale(1.02); }
 
-.ronaldo-bg {
-    /* ЗАГЛУШКА: замени на свою картинку позже */
-    background: url('https://via.placeholder.com/300x100/000000/FFD700?text=RONALDO+SIUUU') center/cover;
-    height: 100px;
-}
-
 .coming-soon-block {
     margin-top: 20px;
     opacity: 0.7;
@@ -2614,6 +2608,75 @@ button:hover,
     .vip-price {
         font-size: 28px;
     }
+}
+
+
+.vip-zone-card {
+    border: 1px solid rgba(255, 211, 106, 0.45);
+    box-shadow:
+        0 10px 28px rgba(0,0,0,0.35),
+        0 0 22px rgba(255, 211, 106, 0.12);
+}
+
+.vip-zone-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow:
+        0 14px 34px rgba(0,0,0,0.42),
+        0 0 28px rgba(255, 211, 106, 0.22);
+}
+
+.vip-zone-bg {
+    height: 140px;
+    position: relative;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255, 211, 106, 0.22), transparent 22%),
+        radial-gradient(circle at 80% 25%, rgba(255, 59, 212, 0.18), transparent 22%),
+        linear-gradient(135deg, #2a063d 0%, #12001f 55%, #050009 100%);
+    overflow: hidden;
+}
+
+.vip-zone-bg::before {
+    content: "👑";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    opacity: 0.16;
+    filter: drop-shadow(0 0 18px rgba(255, 211, 106, 0.25));
+}
+
+.vip-zone-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(to top, rgba(9,0,17,0.82), rgba(9,0,17,0.15));
+}
+
+.vip-zone-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #1b1200;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    box-shadow: 0 4px 12px rgba(255, 211, 106, 0.22);
+}
+
+.vip-zone-card .card-content h3 {
+    color: var(--gold);
+    text-shadow: 0 0 12px rgba(255, 211, 106, 0.20);
+}
+
+.vip-zone-card .card-content p {
+    color: rgba(255,255,255,0.82);
 }
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
