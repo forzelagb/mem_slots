@@ -2937,6 +2937,21 @@ document.body.classList.remove(
 
 
 
+function getCurrentVIPRank() {
+    const vipLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
+
+    const ranks = {
+        0: { name: "Без VIP", bonus: 0 },
+        1: { name: "VIP 1 🟢", bonus: 1000 },
+        2: { name: "VIP 2 🔵", bonus: 2500 },
+        3: { name: "VIP 3 🟣", bonus: 5000 },
+        4: { name: "VIP 4 🔴", bonus: 10000 }
+    };
+
+    return ranks[vipLevel] || ranks[0];
+}
+
+
 
 // === ЗАПУСК ===
 window.onload = () => {
