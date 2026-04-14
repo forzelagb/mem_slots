@@ -2957,6 +2957,105 @@ button:hover,
     .vip-product-title {
         font-size: 22px;
     }
+}   
+
+
+/* === VIP DETAILS BLOCK === */
+.vip-details-box {
+    margin-bottom: 28px;
+    padding: 22px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+}
+
+.vip-details-title {
+    font-size: 26px;
+    color: #fff;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.vip-details-subtitle {
+    color: var(--text-soft);
+    text-align: center;
+    line-height: 1.6;
+    font-size: 14px;
+    max-width: 760px;
+    margin: 0 auto 20px;
+}
+
+.vip-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.vip-details-card {
+    padding: 18px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.10);
+}
+
+.vip-details-head {
+    margin-bottom: 14px;
+}
+
+.vip-details-badge {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: white;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+}
+
+.vip-details-head h4 {
+    font-size: 22px;
+    color: var(--gold);
+    margin: 0;
+}
+
+.vip-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.vip-details-list li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 10px;
+    color: var(--text-soft);
+    line-height: 1.5;
+}
+
+.vip-details-list li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--secondary);
+}
+
+@media (max-width: 768px) {
+    .vip-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .vip-details-title {
+        font-size: 22px;
+    }
+
+    .vip-details-head h4 {
+        font-size: 20px;
+    }
 }
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }

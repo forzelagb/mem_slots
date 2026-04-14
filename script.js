@@ -2323,6 +2323,90 @@ function updateVIPZoneUI() {
     }
 }
 
+
+/* === VIP STORE: STATUS + PROMOCODES === */
+let currentVIPLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
+
+const vipLevelNames = {
+    0: 'Без VIP',
+    1: 'VIP 1 — Ronaldo Pass',
+    2: 'VIP 2 — Shrek Club',
+    3: 'VIP 3 — SpongeBob Elite',
+    4: 'VIP 4 — Speed Legend'
+};
+
+const vipPromoCodes = {
+    VIP1: 1,
+    VIP2: 2,
+    VIP3: 3,
+    VIP4: 4,
+    RONALDO: 1,
+    SHREK: 2,
+    SPONGEBOB: 3,
+    SPEED: 4
+};
+
+function saveVIPData() {
+    localStorage.setItem('memeVIPLevel', currentVIPLevel);
+}
+
+function updateVIPStatusUI() {
+    const statusEl = document.getElementById('vip-current-status');
+    if (statusEl) {
+        statusEl.innerText = vipLevelNames[currentVIPLevel] || 'Без VIP';
+    }
+
+    const vipZoneLevelEl = document.getElementById('vip-zone-level-name');
+    if (vipZoneLevelEl) {
+        vipZoneLevelEl.innerText = vipLevelNames[currentVIPLevel] || 'Без VIP';
+    }
+
+    const vipZoneBonusEl = document.getElementById('vip-zone-daily-bonus');
+    if (vipZoneBonusEl) {
+        vipZoneBonusEl.innerText = getVIPDailyBonus();
+    }
+}
+
+function getVIPDailyBonus() {
+    if (currentVIPLevel === 1) return 1000;
+    if (currentVIPLevel === 2) return 2500;
+    if (currentVIPLevel === 3) return 5000;
+    if (currentVIPLevel === 4) return 10000;
+    return 0;
+}
+
+function activateVIPCode() {
+    const input = document.getElementById('vip-code-input');
+    const messageEl = document.getElementById('vip-message');
+
+    if (!input || !messageEl) return;
+
+    const code = input.value.trim().toUpperCase();
+
+    if (!code) {
+        messageEl.innerText = 'Введите промокод.';
+        messageEl.style.color = '#ff4d6d';
+        return;
+    }
+
+    if (vipPromoCodes[code]) {
+        currentVIPLevel = vipPromoCodes[code];
+        saveVIPData();
+        updateVIPStatusUI();
+
+        messageEl.innerText = `Активирован ${vipLevelNames[currentVIPLevel]}!`;
+        messageEl.style.color = '#34ff9c';
+        input.value = '';
+    } else {
+        messageEl.innerText = 'Промокод не найден.';
+        messageEl.style.color = '#ff4d6d';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateVIPStatusUI();
+});
+
 // === ЗАПУСК ===
 window.onload = () => {
     setBet(currentBet);
