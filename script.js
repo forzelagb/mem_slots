@@ -338,6 +338,7 @@ function updateUI() {
 }
 
 function startGame(themeName) {
+    applyVIPTheme(themeName);
     if (themeName === 'kaka' && upgrades.highroller < 1) {
     if (blackMarketItems.highRollerPass > 0) {
         blackMarketItems.highRollerPass -= 1;
@@ -348,10 +349,6 @@ function startGame(themeName) {
         return;
     }
 }
-     if (themeName === 'ronaldo') {
-        alert("❌ Слот Ronaldo временно недоступен.");
-        return; // Не открываем игру
-    }
     // Проверка баланса
     if (currentBet > gems) { 
     currentBet = 250; 
@@ -2787,6 +2784,36 @@ function showVIPSlotMessage(text) {
         alert(text);
     }
 }
+
+
+
+
+/* === APPLY VIP SLOT THEME === */
+function applyVIPTheme(mode) {
+document.body.classList.remove(
+    'vip-theme-ronaldo',
+    'vip-theme-shrek',
+    'vip-theme-spongebob',
+    'vip-theme-speed'
+);
+
+    if (mode === 'ronaldo') {
+        document.body.classList.add('vip-theme-ronaldo');
+    }
+    if (mode === 'shrek') {
+        document.body.classList.add('vip-theme-shrek');
+    }
+    if (mode === 'spongebob') {
+        document.body.classList.add('vip-theme-spongebob');
+    }
+    if (mode === 'speed') {
+        document.body.classList.add('vip-theme-speed');
+    }
+}
+
+
+
+
 // === ЗАПУСК ===
 window.onload = () => {
     setBet(currentBet);
