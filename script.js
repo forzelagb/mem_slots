@@ -461,14 +461,15 @@ function toggleAuto() {
         autoBtn.style.background = "linear-gradient(to bottom, #00f2ff, #0099cc)";
     } else {
         autoSpinActive = true;
-    autoSpinCount = 10 + upgrades.auto * 5;
+        autoSpinCount = 5 + (upgrades.auto || 0) * 2;
 
-    if (blackMarketItems.autoPack > 0) {
-    autoSpinCount += 20;
-    blackMarketItems.autoPack -= 1;
-    saveBlackMarket();
-    updateBlackMarketUI();
-    }
+        if ((blackMarketItems.autoPack || 0) > 0) {
+            autoSpinCount += 10;
+            blackMarketItems.autoPack -= 1;
+            saveBlackMarket();
+            updateBlackMarketUI();
+        }
+
         autoBtn.innerText = "STOP";
         autoBtn.style.background = "linear-gradient(to bottom, #ff4444, #cc0000)";
         spin();
@@ -659,52 +660,52 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
     }
 
     // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
+    // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
     if (totalWin > 0) {
-        const luckBonus = 1 + upgrades.luck * 0.02;
+        let finalMultiplier = 1;
 
-        let blackMarketBonus = 1;
-        let usedLuckyTicket = false;
+        // Rare Drop
+        finalMultiplier += (upgrades.rare || 0) * 0.03;
 
-        if (blackMarketItems.luckyTicket > 0) {
-            blackMarketBonus += 0.10; // +10% к следующему выигрышу
-            blackMarketItems.luckyTicket -= 1;
-            saveBlackMarket();
-            updateBlackMarketUI();
-            usedLuckyTicket = true;
+        // Critical Spin
+        const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
+        const isCrit = Math.random() < critChance;
+        if (isCrit) {
+            finalMultiplier *= 2;
         }
 
-        totalWin = Math.floor(totalWin * luckBonus * blackMarketBonus);
+        // Gem Booster
+        if ((activeEffects.gemBoosterSpins || 0) > 0) {
+            finalMultiplier *= 1.5;
+            activeEffects.gemBoosterSpins -= 1;
+            saveBlackMarket();
+        }
 
-const maxWinPerSpin = Math.floor(currentBet * profile.maxWinMultiplier);
-if (totalWin > maxWinPerSpin) {
-    totalWin = maxWinPerSpin;
-}
-
+        totalWin = Math.floor(totalWin * finalMultiplier);
         gems += totalWin;
 
-        if (usedLuckyTicket) {
-            resultText.innerText = `🎟 LUCKY TICKET! +${totalWin} 💎`;
-        } else {
-            resultText.innerText = `ВЫИГРЫШ! +${totalWin} 💎`;
-        }
-
+        saveData();
+        updateUI();
         animateBalanceChange('win');
 
-        if (totalWin >= currentBet * 5) addToLeaderboard(totalWin);
-        if (totalWin >= currentBet * 20) showBigWin(totalWin);
-    } else {
-        if (blackMarketItems.shield > 0) {
-            const refund = Math.floor(currentBet * 0.5);
-            gems += refund;
-            blackMarketItems.shield -= 1;
+        let resultMessage = `Выигрыш: ${totalWin} 💎`;
+        if (isCrit) {
+            resultMessage += " — CRITICAL x2!";
+        }
+        resultText.innerText = resultMessage;
 
-            saveBlackMarket();
-            updateBlackMarketUI();
+        if (totalWin >= currentBet * 10) {
+            showBigWin(totalWin);
+        }
+    } else {
+        const saverChance = Math.min((upgrades.saver || 0) * 0.04, 0.20);
+
+        if (Math.random() < saverChance) {
+            gems += currentBet;
             saveData();
             updateUI();
-
-            resultText.innerText = `🛡 Щит спас ${refund} 💎`;
             animateBalanceChange('win');
+            resultText.innerText = "🛟 Bet Saver сработал! Ставка возвращена";
         } else {
             resultText.innerText = "Попробуй еще...";
         }
@@ -919,13 +920,13 @@ function updateVIPBonusButton() {
 
     if (now - lastClaim > oneDay) {
         btn.disabled = false;
-        btn.innerText = "Забрать 1000 💎";
+        btn.innerText = "Забрать 250 💎";
         msg.innerText = "";
     } else {
         btn.disabled = true;
         btn.innerText = "Уже получено";
         const timeLeft = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
-        msg.innerText = `Следующий бонус через ${timeLeft} ч.`;
+        msg.innerText = `Для всех игроков. VIP открывает больше наград и особый календарь. Стоит попробовать!`;
     }
 }
 
@@ -1870,21 +1871,23 @@ function showMineExplosion() {
 
 
 let upgrades = JSON.parse(localStorage.getItem('memeUpgrades')) || {
-    luck: 0,
-    daily: 0,
+    crit: 0,
+    saver: 0,
     auto: 0,
+    rare: 0,
     highroller: 0
 };
 
 const upgradeBaseCosts = {
-    luck: 5000,
-    daily: 7500,
-    auto: 10000,
-    highroller: 15000
+    crit: 1200,
+    saver: 1800,
+    auto: 2200,
+    rare: 2600,
+    highroller: 5000
 };
 
 function getUpgradeCost(type) {
-    return Math.floor(upgradeBaseCosts[type] * Math.pow(1.8, upgrades[type]));
+    return Math.floor(upgradeBaseCosts[type] * Math.pow(1.55, upgrades[type] || 0));
 }
 
 function saveUpgrades() {
@@ -1893,29 +1896,33 @@ function saveUpgrades() {
 
 function updateUpgradesUI() {
     const mapping = [
-        ['luck', 'upgrade-luck-level', 'upgrade-luck-cost'],
-        ['daily', 'upgrade-daily-level', 'upgrade-daily-cost'],
+        ['crit', 'upgrade-crit-level', 'upgrade-crit-cost'],
+        ['saver', 'upgrade-saver-level', 'upgrade-saver-cost'],
         ['auto', 'upgrade-auto-level', 'upgrade-auto-cost'],
+        ['rare', 'upgrade-rare-level', 'upgrade-rare-cost'],
         ['highroller', 'upgrade-highroller-level', 'upgrade-highroller-cost']
     ];
 
     mapping.forEach(([type, levelId, costId]) => {
         const levelEl = document.getElementById(levelId);
         const costEl = document.getElementById(costId);
-        if (levelEl) levelEl.innerText = upgrades[type];
+
+        if (levelEl) levelEl.innerText = upgrades[type] || 0;
         if (costEl) costEl.innerText = getUpgradeCost(type);
     });
 }
 
 function buyUpgrade(type) {
     const cost = getUpgradeCost(type);
+
     if (gems < cost) {
         alert('Недостаточно гемов!');
         return;
     }
 
     gems -= cost;
-    upgrades[type]++;
+    upgrades[type] = (upgrades[type] || 0) + 1;
+
     saveUpgrades();
     saveData();
     updateUI();
@@ -1935,9 +1942,7 @@ function claimDailyReward() {
         return;
     }
 
-    const baseReward = 500;
-    const bonusFromUpgrade = upgrades.daily * 250;
-    const reward = baseReward + bonusFromUpgrade;
+    const reward = 750;
 
     gems += reward;
     localStorage.setItem('dailyRewardTime', now);
@@ -1953,18 +1958,18 @@ function claimDailyReward() {
 function updateDailyRewardUI() {
     const btn = document.getElementById('daily-reward-btn');
     const text = document.getElementById('daily-reward-text');
+
     if (!btn || !text) return;
 
     const lastClaim = parseInt(localStorage.getItem('dailyRewardTime')) || 0;
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
-
-    const reward = 500 + upgrades.daily * 250;
+    const reward = 750;
 
     if (now - lastClaim >= oneDay) {
         btn.disabled = false;
         btn.innerText = `Забрать ${reward} 💎`;
-        text.innerText = "Забери бесплатные гемы каждый день";
+        text.innerText = "Стабильный ежедневный бонус без ломания экономики";
     } else {
         btn.disabled = true;
         const hoursLeft = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
@@ -1976,22 +1981,29 @@ function updateDailyRewardUI() {
 
 
 let blackMarketItems = JSON.parse(localStorage.getItem('memeBlackMarket')) || {
-    luckyTicket: 0,
+    doubleRoll: 0,
     autoPack: 0,
-    shield: 0,
+    gemBooster: 0,
+    rageSpin: 0,
     highRollerPass: 0
+};
+
+let activeEffects = JSON.parse(localStorage.getItem('memeActiveEffects')) || {
+    gemBoosterSpins: 0
 };
 
 function saveBlackMarket() {
     localStorage.setItem('memeBlackMarket', JSON.stringify(blackMarketItems));
+    localStorage.setItem('memeActiveEffects', JSON.stringify(activeEffects));
 }
 
 function buyBlackMarketItem(type) {
     const prices = {
-        luckyTicket: 150000,
-        autoPack: 100000,
-        shield: 250000,
-        highRollerPass: 300000
+        doubleRoll: 2200,
+        autoPack: 1800,
+        gemBooster: 3200,
+        rageSpin: 2600,
+        highRollerPass: 4500
     };
 
     const cost = prices[type];
@@ -2002,25 +2014,28 @@ function buyBlackMarketItem(type) {
     }
 
     gems -= cost;
-    blackMarketItems[type] += 1;
+
+    if (type === 'gemBooster') {
+        activeEffects.gemBoosterSpins += 5;
+    } else {
+        blackMarketItems[type] = (blackMarketItems[type] || 0) + 1;
+    }
 
     saveBlackMarket();
     saveData();
     updateUI();
     updateBlackMarketUI();
     animateBalanceChange('loss');
-    
 
     alert("Покупка успешна!");
 }
 
-
-
 function updateBlackMarketUI() {
     const mapping = [
-        ['luckyTicket', 'owned-luckyTicket', 'inv-luckyTicket'],
+        ['doubleRoll', 'owned-doubleRoll', 'inv-doubleRoll'],
         ['autoPack', 'owned-autoPack', 'inv-autoPack'],
-        ['shield', 'owned-shield', 'inv-shield'],
+        ['gemBooster', 'owned-gemBooster', 'inv-gemBooster'],
+        ['rageSpin', 'owned-rageSpin', 'inv-rageSpin'],
         ['highRollerPass', 'owned-highRollerPass', 'inv-highRollerPass']
     ];
 

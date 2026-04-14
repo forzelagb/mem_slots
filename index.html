@@ -134,20 +134,20 @@
 
     <div class="upgrades-grid">
         <div class="upgrade-card">
-            <h3>🍀 Luck Upgrade</h3>
-            <p>Уровень: <span id="upgrade-luck-level">0</span></p>
-            <p>Шанс хорошего дропа становится лучше</p>
-            <button class="btn-upgrade-main" onclick="buyUpgrade('luck')">
-                Купить за <span id="upgrade-luck-cost">5000</span> 💎
+            <h3>🎯 Critical Spin</h3>
+            <p>Уровень: <span id="upgrade-crit-level">0</span></p>
+            <p>Шанс на x2 к выигрышу при удачном спине</p>
+            <button class="btn-upgrade-main" onclick="buyUpgrade('crit')">
+                Купить за <span id="upgrade-crit-cost">1200</span> 💎
             </button>
         </div>
 
         <div class="upgrade-card">
-            <h3>🎁 Daily Bonus</h3>
-            <p>Уровень: <span id="upgrade-daily-level">0</span></p>
-            <p>Увеличивает ежедневную награду</p>
-            <button class="btn-upgrade-main" onclick="buyUpgrade('daily')">
-                Купить за <span id="upgrade-daily-cost">7500</span> 💎
+            <h3>🛟 Bet Saver</h3>
+            <p>Уровень: <span id="upgrade-saver-level">0</span></p>
+            <p>Шанс вернуть ставку при проигрыше</p>
+            <button class="btn-upgrade-main" onclick="buyUpgrade('saver')">
+                Купить за <span id="upgrade-saver-cost">1800</span> 💎
             </button>
         </div>
 
@@ -156,16 +156,25 @@
             <p>Уровень: <span id="upgrade-auto-level">0</span></p>
             <p>Даёт больше автоспинов за запуск</p>
             <button class="btn-upgrade-main" onclick="buyUpgrade('auto')">
-                Купить за <span id="upgrade-auto-cost">10000</span> 💎
+                Купить за <span id="upgrade-auto-cost">2200</span> 💎
             </button>
         </div>
 
         <div class="upgrade-card">
-            <h3>💎 High Roller Access</h3>
+            <h3>💎 Rare Drop</h3>
+            <p>Уровень: <span id="upgrade-rare-level">0</span></p>
+            <p>Повышает шанс выпадения редких символов</p>
+            <button class="btn-upgrade-main" onclick="buyUpgrade('rare')">
+                Купить за <span id="upgrade-rare-cost">2600</span> 💎
+            </button>
+        </div>
+
+        <div class="upgrade-card">
+            <h3>👑 High Roller Access</h3>
             <p>Уровень: <span id="upgrade-highroller-level">0</span></p>
             <p>Открывает дорогие режимы и высокий риск</p>
             <button class="btn-upgrade-main" onclick="buyUpgrade('highroller')">
-                Купить за <span id="upgrade-highroller-cost">15000</span> 💎
+                Купить за <span id="upgrade-highroller-cost">5000</span> 💎
             </button>
         </div>
     </div>
@@ -176,46 +185,56 @@
     <h2 class="section-title">🛒 BLACK MARKET</h2>
 
     <div class="market-inventory">
-        <div class="inventory-pill">🎟 Билеты: <span id="inv-luckyTicket">0</span></div>
+        <div class="inventory-pill">🎲 Double Roll: <span id="inv-doubleRoll">0</span></div>
         <div class="inventory-pill">⚡ Auto Pack: <span id="inv-autoPack">0</span></div>
-        <div class="inventory-pill">🛡 Shield: <span id="inv-shield">0</span></div>
-        <div class="inventory-pill">💎 Pass: <span id="inv-highRollerPass">0</span></div>
+        <div class="inventory-pill">💎 Gem Booster: <span id="inv-gemBooster">0</span></div>
+        <div class="inventory-pill">🔥 Rage Spin: <span id="inv-rageSpin">0</span></div>
+        <div class="inventory-pill">👑 Pass: <span id="inv-highRollerPass">0</span></div>
     </div>
 
     <div class="market-shop-grid">
         <div class="shop-card">
-            <h3>🎟 Lucky Ticket</h3>
-            <p>+10% к следующему выигрышу в слотах</p>
-            <p class="shop-owned">У тебя: <span id="owned-luckyTicket">0</span></p>
-            <button class="shop-btn" onclick="buyBlackMarketItem('luckyTicket')">
-                Купить за 3000 💎
+            <h3>🎲 Double Roll</h3>
+            <p>Следующий спин прокручивается дважды, берётся лучший результат</p>
+            <p class="shop-owned">У тебя: <span id="owned-doubleRoll">0</span></p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('doubleRoll')">
+                Купить за 2200 💎
             </button>
         </div>
 
         <div class="shop-card">
             <h3>⚡ Auto Spin Pack</h3>
-            <p>+20 автоспинов на следующий запуск</p>
+            <p>+10 автоспинов на следующий запуск</p>
             <p class="shop-owned">У тебя: <span id="owned-autoPack">0</span></p>
             <button class="shop-btn" onclick="buyBlackMarketItem('autoPack')">
-                Купить за 5000 💎
+                Купить за 1800 💎
             </button>
         </div>
 
         <div class="shop-card">
-            <h3>🛡 Mega Shield</h3>
-            <p>1 защита от проигрышного спина</p>
-            <p class="shop-owned">У тебя: <span id="owned-shield">0</span></p>
-            <button class="shop-btn" onclick="buyBlackMarketItem('shield')">
-                Купить за 7000 💎
+            <h3>💎 Gem Booster</h3>
+            <p>Следующие 5 выигрышных спинов дают +50% к выплате</p>
+            <p class="shop-owned">У тебя: <span id="owned-gemBooster">0</span></p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('gemBooster')">
+                Купить за 3200 💎
             </button>
         </div>
 
         <div class="shop-card">
-            <h3>💎 High Roller Pass</h3>
+            <h3>🔥 Rage Spin</h3>
+            <p>Один рискованный спин: выигрыш x3, но шанс провала выше</p>
+            <p class="shop-owned">У тебя: <span id="owned-rageSpin">0</span></p>
+            <button class="shop-btn" onclick="buyBlackMarketItem('rageSpin')">
+                Купить за 2600 💎
+            </button>
+        </div>
+
+        <div class="shop-card">
+            <h3>👑 High Roller Pass</h3>
             <p>Доступ к дорогому слоту на 1 запуск</p>
             <p class="shop-owned">У тебя: <span id="owned-highRollerPass">0</span></p>
             <button class="shop-btn" onclick="buyBlackMarketItem('highRollerPass')">
-                Купить за 12000 💎
+                Купить за 4500 💎
             </button>
         </div>
     </div>
