@@ -2950,6 +2950,17 @@ function getCurrentVIPRank() {
 
     return ranks[vipLevel] || ranks[0];
 }
+function getVIPRankLabel(level) {
+    const labels = {
+        0: 'Без VIP',
+        1: 'VIP 1 — Ronaldo Pass',
+        2: 'VIP 2 — Shrek Club',
+        3: 'VIP 3 — SpongeBob Elite',
+        4: 'VIP 4 — Speed Legend'
+    };
+
+    return labels[level] || 'Без VIP';
+}
 
 
 
