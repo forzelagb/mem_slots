@@ -818,6 +818,8 @@ function activateVIPCodeFromStore() {
         if (newLevel > vipLevel) {
             vipLevel = newLevel;
             localStorage.setItem('memeVIPLevel', vipLevel.toString());
+            renderVIPSlots();
+            updateVIPZoneUI();
             
             messageEl.style.color = '#00ff88';
             messageEl.innerText = `✅ Код принят! Уровень ${getLevelName(vipLevel)} активирован.`;
@@ -854,21 +856,37 @@ function getLevelName(level) {
 
 // === ЕЖЕДНЕВНЫЙ БОНУС VIP ===
 function claimDailyVIPBonus() {
+    const rank = getCurrentVIPRank();
+    if (rank < 1) {
+        alert("❌ У тебя нет активного VIP");
+        return;
+    }
+
     const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
     const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 часа в миллисекундах
+    const oneDay = 24 * 60 * 60 * 1000;
 
-    if (now - lastClaim > oneDay) {
-        gems += 1000;
-        localStorage.setItem('lastVIPBonusTime', now);
-        saveData();
-        updateUI();
-        
-        alert("🎉 Вы получили 1000 гемов! SIUUU!");
-        updateVIPBonusButton();
-    } else {
-        alert("⏳ Бонус доступен только раз в 24 часа.");
+    if (now - lastClaim <= oneDay) {
+        alert("⏳ VIP-бонус доступен только раз в 24 часа.");
+        updateVIPZoneUI();
+        return;
     }
+
+    let reward = 0;
+    if (rank === 1) reward = 1000;
+    if (rank === 2) reward = 5000;
+    if (rank === 3) reward = 8500;
+    if (rank === 4) reward = 15000;
+
+    gems += reward;
+    localStorage.setItem('lastVIPBonusTime', now.toString());
+
+    saveData();
+    updateUI();
+    updateVIPZoneUI();
+    animateBalanceChange('win');
+
+    alert(`🎉 Ты получил VIP-бонус: ${reward} 💎`);
 }
 
 function updateVIPBonusButton() {
@@ -2235,10 +2253,74 @@ function getWeightedWheelReward() {
 
     return adjustedRewards[0];
 }
-
 function activateVIP(level) {
     localStorage.setItem("vipLevel", level);
+    renderVIPSlots();
+    updateVIPZoneUI();
     alert("VIP активирован: " + level);
+}
+
+function updateVIPZoneUI() {
+    const lockedEl = document.getElementById('vip-zone-locked');
+    const contentEl = document.getElementById('vip-zone-content');
+    const levelNameEl = document.getElementById('vip-zone-level-name');
+    const dailyBonusEl = document.getElementById('vip-zone-daily-bonus');
+    const timerEl = document.getElementById('vip-zone-timer-msg');
+    const slotsContainer = document.getElementById('vip-zone-slots-container');
+
+    if (!lockedEl || !contentEl) return;
+
+    const rank = getCurrentVIPRank();
+
+    if (rank < 1) {
+        lockedEl.style.display = 'block';
+        contentEl.style.display = 'none';
+        return;
+    }
+
+    lockedEl.style.display = 'none';
+    contentEl.style.display = 'block';
+
+    let dailyBonus = 0;
+    if (rank === 1) dailyBonus = 1000;
+    if (rank === 2) dailyBonus = 5000;
+    if (rank === 3) dailyBonus = 8500;
+    if (rank === 4) dailyBonus = 15000;
+
+    if (levelNameEl) levelNameEl.innerText = getVIPRankLabel(rank);
+    if (dailyBonusEl) dailyBonusEl.innerText = dailyBonus;
+
+    if (slotsContainer) {
+        slotsContainer.innerHTML = '';
+
+        vipSlotsConfig.forEach(slot => {
+            if (rank >= slot.requiredRank) {
+                const card = document.createElement('div');
+                card.className = 'mini-slot-card';
+                card.onclick = () => tryOpenVIPSlot(slot);
+
+                card.innerHTML = `
+                    <div class="mini-img ${slot.bgClass}"></div>
+                    <div>${slot.title}</div>
+                `;
+
+                slotsContainer.appendChild(card);
+            }
+        });
+    }
+
+    const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+
+    if (timerEl) {
+        if (now - lastClaim > oneDay) {
+            timerEl.innerText = "VIP-бонус доступен сейчас";
+        } else {
+            const hoursLeft = Math.ceil((oneDay - (now - lastClaim)) / 3600000);
+            timerEl.innerText = `Следующий VIP-бонус через ${hoursLeft} ч.`;
+        }
+    }
 }
 
 // === ЗАПУСК ===
@@ -2254,6 +2336,7 @@ window.onload = () => {
     updateBlackMarketUI();
     updateWheelUI();
     renderWheelTrack();
+    updateVIPZoneUI();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 

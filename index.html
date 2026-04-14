@@ -50,10 +50,12 @@
             <button class="tab-btn" onclick="openTab('wheel')">🎡 Рулетка</button>            
             <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
             <button class="tab-btn" onclick="openTab('market')">🛒 Black Market</button>
+
             <!-- КНОПКА СЕКРЕТНОЙ ЗОНЫ -->
-            <button id="btn-secret" class="tab-btn btn-secret" onclick="checkSecretAccess()">
-                🔒 SECRET
-            </button>
+<button id="btn-secret" class="tab-btn btn-secret" onclick="openTab('secret')">
+    💎 VIP STORE
+</button>
+            <button class="tab-btn" onclick="openTab('vipzone')">👑 VIP ZONE</button>
         </div>
         
 
@@ -87,7 +89,7 @@
             </div>
         </div>
 
-<div class="game-card vip-zone-card" onclick="checkSecretAccess()">
+<div class="game-card vip-zone-card" onclick="openTab('vipzone')">
     <div class="card-image vip-zone-bg">
         <div class="vip-zone-badge">PREMIUM</div>
     </div>
@@ -247,7 +249,7 @@
     <!-- ЧАСТЬ 1: ВИТРИНА ТАРИФОВ (Показывается, если у игрока НЕТ VIP или он хочет увидеть цены) -->
     <div id="vip-storefront">
         <h2 class="secret-title-open">💎 ВЫБЕРИ СВОЙ VIP УРОВЕНЬ</h2>
-        <p style="color: #aaa; margin-bottom: 20px;">Поддержи проект и получи эксклюзивные возможности!</p>
+        <p style="color: #aaa; margin-bottom: 20px;">Выбери VIP-подписку, получи мгновенные бонусы и открой премиум-контент.</p>
         
 <div class="pricing-grid">
 
@@ -341,6 +343,42 @@
 </div>
             </div>
         </div>
+        <div id="tab-vipzone" class="tab-content">
+    <div class="secret-panel">
+        <div id="vip-zone-locked" style="display: none;">
+            <h2 class="secret-title-open">👑 VIP ZONE</h2>
+            <p style="color:#aaa; margin-bottom: 18px;">
+                Доступ только для VIP-игроков.
+            </p>
+            <p style="color:#fff; margin-bottom: 20px;">
+                Открой VIP и получи доступ к эксклюзивным слотам, ежедневным бонусам и VIP-рулетке.
+            </p>
+            <button class="vip-buy-btn" onclick="openTab('secret')">Открыть VIP STORE</button>
+        </div>
+
+        <div id="vip-zone-content" style="display: none;">
+            <h2 class="secret-title-open">👑 VIP ZONE</h2>
+
+            <div class="vip-info-box">
+                <p>Текущий статус: <span id="vip-zone-level-name">Guest</span></p>
+                <p>Ежедневный бонус: <span id="vip-zone-daily-bonus">0</span> 💎</p>
+                <button id="btn-daily-vip-zone" class="btn-claim-bonus" onclick="claimDailyVIPBonus()">Забрать бонус</button>
+                <p id="vip-zone-timer-msg" style="font-size: 12px; color: #aaa; margin-top: 8px;"></p>
+            </div>
+
+            <h3 style="margin-top: 24px;">🎰 VIP Слоты</h3>
+            <div class="vip-slots-grid" id="vip-zone-slots-container"></div>
+
+            <h3 style="margin-top: 24px;">🎡 VIP Механики</h3>
+            <div class="vip-zone-actions">
+                <button class="vip-zone-action-btn" onclick="openTab('wheel')">Открыть VIP рулетку</button>
+                <button class="vip-zone-action-btn" onclick="openTab('market')">Открыть Black Market</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div id="tab-wheel" class="tab-content">
     <h2 class="section-title">🎡 VIP РУЛЕТКА</h2>
 
