@@ -63,26 +63,6 @@ goobka: [
     {src: "image/goobka/6.jpg", mult: 25},
     {src: "image/goobka/7.jpg", mult: 75}
 ],
-
-kaka: [
-    {src: "image/kaka/1.jpg", mult: ""},
-    {src: "image/kaka/2.jpg", mult: 3},
-    {src: "image/kaka/3.jpg", mult: 5},
-    {src: "image/kaka/4.jpg", mult: 10},
-    {src: "image/kaka/5.jpg", mult: 25},
-    {src: "image/kaka/6.jpg", mult: 50},
-    {src: "image/kaka/7.jpg", mult: 100}
-],
-
-zidane: [
-    {src: "image/zidane/1.jpg", mult: ""},
-    {src: "image/zidane/2.jpg", mult: 3},
-    {src: "image/zidane/3.jpg", mult: 5},
-    {src: "image/zidane/4.jpg", mult: 10},
-    {src: "image/zidane/5.jpg", mult: 25},
-    {src: "image/zidane/6.jpg", mult: 50},
-    {src: "image/zidane/7.jpg", mult: 150} // ЛЕГЕНДАРНЫЙ ДЖЕКПОТ!
-],
 shrek: [
     {src: "image/shrek/1.jpg", mult: ""},
     {src: "image/shrek/2.jpg", mult: ""},
@@ -548,6 +528,7 @@ function checkWins(grid) {
     console.log("=== ПРОВЕРКА ВЫИГРЫШЕЙ ===");
     console.log("Ставка:", currentBet);
 
+    const profile = getSlotProfile(currentTheme);
     let totalWin = 0;
     const rows = 5;
     const cols = 5;
@@ -579,9 +560,9 @@ function checkWins(grid) {
 
                 let winAmount = 0;
 
-                if (matchCount === 3) winAmount = currentBet * 1.2 * multiplier;
-                else if (matchCount === 4) winAmount = currentBet * 3 * multiplier;
-                else if (matchCount === 5) winAmount = currentBet * 20 * multiplier;
+if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
+else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
+else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
 
                 totalWin += winAmount;
 
@@ -618,9 +599,9 @@ function checkWins(grid) {
 
                 let winAmount = 0;
 
-                if (matchCount === 3) winAmount = currentBet * 1.2 * multiplier;
-                else if (matchCount === 4) winAmount = currentBet * 3 * multiplier;
-                else if (matchCount === 5) winAmount = currentBet * 20 * multiplier;
+if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
+else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
+else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
 
                 totalWin += winAmount;
             }
@@ -647,7 +628,7 @@ function checkWins(grid) {
                         ? parseFloat(item1.mult)
                         : 1;
 
-                totalWin += currentBet * 1 * multiplier;
+                totalWin += currentBet * profile.diag3 * multiplier;
             }
         }
     }
@@ -672,7 +653,7 @@ function checkWins(grid) {
                         ? parseFloat(item1.mult)
                         : 1;
 
-                totalWin += currentBet * 1 * multiplier;
+                totalWin += currentBet * profile.diag3 * multiplier;
             }
         }
     }
@@ -693,6 +674,11 @@ function checkWins(grid) {
         }
 
         totalWin = Math.floor(totalWin * luckBonus * blackMarketBonus);
+
+const maxWinPerSpin = Math.floor(currentBet * profile.maxWinMultiplier);
+if (totalWin > maxWinPerSpin) {
+    totalWin = maxWinPerSpin;
+}
 
         gems += totalWin;
 
@@ -1194,27 +1180,18 @@ function showVIPDashboard() {
 function getRandomWeightedItem(items) {
     if (!items || items.length === 0) return null;
 
-    // 1. ОПРЕДЕЛЯЕМ СЛОЖНОСТЬ В ЗАВИСИМОСТИ ОТ СТАВКИ
-    let difficultyFactor = 1;
-    
-    if (currentBet > 1000) difficultyFactor = 2;    // Ставка > 1к: сложнее в 2 раза
-    if (currentBet > 5000) difficultyFactor = 5;    // Ставка > 5к: сложнее в 5 раз
-    if (currentBet > 20000) difficultyFactor = 10;  // Ставка > 20к: сложнее в 10 раз
-    if (currentBet > 100000) difficultyFactor = 50; // Ставка > 100к: почти невозможно выбить джекпот
+    const profile = getSlotProfile(currentTheme);
 
     const weights = items.map(item => {
         const mult = parseFloat(item.mult) || 1;
-        
-        // Базовый вес: 100 / множитель. 
-        // x1 -> вес 100. x50 -> вес 2.
-        let weight = 100 / mult;
-        
-        // ЕСЛИ КАРТИНКА РЕДКАЯ (множитель > 5), ПРИМЕНЯЕМ ШТРАФ ЗА ВЫСОКУЮ СТАВКУ
-        if (mult > 5) {
-            weight = weight / difficultyFactor;
-        }
-        
-        return Math.max(0.1, weight); // Вес не может быть меньше 0.1
+
+        if (mult >= 50) return profile.w50 ?? 0.005;
+        if (mult >= 20) return profile.w20 ?? 0.03;
+        if (mult >= 10) return profile.w10 ?? 0.12;
+        if (mult >= 5) return profile.w5 ?? 1.5;
+        if (mult >= 3) return profile.w3 ?? 7;
+        if (mult >= 2) return profile.w2 ?? 18;
+        return profile.w1 ?? 60;
     });
 
     const totalWeight = weights.reduce((a, b) => a + b, 0);
@@ -1225,7 +1202,103 @@ function getRandomWeightedItem(items) {
         if (random <= 0) return items[i];
     }
 
-    return items[0];
+    return items[items.length - 1];
+}
+
+function getSlotProfile(themeName) {
+    const profiles = {
+        // ОБЫЧНЫЕ СЛОТЫ — спокойные, фармовые
+        default: {
+            w1: 78,
+            w2: 15,
+            w3: 5.5,
+            w5: 1.0,
+            w10: 0.05,
+            w20: 0.005,
+            w50: 0.0005,
+
+            pay3: 0.16,
+            pay4: 0.48,
+            pay5: 2.0,
+            diag3: 0.10,
+
+            maxWinMultiplier: 8
+        },
+
+        // VIP 1 — чуть веселее обычного, но без печатного станка
+        ronaldo: {
+            w1: 76,
+            w2: 16,
+            w3: 6,
+            w5: 1.1,
+            w10: 0.06,
+            w20: 0.006,
+            w50: 0.0006,
+
+            pay3: 0.18,
+            pay4: 0.55,
+            pay5: 2.3,
+            diag3: 0.11,
+
+            maxWinMultiplier: 10
+        },
+
+        // VIP 2 — более стабильный, чаще даёт приятные мелкие выигрыши
+        shrek: {
+            w1: 75,
+            w2: 16.5,
+            w3: 6.5,
+            w5: 1.3,
+            w10: 0.07,
+            w20: 0.007,
+            w50: 0.0007,
+
+            pay3: 0.20,
+            pay4: 0.62,
+            pay5: 2.7,
+            diag3: 0.12,
+
+            maxWinMultiplier: 11
+        },
+
+        // VIP 3 — самый ровный и приятный
+        spongebob: {
+            w1: 74,
+            w2: 17,
+            w3: 6.8,
+            w5: 1.4,
+            w10: 0.08,
+            w20: 0.008,
+            w50: 0.0008,
+
+            pay3: 0.22,
+            pay4: 0.68,
+            pay5: 3.0,
+            diag3: 0.13,
+
+            maxWinMultiplier: 12
+        },
+
+        // VIP 4 — самый рискованный, но всё ещё в рамках
+        speed: {
+            w1: 73,
+            w2: 17.5,
+            w3: 7,
+            w5: 1.5,
+            w10: 0.10,
+            w20: 0.010,
+            w50: 0.0010,
+
+            pay3: 0.24,
+            pay4: 0.75,
+            pay5: 3.3,
+            diag3: 0.14,
+
+            maxWinMultiplier: 13
+        }
+    };
+
+    return profiles[themeName] || profiles.default;
 }
 
 // === ОБЫЧНАЯ СЛУЧАЙНОСТЬ (для совместимости) ===
