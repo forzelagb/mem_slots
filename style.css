@@ -3898,7 +3898,146 @@ body.vip-theme-ronaldo .slot-container.win-pulse {
         0 18px 45px rgba(0,0,0,0.55) !important;
 }
 
+/* === VIP THEME OVERRIDE FIX: SHREK / SPONGEBOB / SPEED === */
 
+body.vip-theme-shrek .slot-container {
+    border: 2px solid rgba(52, 255, 156, 0.85) !important;
+    box-shadow:
+        0 0 35px rgba(52, 255, 156, 0.30),
+        0 0 70px rgba(52, 255, 156, 0.14),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+body.vip-theme-shrek .grid-wrapper {
+    border: 1px solid rgba(52, 255, 156, 0.35) !important;
+    box-shadow:
+        inset 0 0 28px rgba(52, 255, 156, 0.10),
+        0 0 18px rgba(52, 255, 156, 0.06) !important;
+}
+
+body.vip-theme-shrek .cell {
+    border: 1px solid rgba(52, 255, 156, 0.24) !important;
+}
+
+body.vip-theme-shrek .btn-spin {
+    background: linear-gradient(180deg, #7dffb8, #25d67b) !important;
+    color: #052111 !important;
+    box-shadow:
+        0 0 20px rgba(52, 255, 156, 0.40),
+        0 6px 0 #0c8d4c !important;
+}
+
+body.vip-theme-shrek .slot-title,
+body.vip-theme-shrek .message-box,
+body.vip-theme-shrek .win-title,
+body.vip-theme-shrek .win-amount {
+    color: #7dffb8 !important;
+    text-shadow:
+        0 0 16px rgba(52, 255, 156, 0.40),
+        0 0 32px rgba(52, 255, 156, 0.18) !important;
+}
+
+body.vip-theme-shrek .slot-container.win-pulse {
+    animation: none !important;
+    box-shadow:
+        0 0 45px rgba(52, 255, 156, 0.35),
+        0 0 85px rgba(52, 255, 156, 0.18),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+/* ===== SPONGEBOB ===== */
+
+body.vip-theme-spongebob .slot-container {
+    border: 2px solid rgba(255, 230, 80, 0.88) !important;
+    box-shadow:
+        0 0 35px rgba(255, 230, 80, 0.32),
+        0 0 70px rgba(255, 230, 80, 0.16),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+body.vip-theme-spongebob .grid-wrapper {
+    border: 1px solid rgba(255, 230, 80, 0.38) !important;
+    box-shadow:
+        inset 0 0 28px rgba(255, 230, 80, 0.10),
+        0 0 18px rgba(255, 230, 80, 0.07) !important;
+}
+
+body.vip-theme-spongebob .cell {
+    border: 1px solid rgba(255, 230, 80, 0.24) !important;
+}
+
+body.vip-theme-spongebob .btn-spin {
+    background: linear-gradient(180deg, #fff07a, #ffd24a) !important;
+    color: #2a2200 !important;
+    box-shadow:
+        0 0 20px rgba(255, 230, 80, 0.42),
+        0 6px 0 #b08a00 !important;
+}
+
+body.vip-theme-spongebob .slot-title,
+body.vip-theme-spongebob .message-box,
+body.vip-theme-spongebob .win-title,
+body.vip-theme-spongebob .win-amount {
+    color: #ffe55e !important;
+    text-shadow:
+        0 0 16px rgba(255, 230, 80, 0.42),
+        0 0 32px rgba(255, 230, 80, 0.18) !important;
+}
+
+body.vip-theme-spongebob .slot-container.win-pulse {
+    animation: none !important;
+    box-shadow:
+        0 0 45px rgba(255, 230, 80, 0.38),
+        0 0 85px rgba(255, 230, 80, 0.18),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+/* ===== SPEED ===== */
+
+body.vip-theme-speed .slot-container {
+    border: 2px solid rgba(77, 227, 255, 0.88) !important;
+    box-shadow:
+        0 0 35px rgba(77, 227, 255, 0.32),
+        0 0 70px rgba(77, 227, 255, 0.16),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
+
+body.vip-theme-speed .grid-wrapper {
+    border: 1px solid rgba(77, 227, 255, 0.38) !important;
+    box-shadow:
+        inset 0 0 28px rgba(77, 227, 255, 0.10),
+        0 0 18px rgba(77, 227, 255, 0.07) !important;
+}
+
+body.vip-theme-speed .cell {
+    border: 1px solid rgba(77, 227, 255, 0.24) !important;
+}
+
+body.vip-theme-speed .btn-spin {
+    background: linear-gradient(180deg, #7cf0ff, #24cfff) !important;
+    color: #021820 !important;
+    box-shadow:
+        0 0 20px rgba(77, 227, 255, 0.42),
+        0 6px 0 #0c89a7 !important;
+}
+
+body.vip-theme-speed .slot-title,
+body.vip-theme-speed .message-box,
+body.vip-theme-speed .win-title,
+body.vip-theme-speed .win-amount {
+    color: #7cf0ff !important;
+    text-shadow:
+        0 0 16px rgba(77, 227, 255, 0.42),
+        0 0 32px rgba(77, 227, 255, 0.18) !important;
+}
+
+body.vip-theme-speed .slot-container.win-pulse {
+    animation: none !important;
+    box-shadow:
+        0 0 45px rgba(77, 227, 255, 0.38),
+        0 0 85px rgba(77, 227, 255, 0.18),
+        0 18px 45px rgba(0,0,0,0.55) !important;
+}
 
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
