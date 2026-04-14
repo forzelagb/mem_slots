@@ -2407,6 +2407,128 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVIPStatusUI();
 });
 
+
+/* === VIP ZONE ACCESS === */
+function updateVIPZoneAccess() {
+    const lockedEl = document.getElementById('vip-zone-locked');
+    const contentEl = document.getElementById('vip-zone-content');
+
+    if (!lockedEl || !contentEl) return;
+
+    if (currentVIPLevel > 0) {
+        lockedEl.style.display = 'none';
+        contentEl.style.display = 'block';
+    } else {
+        lockedEl.style.display = 'block';
+        contentEl.style.display = 'none';
+    }
+
+    updateVIPStatusUI();
+}
+
+const originalOpenTab = openTab;
+
+openTab = function(tabName) {
+    originalOpenTab(tabName);
+
+    if (tabName === 'vipzone') {
+        updateVIPZoneAccess();
+    }
+
+    if (tabName === 'secret') {
+        updateVIPStatusUI();
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateVIPZoneAccess();
+});
+
+
+
+/* === VIP ZONE SLOTS === */
+const vipSlotsConfig = [
+    {
+        level: 1,
+        key: 'ronaldo',
+        title: '🐐 Ronaldo',
+        desc: 'Первый VIP-слот',
+        available: true
+    },
+    {
+        level: 2,
+        key: 'shrek',
+        title: '🟢 Shrek',
+        desc: 'VIP 2 слот',
+        available: false
+    },
+    {
+        level: 3,
+        key: 'spongebob',
+        title: '🧽 SpongeBob',
+        desc: 'VIP 3 слот',
+        available: false
+    },
+    {
+        level: 4,
+        key: 'speed',
+        title: '⚡ Speed',
+        desc: 'VIP 4 слот',
+        available: false
+    }
+];
+
+function renderVIPZoneSlots() {
+    const container = document.getElementById('vip-zone-slots-container');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    vipSlotsConfig.forEach(slot => {
+        if (currentVIPLevel < slot.level) return;
+
+        const card = document.createElement('div');
+        card.className = 'mini-slot-card vip-zone-slot-card';
+
+        const preview = document.createElement('div');
+        preview.className = 'mini-img vip-slot-preview';
+
+        const title = document.createElement('div');
+        title.className = 'vip-slot-title';
+        title.innerText = slot.title;
+
+        const desc = document.createElement('div');
+        desc.className = 'vip-slot-desc';
+        desc.innerText = slot.available ? slot.desc : 'Скоро будет доступно';
+
+        const actionBtn = document.createElement('button');
+        actionBtn.className = 'vip-slot-btn';
+
+        if (slot.available) {
+            actionBtn.innerText = 'Играть';
+            actionBtn.onclick = () => startGame(slot.key);
+        } else {
+            actionBtn.innerText = 'Скоро';
+            actionBtn.disabled = true;
+        }
+
+        card.appendChild(preview);
+        card.appendChild(title);
+        card.appendChild(desc);
+        card.appendChild(actionBtn);
+
+        container.appendChild(card);
+    });
+}
+
+const originalUpdateVIPZoneAccess = updateVIPZoneAccess;
+
+updateVIPZoneAccess = function() {
+    originalUpdateVIPZoneAccess();
+    renderVIPZoneSlots();
+};
+
+
 // === ЗАПУСК ===
 window.onload = () => {
     setBet(currentBet);

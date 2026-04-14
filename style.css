@@ -3058,6 +3058,59 @@ button:hover,
     }
 }
 
+
+/* === VIP ZONE SLOTS UI === */
+.vip-zone-slot-card {
+    padding: 12px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.22);
+}
+
+.vip-slot-preview {
+    height: 80px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.15), transparent 35%),
+        linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
+    border: 1px solid rgba(255,255,255,0.10);
+}
+
+.vip-slot-title {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.vip-slot-desc {
+    font-size: 13px;
+    color: var(--text-soft);
+    min-height: 34px;
+    margin-bottom: 10px;
+}
+
+.vip-slot-btn {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    box-shadow: 0 4px 0 #a56e00;
+}
+
+.vip-slot-btn:disabled {
+    background: #555;
+    color: #bbb;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
