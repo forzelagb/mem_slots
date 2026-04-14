@@ -2452,29 +2452,33 @@ const vipSlotsConfig = [
         level: 1,
         key: 'ronaldo',
         title: '🐐 Ronaldo',
-        desc: 'Первый VIP-слот',
-        available: true
+        desc: 'Легендарный VIP-слот для старта',
+        available: true,
+        themeClass: 'vip-preview-ronaldo'
     },
     {
         level: 2,
         key: 'shrek',
         title: '🟢 Shrek',
-        desc: 'VIP 2 слот',
-        available: false
+        desc: 'Мемный премиум-слот второго уровня',
+        available: false,
+        themeClass: 'vip-preview-shrek'
     },
     {
         level: 3,
         key: 'spongebob',
         title: '🧽 SpongeBob',
-        desc: 'VIP 3 слот',
-        available: false
+        desc: 'Яркий VIP-слот с особыми наградами',
+        available: false,
+        themeClass: 'vip-preview-spongebob'
     },
     {
         level: 4,
         key: 'speed',
         title: '⚡ Speed',
-        desc: 'VIP 4 слот',
-        available: false
+        desc: 'Топовый слот для максимального VIP',
+        available: false,
+        themeClass: 'vip-preview-speed'
     }
 ];
 
@@ -2485,13 +2489,17 @@ function renderVIPZoneSlots() {
     container.innerHTML = '';
 
     vipSlotsConfig.forEach(slot => {
-        if (currentVIPLevel < slot.level) return;
+        const unlocked = currentVIPLevel >= slot.level;
 
         const card = document.createElement('div');
         card.className = 'mini-slot-card vip-zone-slot-card';
 
+        if (!unlocked) {
+            card.classList.add('locked-slot');
+        }
+
         const preview = document.createElement('div');
-        preview.className = 'mini-img vip-slot-preview';
+        preview.className = `mini-img vip-slot-preview ${slot.themeClass || ''}`;
 
         const title = document.createElement('div');
         title.className = 'vip-slot-title';
@@ -2499,12 +2507,36 @@ function renderVIPZoneSlots() {
 
         const desc = document.createElement('div');
         desc.className = 'vip-slot-desc';
-        desc.innerText = slot.available ? slot.desc : 'Скоро будет доступно';
+
+        if (unlocked) {
+            desc.innerText = slot.desc;
+        } else {
+            desc.innerText = `Открывается на VIP ${slot.level}`;
+        }
+        const status = document.createElement('div');
+status.className = 'vip-slot-status';
+
+if (!unlocked) {
+    status.innerText = '🔒 Заблокировано';
+} else if (slot.available) {
+    status.innerText = '🔥 Доступно сейчас';
+} else {
+    status.innerText = '🛠 Скоро открытие';
+}
+
+        const badge = document.createElement('div');
+        badge.className = 'vip-slot-level-badge';
+        badge.innerText = `VIP ${slot.level}`;
 
         const actionBtn = document.createElement('button');
         actionBtn.className = 'vip-slot-btn';
 
-        if (slot.available) {
+        if (!unlocked) {
+            actionBtn.innerText = 'Закрыто';
+            actionBtn.onclick = () => {
+                showVIPSlotMessage(`Для слота ${slot.title} нужен VIP ${slot.level}`);
+            };
+        } else if (slot.available) {
             actionBtn.innerText = 'Играть';
             actionBtn.onclick = () => startGame(slot.key);
         } else {
@@ -2512,10 +2544,18 @@ function renderVIPZoneSlots() {
             actionBtn.disabled = true;
         }
 
-        card.appendChild(preview);
-        card.appendChild(title);
-        card.appendChild(desc);
-        card.appendChild(actionBtn);
+        card.onclick = () => {
+            if (!unlocked) {
+                showVIPSlotMessage(`Для слота ${slot.title} нужен VIP ${slot.level}`);
+            }
+        };
+
+card.appendChild(badge);
+card.appendChild(preview);
+card.appendChild(title);
+card.appendChild(status);
+card.appendChild(desc);
+card.appendChild(actionBtn);
 
         container.appendChild(card);
     });
@@ -2737,6 +2777,15 @@ function setVIPRewardLastClaimDate(dateStr) {
 function canClaimVIPRewardToday() {
     if (currentVIPLevel <= 0) return false;
     return getVIPRewardLastClaimDate() !== getTodayDateKey();
+}
+
+function showVIPSlotMessage(text) {
+    const timerMsg = document.getElementById('vip-zone-timer-msg');
+    if (timerMsg) {
+        timerMsg.innerText = text;
+    } else {
+        alert(text);
+    }
 }
 // === ЗАПУСК ===
 window.onload = () => {
