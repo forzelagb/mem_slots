@@ -14,7 +14,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB0galg-tSym8QuJbwLVj2ugGeuqYt1-b4",
+  apiKey: "AIzaSyB0qalg-tSym8QuJbwLVj2ugGeuqYt1-b4",
   authDomain: "meme-spin-pro.firebaseapp.com",
   projectId: "meme-spin-pro",
   storageBucket: "meme-spin-pro.firebasestorage.app",
