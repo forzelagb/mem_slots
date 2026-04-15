@@ -3436,6 +3436,82 @@ window.addEventListener('click', (e) => {
     }
 });
 
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (!window.fbFns || !window.firebaseAuth) return;
+
+        const { onAuthStateChanged } = window.fbFns;
+
+        onAuthStateChanged(window.firebaseAuth, (user) => {
+            if (user) {
+                loadPlayerData(user);
+            }
+        });
+    }, 300);
+});
+
+async function loadPlayerData(user) {
+    try {
+        const { doc, getDoc } = window.fbFns;
+        const db = window.firebaseDb;
+
+        const playerRef = doc(db, 'players', user.uid);
+        const snap = await getDoc(playerRef);
+
+        if (snap.exists()) {
+            const data = snap.data();
+
+            gems = data.gems || 0;
+            vipLevel = data.vipLevel || 0;
+
+            updateUI();
+
+            console.log("Игрок загружен:", data);
+        } else {
+            console.log("Игрок не найден");
+        }
+
+    } catch (error) {
+        console.error("Ошибка загрузки:", error);
+    }
+}
+
+async function registerPlayer() {
+    const nickname = document.getElementById('auth-nickname').value.trim();
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value.trim();
+
+    if (!nickname || !email || !password) {
+        alert('Заполни все поля');
+        return;
+    }
+
+    try {
+        const { createUserWithEmailAndPassword, doc, setDoc, serverTimestamp } = window.fbFns;
+        const auth = window.firebaseAuth;
+        const db = window.firebaseDb;
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        await setDoc(doc(db, 'players', user.uid), {
+            nickname: nickname,
+            email: email,
+            gems: 10000,
+            vipLevel: 0,
+            createdAt: serverTimestamp()
+        });
+
+        gems = 10000;
+        updateUI();
+
+        closeAuthModal();
+        alert("Аккаунт создан!");
+
+    } catch (error) {
+        alert("Ошибка: " + error.message);
+    }
+}
 
 // === ЗАПУСК ===
 window.onload = () => {
