@@ -4688,6 +4688,111 @@ body.vip-theme-speed .slot-container.win-pulse {
     }
 }
 
+.btn-profile {
+    border: none;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.14);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-profile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 16px rgba(255,255,255,0.12);
+}
+
+.auth-modal-content {
+    width: min(520px, 92vw);
+    position: relative;
+    padding: 30px;
+}
+
+.auth-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: inherit;
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-badge {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 211, 106, 0.12);
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    color: #ffd36a;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.auth-header h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.auth-header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.72);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.06);
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.auth-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff3bd4, #b30086);
+    color: white;
+    box-shadow: 0 0 18px rgba(255, 59, 212, 0.35);
+}
+
+.auth-btn-secondary {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: none;
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

@@ -22,6 +22,9 @@
 <button class="btn-buy-gems" onclick="openGemsShop()">
     Купить 💎
 </button>
+<button class="btn-profile" onclick="openAuthModal()">
+    👤 Профиль
+</button>
     </div>
 </div>
 <div class="bonus-panel daily-panel">
@@ -800,6 +803,27 @@
             <a id="confirm-payment-link" href="#" target="_blank" class="purchase-pay-btn">
                 Перейти к оплате
             </a>
+        </div>
+    </div>
+</div>
+
+<div id="auth-modal" class="modal">
+    <div class="modal-content auth-modal-content">
+        <button class="auth-close" onclick="closeAuthModal()">✕</button>
+
+        <div class="auth-header">
+            <div class="auth-badge">👤 PLAYER ACCOUNT</div>
+            <h2>Личный кабинет</h2>
+            <p>Войди или создай аккаунт, чтобы сохранить прогресс</p>
+        </div>
+
+        <div class="auth-form">
+            <input id="auth-nickname" type="text" placeholder="Твой ник">
+            <input id="auth-email" type="email" placeholder="Email">
+            <input id="auth-password" type="password" placeholder="Пароль">
+
+            <button class="auth-btn" onclick="registerPlayer()">Создать аккаунт</button>
+            <button class="auth-btn auth-btn-secondary" onclick="loginPlayer()">Войти</button>
         </div>
     </div>
 </div>

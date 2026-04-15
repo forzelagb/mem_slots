@@ -3513,6 +3513,16 @@ async function registerPlayer() {
     }
 }
 
+function openAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.remove('active');
+}
+
 // === ЗАПУСК ===
 window.onload = () => {
     vipLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
