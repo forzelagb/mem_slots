@@ -696,54 +696,60 @@ function checkWins(grid) {
     }
 
     // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
-    if (totalWin > 0) {
-        let finalMultiplier = 1;
+if (totalWin > 0) {
+    let finalMultiplier = 1;
 
-        // Rare Drop
-        finalMultiplier += (upgrades.rare || 0) * 0.03;
+    // Rare Drop
+    finalMultiplier += (upgrades.rare || 0) * 0.03;
 
-        // Critical Spin
-        const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
-        const isCrit = Math.random() < critChance;
-        if (isCrit) {
-            finalMultiplier *= 2;
-        }
+    // Critical Spin
+    const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
+    const isCrit = Math.random() < critChance;
+    if (isCrit) {
+        finalMultiplier *= 2;
+    }
 
-        // Gem Booster
-        if ((activeEffects.gemBoosterSpins || 0) > 0) {
-            finalMultiplier *= 1.5;
-            activeEffects.gemBoosterSpins -= 1;
-            saveBlackMarket();
-        }
+    // Gem Booster
+    if ((activeEffects.gemBoosterSpins || 0) > 0) {
+        finalMultiplier *= 1.5;
+        activeEffects.gemBoosterSpins -= 1;
+        saveBlackMarket();
+    }
 
-        totalWin = Math.floor(totalWin * finalMultiplier);
+    totalWin = Math.floor(totalWin * finalMultiplier);
 
-        // жёсткий потолок выигрыша
-        const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
-        if (totalWin > maxAllowedWin) {
-            totalWin = maxAllowedWin;
-        }
+    // жёсткий потолок выигрыша
+    const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
+    if (totalWin > maxAllowedWin) {
+        totalWin = maxAllowedWin;
+    }
 
-        gems += totalWin;
+    gems += totalWin;
 
-        saveData();
-        updateUI();
-        animateBalanceChange('win');
+    saveData();
+    updateUI();
+    animateBalanceChange('win');
 
+    if (typeof addToLeaderboard === 'function') {
+        addToLeaderboard(totalWin);
+    }
+
+    // Сначала даём игроку увидеть подсветку, потом показываем текст выигрыша
+    setTimeout(() => {
         let resultMessage = `Выигрыш: ${totalWin} 💎`;
         if (isCrit) {
             resultMessage += " — CRITICAL x2!";
         }
         resultText.innerText = resultMessage;
+    }, 350);
 
-        if (typeof addToLeaderboard === 'function') {
-            addToLeaderboard(totalWin);
-        }
-
-        if (totalWin >= currentBet * 10) {
+    // Big Win показываем чуть позже, чтобы анимация клеток успела сыграть
+    if (totalWin >= currentBet * 10) {
+        setTimeout(() => {
             showBigWin(totalWin);
-        }
-    } else {
+        }, 550);
+    }
+} else {
         const saverChance = Math.min((upgrades.saver || 0) * 0.04, 0.20);
 
         if (Math.random() < saverChance) {
