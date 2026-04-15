@@ -1932,27 +1932,15 @@ function buyUpgrade(type) {
 
 
 function claimDailyReward() {
-    const lastClaim = parseInt(localStorage.getItem('dailyRewardTime')) || 0;
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
+    if (!canClaimDailyReward()) return;
 
-    if (now - lastClaim < oneDay) {
-        updateDailyRewardUI();
-        alert("⏳ Ты уже забрал бонус сегодня");
-        return;
-    }
+    const today = new Date().toDateString();
+    localStorage.setItem('lastDailyClaim', today);
 
-    const reward = 750;
-
-    gems += reward;
-    localStorage.setItem('dailyRewardTime', now);
-
+    gems += 750; // ← можешь изменить награду
     saveData();
     updateUI();
     updateDailyRewardUI();
-    animateBalanceChange('win');
-
-    alert(`🎁 Ты получил ${reward} 💎`);
 }
 
 function updateDailyRewardUI() {
@@ -2960,6 +2948,39 @@ function getVIPRankLabel(level) {
     };
 
     return labels[level] || 'Без VIP';
+}
+
+
+function canClaimDailyReward() {
+    const lastClaim = localStorage.getItem('lastDailyClaim');
+    const today = new Date().toDateString();
+    return lastClaim !== today;
+}
+
+function updateDailyRewardUI() {
+    const btn = document.getElementById('daily-reward-btn');
+    const text = document.getElementById('daily-reward-text');
+
+    if (!btn || !text) return;
+
+    if (canClaimDailyReward()) {
+        btn.disabled = false;
+        btn.innerText = "Забрать бонус";
+        text.innerHTML = `Ежедневная награда для всех<br>
+        <span style="color:#ffd700;">С VIP — больше бонусов 💎</span>`;
+    } else {
+        btn.disabled = true;
+
+        const now = new Date();
+        const tomorrow = new Date();
+        tomorrow.setHours(24, 0, 0, 0);
+
+        const diff = tomorrow - now;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+
+        btn.innerText = "Уже получено";
+        text.innerText = `Следующий бонус через ${hours} ч.`;
+    }
 }
 
 
