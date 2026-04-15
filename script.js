@@ -690,7 +690,9 @@ function checkWins(grid) {
 
     // === ПОДСВЕТКА ВСЕХ ВЫИГРЫШНЫХ ЯЧЕЕК ===
     if (allWinningIndexes.size > 0) {
-        highlightCells([...allWinningIndexes]);
+        const shouldUseStrongHighlight = allWinningIndexes.size >= 4 || totalWin >= currentBet * 2;
+        highlightCells([...allWinningIndexes], shouldUseStrongHighlight);
+        flashSlotContainer();
     }
 
     // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
@@ -3217,27 +3219,41 @@ function closeDailyCalendar() {
 
 
 function clearHighlightedCells() {
-    document.querySelectorAll('.cell.win-cell').forEach(cell => {
-        cell.classList.remove('win-cell');
+    document.querySelectorAll('.cell.win-cell, .cell.win-cell-strong').forEach(cell => {
+        cell.classList.remove('win-cell', 'win-cell-strong');
     });
 }
 
-function highlightCells(indexes) {
+function flashSlotContainer() {
+    const slotContainer = document.querySelector('.slot-container');
+    if (!slotContainer) return;
+
+    slotContainer.classList.remove('slot-win-flash');
+    void slotContainer.offsetWidth;
+    slotContainer.classList.add('slot-win-flash');
+
+    setTimeout(() => {
+        slotContainer.classList.remove('slot-win-flash');
+    }, 1200);
+}
+
+function highlightCells(indexes, strong = false) {
     const cells = document.querySelectorAll('.cell');
+    const className = strong ? 'win-cell-strong' : 'win-cell';
 
     indexes.forEach(i => {
         if (cells[i]) {
-            cells[i].classList.add('win-cell');
+            cells[i].classList.add(className);
         }
     });
 
     setTimeout(() => {
         indexes.forEach(i => {
             if (cells[i]) {
-                cells[i].classList.remove('win-cell');
+                cells[i].classList.remove(className);
             }
         });
-    }, 1400);
+    }, 1500);
 }
 
 
