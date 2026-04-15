@@ -9,6 +9,8 @@ const coinsConfig = {
     analdoc: { name: "ANalDOCion", basePrice: 10, volatility: 0.15, amount: 0, history: [], currentPrice: 10 },
     tuncion: { name: "TunCION", basePrice: 1000, volatility: 0.04, amount: 0, history: [], currentPrice: 1000 }
 };
+
+
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
 let gems = parseInt(localStorage.getItem('memeGems')) || 10000;
 // === VIP УРОВНИ ===
@@ -21,6 +23,17 @@ let autoSpinActive = false; // <-- ОБЪЯВЛЕНО ДО ИСПОЛЬЗОВА�
 let autoSpinCount = 0;
 let isSpinning = false;
 let currentTheme = '';
+const dailyRewardTable = [
+    250, 300, 350, 400, 500,
+    550, 650, 750, 850, 1000,
+    1100, 1200, 1300, 1400, 1500,
+    1600, 1700, 1800, 1900, 2000,
+    2200, 2400, 2600, 2800, 3000,
+    3200, 3500, 3800, 4200, 5000
+];
+
+
+
 // === ТЕМЫ ИГРЫ ===
 const themes = {
     brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: 2}, {src: "image/brain/4.jpg", mult: ""}, {src: "image/brain/5.jpg", mult: 3}, {src: "image/brain/6.jpg", mult: ""}, {src: "image/brain/7.jpg", mult: ""}, {src: "image/brain/8.jpg", mult: 5}],
@@ -825,7 +838,9 @@ function activateVIPCodeFromStore() {
         
         if (newLevel > vipLevel) {
             vipLevel = newLevel;
-            localStorage.setItem('memeVIPLevel', vipLevel.toString());
+            currentVIPLevel = newLevel;
+            localStorage.setItem('memeVIPLevel', String(newLevel));
+            saveVIPData();
             renderVIPSlots();
             updateVIPZoneUI();
             
@@ -1943,37 +1958,62 @@ function buyUpgrade(type) {
 
 
 function claimDailyReward() {
+    normalizeDailyStreak();
+
     if (!canClaimDailyReward()) return;
 
-    const today = new Date().toDateString();
-    localStorage.setItem('lastDailyClaim', today);
+    let streak = getDailyStreak();
+    let rewardIndex = streak;
 
-    gems += 750; // ← можешь изменить награду
+    if (rewardIndex > 29) {
+        rewardIndex = 29;
+    }
+
+    const reward = dailyRewardTable[rewardIndex] || dailyRewardTable[dailyRewardTable.length - 1];
+
+    gems += reward;
+
+    streak += 1;
+    if (streak > 30) {
+        streak = 1;
+    }
+
+    setDailyStreak(streak);
+    setLastDailyClaimDate(getTodayDateString());
+
     saveData();
     updateUI();
     updateDailyRewardUI();
+    renderDailyCalendar();
+    animateBalanceChange('win');
 }
 
 function updateDailyRewardUI() {
+    normalizeDailyStreak();
+
     const btn = document.getElementById('daily-reward-btn');
     const text = document.getElementById('daily-reward-text');
 
     if (!btn || !text) return;
 
-    const lastClaim = parseInt(localStorage.getItem('dailyRewardTime')) || 0;
-    const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
-    const reward = 750;
+    const streak = getDailyStreak();
 
-    if (now - lastClaim >= oneDay) {
+    if (canClaimDailyReward()) {
         btn.disabled = false;
-        btn.innerText = `Забрать ${reward} 💎`;
-        text.innerText = "Стабильный ежедневный бонус без ломания экономики";
+        btn.innerText = "Открыть награды";
+        text.innerHTML = `Твоя серия: ${streak} дн.<br><span style="color:#ffd700;">Заходи каждый день и увеличивай бонус 💎</span>`;
     } else {
-        btn.disabled = true;
-        const hoursLeft = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
-        btn.innerText = "Уже получено";
-        text.innerText = `Следующий бонус через ${hoursLeft} ч.`;
+        btn.disabled = false;
+        btn.innerText = "Посмотреть календарь";
+
+        const now = new Date();
+        const tomorrow = new Date();
+        tomorrow.setHours(24, 0, 0, 0);
+
+        const diff = tomorrow - now;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+
+        text.innerText = `Серия: ${streak} дн. • Следующий бонус через ${hours} ч.`;
     }
 }
 
@@ -2995,9 +3035,148 @@ function updateDailyRewardUI() {
 }
 
 
+function getTodayDateString() {
+    const now = new Date();
+    return now.toDateString();
+}
+
+function getYesterdayDateString() {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.toDateString();
+}
+
+function getDailyStreak() {
+    return parseInt(localStorage.getItem('dailyStreak')) || 0;
+}
+
+function setDailyStreak(value) {
+    localStorage.setItem('dailyStreak', String(value));
+}
+
+function getLastDailyClaimDate() {
+    return localStorage.getItem('lastDailyClaimDate');
+}
+
+function setLastDailyClaimDate(value) {
+    localStorage.setItem('lastDailyClaimDate', value);
+}
+
+function canClaimDailyReward() {
+    const lastClaim = getLastDailyClaimDate();
+    const today = getTodayDateString();
+    return lastClaim !== today;
+}
+
+function normalizeDailyStreak() {
+    const lastClaim = getLastDailyClaimDate();
+    const today = getTodayDateString();
+    const yesterday = getYesterdayDateString();
+
+    let streak = getDailyStreak();
+
+    if (!lastClaim) {
+        return 0;
+    }
+
+    if (lastClaim === today || lastClaim === yesterday) {
+        return streak;
+    }
+
+    // если пропустил день — сброс
+    setDailyStreak(0);
+    return 0;
+}
+
+function renderDailyCalendar() {
+    normalizeDailyStreak();
+
+    const grid = document.getElementById('daily-calendar-grid');
+    const streakLabel = document.getElementById('daily-streak-label');
+    const nextLabel = document.getElementById('daily-next-label');
+
+    if (!grid) return;
+
+    const streak = getDailyStreak();
+    const lastClaim = getLastDailyClaimDate();
+    const canClaim = canClaimDailyReward();
+
+    let currentDayIndex = streak;
+    if (!canClaim && streak > 0) {
+        currentDayIndex = streak - 1;
+    }
+
+    if (currentDayIndex < 0) currentDayIndex = 0;
+    if (currentDayIndex > 29) currentDayIndex = 29;
+
+    streakLabel.innerText = `Серия: ${streak} дн.`;
+    nextLabel.innerText = `Текущий день: ${Math.min(streak + 1, 30)} / 30`;
+
+    grid.innerHTML = '';
+
+    dailyRewardTable.forEach((reward, index) => {
+        const day = index + 1;
+        const card = document.createElement('div');
+        card.className = 'daily-card';
+
+        let statusText = 'Скоро';
+        let statusClass = 'locked';
+
+        if (index < streak && lastClaim) {
+            card.classList.add('day-claimed');
+            statusText = 'Забрано';
+            statusClass = 'claimed';
+        }
+
+        if (index === streak && canClaim) {
+            card.classList.add('day-current');
+            statusText = 'Сегодня';
+            statusClass = 'current';
+        } else if (index > streak || !canClaim) {
+            card.classList.add('day-locked');
+        }
+
+        if (!canClaim && index === streak - 1 && streak > 0) {
+            card.classList.remove('day-locked');
+            card.classList.add('day-claimed');
+            statusText = 'Получено';
+            statusClass = 'claimed';
+        }
+
+        card.innerHTML = `
+            <div class="daily-status ${statusClass}">${statusText}</div>
+            <div class="daily-day">${day} день</div>
+            <div class="daily-gem">💎</div>
+            <div class="daily-amount">${reward}</div>
+            <div class="daily-subtext">ежедневная награда</div>
+        `;
+
+        if (index === streak && canClaim) {
+            card.style.cursor = 'pointer';
+            card.onclick = claimDailyReward;
+        }
+
+        grid.appendChild(card);
+    });
+}
+
+function openDailyCalendar() {
+    renderDailyCalendar();
+    const modal = document.getElementById('daily-calendar-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeDailyCalendar() {
+    const modal = document.getElementById('daily-calendar-modal');
+    if (modal) modal.classList.remove('active');
+}
+
 
 // === ЗАПУСК ===
 window.onload = () => {
+    vipLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
+    currentVIPLevel = vipLevel;
+
     setBet(currentBet);
     createGrid();
     updateUI();

@@ -30,8 +30,8 @@
     Ежедневная награда для всех<br>
     <span style="color:#ffd700;">С VIP — больше бонусов 💎</span>
     </p>
-    <button class="btn-bonus" id="daily-reward-btn" onclick="claimDailyReward()">
-        Забрать бонус
+    <button class="btn-bonus" id="daily-reward-btn" onclick="openDailyCalendar()">
+    Открыть награды
     </button>
 </div>
 
@@ -682,7 +682,28 @@
         </div>
     </div>
 </div>
+<div id="daily-calendar-modal" class="modal">
+    <div class="modal-content daily-calendar-content">
+        <button class="daily-close-btn" onclick="closeDailyCalendar()">✕</button>
 
+        <div class="daily-calendar-header">
+            <div class="daily-calendar-badge">🎁 DAILY REWARDS</div>
+            <h2>Ежедневные награды</h2>
+            <p>Заходи каждый день, чтобы увеличивать серию. Пропуск сбрасывает прогресс.</p>
+        </div>
+
+        <div class="daily-calendar-topbar">
+            <div id="daily-streak-label">Серия: 1 день</div>
+            <div id="daily-next-label">День: 1 / 30</div>
+        </div>
+
+        <div id="daily-calendar-grid" class="daily-calendar-grid"></div>
+
+        <div class="daily-calendar-footer">
+            <p class="daily-vip-hint">👑 Хочешь больше наград? VIP открывает отдельный премиум-календарь.</p>
+        </div>
+    </div>
+</div>
 
 
     <!-- СКРИПТЫ -->
