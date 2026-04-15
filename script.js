@@ -35,63 +35,44 @@ const themes = {
     skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: 2}, {src: "image/skibiditoilet/4.jpg", mult: ""}, {src: "image/skibiditoilet/5.jpg", mult: 3}, {src: "image/skibiditoilet/6.jpg", mult: ""}, {src: "image/skibiditoilet/7.jpg", mult: ""}, {src: "image/skibiditoilet/8.jpg", mult: 5}],
     slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: 2}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: 3}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: 5}],
     ronaldo: [
-        {src: "image/ronaldo/1.jpg", mult: ""},
-        {src: "image/ronaldo/2.jpg", mult: 2}, 
+        {src: "image/ronaldo/1.jpg", mult: 8},
+        {src: "image/ronaldo/2.jpg", mult: ""}, 
         {src: "image/ronaldo/3.jpg", mult: 3}, 
-        {src: "image/ronaldo/4.jpg", mult: 5}, 
+        {src: "image/ronaldo/4.jpg", mult: ""}, 
         {src: "image/ronaldo/5.jpg", mult: 10}, 
-        {src: "image/ronaldo/6.jpg", mult: 20}, 
-        {src: "image/ronaldo/7.jpg", mult: 50} // SIUUU JACKPOT!
+        {src: "image/ronaldo/6.jpg", mult: 5}, 
+        {src: "image/ronaldo/7.jpg", mult: ""} // SIUUU JACKPOT!
     ],
-    // === НОВЫЕ VIP СЛОТЫ ===
-patorka: [
-    {src: "image/patorka/1.jpg", mult: ""},
-    {src: "image/patorka/2.jpg", mult: 2},
-    {src: "image/patorka/3.jpg", mult: 3},
-    {src: "image/patorka/4.jpg", mult: 5},
-    {src: "image/patorka/5.jpg", mult: 10},
-    {src: "image/patorka/6.jpg", mult: 20},
-    {src: "image/patorka/7.jpg", mult: 50}
-],
 
-goobka: [
-    {src: "image/goobka/1.jpg", mult: ""},
-    {src: "image/goobka/2.jpg", mult: 2},
-    {src: "image/goobka/3.jpg", mult: 3},
-    {src: "image/goobka/4.jpg", mult: 5},
-    {src: "image/goobka/5.jpg", mult: 10},
-    {src: "image/goobka/6.jpg", mult: 25},
-    {src: "image/goobka/7.jpg", mult: 75}
-],
 shrek: [
     {src: "image/shrek/1.jpg", mult: ""},
-    {src: "image/shrek/2.jpg", mult: ""},
-    {src: "image/shrek/3.jpg", mult: 2},
-    {src: "image/shrek/4.jpg", mult: ""},
-    {src: "image/shrek/5.jpg", mult: 3},
+    {src: "image/shrek/2.jpg", mult: 2},
+    {src: "image/shrek/3.jpg", mult: 3},
+    {src: "image/shrek/4.jpg", mult: 5},
+    {src: "image/shrek/5.jpg", mult: 8},
     {src: "image/shrek/6.jpg", mult: ""},
-    {src: "image/shrek/7.jpg", mult: 5}
+    {src: "image/shrek/7.jpg", mult: 10}
 ],
 
 spongebob: [
     {src: "image/spongebob/1.jpg", mult: ""},
-    {src: "image/spongebob/2.jpg", mult: ""},
-    {src: "image/spongebob/3.jpg", mult: 2},
-    {src: "image/spongebob/4.jpg", mult: ""},
-    {src: "image/spongebob/5.jpg", mult: 3},
-    {src: "image/spongebob/6.jpg", mult: ""},
-    {src: "image/spongebob/7.jpg", mult: 5}
+    {src: "image/spongebob/2.jpg", mult: 2},
+    {src: "image/spongebob/3.jpg", mult: 3},
+    {src: "image/spongebob/4.jpg", mult: 5},
+    {src: "image/spongebob/5.jpg", mult: 8},
+    {src: "image/spongebob/6.jpg", mult: 10},
+    {src: "image/spongebob/7.jpg", mult: ""}
 ],
 
 speed: [
     {src: "image/speed/1.jpg", mult: ""},
-    {src: "image/speed/2.jpg", mult: ""},
-    {src: "image/speed/3.jpg", mult: 2},
-    {src: "image/speed/4.jpg", mult: ""},
-    {src: "image/speed/5.jpg", mult: 3},
-    {src: "image/speed/6.jpg", mult: ""},
-    {src: "image/speed/7.jpg", mult: 5}
-],
+    {src: "image/speed/2.jpg", mult: 2},
+    {src: "image/speed/3.jpg", mult: 3},
+    {src: "image/speed/4.jpg", mult: 5},
+    {src: "image/speed/5.jpg", mult: 8},
+    {src: "image/speed/6.jpg", mult: 10},
+    {src: "image/speed/7.jpg", mult: ""}
+]
 
 };
 
@@ -682,6 +663,13 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
         }
 
         totalWin = Math.floor(totalWin * finalMultiplier);
+
+        // жёсткий потолок выигрыша для каждого типа слота
+        const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
+        if (totalWin > maxAllowedWin) {
+            totalWin = maxAllowedWin;
+        }
+
         gems += totalWin;
 
         saveData();
@@ -1186,13 +1174,14 @@ function getRandomWeightedItem(items) {
     const weights = items.map(item => {
         const mult = parseFloat(item.mult) || 1;
 
-        if (mult >= 50) return profile.w50 ?? 0.005;
-        if (mult >= 20) return profile.w20 ?? 0.03;
-        if (mult >= 10) return profile.w10 ?? 0.12;
-        if (mult >= 5) return profile.w5 ?? 1.5;
-        if (mult >= 3) return profile.w3 ?? 7;
-        if (mult >= 2) return profile.w2 ?? 18;
-        return profile.w1 ?? 60;
+    if (mult >= 50) return profile.w50 ?? 0.005;
+    if (mult >= 20) return profile.w20 ?? 0.03;
+    if (mult >= 10) return profile.w10 ?? 0.12;
+    if (mult >= 8)  return profile.w8  ?? 0.5;
+    if (mult >= 5)  return profile.w5  ?? 1.5;
+    if (mult >= 3)  return profile.w3  ?? 7;
+    if (mult >= 2)  return profile.w2  ?? 18;
+    return profile.w1 ?? 60;
     });
 
     const totalWeight = weights.reduce((a, b) => a + b, 0);
@@ -1208,94 +1197,99 @@ function getRandomWeightedItem(items) {
 
 function getSlotProfile(themeName) {
     const profiles = {
-        // ОБЫЧНЫЕ СЛОТЫ — спокойные, фармовые
+        // Обычные слоты: комфортная игра, частые маленькие возвраты
         default: {
-            w1: 78,
-            w2: 15,
-            w3: 5.5,
-            w5: 1.0,
-            w10: 0.05,
-            w20: 0.005,
-            w50: 0.0005,
-
-            pay3: 0.16,
-            pay4: 0.48,
-            pay5: 2.0,
-            diag3: 0.10,
-
-            maxWinMultiplier: 8
-        },
-
-        // VIP 1 — чуть веселее обычного, но без печатного станка
-        ronaldo: {
-            w1: 76,
-            w2: 16,
-            w3: 6,
-            w5: 1.1,
-            w10: 0.06,
-            w20: 0.006,
-            w50: 0.0006,
-
-            pay3: 0.18,
-            pay4: 0.55,
-            pay5: 2.3,
-            diag3: 0.11,
-
-            maxWinMultiplier: 10
-        },
-
-        // VIP 2 — более стабильный, чаще даёт приятные мелкие выигрыши
-        shrek: {
-            w1: 75,
-            w2: 16.5,
-            w3: 6.5,
-            w5: 1.3,
-            w10: 0.07,
-            w20: 0.007,
-            w50: 0.0007,
-
-            pay3: 0.20,
-            pay4: 0.62,
-            pay5: 2.7,
-            diag3: 0.12,
-
-            maxWinMultiplier: 11
-        },
-
-        // VIP 3 — самый ровный и приятный
-        spongebob: {
-            w1: 74,
-            w2: 17,
-            w3: 6.8,
-            w5: 1.4,
-            w10: 0.08,
-            w20: 0.008,
-            w50: 0.0008,
+            w1: 70,
+            w2: 19,
+            w3: 8,
+            w5: 2.2,
+            w8: 0.5,
+            w10: 0.15,
+            w20: 0.01,
+            w50: 0.0001,
 
             pay3: 0.22,
-            pay4: 0.68,
-            pay5: 3.0,
-            diag3: 0.13,
+            pay4: 0.75,
+            pay5: 2.8,
+            diag3: 0.14,
 
             maxWinMultiplier: 12
         },
 
-        // VIP 4 — самый рискованный, но всё ещё в рамках
+        // Ronaldo: рискованный VIP-слот, но уже не ломает экономику
+        ronaldo: {
+            w1: 68,
+            w2: 18,
+            w3: 8,
+            w5: 3.0,
+            w8: 1.0,
+            w10: 0.35,
+            w20: 0.04,
+            w50: 0.001,
+
+            pay3: 0.26,
+            pay4: 0.90,
+            pay5: 3.6,
+            diag3: 0.16,
+
+            maxWinMultiplier: 18
+        },
+
+        // Shrek: VIP 2, приятный и стабильный
+        shrek: {
+            w1: 66,
+            w2: 19,
+            w3: 8.5,
+            w5: 3.5,
+            w8: 1.4,
+            w10: 0.25,
+            w20: 0.00,
+            w50: 0.00,
+
+            pay3: 0.28,
+            pay4: 1.00,
+            pay5: 4.0,
+            diag3: 0.17,
+
+            maxWinMultiplier: 16
+        },
+
+        // SpongeBob: VIP 3, самый "ровный" и приятный
+        spongebob: {
+            w1: 65,
+            w2: 19,
+            w3: 9,
+            w5: 3.8,
+            w8: 1.7,
+            w10: 0.35,
+            w20: 0.00,
+            w50: 0.00,
+
+            pay3: 0.30,
+            pay4: 1.08,
+            pay5: 4.4,
+            diag3: 0.18,
+
+            maxWinMultiplier: 18
+        },
+
+        // Speed: VIP 4, самый мощный среди стабильных VIP
         speed: {
-            w1: 73,
-            w2: 17.5,
-            w3: 7,
-            w5: 1.5,
-            w10: 0.10,
-            w20: 0.010,
-            w50: 0.0010,
+            w1: 64,
+            w2: 19,
+            w3: 9,
+            w5: 4.0,
+            w8: 2.0,
+            w10: 0.45,
+            w20: 0.00,
+            w50: 0.00,
 
-            pay3: 0.24,
-            pay4: 0.75,
-            pay5: 3.3,
-            diag3: 0.14,
+            pay3: 0.32,
+            pay4: 1.15,
+            pay5: 4.8,
+            diag3: 0.19,
 
-            maxWinMultiplier: 13
+            maxWinMultiplier: 20
         }
     };
 
