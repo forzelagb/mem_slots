@@ -37,3 +37,5 @@ window.fbFns = {
   getDoc,
   serverTimestamp
 };
+
+console.log("firebase-init loaded", firebaseConfig);
