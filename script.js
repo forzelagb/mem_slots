@@ -864,7 +864,7 @@ function getLevelName(level) {
 
 // === ЕЖЕДНЕВНЫЙ БОНУС VIP ===
 function claimDailyVIPBonus() {
-    const rank = getCurrentVIPRank();
+    const rank = currentVIPLevel;
     if (rank < 1) {
         alert("❌ У тебя нет активного VIP");
         return;
@@ -874,17 +874,14 @@ function claimDailyVIPBonus() {
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
 
-    if (now - lastClaim <= oneDay) {
+    if (now - lastClaim < oneDay) {
         alert("⏳ VIP-бонус доступен только раз в 24 часа.");
         updateVIPZoneUI();
+        updateVIPBonusButton();
         return;
     }
 
-    let reward = 0;
-    if (rank === 1) reward = 1000;
-    if (rank === 2) reward = 5000;
-    if (rank === 3) reward = 8500;
-    if (rank === 4) reward = 15000;
+    const reward = getVIPDailyBonus();
 
     gems += reward;
     localStorage.setItem('lastVIPBonusTime', now.toString());
@@ -892,9 +889,20 @@ function claimDailyVIPBonus() {
     saveData();
     updateUI();
     updateVIPZoneUI();
+    updateVIPBonusButton();
     animateBalanceChange('win');
 
-    alert(`🎉 Ты получил VIP-бонус: ${reward} 💎`);
+    alert(`🎉 Ты получил VIP-бонус: ${reward.toLocaleString()} 💎`);
+}
+
+function getDailyVIPReward(level) {
+    switch (level) {
+        case 1: return 1000;   // Ronaldo Pass
+        case 2: return 2500;   // Shrek Club
+        case 3: return 5000;   // SpongeBob Elite
+        case 4: return 10000;  // Speed Legend
+        default: return 0;
+    }
 }
 
 function updateVIPBonusButton() {
@@ -902,19 +910,28 @@ function updateVIPBonusButton() {
     const msg = document.getElementById('vip-timer-msg');
     if (!btn) return;
 
+    const reward = getVIPDailyBonus();
     const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
 
-    if (now - lastClaim > oneDay) {
+    if (now - lastClaim >= oneDay) {
         btn.disabled = false;
-        btn.innerText = "Забрать 250 💎";
-        msg.innerText = "";
+        btn.innerText = `Забрать ${reward.toLocaleString()} 💎`;
+        if (msg) {
+            msg.innerText = `Ежедневная VIP-награда: ${reward.toLocaleString()} 💎`;
+        }
     } else {
         btn.disabled = true;
         btn.innerText = "Уже получено";
-        const timeLeft = Math.ceil((oneDay - (now - lastClaim)) / (60 * 60 * 1000));
-        msg.innerText = `Для всех игроков. VIP открывает больше наград и особый календарь. Стоит попробовать!`;
+
+        const timeLeftMs = oneDay - (now - lastClaim);
+        const hours = Math.floor(timeLeftMs / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
+
+        if (msg) {
+            msg.innerText = `Следующая VIP-награда через ${hours} ч. ${minutes} мин.`;
+        }
     }
 }
 
@@ -2675,10 +2692,10 @@ updateVIPZoneAccess = function() {
 let selectedVIPRewardDay = null;
 
 const vipRewardTables = {
-    1: Array.from({ length: 30 }, (_, i) => 500 + i * 50),
-    2: Array.from({ length: 30 }, (_, i) => 1000 + i * 100),
-    3: Array.from({ length: 30 }, (_, i) => 2000 + i * 150),
-    4: Array.from({ length: 30 }, (_, i) => 4000 + i * 250)
+    1: Array.from({ length: 30 }, () => 1000),   // Ronaldo Pass
+    2: Array.from({ length: 30 }, () => 2500),   // Shrek Club
+    3: Array.from({ length: 30 }, () => 5000),   // SpongeBob Elite
+    4: Array.from({ length: 30 }, () => 10000)   // Speed Legend
 };
 
 function getVIPRewardStorageKey() {
