@@ -4178,6 +4178,27 @@ body.vip-theme-speed .slot-container.win-pulse {
     }
 }
 
+
+.win-cell {
+    animation: winGlow 0.8s ease-in-out infinite alternate;
+    box-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.7),
+        0 0 20px rgba(255, 0, 200, 0.4);
+    border: 2px solid #ffd700 !important;
+    z-index: 3;
+}
+
+@keyframes winGlow {
+    from {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    to {
+        transform: scale(1.08);
+        filter: brightness(1.3);
+    }
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

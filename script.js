@@ -523,10 +523,19 @@ function checkWins(grid) {
     console.log("=== ПРОВЕРКА ВЫИГРЫШЕЙ ===");
     console.log("Ставка:", currentBet);
 
+    clearHighlightedCells();
+
     const profile = getSlotProfile(currentTheme);
     let totalWin = 0;
     const rows = 5;
     const cols = 5;
+
+    // собираем все выигрышные ячейки, чтобы подсветить их разом
+    const allWinningIndexes = new Set();
+
+    function addIndexesToHighlight(indexes) {
+        indexes.forEach(i => allWinningIndexes.add(i));
+    }
 
     // === ГОРИЗОНТАЛЬНЫЕ ЛИНИИ ===
     for (let row = 0; row < rows; row++) {
@@ -545,8 +554,8 @@ function checkWins(grid) {
             ) {
                 let matchCount = 3;
 
-                if (col + 3 < cols && grid[idx + 3].src === item1.src) matchCount++;
-                if (col + 4 < cols && grid[idx + 4].src === item1.src) matchCount++;
+                if (col + 3 < cols && grid[idx + 3] && grid[idx + 3].src === item1.src) matchCount++;
+                if (col + 4 < cols && grid[idx + 4] && grid[idx + 4].src === item1.src) matchCount++;
 
                 const multiplier =
                     item1.mult && !isNaN(parseFloat(item1.mult))
@@ -555,13 +564,19 @@ function checkWins(grid) {
 
                 let winAmount = 0;
 
-if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
-else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
-else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
+                if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
+                else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
+                else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
 
                 totalWin += winAmount;
 
-                // Пропускаем уже проверенные ячейки
+                const winIndexes = [];
+                for (let i = 0; i < matchCount; i++) {
+                    winIndexes.push(idx + i);
+                }
+                addIndexesToHighlight(winIndexes);
+
+                // пропускаем уже учтённые клетки в этой линии
                 col += matchCount - 1;
             }
         }
@@ -584,8 +599,8 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
             ) {
                 let matchCount = 3;
 
-                if (row + 3 < rows && grid[idx + cols * 3].src === item1.src) matchCount++;
-                if (row + 4 < rows && grid[idx + cols * 4].src === item1.src) matchCount++;
+                if (row + 3 < rows && grid[idx + cols * 3] && grid[idx + cols * 3].src === item1.src) matchCount++;
+                if (row + 4 < rows && grid[idx + cols * 4] && grid[idx + cols * 4].src === item1.src) matchCount++;
 
                 const multiplier =
                     item1.mult && !isNaN(parseFloat(item1.mult))
@@ -594,11 +609,17 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
 
                 let winAmount = 0;
 
-if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
-else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
-else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
+                if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
+                else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
+                else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
 
                 totalWin += winAmount;
+
+                const winIndexes = [];
+                for (let i = 0; i < matchCount; i++) {
+                    winIndexes.push(idx + cols * i);
+                }
+                addIndexesToHighlight(winIndexes);
             }
         }
     }
@@ -624,6 +645,13 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
                         : 1;
 
                 totalWin += currentBet * profile.diag3 * multiplier;
+
+                const winIndexes = [
+                    idx,
+                    idx + cols + 1,
+                    idx + cols * 2 + 2
+                ];
+                addIndexesToHighlight(winIndexes);
             }
         }
     }
@@ -649,11 +677,22 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
                         : 1;
 
                 totalWin += currentBet * profile.diag3 * multiplier;
+
+                const winIndexes = [
+                    idx,
+                    idx + cols - 1,
+                    idx + cols * 2 - 2
+                ];
+                addIndexesToHighlight(winIndexes);
             }
         }
     }
 
-    // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
+    // === ПОДСВЕТКА ВСЕХ ВЫИГРЫШНЫХ ЯЧЕЕК ===
+    if (allWinningIndexes.size > 0) {
+        highlightCells([...allWinningIndexes]);
+    }
+
     // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
     if (totalWin > 0) {
         let finalMultiplier = 1;
@@ -677,7 +716,7 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
 
         totalWin = Math.floor(totalWin * finalMultiplier);
 
-        // жёсткий потолок выигрыша для каждого типа слота
+        // жёсткий потолок выигрыша
         const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
         if (totalWin > maxAllowedWin) {
             totalWin = maxAllowedWin;
@@ -694,6 +733,10 @@ else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
             resultMessage += " — CRITICAL x2!";
         }
         resultText.innerText = resultMessage;
+
+        if (typeof addToLeaderboard === 'function') {
+            addToLeaderboard(totalWin);
+        }
 
         if (totalWin >= currentBet * 10) {
             showBigWin(totalWin);
@@ -3110,7 +3153,8 @@ function renderDailyCalendar() {
     if (currentDayIndex > 29) currentDayIndex = 29;
 
     streakLabel.innerText = `Серия: ${streak} дн.`;
-    nextLabel.innerText = `Текущий день: ${Math.min(streak + 1, 30)} / 30`;
+    const currentDisplayDay = canClaim ? streak + 1 : streak;
+    nextLabel.innerText = `Текущий день: ${Math.min(currentDisplayDay, 30)} / 30`;
 
     grid.innerHTML = '';
 
@@ -3169,6 +3213,31 @@ function openDailyCalendar() {
 function closeDailyCalendar() {
     const modal = document.getElementById('daily-calendar-modal');
     if (modal) modal.classList.remove('active');
+}
+
+
+function clearHighlightedCells() {
+    document.querySelectorAll('.cell.win-cell').forEach(cell => {
+        cell.classList.remove('win-cell');
+    });
+}
+
+function highlightCells(indexes) {
+    const cells = document.querySelectorAll('.cell');
+
+    indexes.forEach(i => {
+        if (cells[i]) {
+            cells[i].classList.add('win-cell');
+        }
+    });
+
+    setTimeout(() => {
+        indexes.forEach(i => {
+            if (cells[i]) {
+                cells[i].classList.remove('win-cell');
+            }
+        });
+    }, 1400);
 }
 
 
