@@ -4243,6 +4243,21 @@ body.vip-theme-speed .slot-container.win-pulse {
     }
 }
 
+.btn-spin.ready-pulse {
+    animation: spinReadyPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes spinReadyPulse {
+    0%, 100% {
+        transform: translateY(0);
+        filter: brightness(1);
+    }
+    50% {
+        transform: translateY(-1px);
+        filter: brightness(1.08);
+    }
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
