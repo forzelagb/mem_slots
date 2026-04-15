@@ -38,4 +38,4 @@ window.fbFns = {
   serverTimestamp
 };
 
-console.log("firebase-init loaded", firebaseConfig);
+console.log("firebase-init loaded", firebaseConfig.apiKey);
