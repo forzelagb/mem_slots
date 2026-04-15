@@ -4448,6 +4448,79 @@ body.vip-theme-speed .slot-container.win-pulse {
     }
 }
 
+
+.gems-pack-card.popular {
+    border-color: rgba(255, 59, 212, 0.55);
+    box-shadow:
+        0 0 30px rgba(255, 59, 212, 0.22),
+        0 0 50px rgba(255, 59, 212, 0.10);
+    transform: scale(1.02);
+}
+
+.gems-pack-card.vip {
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.12), transparent 35%),
+        linear-gradient(180deg, rgba(255, 211, 106, 0.10), rgba(255,255,255,0.04));
+    border-color: rgba(255, 211, 106, 0.65);
+    box-shadow:
+        0 0 32px rgba(255, 211, 106, 0.22),
+        0 0 55px rgba(255, 211, 106, 0.10);
+}
+
+.gems-pack-card.popular .gems-pack-btn {
+    background: linear-gradient(135deg, #ff4bd8, #c40092);
+    box-shadow: 0 0 22px rgba(255, 59, 212, 0.42);
+}
+
+.gems-pack-card.vip .gems-pack-btn {
+    background: linear-gradient(135deg, #ffd36a, #ffb800);
+    color: #2a1400;
+    box-shadow: 0 0 22px rgba(255, 211, 106, 0.40);
+}
+
+.gems-pack-old-price {
+    font-size: 16px;
+    color: rgba(255,255,255,0.35);
+    text-decoration: line-through;
+    margin-bottom: 4px;
+}
+
+
+.gems-special-offer {
+    margin-bottom: 22px;
+    padding: 18px 20px;
+    border-radius: 20px;
+    text-align: center;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.14), transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    box-shadow: 0 0 24px rgba(255, 211, 106, 0.12);
+}
+
+.gems-special-badge {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 211, 106, 0.12);
+    border: 1px solid rgba(255, 211, 106, 0.3);
+    color: #ffd36a;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.gems-special-title {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.gems-special-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.74);
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
