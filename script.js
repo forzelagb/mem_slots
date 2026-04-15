@@ -3399,6 +3399,42 @@ window.addEventListener('click', (e) => {
         closeGemsShop();
     }
 });
+function openPurchaseConfirm(packName, amount, bonus, price, paymentUrl) {
+    closeGemsShop();
+
+    const modal = document.getElementById('purchase-confirm-modal');
+    const nameEl = document.getElementById('confirm-pack-name');
+    const amountEl = document.getElementById('confirm-pack-amount');
+    const bonusEl = document.getElementById('confirm-pack-bonus');
+    const priceEl = document.getElementById('confirm-pack-price');
+    const paymentLink = document.getElementById('confirm-payment-link');
+
+    if (nameEl) nameEl.innerText = packName;
+    if (amountEl) amountEl.innerText = amount;
+    if (bonusEl) bonusEl.innerText = bonus;
+    if (priceEl) priceEl.innerText = price;
+    if (paymentLink) paymentLink.href = paymentUrl;
+
+    if (modal) modal.classList.add('active');
+}
+
+function closePurchaseConfirm() {
+    const modal = document.getElementById('purchase-confirm-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+window.addEventListener('click', (e) => {
+    const shopModal = document.getElementById('gems-shop-modal');
+    const confirmModal = document.getElementById('purchase-confirm-modal');
+
+    if (e.target === shopModal) {
+        closeGemsShop();
+    }
+
+    if (e.target === confirmModal) {
+        closePurchaseConfirm();
+    }
+});
 
 
 // === ЗАПУСК ===

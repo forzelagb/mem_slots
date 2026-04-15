@@ -4521,6 +4521,173 @@ body.vip-theme-speed .slot-container.win-pulse {
     color: rgba(255,255,255,0.74);
 }
 
+
+.gems-pack-discount {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #ff4d6d, #ff1744);
+    box-shadow: 0 0 14px rgba(255, 77, 109, 0.35);
+    z-index: 2;
+}
+
+.gems-pack-discount.hot {
+    background: linear-gradient(135deg, #ff6a00, #ff2d55);
+    box-shadow: 0 0 16px rgba(255, 90, 0, 0.35);
+}
+
+.gems-pack-discount.gold {
+    background: linear-gradient(135deg, #ffd36a, #ffb800);
+    color: #2a1400;
+    box-shadow: 0 0 16px rgba(255, 211, 106, 0.35);
+}
+
+.gems-pack-discount.vip-sale {
+    background: linear-gradient(135deg, #fff1a8, #ffd36a);
+    color: #2a1400;
+    box-shadow: 0 0 18px rgba(255, 211, 106, 0.4);
+}
+
+.gems-pack-old-price {
+    font-size: 16px;
+    color: rgba(255,255,255,0.35);
+    text-decoration: line-through;
+    margin-bottom: 4px;
+}
+
+
+.purchase-confirm-content {
+    width: min(520px, 92vw);
+    position: relative;
+    padding: 30px;
+}
+
+.purchase-confirm-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: inherit;
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.purchase-confirm-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.purchase-confirm-badge {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 211, 106, 0.12);
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    color: #ffd36a;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.purchase-confirm-header h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.purchase-confirm-header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.72);
+}
+
+.purchase-confirm-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 22px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.purchase-confirm-pack {
+    font-size: 18px;
+    color: #ffd36a;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.purchase-confirm-amount {
+    font-size: 34px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.purchase-confirm-bonus {
+    font-size: 15px;
+    color: #34ff9c;
+    margin-bottom: 12px;
+}
+
+.purchase-confirm-price {
+    font-size: 32px;
+    color: #ffd36a;
+    text-shadow: 0 0 12px rgba(255, 211, 106, 0.25);
+}
+
+.purchase-confirm-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.purchase-back-btn,
+.purchase-pay-btn {
+    flex: 1;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.purchase-back-btn {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.14);
+}
+
+.purchase-pay-btn {
+    background: linear-gradient(135deg, #ff3bd4, #b30086);
+    color: white;
+    box-shadow: 0 0 18px rgba(255, 59, 212, 0.35);
+}
+
+.purchase-back-btn:hover,
+.purchase-pay-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+@media (max-width: 560px) {
+    .purchase-confirm-actions {
+        flex-direction: column;
+    }
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
