@@ -3509,7 +3509,10 @@ async function registerPlayer() {
         alert("Аккаунт создан!");
 
     } catch (error) {
-        alert("Ошибка: " + error.message);
+    console.error("REGISTER ERROR FULL:", error);
+    console.error("REGISTER ERROR CODE:", error.code);
+    console.error("REGISTER ERROR MESSAGE:", error.message);
+    alert("Ошибка Firebase:\n" + error.code + "\n" + error.message);
     }
 }
 
