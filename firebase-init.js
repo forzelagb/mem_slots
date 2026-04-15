@@ -14,12 +14,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB0qalg-tSym8QuJbwLVj2ugGeuqYt1-b4",
+  apiKey: "AIzaSyBOQalg-tSym8QuJbwLVj2ugGeuqYt1-b4",
   authDomain: "meme-spin-pro.firebaseapp.com",
   projectId: "meme-spin-pro",
   storageBucket: "meme-spin-pro.firebasestorage.app",
   messagingSenderId: "984110738009",
-  appId: "1:984110738009:web:001ca433ecac2b4029df48"
+  appId: "1:984110738009:web:aa19222443fb484c29df48"
 };
 
 const app = initializeApp(firebaseConfig);
