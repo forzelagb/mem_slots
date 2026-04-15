@@ -3383,6 +3383,23 @@ function hasNearMiss(grid) {
     return false;
 }
 
+function openGemsShop() {
+    const modal = document.getElementById('gems-shop-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeGemsShop() {
+    const modal = document.getElementById('gems-shop-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('gems-shop-modal');
+    if (e.target === modal) {
+        closeGemsShop();
+    }
+});
+
 
 // === ЗАПУСК ===
 window.onload = () => {
