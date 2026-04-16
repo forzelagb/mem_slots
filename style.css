@@ -735,26 +735,64 @@ body::before {
 /* === ВКЛАДКИ === */
 .tabs-nav {
     display: flex;
-    justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
-    background: rgba(255,255,255,0.05);
     padding: 10px;
+    background: rgba(255,255,255,0.05);
     border-radius: 18px;
     border: 1px solid rgba(255,255,255,0.10);
     box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.tabs-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .tab-btn {
     background: rgba(255,255,255,0.04);
     border: 1px solid transparent;
     color: var(--text-soft);
-    padding: 10px 18px;
+    padding: 10px 16px;
     border-radius: 12px;
     cursor: pointer;
     font-family: inherit;
     font-weight: bold;
     transition: 0.25s ease;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+    min-height: 44px;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 59, 212, 0.20), rgba(77, 227, 255, 0.16));
+    color: white;
+    border-color: rgba(255, 211, 106, 0.35);
+    box-shadow: 0 0 18px rgba(255, 59, 212, 0.18);
+}
+
+@media (max-width: 600px) {
+    .tabs-nav {
+        padding: 8px;
+        gap: 8px;
+        border-radius: 16px;
+        scroll-snap-type: x proximity;
+    }
+
+    .tab-btn {
+        font-size: 13px;
+        padding: 10px 14px;
+        scroll-snap-align: start;
+    }
 }
 
 .tab-btn.active, .tab-btn:hover {
