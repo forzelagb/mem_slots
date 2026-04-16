@@ -3555,7 +3555,7 @@ window.addEventListener("DOMContentLoaded", () => {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             await loadPlayerData(user);
-            await loadGlobalLeaderboard();
+            await loadThemeLeaderboard('brain');
         } else {
             leaderboard = [];
             updateLeaderboardUI();
@@ -3613,6 +3613,7 @@ async function loadThemeLeaderboard(themeName, btnElement = null) {
         console.error("Ошибка загрузки лидерборда темы:", error);
     }
 }
+
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
