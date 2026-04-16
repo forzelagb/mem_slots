@@ -507,20 +507,21 @@ function renderCircleWheel() {
     const wheelEl = document.getElementById('vip-wheel');
     if (!wheelEl) return;
 
-    const wheelSegments = [
-        wheelRewards.find(r => r.id === 'gems700'),
-        wheelRewards.find(r => r.id === 'ticket1'),
-        wheelRewards.find(r => r.id === 'gems5000'),
-        wheelRewards.find(r => r.id === 'auto1'),
-        wheelRewards.find(r => r.id === 'gems12000'),
-        wheelRewards.find(r => r.id === 'shield1'),
-        wheelRewards.find(r => r.id === 'gemBooster'),
-        wheelRewards.find(r => r.id === 'doubleRoll1'),
-        wheelRewards.find(r => r.id === 'gems25000'),
-        wheelRewards.find(r => r.id === 'auto2'),
-        wheelRewards.find(r => r.id === 'hrpass2'),
-        wheelRewards.find(r => r.id === 'vipTrial3d')
-    ].filter(Boolean);
+const wheelSegments = [
+    wheelRewards.find(r => r.id === 'gems700'),
+    wheelRewards.find(r => r.id === 'ticket1'),
+    wheelRewards.find(r => r.id === 'gems5000'),
+    wheelRewards.find(r => r.id === 'auto1'),
+    wheelRewards.find(r => r.id === 'gems12000'),
+    wheelRewards.find(r => r.id === 'shield1'),
+    wheelRewards.find(r => r.id === 'gemBooster'),
+    wheelRewards.find(r => r.id === 'doubleRoll1'),
+    wheelRewards.find(r => r.id === 'gems25000'),
+    wheelRewards.find(r => r.id === 'auto2'),
+    wheelRewards.find(r => r.id === 'hrpass2'),
+    wheelRewards.find(r => r.id === 'secretBox'),
+    wheelRewards.find(r => r.id === 'secretKey')
+].filter(Boolean);
 
     const segmentAngle = 360 / wheelSegments.length;
     wheelEl.innerHTML = '';
@@ -2431,20 +2432,12 @@ function giveWheelReward(reward) {
         activeEffects.gemBoosterSpins = (activeEffects.gemBoosterSpins || 0) + reward.value;
     }
 
-    if (reward.type === 'vipTrial') {
-        const now = Date.now();
-        const currentTrial = parseInt(localStorage.getItem('vipTrialUntil')) || 0;
-        const days = reward.value || 1;
-        const newUntil = Math.max(now, currentTrial) + days * 24 * 60 * 60 * 1000;
-        localStorage.setItem('vipTrialUntil', newUntil.toString());
+    if (reward.type === 'secretBox') {
+        blackMarketItems.secretBox = (blackMarketItems.secretBox || 0) + reward.value;
     }
 
-    if (reward.type === 'ultimatePack') {
-        blackMarketItems.luckyTicket = (blackMarketItems.luckyTicket || 0) + 3;
-        blackMarketItems.autoPack = (blackMarketItems.autoPack || 0) + 2;
-        blackMarketItems.shield = (blackMarketItems.shield || 0) + 2;
-        blackMarketItems.highRollerPass = (blackMarketItems.highRollerPass || 0) + 1;
-        activeEffects.gemBoosterSpins = (activeEffects.gemBoosterSpins || 0) + 5;
+    if (reward.type === 'secretKey') {
+        blackMarketItems.secretKey = (blackMarketItems.secretKey || 0) + reward.value;
     }
 
     saveData();
@@ -2518,10 +2511,10 @@ const wheelRewards = [
     { id: 'hrpass2', label: '2x HR Pass', icon: '💠', rarity: 'legendary', type: 'pass', value: 2, weight: 0.22 },
     { id: 'doubleRoll3', label: '3x Double Roll', icon: '🎲', rarity: 'legendary', type: 'doubleRoll', value: 3, weight: 0.12 },
 
-    // MYTHIC
-    { id: 'vipTrial3d', label: 'VIP Trial 3D', icon: '👑', rarity: 'mythic', type: 'vipTrial', value: 3, weight: 0.03 },
-    { id: 'gems50000', label: '50000 💎', icon: '💎', rarity: 'mythic', type: 'gems', value: 50000, weight: 0.015 },
-    { id: 'ultimatePack', label: 'Ultimate Pack', icon: '🌟', rarity: 'mythic', type: 'ultimatePack', value: 1, weight: 0.01 }
+// MYTHIC
+{ id: 'secretBox', label: 'Secret Box', icon: '🎁', rarity: 'mythic', type: 'secretBox', value: 1, weight: 0.02 },
+{ id: 'secretKey', label: 'Secret Key', icon: '🔑', rarity: 'mythic', type: 'secretKey', value: 1, weight: 0.012 },
+{ id: 'gems50000', label: '50000 💎', icon: '💎', rarity: 'mythic', type: 'gems', value: 50000, weight: 0.01 }
 ];
 
 
@@ -2553,12 +2546,21 @@ function spinWheel() {
     if (!wheelEl || !btn || !resultEl) return;
 
     const segmentIds = JSON.parse(wheelEl.dataset.segmentIds || '[]');
-    const wheelSegments = segmentIds.map(id => wheelRewards.find(r => r.id === id)).filter(Boolean);
+    const wheelSegments = segmentIds
+        .map(id => wheelRewards.find(r => r.id === id))
+        .filter(Boolean);
+
+    if (wheelSegments.length === 0) {
+        resultEl.innerText = 'Ошибка: сегменты рулетки не найдены';
+        return;
+    }
 
     const chosenReward = getWeightedWheelReward();
 
     let chosenIndex = wheelSegments.findIndex(item => item.id === chosenReward.id);
 
+    // Если награда не представлена напрямую на колесе —
+    // ставим её на сектор той же редкости
     if (chosenIndex === -1) {
         const fallbackPool = wheelSegments.filter(r => r.rarity === chosenReward.rarity);
         const fallback = fallbackPool[Math.floor(Math.random() * fallbackPool.length)] || wheelSegments[0];
@@ -2575,7 +2577,10 @@ function spinWheel() {
     isWheelSpinning = true;
     btn.disabled = true;
     resultEl.innerText = 'Крутим VIP рулетку...';
-    if (panel) panel.classList.remove('win-legendary', 'win-mythic');
+
+    if (panel) {
+        panel.classList.remove('win-legendary', 'win-mythic');
+    }
 
     playSpinSound();
 
@@ -2592,17 +2597,28 @@ function spinWheel() {
         localStorage.setItem('wheelSpinTime', Date.now().toString());
 
         if (chosenReward.rarity === 'mythic') {
-            resultEl.innerText = `🔴 MYTHIC ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+            if (chosenReward.type === 'secretBox') {
+                resultEl.innerText = '🎁 SECRET BOX! Напиши админу и отправь скрин выпадения.';
+            } else if (chosenReward.type === 'secretKey') {
+                resultEl.innerText = '🔑 SECRET KEY! Напиши админу и отправь скрин, чтобы активировать ключ.';
+            } else {
+                resultEl.innerText = `🔴 MYTHIC ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+            }
+
             if (panel) panel.classList.add('win-mythic');
             playJackpotSound();
             setTimeout(() => stopJackpotSound(), 2600);
+
         } else if (chosenReward.rarity === 'legendary') {
             resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+
             if (panel) panel.classList.add('win-legendary');
             playJackpotSound();
             setTimeout(() => stopJackpotSound(), 2200);
+
         } else if (chosenReward.rarity === 'epic') {
             resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+
         } else {
             resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
         }
