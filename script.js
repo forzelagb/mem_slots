@@ -507,17 +507,29 @@ function renderCircleWheel() {
     const wheelEl = document.getElementById('vip-wheel');
     if (!wheelEl) return;
 
-    const rewards = wheelRewards.slice(0, 10);
-    const segmentAngle = 360 / rewards.length;
+    const wheelSegments = [
+        wheelRewards.find(r => r.id === 'gems700'),
+        wheelRewards.find(r => r.id === 'ticket1'),
+        wheelRewards.find(r => r.id === 'gems5000'),
+        wheelRewards.find(r => r.id === 'auto1'),
+        wheelRewards.find(r => r.id === 'gems12000'),
+        wheelRewards.find(r => r.id === 'shield1'),
+        wheelRewards.find(r => r.id === 'gemBooster'),
+        wheelRewards.find(r => r.id === 'doubleRoll1'),
+        wheelRewards.find(r => r.id === 'gems25000'),
+        wheelRewards.find(r => r.id === 'auto2'),
+        wheelRewards.find(r => r.id === 'hrpass2'),
+        wheelRewards.find(r => r.id === 'vipTrial3d')
+    ].filter(Boolean);
 
+    const segmentAngle = 360 / wheelSegments.length;
     wheelEl.innerHTML = '';
 
-    rewards.forEach((reward, index) => {
+    wheelSegments.forEach((reward, index) => {
         const segment = document.createElement('div');
-        segment.className = `vip-wheel-segment ${reward.rarity}${reward.rarity === 'legendary' ? ' glow' : ''}`;
+        segment.className = `vip-wheel-segment ${reward.rarity}${(reward.rarity === 'legendary' || reward.rarity === 'mythic') ? ' glow' : ''}`;
 
         const rotate = index * segmentAngle - 90 - segmentAngle / 2;
-
         segment.style.transform = `rotate(${rotate}deg) skewY(${90 - segmentAngle}deg)`;
 
         const content = document.createElement('div');
@@ -533,6 +545,7 @@ function renderCircleWheel() {
         wheelEl.appendChild(segment);
     });
 
+    wheelEl.dataset.segmentIds = JSON.stringify(wheelSegments.map(r => r.id));
     wheelEl.style.transform = `rotate(${currentWheelRotation}deg)`;
 }
 
@@ -542,7 +555,7 @@ function renderWheelRewardsPreview() {
 
     previewEl.innerHTML = '';
 
-    wheelRewards.slice(0, 8).forEach(reward => {
+    wheelRewards.forEach(reward => {
         const item = document.createElement('div');
         item.className = `vip-wheel-preview-item ${reward.rarity}`;
         item.innerHTML = `
@@ -2391,29 +2404,54 @@ function giveWheelReward(reward) {
     }
 
     if (reward.type === 'ticket') {
-        blackMarketItems.luckyTicket += reward.value;
+        blackMarketItems.luckyTicket = (blackMarketItems.luckyTicket || 0) + reward.value;
     }
 
     if (reward.type === 'auto') {
-        blackMarketItems.autoPack += reward.value;
+        blackMarketItems.autoPack = (blackMarketItems.autoPack || 0) + reward.value;
     }
 
     if (reward.type === 'shield') {
-        blackMarketItems.shield += reward.value;
+        blackMarketItems.shield = (blackMarketItems.shield || 0) + reward.value;
     }
 
     if (reward.type === 'pass') {
-        blackMarketItems.highRollerPass += reward.value;
+        blackMarketItems.highRollerPass = (blackMarketItems.highRollerPass || 0) + reward.value;
+    }
+
+    if (reward.type === 'doubleRoll') {
+        blackMarketItems.doubleRoll = (blackMarketItems.doubleRoll || 0) + reward.value;
+    }
+
+    if (reward.type === 'rageSpin') {
+        blackMarketItems.rageSpin = (blackMarketItems.rageSpin || 0) + reward.value;
+    }
+
+    if (reward.type === 'gemBooster') {
+        activeEffects.gemBoosterSpins = (activeEffects.gemBoosterSpins || 0) + reward.value;
     }
 
     if (reward.type === 'vipTrial') {
-        localStorage.setItem('vipTrialUntil', Date.now() + 24 * 60 * 60 * 1000);
+        const now = Date.now();
+        const currentTrial = parseInt(localStorage.getItem('vipTrialUntil')) || 0;
+        const days = reward.value || 1;
+        const newUntil = Math.max(now, currentTrial) + days * 24 * 60 * 60 * 1000;
+        localStorage.setItem('vipTrialUntil', newUntil.toString());
+    }
+
+    if (reward.type === 'ultimatePack') {
+        blackMarketItems.luckyTicket = (blackMarketItems.luckyTicket || 0) + 3;
+        blackMarketItems.autoPack = (blackMarketItems.autoPack || 0) + 2;
+        blackMarketItems.shield = (blackMarketItems.shield || 0) + 2;
+        blackMarketItems.highRollerPass = (blackMarketItems.highRollerPass || 0) + 1;
+        activeEffects.gemBoosterSpins = (activeEffects.gemBoosterSpins || 0) + 5;
     }
 
     saveData();
     saveBlackMarket();
     updateUI();
     updateBlackMarketUI();
+    updateWheelUI();
     animateBalanceChange('win');
 }
 
@@ -2425,8 +2463,10 @@ function updateWheelUI() {
 
     if (!textEl || !btn) return;
 
-    if (vipLevel < 3) {
-        textEl.innerText = 'Рулетка доступна только для Elite Meme и выше';
+    const effectiveVIP = getEffectiveVIPLevel();
+
+    if (effectiveVIP < 3) {
+        textEl.innerText = 'Рулетка доступна только для VIP 3 — SpongeBob Elite и выше';
         btn.disabled = true;
         btn.innerText = 'VIP 3 REQUIRED';
         return;
@@ -2453,29 +2493,44 @@ function updateWheelUI() {
 
 
 const wheelRewards = [
-    { id: 'gems500', label: '500 💎', icon: '💎', rarity: 'common', type: 'gems', value: 500, weight: 38 },
-    { id: 'gems1000', label: '1000 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1000, weight: 26 },
+    // COMMON
+    { id: 'gems300', label: '300 💎', icon: '💎', rarity: 'common', type: 'gems', value: 300, weight: 32 },
+    { id: 'gems700', label: '700 💎', icon: '💎', rarity: 'common', type: 'gems', value: 700, weight: 24 },
+    { id: 'gems1200', label: '1200 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1200, weight: 18 },
 
-    { id: 'ticket', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 13 },
-    { id: 'auto', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 9 },
-    { id: 'shield', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 8 },
+    // RARE
+    { id: 'ticket1', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 10 },
+    { id: 'auto1', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 8 },
+    { id: 'shield1', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 7 },
+    { id: 'doubleRoll1', label: 'Double Roll', icon: '🎲', rarity: 'rare', type: 'doubleRoll', value: 1, weight: 5 },
+    { id: 'rageSpin1', label: 'Rage Spin', icon: '🔥', rarity: 'rare', type: 'rageSpin', value: 1, weight: 4 },
 
-    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 3 },
-    { id: 'doubleTicket', label: '2x Lucky Ticket', icon: '🎟', rarity: 'epic', type: 'ticket', value: 2, weight: 1.2 },
-    { id: 'doubleAuto', label: '2x Auto Pack', icon: '⚡', rarity: 'epic', type: 'auto', value: 2, weight: 0.8 },
-    { id: 'doubleShield', label: '2x Shield', icon: '🛡', rarity: 'epic', type: 'shield', value: 2, weight: 0.7 },
+    // EPIC
+    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 2.4 },
+    { id: 'ticket2', label: '2x Lucky Ticket', icon: '🎟', rarity: 'epic', type: 'ticket', value: 2, weight: 1.4 },
+    { id: 'auto2', label: '2x Auto Pack', icon: '⚡', rarity: 'epic', type: 'auto', value: 2, weight: 1.0 },
+    { id: 'shield2', label: '2x Shield', icon: '🛡', rarity: 'epic', type: 'shield', value: 2, weight: 0.9 },
+    { id: 'gemBooster', label: 'Gem Booster x5', icon: '🚀', rarity: 'epic', type: 'gemBooster', value: 5, weight: 0.9 },
 
-    { id: 'gems10000', label: '10000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 10000, weight: 0.25 },
-    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.05 },
-    { id: 'doublePass', label: '2x HR Pass', icon: '💎', rarity: 'legendary', type: 'pass', value: 2, weight: 0.2 },
-    { id: 'vipTrial', label: 'VIP Trial 1D', icon: '👑', rarity: 'legendary', type: 'vipTrial', value: 1, weight: 0.05 }
+    // LEGENDARY
+    { id: 'gems12000', label: '12000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 12000, weight: 0.35 },
+    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.08 },
+    { id: 'hrpass2', label: '2x HR Pass', icon: '💠', rarity: 'legendary', type: 'pass', value: 2, weight: 0.22 },
+    { id: 'doubleRoll3', label: '3x Double Roll', icon: '🎲', rarity: 'legendary', type: 'doubleRoll', value: 3, weight: 0.12 },
+
+    // MYTHIC
+    { id: 'vipTrial3d', label: 'VIP Trial 3D', icon: '👑', rarity: 'mythic', type: 'vipTrial', value: 3, weight: 0.03 },
+    { id: 'gems50000', label: '50000 💎', icon: '💎', rarity: 'mythic', type: 'gems', value: 50000, weight: 0.015 },
+    { id: 'ultimatePack', label: 'Ultimate Pack', icon: '🌟', rarity: 'mythic', type: 'ultimatePack', value: 1, weight: 0.01 }
 ];
 
 
 
 function spinWheel() {
-    if (vipLevel < 3) {
-        alert("❌ Рулетка доступна только для Elite Meme и выше");
+    const effectiveVIP = getEffectiveVIPLevel();
+
+    if (effectiveVIP < 3) {
+        alert("❌ Рулетка доступна только для VIP 3 — SpongeBob Elite и выше");
         return;
     }
 
@@ -2497,19 +2552,22 @@ function spinWheel() {
 
     if (!wheelEl || !btn || !resultEl) return;
 
-    const rewards = wheelRewards.slice(0, 10);
+    const segmentIds = JSON.parse(wheelEl.dataset.segmentIds || '[]');
+    const wheelSegments = segmentIds.map(id => wheelRewards.find(r => r.id === id)).filter(Boolean);
+
     const chosenReward = getWeightedWheelReward();
 
-    let chosenIndex = rewards.findIndex(item => item.id === chosenReward.id);
+    let chosenIndex = wheelSegments.findIndex(item => item.id === chosenReward.id);
 
     if (chosenIndex === -1) {
-        chosenIndex = Math.floor(Math.random() * rewards.length);
+        const fallbackPool = wheelSegments.filter(r => r.rarity === chosenReward.rarity);
+        const fallback = fallbackPool[Math.floor(Math.random() * fallbackPool.length)] || wheelSegments[0];
+        chosenIndex = wheelSegments.findIndex(item => item.id === fallback.id);
     }
 
-    const segmentAngle = 360 / rewards.length;
-
+    const segmentAngle = 360 / wheelSegments.length;
     const fullSpins = 6;
-    const randomJitter = (Math.random() * 8) - 4;
+    const randomJitter = (Math.random() * 6) - 3;
 
     const targetAngle = 360 - (chosenIndex * segmentAngle + segmentAngle / 2);
     const finalRotation = currentWheelRotation + fullSpins * 360 + targetAngle + randomJitter;
@@ -2517,7 +2575,7 @@ function spinWheel() {
     isWheelSpinning = true;
     btn.disabled = true;
     resultEl.innerText = 'Крутим VIP рулетку...';
-    if (panel) panel.classList.remove('win-legendary');
+    if (panel) panel.classList.remove('win-legendary', 'win-mythic');
 
     playSpinSound();
 
@@ -2533,7 +2591,12 @@ function spinWheel() {
         giveWheelReward(chosenReward);
         localStorage.setItem('wheelSpinTime', Date.now().toString());
 
-        if (chosenReward.rarity === 'legendary') {
+        if (chosenReward.rarity === 'mythic') {
+            resultEl.innerText = `🔴 MYTHIC ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+            if (panel) panel.classList.add('win-mythic');
+            playJackpotSound();
+            setTimeout(() => stopJackpotSound(), 2600);
+        } else if (chosenReward.rarity === 'legendary') {
             resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
             if (panel) panel.classList.add('win-legendary');
             playJackpotSound();
@@ -2553,46 +2616,6 @@ function spinWheel() {
     }, 5400);
 }
 
-
-function giveWheelReward(reward) {
-    if (!reward) return;
-
-    if (reward.type === 'gems') {
-        gems += reward.value;
-    }
-
-    if (reward.type === 'ticket') {
-        blackMarketItems.luckyTicket += reward.value;
-    }
-
-    if (reward.type === 'auto') {
-        blackMarketItems.autoPack += reward.value;
-    }
-
-    if (reward.type === 'shield') {
-        blackMarketItems.shield += reward.value;
-    }
-
-    if (reward.type === 'pass') {
-        blackMarketItems.highRollerPass += reward.value;
-    }
-
-    if (reward.type === 'vipTrial') {
-        const now = Date.now();
-        const currentTrial = parseInt(localStorage.getItem('vipTrialUntil')) || 0;
-
-        const oneDay = 24 * 60 * 60 * 1000;
-        const newUntil = Math.max(now, currentTrial) + oneDay;
-
-        localStorage.setItem('vipTrialUntil', newUntil.toString());
-    }
-
-    saveData();
-    saveBlackMarket();
-    updateUI();
-    updateBlackMarketUI();
-    animateBalanceChange('win');
-}
 
 
 function getWeightedWheelReward() {
@@ -4091,7 +4114,20 @@ function stopJackpotSound() {
     jackpotSound.currentTime = 0;
     isBigWinSoundPlaying = false;
 }
+function getEffectiveVIPLevel() {
+    const storedMain = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
+    const trialUntil = parseInt(localStorage.getItem('vipTrialUntil')) || 0;
+    const hasTrial = Date.now() < trialUntil;
 
+    const trialLevel = hasTrial ? 3 : 0;
+
+    return Math.max(
+        vipLevel || 0,
+        currentVIPLevel || 0,
+        storedMain,
+        trialLevel
+    );
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
