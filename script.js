@@ -1,5 +1,15 @@
 // === КОНФИГУРАЦИЯ БИЗНЕСОВ ===
 
+
+const coinsConfig = {
+    burmal: { name: "БурмалCOIN", basePrice: 100, volatility: 0.05, amount: 0, history: [], currentPrice: 100 },
+    burmaldook: { name: "БурмалДук", basePrice: 500, volatility: 0.08, amount: 0, history: [], currentPrice: 500 },
+    hecio: { name: "HeCION", basePrice: 50, volatility: 0.1, amount: 0, history: [], currentPrice: 50 },
+    ciondic: { name: "CIONдиции", basePrice: 200, volatility: 0.06, amount: 0, history: [], currentPrice: 200 },
+    analdoc: { name: "ANalDOCion", basePrice: 10, volatility: 0.15, amount: 0, history: [], currentPrice: 10 },
+    tuncion: { name: "TunCION", basePrice: 1000, volatility: 0.04, amount: 0, history: [], currentPrice: 1000 }
+};
+
 const spinSound = new Audio('sounds/spin.mp3');
 const endSpinSound = new Audio('sounds/end.mp3');
 const jackpotSound = new Audio('sounds/jackpot.mp3');
