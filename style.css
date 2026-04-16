@@ -1897,18 +1897,20 @@ body::before {
 
 /* Ячейки поля */
 .mine-cell {
-    background: linear-gradient(145deg, #2b2b35, #1a1a20);
-    border-radius: 15px; /* Более скругленные углы */
+    background: linear-gradient(145deg, #2a1b3d, #1a0b2e);
+    border: 2px solid #7b2cbf;
+    border-radius: 12px;
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 48px; /* Увеличиваем эмодзи */
-    transition: all 0.3s ease;
-    border: 3px solid #3f3f4a;
-    user-select: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}       
+    font-size: 32px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+
+    aspect-ratio: 1 / 1;   /* главное */
+    width: 100%;
+}
 
 .mine-cell:hover:not(.revealed) {
     background: linear-gradient(145deg, #383842, #2a2a35);
@@ -5170,6 +5172,17 @@ body.vip-theme-speed .slot-container.win-pulse {
     .my-rank-right {
         text-align: left;
     }
+}
+#mines-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.mine-cell {
+    aspect-ratio: 1 / 1;
 }
 
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
