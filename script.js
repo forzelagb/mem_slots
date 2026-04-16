@@ -894,9 +894,9 @@ function updateLeaderboardUI() {
 
         row.className = `leaderboard-row ${index < 3 ? 'top-row' : ''} ${isMe ? 'current-user-row' : ''}`;
 
-    const scoreValue = leaderboardMode === 'gems'
-        ? (record.totalGemsEarned || 0).toLocaleString()
-        : (record.bestWin || 0).toLocaleString();
+const scoreValue = leaderboardMode === 'gems'
+    ? (record.gems || 0).toLocaleString()
+    : (record.bestWin || 0).toLocaleString();
 
         row.innerHTML = `
             <td>
@@ -3535,10 +3535,10 @@ async function loadPlayerData(user) {
         const db = window.firebaseDb;
 
         const snap = await getDoc(doc(db, "players", user.uid));
-
         if (!snap.exists()) return;
 
         const data = snap.data();
+
         currentUser = user;
         playerProfile = data;
 
@@ -3593,7 +3593,6 @@ async function savePlayerData() {
             totalGemsEarned,
             vipLevel,
             currentBet,
-            coinsConfig,
             leaderboard,
             lastVIPBonusTime,
             lastSeenAt: serverTimestamp()
@@ -3755,30 +3754,48 @@ async function loadThemeLeaderboard(themeName, btnElement = null) {
 
 
 
-function updateMyRankCard() {
-    const card = document.getElementById('my-rank-card');
-    const subtitle = document.getElementById('my-rank-subtitle');
-    const position = document.getElementById('my-rank-position');
-    const value = document.getElementById('my-rank-value');
+async function loadMyGemsRank() {
+    try {
+        if (!currentUser) {
+            myLeaderboardRank = null;
+            myLeaderboardRecord = null;
+            updateMyRankCard();
+            return;
+        }
 
-    if (!card || !subtitle || !position || !value) return;
+        const db = window.firebaseDb;
+        const {
+            collection,
+            query,
+            orderBy,
+            getDocs
+        } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
 
-    if (!currentUser || !myLeaderboardRecord || !myLeaderboardRank) {
-        card.style.display = 'none';
-        return;
+        const q = query(
+            collection(db, "players"),
+            orderBy("gems", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+        const allPlayers = snapshot.docs.map(doc => ({
+            uid: doc.id,
+            ...doc.data()
+        }));
+
+        const myIndex = allPlayers.findIndex(player => player.uid === currentUser.uid);
+
+        if (myIndex === -1) {
+            myLeaderboardRank = null;
+            myLeaderboardRecord = null;
+        } else {
+            myLeaderboardRank = myIndex + 1;
+            myLeaderboardRecord = allPlayers[myIndex];
+        }
+
+        updateMyRankCard();
+    } catch (error) {
+        console.error("Ошибка загрузки твоего места по алмазам:", error);
     }
-
-    card.style.display = 'flex';
-
-    if (leaderboardMode === 'gems') {
-        subtitle.textContent = 'Твой общий баланс в рейтинге игроков';
-        value.textContent = `${(myLeaderboardRecord.gems || 0).toLocaleString()} 💎`;
-    } else {
-        subtitle.textContent = `Твой лучший рекорд в режиме ${myLeaderboardRecord.theme || ''}`;
-        value.textContent = `${(myLeaderboardRecord.bestWin || 0).toLocaleString()} 💎`;
-    }
-
-    position.textContent = `#${myLeaderboardRank}`;
 }
 
 
@@ -3848,7 +3865,7 @@ async function loadMyGemsRank() {
 
         const q = query(
             collection(db, "players"),
-            orderBy("totalGemsEarned", "desc")
+            orderBy("gems", "desc")
         );
 
         const snapshot = await getDocs(q);
@@ -3875,12 +3892,29 @@ async function loadMyGemsRank() {
 
 async function loadGemsLeaderboard() {
     try {
-        const { collection, query, orderBy, limit, getDocs } = window.fbFns;
+        leaderboardMode = 'gems';
+
+        const themeBtn = document.getElementById('mode-theme-btn');
+        const gemsBtn = document.getElementById('mode-gems-btn');
+
+        if (themeBtn) themeBtn.classList.remove('active');
+        if (gemsBtn) gemsBtn.classList.add('active');
+
+        const themeTabs = document.querySelector('.leaderboard-theme-tabs');
+        if (themeTabs) themeTabs.style.display = 'none';
+
         const db = window.firebaseDb;
+        const {
+            collection,
+            query,
+            orderBy,
+            limit,
+            getDocs
+        } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
 
         const q = query(
             collection(db, "players"),
-            orderBy("totalGemsEarned", "desc"),
+            orderBy("gems", "desc"),
             limit(10)
         );
 
@@ -3891,9 +3925,8 @@ async function loadGemsLeaderboard() {
             ...doc.data()
         }));
 
-        leaderboardMode = 'gems';
-
         updateLeaderboardUI();
+        await loadMyGemsRank();
     } catch (error) {
         console.error("Ошибка загрузки топа по алмазам:", error);
     }
