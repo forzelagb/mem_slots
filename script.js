@@ -13,6 +13,7 @@ const coinsConfig = {
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
 let gems = 10000;
+let totalGemsEarned = 0;
 // === VIP УРОВНИ ===
 let vipLevel = 0;
 let currentBet = 250;
@@ -723,6 +724,7 @@ if (totalWin > 0) {
     }
 
     gems += totalWin;
+    totalGemsEarned += totalWin;
 
     saveData();
     updateUI();
@@ -892,9 +894,9 @@ function updateLeaderboardUI() {
 
         row.className = `leaderboard-row ${index < 3 ? 'top-row' : ''} ${isMe ? 'current-user-row' : ''}`;
 
-        const scoreValue = leaderboardMode === 'gems'
-            ? (record.gems || 0).toLocaleString()
-            : (record.bestWin || 0).toLocaleString();
+    const scoreValue = leaderboardMode === 'gems'
+        ? (record.totalGemsEarned || 0).toLocaleString()
+        : (record.bestWin || 0).toLocaleString();
 
         row.innerHTML = `
             <td>
@@ -3541,6 +3543,7 @@ async function loadPlayerData(user) {
         playerProfile = data;
 
         gems = data.gems ?? 10000;
+        totalGemsEarned = data.totalGemsEarned ?? 0;
         vipLevel = data.vipLevel ?? 0;
         currentBet = data.currentBet ?? 250;
         leaderboard = Array.isArray(data.leaderboard) ? data.leaderboard : [];
@@ -3552,7 +3555,8 @@ async function loadPlayerData(user) {
                 if (coinsConfig[key]) {
                     coinsConfig[key].amount = data.coinsConfig[key].amount ?? 0;
                     coinsConfig[key].history = data.coinsConfig[key].history ?? [];
-                    coinsConfig[key].currentPrice = data.coinsConfig[key].currentPrice ?? coinsConfig[key].basePrice;
+                    coinsConfig[key].currentPrice =
+                        data.coinsConfig[key].currentPrice ?? coinsConfig[key].basePrice;
                 }
             }
         } else {
@@ -3585,13 +3589,15 @@ async function savePlayerData() {
         const db = window.firebaseDb;
 
         await setDoc(doc(db, "players", currentUser.uid), {
-    gems,
-    vipLevel,
-    currentBet,
-    leaderboard,
-    lastVIPBonusTime,
-    lastSeenAt: serverTimestamp()
-}, { merge: true });
+            gems,
+            totalGemsEarned,
+            vipLevel,
+            currentBet,
+            coinsConfig,
+            leaderboard,
+            lastVIPBonusTime,
+            lastSeenAt: serverTimestamp()
+        }, { merge: true });
     } catch (error) {
         console.error("Ошибка сохранения игрока:", error);
     }
@@ -3842,7 +3848,7 @@ async function loadMyGemsRank() {
 
         const q = query(
             collection(db, "players"),
-            orderBy("gems", "desc")
+            orderBy("totalGemsEarned", "desc")
         );
 
         const snapshot = await getDocs(q);
@@ -3867,6 +3873,31 @@ async function loadMyGemsRank() {
     }
 }
 
+async function loadGemsLeaderboard() {
+    try {
+        const { collection, query, orderBy, limit, getDocs } = window.fbFns;
+        const db = window.firebaseDb;
+
+        const q = query(
+            collection(db, "players"),
+            orderBy("totalGemsEarned", "desc"),
+            limit(10)
+        );
+
+        const snapshot = await getDocs(q);
+
+        leaderboard = snapshot.docs.map(doc => ({
+            uid: doc.id,
+            ...doc.data()
+        }));
+
+        leaderboardMode = 'gems';
+
+        updateLeaderboardUI();
+    } catch (error) {
+        console.error("Ошибка загрузки топа по алмазам:", error);
+    }
+}
 
 // === ЗАПУСК ===
 window.onload = () => {
