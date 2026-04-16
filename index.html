@@ -55,6 +55,7 @@
             <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
             <button class="tab-btn" onclick="openTab('wheel')">🎡 Рулетка</button>            
             <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
+            <button class="tab-btn" onclick="openTab('leaderboard')">🏆 Лидеры</button>
             <button class="tab-btn" onclick="openTab('market')">🛒 Black Market</button>
 
             <!-- КНОПКА СЕКРЕТНОЙ ЗОНЫ -->
@@ -121,19 +122,6 @@
         <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
     </div>
 
-    <div class="leaderboard-panel">
-        <h3>🏆 ТВОЙ ТОП-5 РЕКОРДОВ</h3>
-        <table class="leaderboard-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Выигрыш</th>
-                    <th>Дата</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body"></tbody>
-        </table>
-    </div>
 </div>
 <div id="tab-upgrades" class="tab-content">
     <h2 class="section-title">⬆️ УЛУЧШЕНИЯ АККАУНТА</h2>
@@ -185,8 +173,41 @@
         </div>
     </div>
 </div>
+<div id="tab-leaderboard" class="tab-content">
+    <h2 class="section-title">🏆 ТАБЛИЦЫ ЛИДЕРОВ</h2>
 
-        <!-- === ВКЛАДКА 2: БИРЖА === -->
+    <div class="leaderboard-theme-tabs">
+        <button class="leaderboard-theme-btn active" onclick="loadThemeLeaderboard('brain', this)">🧠 Brain</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('helin', this)">🎤 Helin</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('lexapaws', this)">🐾 Lexa</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('litwin', this)">🎮 Litwin</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('melstroy', this)">👑 Mellstroy</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('nikkifn', this)">🎯 Nikkifn</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('rejiboi', this)">🕺 Rejiboi</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('rostick', this)">🌭 Rostick</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('sasich', this)">🗣️ Sasich</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('skibiditoilet', this)">🚽 Skibidi</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('slovopatsana', this)">👊 Slovo</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('ronaldo', this)">🐐 Ronaldo</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('shrek', this)">🟢 Shrek</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('spongebob', this)">🧽 SpongeBob</button>
+        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('speed', this)">⚡ Speed</button>
+    </div>
+
+    <div class="leaderboard-panel">
+        <h3>🌍 ТОП ИГРОКОВ ПО ТЕМЕ</h3>
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Игрок</th>
+                    <th>Рекорд</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+        </table>
+    </div>
+</div>
 <div id="tab-market" class="tab-content">
     <h2 class="section-title">🛒 BLACK MARKET</h2>
 

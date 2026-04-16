@@ -4793,6 +4793,33 @@ body.vip-theme-speed .slot-container.win-pulse {
     box-shadow: none;
 }
 
+
+.leaderboard-theme-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.leaderboard-theme-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.2s ease;
+}
+
+.leaderboard-theme-btn:hover,
+.leaderboard-theme-btn.active {
+    background: linear-gradient(135deg, rgba(255, 59, 212, 0.20), rgba(77, 227, 255, 0.16));
+    border-color: rgba(255, 211, 106, 0.35);
+    box-shadow: 0 0 18px rgba(255, 59, 212, 0.18);
+}
+
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

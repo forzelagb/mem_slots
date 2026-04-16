@@ -12,10 +12,11 @@ const coinsConfig = {
 
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
-let gems = parseInt(localStorage.getItem('memeGems')) || 10000;
+let gems = 10000;
 // === VIP УРОВНИ ===
-let vipLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
-let currentBet = parseInt(localStorage.getItem('memeBet')) || 250;
+let vipLevel = 0;
+let currentBet = 250;
+let lastVIPBonusTime = 0;
 let currentSelectedCoin = 'burmal';
 let marketInterval;
 let chartInstance = null;
@@ -119,31 +120,6 @@ const modalAmount = document.getElementById('modal-amount');
 const slotTitle = document.getElementById('slot-title');
 const currentCostEl = document.getElementById('current-cost');
 
-// === СИСТЕМА СОХРАНЕНИЯ ===
-function saveData() {
-    localStorage.setItem('memeGems', gems);
-    localStorage.setItem('memeBet', currentBet);
-    localStorage.setItem('memeCoinsPro', JSON.stringify(coinsConfig));
-}
-
-function loadData() {
-    const savedCoins = JSON.parse(localStorage.getItem('memeCoinsPro'));
-    if (savedCoins) {
-        for (let key in savedCoins) {
-            if (coinsConfig[key]) {
-                coinsConfig[key].amount = savedCoins[key].amount || 0;
-                coinsConfig[key].history = savedCoins[key].history || [];
-                coinsConfig[key].currentPrice = savedCoins[key].currentPrice || coinsConfig[key].basePrice;
-            }
-        }
-    } else {
-        for (let key in coinsConfig) {
-            coinsConfig[key].currentPrice = coinsConfig[key].basePrice;
-            let price = coinsConfig[key].basePrice;
-            for(let i=0; i<20; i++) coinsConfig[key].history.push(price);
-        }
-    }
-}
 
 // === ЛОГИКА ВКЛАДОК ===
 function openTab(tabName) {
@@ -832,64 +808,75 @@ function closeModal() {
     const slotContainer = document.querySelector('.slot-container');
     if (slotContainer) slotContainer.classList.remove('win-pulse');
 }
+let leaderboard = [];
 
+async function addToLeaderboard(amount) {
+    if (amount <= 0 || !currentUser || !currentTheme) return;
 
-// === ТАБЛИЦА ЛИДЕРОВ ===
-let leaderboard = JSON.parse(localStorage.getItem('memeLeaderboard')) || [];
-
-function addToLeaderboard(amount) {
-    if (amount <= 0) return;
-    
     const now = new Date();
-    // Форматируем дату: ДД.ММ ЧЧ:ММ
-    const dateStr = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU', {hour: '2-digit', minute:'2-digit'});
-    
-    // Добавляем новый рекорд
-    leaderboard.push({ amount: amount, date: dateStr });
-    
-    // Сортируем по сумме (по убыванию)
-    leaderboard.sort((a, b) => b.amount - a.amount);
-    
-    // Оставляем только топ-5
-    if (leaderboard.length > 5) {
-        leaderboard = leaderboard.slice(0, 5);
+    const dateStr = now.toLocaleDateString('ru-RU') + ' ' +
+        now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+    try {
+        const { doc, getDoc, setDoc, serverTimestamp } = window.fbFns;
+        const db = window.firebaseDb;
+
+        const recordId = `${currentTheme}_${currentUser.uid}`;
+        const ref = doc(db, "leaderboard", recordId);
+        const snap = await getDoc(ref);
+
+        let oldBest = 0;
+        if (snap.exists()) {
+            oldBest = snap.data().bestWin || 0;
+        }
+
+        await setDoc(ref, {
+            uid: currentUser.uid,
+            nickname: playerProfile?.nickname || "Игрок",
+            vipLevel: vipLevel || 0,
+            theme: currentTheme,
+            bestWin: Math.max(oldBest, amount),
+            lastWin: amount,
+            lastWinDate: dateStr,
+            updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        await loadThemeLeaderboard(currentTheme);
+    } catch (error) {
+        console.error("Ошибка сохранения лидерборда:", error);
     }
-    
-    // Сохраняем в память браузера
-    localStorage.setItem('memeLeaderboard', JSON.stringify(leaderboard));
-    
-    // Обновляем отображение
-    updateLeaderboardUI();
 }
 
 function updateLeaderboardUI() {
     const tbody = document.getElementById('leaderboard-body');
     if (!tbody) return;
-    
+
     tbody.innerHTML = '';
-    
-    if (leaderboard.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" class="leaderboard-empty">Пока нет рекордов. Крути слоты!</td></tr>';
+
+    if (!leaderboard || leaderboard.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="3" class="leaderboard-empty">Пока нет рекордов</td>
+            </tr>
+        `;
         return;
     }
-    
+
     leaderboard.forEach((record, index) => {
-        const row = document.createElement('tr');
-        // Добавляем медальки для топ-3
         let rankIcon = index + 1;
         if (index === 0) rankIcon = '🥇';
         if (index === 1) rankIcon = '🥈';
         if (index === 2) rankIcon = '🥉';
 
+        const row = document.createElement('tr');
         row.innerHTML = `
             <td>${rankIcon}</td>
-            <td>${record.amount.toLocaleString()} 💎</td>
-            <td style="color:#aaa; font-size:14px;">${record.date}</td>
+            <td>${record.nickname || 'Игрок'}</td>
+            <td>${(record.bestWin || 0).toLocaleString()} 💎</td>
         `;
         tbody.appendChild(row);
     });
 }
-
 
 
 // === СИСТЕМА VIP КОДОВ ===
@@ -900,8 +887,6 @@ const vipCodes = {
     "VIP-MEMELORD": 3,
     "VIP-VEGASLEGEND": 4
 };
-
-let hasVIPAccess = localStorage.getItem('memeVIPAccess') === 'true';
 
 function checkSecretAccess() {
     openTab('secret');
@@ -926,26 +911,23 @@ function activateVIPCodeFromStore() {
 
     if (vipCodes[code]) {
         const newLevel = vipCodes[code];
-        
+
         if (newLevel > vipLevel) {
             vipLevel = newLevel;
             currentVIPLevel = newLevel;
-            localStorage.setItem('memeVIPLevel', String(newLevel));
-            saveVIPData();
-            renderVIPSlots();
+
+            saveData();
             updateVIPZoneUI();
-            
+
             messageEl.style.color = '#00ff88';
             messageEl.innerText = `✅ Код принят! Уровень ${getLevelName(vipLevel)} активирован.`;
-            
-            // Через секунду переключаем на кабинет
+
             setTimeout(() => {
                 showVIPDashboard();
                 messageEl.innerText = '';
                 input.value = '';
                 if (typeof fireConfetti === 'function') fireConfetti();
             }, 1500);
-            
         } else {
             messageEl.style.color = '#ffa500';
             messageEl.innerText = `⚠️ У вас уже есть уровень ${getLevelName(vipLevel)} или выше.`;
@@ -976,11 +958,10 @@ function claimDailyVIPBonus() {
         return;
     }
 
-    const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
 
-    if (now - lastClaim < oneDay) {
+    if (now - lastVIPBonusTime < oneDay) {
         alert("⏳ VIP-бонус доступен только раз в 24 часа.");
         updateVIPZoneUI();
         updateVIPBonusButton();
@@ -990,7 +971,7 @@ function claimDailyVIPBonus() {
     const reward = getVIPDailyBonus();
 
     gems += reward;
-    localStorage.setItem('lastVIPBonusTime', now.toString());
+    lastVIPBonusTime = now;
 
     saveData();
     updateUI();
@@ -1017,11 +998,10 @@ function updateVIPBonusButton() {
     if (!btn) return;
 
     const reward = getVIPDailyBonus();
-    const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
 
-    if (now - lastClaim >= oneDay) {
+    if (now - lastVIPBonusTime >= oneDay) {
         btn.disabled = false;
         btn.innerText = `Забрать ${reward.toLocaleString()} 💎`;
         if (msg) {
@@ -1031,7 +1011,7 @@ function updateVIPBonusButton() {
         btn.disabled = true;
         btn.innerText = "Уже получено";
 
-        const timeLeftMs = oneDay - (now - lastClaim);
+        const timeLeftMs = oneDay - (now - lastVIPBonusTime);
         const hours = Math.floor(timeLeftMs / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -1042,10 +1022,13 @@ function updateVIPBonusButton() {
 }
 
 function resetVIPTest() {
-    if(confirm("Сбросить VIP статус для теста?")) {
-        localStorage.removeItem('memeVIPAccess');
-        localStorage.removeItem('lastVIPBonusTime');
-        hasVIPAccess = false;
+    if (confirm("Сбросить VIP статус для теста?")) {
+        vipLevel = 0;
+        currentVIPLevel = 0;
+        lastVIPBonusTime = 0;
+        saveData();
+        updateVIPZoneUI();
+        updateVIPBonusButton();
         location.reload();
     }
 }
@@ -1059,8 +1042,6 @@ function checkAndResetRonaldoLimit() {
     if (lastRonaldoResetDate !== today) {
         ronaldoSpinsToday = 0;
         lastRonaldoResetDate = today;
-        localStorage.setItem('ronaldoSpinsToday', '0');
-        localStorage.setItem('lastRonaldoResetDate', today);
     }
 }
 
@@ -1072,8 +1053,6 @@ function checkAndResetDailyWinLimit() {
     if (lastRonaldoWinDate !== today) {
         todayRonaldoWinnings = 0;
         lastRonaldoWinDate = today;
-        localStorage.setItem('todayRonaldoWinnings', '0');
-        localStorage.setItem('lastRonaldoWinDate', today);
     }
 }
 
@@ -1174,7 +1153,7 @@ function updateSecretContentByLevel() {
     const resetBtn = document.createElement('button');
     resetBtn.className = 'btn-reset-vip';
     resetBtn.innerText = '[Тест] Сбросить прогресс';
-    resetBtn.onclick = () => { localStorage.clear(); location.reload(); };
+    resetBtn.onclick = () => { location.reload(); };
     contentDiv.appendChild(resetBtn);
 }
 
@@ -2560,7 +2539,6 @@ function updateVIPZoneUI() {
         });
     }
 
-    const lastClaim = parseInt(localStorage.getItem('lastVIPBonusTime')) || 0;
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
 
@@ -3436,44 +3414,14 @@ window.addEventListener('click', (e) => {
     }
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (!window.fbFns || !window.firebaseAuth) return;
+function openAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.add('active');
+}
 
-        const { onAuthStateChanged } = window.fbFns;
-
-        onAuthStateChanged(window.firebaseAuth, (user) => {
-            if (user) {
-                loadPlayerData(user);
-            }
-        });
-    }, 300);
-});
-
-async function loadPlayerData(user) {
-    try {
-        const { doc, getDoc } = window.fbFns;
-        const db = window.firebaseDb;
-
-        const playerRef = doc(db, 'players', user.uid);
-        const snap = await getDoc(playerRef);
-
-        if (snap.exists()) {
-            const data = snap.data();
-
-            gems = data.gems || 0;
-            vipLevel = data.vipLevel || 0;
-
-            updateUI();
-
-            console.log("Игрок загружен:", data);
-        } else {
-            console.log("Игрок не найден");
-        }
-
-    } catch (error) {
-        console.error("Ошибка загрузки:", error);
-    }
+function closeAuthModal() {
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.remove('active');
 }
 
 async function registerPlayer() {
@@ -3482,7 +3430,7 @@ async function registerPlayer() {
     const password = document.getElementById('auth-password').value.trim();
 
     if (!nickname || !email || !password) {
-        alert('Заполни все поля');
+        alert("Заполни все поля");
         return;
     }
 
@@ -3494,47 +3442,183 @@ async function registerPlayer() {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        await setDoc(doc(db, 'players', user.uid), {
-            nickname: nickname,
-            email: email,
+        await setDoc(doc(db, "players", user.uid), {
+            nickname,
+            email,
             gems: 10000,
             vipLevel: 0,
-            createdAt: serverTimestamp()
+            vipName: "",
+            currentBet: 250,
+            coinsConfig,
+            leaderboard: [],
+            lastVIPBonusTime: 0,
+            createdAt: serverTimestamp(),
+            lastLoginAt: serverTimestamp(),
+            lastSeenAt: serverTimestamp(),
+            isOnline: true
         });
 
+        currentUser = user;
         gems = 10000;
-        updateUI();
+        vipLevel = 0;
+        currentBet = 250;
 
+        updateUI();
+        updateMarketUI();
         closeAuthModal();
         alert("Аккаунт создан!");
-
     } catch (error) {
-    console.error("REGISTER ERROR FULL:", error);
-    console.error("REGISTER ERROR CODE:", error.code);
-    console.error("REGISTER ERROR MESSAGE:", error.message);
-    alert("Ошибка Firebase:\n" + error.code + "\n" + error.message);
+        console.error("REGISTER ERROR:", error);
+        alert("Ошибка Firebase:\n" + error.code + "\n" + error.message);
     }
 }
 
-function openAuthModal() {
-    const modal = document.getElementById('auth-modal');
-    if (modal) modal.classList.add('active');
+
+let currentUser = null;
+let playerProfile = null;
+
+async function loadPlayerData(user) {
+    try {
+        const { doc, getDoc } = window.fbFns;
+        const db = window.firebaseDb;
+
+        const snap = await getDoc(doc(db, "players", user.uid));
+
+        if (!snap.exists()) return;
+
+        const data = snap.data();
+        currentUser = user;
+        playerProfile = data;
+
+        gems = data.gems ?? 10000;
+        vipLevel = data.vipLevel ?? 0;
+        currentBet = data.currentBet ?? 250;
+        leaderboard = Array.isArray(data.leaderboard) ? data.leaderboard : [];
+        lastVIPBonusTime = data.lastVIPBonusTime ?? 0;
+        currentVIPLevel = vipLevel;
+
+        if (data.coinsConfig) {
+            for (const key in data.coinsConfig) {
+                if (coinsConfig[key]) {
+                    coinsConfig[key].amount = data.coinsConfig[key].amount ?? 0;
+                    coinsConfig[key].history = data.coinsConfig[key].history ?? [];
+                    coinsConfig[key].currentPrice = data.coinsConfig[key].currentPrice ?? coinsConfig[key].basePrice;
+                }
+            }
+        } else {
+            for (const key in coinsConfig) {
+                if (!coinsConfig[key].history.length) {
+                    let price = coinsConfig[key].basePrice;
+                    for (let i = 0; i < 20; i++) {
+                        coinsConfig[key].history.push(price);
+                    }
+                    coinsConfig[key].currentPrice = coinsConfig[key].basePrice;
+                }
+            }
+        }
+
+        updateUI();
+        updateMarketUI();
+        updateLeaderboardUI();
+        updateVIPBonusButton();
+        updateProfileUI(data);
+    } catch (error) {
+        console.error("Ошибка загрузки игрока:", error);
+    }
 }
 
-function closeAuthModal() {
-    const modal = document.getElementById('auth-modal');
-    if (modal) modal.classList.remove('active');
+async function savePlayerData() {
+    if (!currentUser) return;
+
+    try {
+        const { doc, setDoc, serverTimestamp } = window.fbFns;
+        const db = window.firebaseDb;
+
+        await setDoc(doc(db, "players", currentUser.uid), {
+            gems,
+            vipLevel,
+            currentBet,
+            coinsConfig,
+            leaderboard,
+            lastVIPBonusTime,
+            lastSeenAt: serverTimestamp()
+        }, { merge: true });
+    } catch (error) {
+        console.error("Ошибка сохранения игрока:", error);
+    }
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+    const { onAuthStateChanged } = window.fbFns;
+    const auth = window.firebaseAuth;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            await loadPlayerData(user);
+            await loadGlobalLeaderboard();
+        } else {
+            leaderboard = [];
+            updateLeaderboardUI();
+            updateGuestUI();
+        }
+    });
+});
+
+function updateProfileUI(data) {
+    const nicknameEl = document.getElementById("profile-nickname");
+    const vipEl = document.getElementById("profile-vip");
+    const balanceEl = document.getElementById("lobby-balance");
+
+    if (nicknameEl) nicknameEl.textContent = data.nickname || "Игрок";
+    if (vipEl) vipEl.textContent = data.vipName || `VIP ${data.vipLevel || 0}`;
+    if (balanceEl) balanceEl.textContent = data.gems ?? 0;
+}
+
+function saveData() {
+    savePlayerData();
+}
+
+
+
+async function loadThemeLeaderboard(themeName, btnElement = null) {
+    try {
+        const db = window.firebaseDb;
+        const {
+            collection,
+            query,
+            where,
+            orderBy,
+            limit,
+            getDocs
+        } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+
+        if (btnElement) {
+            document.querySelectorAll('.leaderboard-theme-btn')
+                .forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        const q = query(
+            collection(db, "leaderboard"),
+            where("theme", "==", themeName),
+            orderBy("bestWin", "desc"),
+            limit(10)
+        );
+
+        const snapshot = await getDocs(q);
+        leaderboard = snapshot.docs.map(doc => doc.data());
+
+        updateLeaderboardUI();
+    } catch (error) {
+        console.error("Ошибка загрузки лидерборда темы:", error);
+    }
+}
 // === ЗАПУСК ===
 window.onload = () => {
-    vipLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
     currentVIPLevel = vipLevel;
 
-    setBet(currentBet);
     createGrid();
     updateUI();
-    loadData();
     updateMarketUI();
     updateLeaderboardUI();
     updateUpgradesUI();
