@@ -809,6 +809,9 @@ function closeModal() {
     if (slotContainer) slotContainer.classList.remove('win-pulse');
 }
 let leaderboard = [];
+let leaderboardMode = 'theme';
+let myLeaderboardRank = null;
+let myLeaderboardRecord = null;
 
 async function addToLeaderboard(amount) {
     if (amount <= 0 || !currentUser || !currentTheme) return;
@@ -871,6 +874,8 @@ function updateLeaderboardUI() {
     leaderboard.forEach((record, index) => {
         const row = document.createElement('tr');
 
+        const isMe = currentUser && record.uid === currentUser.uid;
+
         let rankIcon = `${index + 1}`;
         let rankClass = 'rank-default';
 
@@ -885,7 +890,11 @@ function updateLeaderboardUI() {
             rankClass = 'rank-bronze';
         }
 
-        row.className = `leaderboard-row ${index < 3 ? 'top-row' : ''}`;
+        row.className = `leaderboard-row ${index < 3 ? 'top-row' : ''} ${isMe ? 'current-user-row' : ''}`;
+
+        const scoreValue = leaderboardMode === 'gems'
+            ? (record.gems || 0).toLocaleString()
+            : (record.bestWin || 0).toLocaleString();
 
         row.innerHTML = `
             <td>
@@ -899,14 +908,19 @@ function updateLeaderboardUI() {
                         ${(record.nickname || 'И')[0].toUpperCase()}
                     </div>
                     <div class="leaderboard-player-meta">
-                        <div class="leaderboard-player-name">${record.nickname || 'Игрок'}</div>
-                        <div class="leaderboard-player-theme">${record.theme || ''}</div>
+                        <div class="leaderboard-player-name">
+                            ${record.nickname || 'Игрок'}
+                            ${isMe ? '<span class="me-badge">Ты</span>' : ''}
+                        </div>
+                        <div class="leaderboard-player-theme">
+                            ${leaderboardMode === 'gems' ? 'Общий баланс' : (record.theme || '')}
+                        </div>
                     </div>
                 </div>
             </td>
             <td>
-                <div class="leaderboard-score">
-                    ${(record.bestWin || 0).toLocaleString()} <span>💎</span>
+                <div class="leaderboard-score ${isMe ? 'current-user-score' : ''}">
+                    ${scoreValue} <span>💎</span>
                 </div>
             </td>
         `;
@@ -3617,6 +3631,15 @@ function saveData() {
 
 async function loadThemeLeaderboard(themeName, btnElement = null) {
     try {
+        leaderboardMode = 'theme';
+        const themeBtn = document.getElementById('mode-theme-btn');
+        const gemsBtn = document.getElementById('mode-gems-btn');
+
+        if (themeBtn) themeBtn.classList.add('active');
+        if (gemsBtn) gemsBtn.classList.remove('active');
+
+        const themeTabs = document.querySelector('.leaderboard-theme-tabs');
+        if (themeTabs) themeTabs.style.display = 'flex';
         const db = window.firebaseDb;
         const {
             collection,
@@ -3641,13 +3664,209 @@ async function loadThemeLeaderboard(themeName, btnElement = null) {
         );
 
         const snapshot = await getDocs(q);
-        leaderboard = snapshot.docs.map(doc => doc.data());
 
-        updateLeaderboardUI();
+leaderboard = snapshot.docs.map(doc => ({
+    uid: doc.id,
+    ...doc.data()
+}));
+
+updateLeaderboardUI();
+await loadMyThemeRank(themeName);
     } catch (error) {
         console.error("Ошибка загрузки лидерборда темы:", error);
     }
 }
+function switchLeaderboardMode(mode) {
+    leaderboardMode = mode;
+
+    const themeBtn = document.getElementById('mode-theme-btn');
+    const gemsBtn = document.getElementById('mode-gems-btn');
+
+    if (themeBtn) themeBtn.classList.toggle('active', mode === 'theme');
+    if (gemsBtn) gemsBtn.classList.toggle('active', mode === 'gems');
+
+    const themeTabs = document.querySelector('.leaderboard-theme-tabs');
+    if (themeTabs) {
+        themeTabs.style.display = mode === 'theme' ? 'flex' : 'none';
+    }
+
+    if (mode === 'theme') {
+        loadThemeLeaderboard('brain');
+    } else {
+        loadGemsLeaderboard();
+    }
+}
+
+async function loadThemeLeaderboard(themeName, btnElement = null) {
+    try {
+        leaderboardMode = 'theme';
+
+        const themeBtn = document.getElementById('mode-theme-btn');
+        const gemsBtn = document.getElementById('mode-gems-btn');
+
+        if (themeBtn) themeBtn.classList.add('active');
+        if (gemsBtn) gemsBtn.classList.remove('active');
+
+        const themeTabs = document.querySelector('.leaderboard-theme-tabs');
+        if (themeTabs) themeTabs.style.display = 'flex';
+
+        const db = window.firebaseDb;
+        const {
+            collection,
+            query,
+            where,
+            orderBy,
+            limit,
+            getDocs
+        } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+
+        if (btnElement) {
+            document.querySelectorAll('.leaderboard-theme-btn')
+                .forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        const q = query(
+            collection(db, "leaderboard"),
+            where("theme", "==", themeName),
+            orderBy("bestWin", "desc"),
+            limit(10)
+        );
+
+        const snapshot = await getDocs(q);
+
+        leaderboard = snapshot.docs.map(doc => ({
+            uid: doc.id,
+            ...doc.data()
+        }));
+
+        updateLeaderboardUI();
+        await loadMyThemeRank(themeName);
+    } catch (error) {
+        console.error("Ошибка загрузки лидерборда темы:", error);
+    }
+}
+
+
+
+function updateMyRankCard() {
+    const card = document.getElementById('my-rank-card');
+    const subtitle = document.getElementById('my-rank-subtitle');
+    const position = document.getElementById('my-rank-position');
+    const value = document.getElementById('my-rank-value');
+
+    if (!card || !subtitle || !position || !value) return;
+
+    if (!currentUser || !myLeaderboardRecord || !myLeaderboardRank) {
+        card.style.display = 'none';
+        return;
+    }
+
+    card.style.display = 'flex';
+
+    if (leaderboardMode === 'gems') {
+        subtitle.textContent = 'Твой общий баланс в рейтинге игроков';
+        value.textContent = `${(myLeaderboardRecord.gems || 0).toLocaleString()} 💎`;
+    } else {
+        subtitle.textContent = `Твой лучший рекорд в режиме ${myLeaderboardRecord.theme || ''}`;
+        value.textContent = `${(myLeaderboardRecord.bestWin || 0).toLocaleString()} 💎`;
+    }
+
+    position.textContent = `#${myLeaderboardRank}`;
+}
+
+
+async function loadMyThemeRank(themeName) {
+    try {
+        if (!currentUser) {
+            myLeaderboardRank = null;
+            myLeaderboardRecord = null;
+            updateMyRankCard();
+            return;
+        }
+
+        const db = window.firebaseDb;
+        const {
+            collection,
+            query,
+            where,
+            orderBy,
+            getDocs
+        } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+
+        const q = query(
+            collection(db, "leaderboard"),
+            where("theme", "==", themeName),
+            orderBy("bestWin", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+        const allRecords = snapshot.docs.map(doc => ({
+            uid: doc.data().uid || doc.id,
+            ...doc.data()
+        }));
+
+        const myIndex = allRecords.findIndex(record => record.uid === currentUser.uid);
+
+        if (myIndex === -1) {
+            myLeaderboardRank = null;
+            myLeaderboardRecord = null;
+        } else {
+            myLeaderboardRank = myIndex + 1;
+            myLeaderboardRecord = allRecords[myIndex];
+        }
+
+        updateMyRankCard();
+    } catch (error) {
+        console.error("Ошибка загрузки твоего места по теме:", error);
+    }
+}
+
+
+async function loadMyGemsRank() {
+    try {
+        if (!currentUser) {
+            myLeaderboardRank = null;
+            myLeaderboardRecord = null;
+            updateMyRankCard();
+            return;
+        }
+
+        const db = window.firebaseDb;
+        const {
+            collection,
+            query,
+            orderBy,
+            getDocs
+        } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+
+        const q = query(
+            collection(db, "players"),
+            orderBy("gems", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+        const allPlayers = snapshot.docs.map(doc => ({
+            uid: doc.id,
+            ...doc.data()
+        }));
+
+        const myIndex = allPlayers.findIndex(player => player.uid === currentUser.uid);
+
+        if (myIndex === -1) {
+            myLeaderboardRank = null;
+            myLeaderboardRecord = null;
+        } else {
+            myLeaderboardRank = myIndex + 1;
+            myLeaderboardRecord = allPlayers[myIndex];
+        }
+
+        updateMyRankCard();
+    } catch (error) {
+        console.error("Ошибка загрузки твоего места по алмазам:", error);
+    }
+}
+
 
 // === ЗАПУСК ===
 window.onload = () => {

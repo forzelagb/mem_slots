@@ -175,6 +175,14 @@
 </div>
 <div id="tab-leaderboard" class="tab-content">
     <h2 class="section-title">🏆 ТАБЛИЦЫ ЛИДЕРОВ</h2>
+    <div class="leaderboard-mode-tabs">
+    <button id="mode-theme-btn" class="leaderboard-mode-btn active" onclick="switchLeaderboardMode('theme')">
+        🎰 По теме
+    </button>
+    <button id="mode-gems-btn" class="leaderboard-mode-btn" onclick="switchLeaderboardMode('gems')">
+        💎 По алмазам
+    </button>
+</div>
 
     <div class="leaderboard-theme-tabs">
         <button class="leaderboard-theme-btn active" onclick="loadThemeLeaderboard('brain', this)">🧠 Brain</button>
@@ -193,6 +201,21 @@
         <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('spongebob', this)">🧽 SpongeBob</button>
         <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('speed', this)">⚡ Speed</button>
     </div>
+
+    <div id="my-rank-card" class="my-rank-card" style="display:none;">
+    <div class="my-rank-left">
+        <div class="my-rank-icon">👑</div>
+        <div class="my-rank-meta">
+            <div class="my-rank-title">ТВОЁ МЕСТО</div>
+            <div id="my-rank-subtitle" class="my-rank-subtitle">Загрузка...</div>
+        </div>
+    </div>
+
+    <div class="my-rank-right">
+        <div id="my-rank-position" class="my-rank-position">#—</div>
+        <div id="my-rank-value" class="my-rank-value">0 💎</div>
+    </div>
+</div>
 
 <div class="leaderboard-panel leaderboard-panel-pretty">
     <div class="leaderboard-panel-head">
