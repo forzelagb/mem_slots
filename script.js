@@ -469,8 +469,9 @@ function animateDrop(cells, items, callback) {
 
             // звук последней клетки
             if (isLastCell) {
-                playEndSpinSound();
-            }
+    stopSpinSound();
+    playEndSpinSound();
+}
         }, delay);
     });
 
