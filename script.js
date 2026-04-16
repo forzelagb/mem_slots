@@ -540,7 +540,7 @@ function spin() {
         spinBtn.innerHTML = `КРУТИМ...`;
     }
 
-    resultText.innerText = getRandomFromArray([
+    resultText.innerText = getRandomItem([
         "Крутим барабаны...",
         "Смотрим удачу...",
         "Символы летят...",
@@ -552,108 +552,9 @@ function spin() {
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
 
-        let isCrit = false;
-        let isHighRollerPassTriggered = false;
-
-        if (totalWin > 0) {
-            let finalMultiplier = 1;
-
-            // Rare Drop
-            finalMultiplier += (upgrades.rare || 0) * 0.03;
-
-            // High Roller Access: +10% навсегда
-            if ((upgrades.highroller || 0) >= 1) {
-                finalMultiplier *= 1.10;
-            }
-
-            // Critical Spin
-            const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
-            isCrit = Math.random() < critChance;
-            if (isCrit) {
-                finalMultiplier *= 2;
-            }
-
-            // Gem Booster
-            if ((activeEffects.gemBoosterSpins || 0) > 0) {
-                finalMultiplier *= 1.5;
-                activeEffects.gemBoosterSpins -= 1;
-                saveBlackMarket();
-            }
-
-            // High Roller Pass: 25% шанс дать +25% к выигрышу
-            if ((blackMarketItems.highRollerPass || 0) > 0) {
-                blackMarketItems.highRollerPass -= 1;
-                const passChance = 0.25;
-                if (Math.random() < passChance) {
-                    finalMultiplier *= 1.25;
-                    isHighRollerPassTriggered = true;
-                }
-                saveBlackMarket();
-                updateBlackMarketUI();
-            }
-
-            totalWin = Math.floor(totalWin * finalMultiplier);
-
-            const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
-            if (totalWin > maxAllowedWin) {
-                totalWin = maxAllowedWin;
-            }
-
-            gems += totalWin;
-            totalGemsEarned += totalWin;
-
-            saveData();
-            updateUI();
-            animateBalanceChange('win');
-
-            setTimeout(() => {
-                let resultMessage = "";
-
-                if (totalWin >= currentBet * 10) {
-                    resultMessage = getBigWinMessage(totalWin);
-                } else if (totalWin >= currentBet * 2) {
-                    resultMessage = getMediumWinMessage(totalWin);
-                } else {
-                    resultMessage = getSmallWinMessage(totalWin);
-                }
-
-                if (isCrit) {
-                    resultMessage += " — CRITICAL x2!";
-                }
-
-                if (isHighRollerPassTriggered) {
-                    resultMessage += " — HIGH ROLLER PASS +25%!";
-                }
-
-                resultText.innerText = resultMessage;
-            }, 350);
-
-            if (totalWin >= currentBet * 10) {
-                setTimeout(() => {
-                    showBigWin(totalWin);
-                }, 550);
-            } else {
-                setTimeout(() => {
-                    stopSpinSound();
-                }, 550);
-            }
-        } else {
-            resultText.innerText = "Мимо! Попробуй ещё раз";
-
-            setTimeout(() => {
-                stopSpinSound();
-            }, 300);
-
-            const saverChance = Math.min(0.05 + (upgrades.saver || 0) * 0.03, 0.35);
-            if (Math.random() < saverChance) {
-                gems += currentBet;
-                saveData();
-                updateUI();
-                resultText.innerText = "🛟 Bet Saver спас ставку!";
-            }
-        }
-
         isSpinning = false;
+        spinBtn.disabled = false;
+        autoBtn.disabled = false;
         updateUI();
 
         if (autoSpinActive) {
@@ -669,7 +570,6 @@ function spin() {
         }
     });
 }
-
 function checkWins(grid) {
     console.log("=== ПРОВЕРКА ВЫИГРЫШЕЙ ===");
     console.log("Ставка:", currentBet);
