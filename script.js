@@ -1,15 +1,41 @@
 // === КОНФИГУРАЦИЯ БИЗНЕСОВ ===
 
-// === КОНФИГУРАЦИЯ МОНЕТ ===
-const coinsConfig = {
-    burmal: { name: "БурмалCOIN", basePrice: 100, volatility: 0.05, amount: 0, history: [], currentPrice: 100 },
-    burmaldook: { name: "БурмалДук", basePrice: 500, volatility: 0.08, amount: 0, history: [], currentPrice: 500 },
-    hecio: { name: "HeCION", basePrice: 50, volatility: 0.1, amount: 0, history: [], currentPrice: 50 },
-    ciondic: { name: "CIONдиции", basePrice: 200, volatility: 0.06, amount: 0, history: [], currentPrice: 200 },
-    analdoc: { name: "ANalDOCion", basePrice: 10, volatility: 0.15, amount: 0, history: [], currentPrice: 10 },
-    tuncion: { name: "TunCION", basePrice: 1000, volatility: 0.04, amount: 0, history: [], currentPrice: 1000 }
-};
+const spinSound = new Audio('sounds/spin.mp3');
+const endSpinSound = new Audio('sounds/end.mp3');
+const jackpotSound = new Audio('sounds/jackpot.mp3');
 
+spinSound.volume = 0.45;
+endSpinSound.volume = 0.65;
+jackpotSound.volume = 0.8;
+
+function playSpinSound() {
+    spinSound.pause();
+    spinSound.currentTime = 0;
+    spinSound.play().catch(() => {});
+}
+
+function stopSpinSound() {
+    spinSound.pause();
+    spinSound.currentTime = 0;
+}
+
+function playEndSpinSound() {
+    endSpinSound.pause();
+    endSpinSound.currentTime = 0;
+    endSpinSound.play().catch(() => {});
+}
+
+function playJackpotSound() {
+    jackpotSound.pause();
+    jackpotSound.currentTime = 0;
+    jackpotSound.play().catch(() => {});
+}
+
+function stopJackpotSound() {
+    jackpotSound.pause();
+    jackpotSound.currentTime = 0;
+}
+let isBigWinSoundPlaying = false;
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
 let gems = 10000;
@@ -329,16 +355,6 @@ if (gems < currentBet) {
 
 function startGame(themeName) {
     applyVIPTheme(themeName);
-    if (themeName === 'kaka' && upgrades.highroller < 1) {
-    if (blackMarketItems.highRollerPass > 0) {
-        blackMarketItems.highRollerPass -= 1;
-        saveBlackMarket();
-        updateBlackMarketUI();
-    } else {
-        alert("❌ Открой High Roller в улучшениях или купи пропуск в Black Market!");
-        return;
-    }
-}
     // Проверка баланса
     if (currentBet > gems) { 
     currentBet = 250; 
@@ -412,27 +428,48 @@ function goBack() {
 function animateDrop(cells, items, callback) {
     cells.forEach((img, index) => {
         const item = items[index];
-        if (!item) return; // Защита от undefined
-        
+        if (!item) return;
+
         img.style.transition = 'none';
         img.style.transform = 'translateY(-200px)';
         img.style.opacity = '0';
-        img.src = item.src; // ← здесь загружается реальная картинка
-        img.style.background = 'transparent'; // Убираем тёмный фон
-        
+        img.src = item.src;
+        img.style.background = 'transparent';
+
         const cell = img.parentElement;
         cell.setAttribute('data-multiplier', item.mult || '');
-        
+
+        let delay = index * 30;
+
+        // последние 3 клетки падают медленнее
+        if (index >= cells.length - 3) {
+            const extraIndex = index - (cells.length - 3); // 0,1,2
+            delay += extraIndex * 200;
+        }
+
         setTimeout(() => {
-            img.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
+            const isLastCell = index === cells.length - 1;
+
+            img.style.transition = isLastCell
+                ? 'transform 0.9s cubic-bezier(0.2, 1.5, 0.5, 1), opacity 0.3s ease'
+                : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
+
             img.style.transform = 'translateY(0)';
             img.style.opacity = '1';
-        }, index * 30);
+
+            // звук последней клетки
+            if (isLastCell) {
+                playEndSpinSound();
+            }
+        }, delay);
     });
-    
-// 👇 ИЗМЕНЕНИЕ: используем длину массива cells вместо хардкода 20
-const animationTime = cells.length * 30 + 500;
-setTimeout(() => callback(), animationTime);
+
+    // финальное время анимации с учётом последних 3 клеток
+    const animationTime = (cells.length - 1) * 30 + 400 + 900;
+
+    setTimeout(() => {
+        callback();
+    }, animationTime);
 }
 
 function toggleAuto() {
@@ -458,62 +495,167 @@ function toggleAuto() {
 }
 
 function spin() {
-    
     console.log("=== DEBUG SPIN ===");
-console.log("Тема:", currentTheme);
-console.log("Количество картинок в теме:", themes[currentTheme]?.length);
-console.log("Функция getRandomWeightedItem существует?", typeof getRandomWeightedItem === 'function');
+    console.log("Тема:", currentTheme);
+    console.log("Количество картинок в теме:", themes[currentTheme]?.length);
+    console.log("Функция getRandomWeightedItem существует?", typeof getRandomWeightedItem === 'function');
 
     if (isSpinning || !currentTheme || gems < currentBet) return;
 
-    // Генерируем результат спина
+    stopJackpotSound();
+    playSpinSound();
+
     const items = themes[currentTheme];
     if (!items || items.length === 0) {
         alert("Ошибка: тема не найдена!");
+        stopSpinSound();
         return;
     }
 
     const finalGrid = [];
-for (let i = 0; i < 25; i++) {  // 👇 ИЗМЕНЕНИЕ: было 20, стало 25
-    finalGrid.push(getRandomWeightedItem(items));
-}
+    for (let i = 0; i < 25; i++) {
+        finalGrid.push(getRandomWeightedItem(items));
+    }
 
-    // Списываем ставку
     gems -= currentBet;
     updateUI();
     animateBalanceChange('loss');
-    
-isSpinning = true;
-spinBtn.disabled = true;
-autoBtn.disabled = true;
 
-if (spinBtn) {
-    spinBtn.classList.remove('ready-pulse');
-    spinBtn.innerHTML = `КРУТИМ...`;
-}
+    isSpinning = true;
+    spinBtn.disabled = true;
+    autoBtn.disabled = true;
 
-resultText.innerText = getRandomFrom([
-    "Крутим...",
-    "Удачи 🍀",
-    "Погнали!",
-    "Сейчас будет красиво..."
-]);
+    if (spinBtn) {
+        spinBtn.classList.remove('ready-pulse');
+        spinBtn.innerHTML = `КРУТИМ...`;
+    }
 
-    // Получаем ячейки сетки
-    const cells = Array.from(gridEl.querySelectorAll('.slot-img'));
+    resultText.innerText = getRandomFromArray([
+        "Крутим барабаны...",
+        "Смотрим удачу...",
+        "Символы летят...",
+        "Сейчас будет жарко..."
+    ]);
 
-    // Запускаем анимацию
+    const cells = Array.from(document.querySelectorAll('.slot-img'));
+
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
+
+        let isCrit = false;
+        let isHighRollerPassTriggered = false;
+
+        if (totalWin > 0) {
+            let finalMultiplier = 1;
+
+            // Rare Drop
+            finalMultiplier += (upgrades.rare || 0) * 0.03;
+
+            // High Roller Access: +10% навсегда
+            if ((upgrades.highroller || 0) >= 1) {
+                finalMultiplier *= 1.10;
+            }
+
+            // Critical Spin
+            const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
+            isCrit = Math.random() < critChance;
+            if (isCrit) {
+                finalMultiplier *= 2;
+            }
+
+            // Gem Booster
+            if ((activeEffects.gemBoosterSpins || 0) > 0) {
+                finalMultiplier *= 1.5;
+                activeEffects.gemBoosterSpins -= 1;
+                saveBlackMarket();
+            }
+
+            // High Roller Pass: 25% шанс дать +25% к выигрышу
+            if ((blackMarketItems.highRollerPass || 0) > 0) {
+                blackMarketItems.highRollerPass -= 1;
+                const passChance = 0.25;
+                if (Math.random() < passChance) {
+                    finalMultiplier *= 1.25;
+                    isHighRollerPassTriggered = true;
+                }
+                saveBlackMarket();
+                updateBlackMarketUI();
+            }
+
+            totalWin = Math.floor(totalWin * finalMultiplier);
+
+            const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
+            if (totalWin > maxAllowedWin) {
+                totalWin = maxAllowedWin;
+            }
+
+            gems += totalWin;
+            totalGemsEarned += totalWin;
+
+            saveData();
+            updateUI();
+            animateBalanceChange('win');
+
+            setTimeout(() => {
+                let resultMessage = "";
+
+                if (totalWin >= currentBet * 10) {
+                    resultMessage = getBigWinMessage(totalWin);
+                } else if (totalWin >= currentBet * 2) {
+                    resultMessage = getMediumWinMessage(totalWin);
+                } else {
+                    resultMessage = getSmallWinMessage(totalWin);
+                }
+
+                if (isCrit) {
+                    resultMessage += " — CRITICAL x2!";
+                }
+
+                if (isHighRollerPassTriggered) {
+                    resultMessage += " — HIGH ROLLER PASS +25%!";
+                }
+
+                resultText.innerText = resultMessage;
+            }, 350);
+
+            if (totalWin >= currentBet * 10) {
+                setTimeout(() => {
+                    showBigWin(totalWin);
+                }, 550);
+            } else {
+                setTimeout(() => {
+                    stopSpinSound();
+                }, 550);
+            }
+        } else {
+            resultText.innerText = "Мимо! Попробуй ещё раз";
+
+            setTimeout(() => {
+                stopSpinSound();
+            }, 300);
+
+            const saverChance = Math.min(0.05 + (upgrades.saver || 0) * 0.03, 0.35);
+            if (Math.random() < saverChance) {
+                gems += currentBet;
+                saveData();
+                updateUI();
+                resultText.innerText = "🛟 Bet Saver спас ставку!";
+            }
+        }
+
         isSpinning = false;
-        spinBtn.disabled = false;
-        autoBtn.disabled = false;
         updateUI();
-        
-        if (autoSpinActive && autoSpinCount > 0) {
+
+        if (autoSpinActive) {
             autoSpinCount--;
-            if (autoSpinCount === 0) toggleAuto();
-            else setTimeout(spin, 1000);
+
+            if (autoSpinCount > 0 && gems >= currentBet) {
+                setTimeout(() => spin(), 700);
+            } else {
+                autoSpinActive = false;
+                autoBtn.innerText = "AUTO";
+                autoBtn.style.background = "linear-gradient(to bottom, #ff00de, #aa0094)";
+            }
         }
     });
 }
@@ -697,13 +839,20 @@ function checkWins(grid) {
     // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
 if (totalWin > 0) {
     let finalMultiplier = 1;
+    let isCrit = false;
+    let isHighRollerPassTriggered = false;
 
     // Rare Drop
     finalMultiplier += (upgrades.rare || 0) * 0.03;
 
+    // High Roller Access: +10% навсегда
+    if ((upgrades.highroller || 0) >= 1) {
+        finalMultiplier *= 1.10;
+    }
+
     // Critical Spin
     const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
-    const isCrit = Math.random() < critChance;
+    isCrit = Math.random() < critChance;
     if (isCrit) {
         finalMultiplier *= 2;
     }
@@ -715,9 +864,20 @@ if (totalWin > 0) {
         saveBlackMarket();
     }
 
+    // High Roller Pass: 25% шанс дать +25% к выигрышу
+    if ((blackMarketItems.highRollerPass || 0) > 0) {
+        blackMarketItems.highRollerPass -= 1; // тратим на выигрышный спин
+        const passChance = 0.25;
+        if (Math.random() < passChance) {
+            finalMultiplier *= 1.25;
+            isHighRollerPassTriggered = true;
+        }
+        saveBlackMarket();
+        updateBlackMarketUI();
+    }
+
     totalWin = Math.floor(totalWin * finalMultiplier);
 
-    // жёсткий потолок выигрыша
     const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
     if (totalWin > maxAllowedWin) {
         totalWin = maxAllowedWin;
@@ -748,6 +908,10 @@ setTimeout(() => {
 
     if (isCrit) {
         resultMessage += " — CRITICAL x2!";
+    }
+
+    if (isHighRollerPassTriggered) {
+        resultMessage += " — HIGH ROLLER PASS +25%!";
     }
 
     resultText.innerText = resultMessage;
@@ -799,16 +963,29 @@ function fireConfetti() {
 }
 
 function showBigWin(amount) {
+    stopSpinSound();
+
     modalAmount.innerText = amount;
     winModal.classList.add('active');
-    document.querySelector('.slot-container').classList.add('win-pulse');
+
+    const slotContainer = document.querySelector('.slot-container');
+    if (slotContainer) {
+        slotContainer.classList.add('win-pulse');
+    }
+
     fireConfetti();
+    playJackpotSound();
 }
 
 function closeModal() {
+    stopJackpotSound();
+
     winModal.classList.remove('active');
+
     const slotContainer = document.querySelector('.slot-container');
-    if (slotContainer) slotContainer.classList.remove('win-pulse');
+    if (slotContainer) {
+        slotContainer.classList.remove('win-pulse');
+    }
 }
 let leaderboard = [];
 let leaderboardMode = 'theme';
@@ -2031,12 +2208,8 @@ const upgradeBaseCosts = {
     saver: 1800,
     auto: 2200,
     rare: 2600,
-    highroller: 5000
+    highroller: 500000// или 500000, если хочешь реально элитную цену
 };
-
-function getUpgradeCost(type) {
-    return Math.floor(upgradeBaseCosts[type] * Math.pow(1.55, upgrades[type] || 0));
-}
 
 function saveUpgrades() {
     localStorage.setItem('memeUpgrades', JSON.stringify(upgrades));
@@ -2060,7 +2233,19 @@ function updateUpgradesUI() {
     });
 }
 
+function getUpgradeCost(type) {
+    if (type === 'highroller') {
+        return upgradeBaseCosts.highroller;
+    }
+    return Math.floor(upgradeBaseCosts[type] * Math.pow(1.55, upgrades[type] || 0));
+}
+
 function buyUpgrade(type) {
+    if (type === 'highroller' && (upgrades.highroller || 0) >= 1) {
+        alert('High Roller Access уже куплен!');
+        return;
+    }
+
     const cost = getUpgradeCost(type);
 
     if (gems < cost) {
@@ -3973,6 +4158,37 @@ function updateLeaderboardPanelText() {
         titleEl.textContent = '🌍 ТОП ИГРОКОВ ПО ТЕМЕ';
         subtextEl.textContent = 'Лучшие результаты среди всех игроков';
     }
+}
+
+
+function playSpinSound() {
+    spinSound.pause();
+    spinSound.currentTime = 0;
+    spinSound.play().catch(() => {});
+}
+
+function stopSpinSound() {
+    spinSound.pause();
+    spinSound.currentTime = 0;
+}
+
+function playEndSpinSound() {
+    endSpinSound.pause();
+    endSpinSound.currentTime = 0;
+    endSpinSound.play().catch(() => {});
+}
+
+function playJackpotSound() {
+    jackpotSound.pause();
+    jackpotSound.currentTime = 0;
+    jackpotSound.play().catch(() => {});
+    isBigWinSoundPlaying = true;
+}
+
+function stopJackpotSound() {
+    jackpotSound.pause();
+    jackpotSound.currentTime = 0;
+    isBigWinSoundPlaying = false;
 }
 
 // === ЗАПУСК ===
