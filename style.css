@@ -731,39 +731,6 @@ body::before {
     cursor: not-allowed;
 }
 
-
-/* === ВКЛАДКИ === */
-
-.tab-btn.active,
-.tab-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 59, 212, 0.20), rgba(77, 227, 255, 0.16));
-    color: white;
-    border-color: rgba(255, 211, 106, 0.35);
-    box-shadow: 0 0 18px rgba(255, 59, 212, 0.18);
-}
-
-@media (max-width: 600px) {
-    .tabs-nav {
-        padding: 8px;
-        gap: 8px;
-        border-radius: 16px;
-        scroll-snap-type: x proximity;
-    }
-
-    .tab-btn {
-        font-size: 13px;
-        padding: 10px 14px;
-        scroll-snap-align: start;
-    }
-}
-
-.tab-btn.active, .tab-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 59, 212, 0.20), rgba(77, 227, 255, 0.16));
-    color: white;
-    border-color: rgba(255, 211, 106, 0.35);
-    box-shadow: 0 0 18px rgba(255, 59, 212, 0.18);
-}
-
 .tab-content {
     display: none;
     animation: fadeIn 0.3s ease;
@@ -874,13 +841,6 @@ body::before {
     scroll-snap-align: start;
 }
 
-.tab-btn.active,
-.tab-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 59, 212, 0.20), rgba(77, 227, 255, 0.16));
-    color: white;
-    border-color: rgba(255, 211, 106, 0.35);
-    box-shadow: 0 0 18px rgba(255, 59, 212, 0.18);
-}
 
 .btn-secret {
     background: linear-gradient(45deg, #ff0000, #800000);
@@ -6111,6 +6071,11 @@ body.vip-theme-speed .slot-container.win-pulse {
     .logo-block {
         justify-content: center;
     }
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
