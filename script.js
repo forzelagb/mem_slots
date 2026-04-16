@@ -483,6 +483,81 @@ function animateDrop(cells, items, callback) {
     }, animationTime);
 }
 
+
+let isWheelSpinning = false;
+let currentWheelRotation = 0;
+
+function getWeightedWheelReward() {
+    const totalWeight = wheelRewards.reduce((sum, reward) => sum + reward.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (const reward of wheelRewards) {
+        random -= reward.weight;
+        if (random <= 0) return reward;
+    }
+
+    return wheelRewards[0];
+}
+function renderWheelTrack() {
+    renderCircleWheel();
+    renderWheelRewardsPreview();
+}
+
+function renderCircleWheel() {
+    const wheelEl = document.getElementById('vip-wheel');
+    if (!wheelEl) return;
+
+    const rewards = wheelRewards.slice(0, 10);
+    const segmentAngle = 360 / rewards.length;
+
+    wheelEl.innerHTML = '';
+
+    rewards.forEach((reward, index) => {
+        const segment = document.createElement('div');
+        segment.className = `vip-wheel-segment ${reward.rarity}${reward.rarity === 'legendary' ? ' glow' : ''}`;
+
+        const rotate = index * segmentAngle - 90 - segmentAngle / 2;
+
+        segment.style.transform = `rotate(${rotate}deg) skewY(${90 - segmentAngle}deg)`;
+
+        const content = document.createElement('div');
+        content.className = 'vip-wheel-segment-content';
+        content.style.transform = `skewY(-${90 - segmentAngle}deg) rotate(${segmentAngle / 2}deg)`;
+
+        content.innerHTML = `
+            <div class="vip-wheel-segment-icon">${reward.icon}</div>
+            <div class="vip-wheel-segment-label">${reward.label}</div>
+        `;
+
+        segment.appendChild(content);
+        wheelEl.appendChild(segment);
+    });
+
+    wheelEl.style.transform = `rotate(${currentWheelRotation}deg)`;
+}
+
+function renderWheelRewardsPreview() {
+    const previewEl = document.getElementById('vip-wheel-rewards-preview');
+    if (!previewEl) return;
+
+    previewEl.innerHTML = '';
+
+    wheelRewards.slice(0, 8).forEach(reward => {
+        const item = document.createElement('div');
+        item.className = `vip-wheel-preview-item ${reward.rarity}`;
+        item.innerHTML = `
+            <div class="vip-wheel-preview-icon">${reward.icon}</div>
+            <div class="vip-wheel-preview-label">${reward.label}</div>
+        `;
+        previewEl.appendChild(item);
+    });
+}
+
+function getWheelRewardById(id) {
+    return wheelRewards.find(item => item.id === id);
+}
+
+
 function toggleAuto() {
     if (autoSpinActive) {
         autoSpinActive = false;
@@ -2305,69 +2380,7 @@ function updateBlackMarketUI() {
     });
 }
 
-function spinWheel() {
-    if (isWheelSpinning) return;
 
-    const track = document.getElementById('wheel-track');
-    const resultEl = document.getElementById('wheel-result');
-    const btn = document.getElementById('wheel-spin-btn');
-
-    if (!track || !btn || !resultEl) return;
-    if (!track.dataset.ready) renderWheelTrack();
-
-    isWheelSpinning = true;
-    btn.disabled = true;
-    resultEl.innerText = 'Крутим...';
-
-    const rewardsSequence = [];
-    for (let i = 0; i < 60; i++) {
-        rewardsSequence.push(wheelRewards[i % wheelRewards.length]);
-    }
-
-    const chosenReward = getWeightedWheelReward();
-
-    const finalRewardIndexInBase = wheelRewards.findIndex(r => r.id === chosenReward.id);
-    const stopIndex = 40 + finalRewardIndexInBase;
-
-    track.innerHTML = '';
-    rewardsSequence.forEach(reward => {
-        const item = document.createElement('div');
-        item.className = `wheel-item ${reward.rarity}`;
-        item.innerHTML = `
-            <div class="wheel-item-icon">${reward.icon}</div>
-            <div class="wheel-item-label">${reward.label}</div>
-        `;
-        track.appendChild(item);
-    });
-
-    const itemWidth = 122;
-    const windowWidth = 560;
-    const centerOffset = windowWidth / 2 - itemWidth / 2;
-    const finalX = -(stopIndex * itemWidth - centerOffset);
-
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(0px)';
-
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            track.style.transition = 'transform 4.8s cubic-bezier(0.08, 0.82, 0.17, 1)';
-            track.style.transform = `translateX(${finalX}px)`;
-        });
-    });
-
-    setTimeout(() => {
-        giveWheelReward(chosenReward);
-        if (chosenReward.rarity === 'legendary') {
-    resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
-} else if (chosenReward.rarity === 'epic') {
-    resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
-} else {
-    resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
-}
-        btn.disabled = false;
-        isWheelSpinning = false;
-    }, 5000);
-}
 
 
 function giveWheelReward(reward) {
@@ -2407,30 +2420,33 @@ function giveWheelReward(reward) {
 
 
 function updateWheelUI() {
+    const textEl = document.getElementById('wheel-status-text');
     const btn = document.getElementById('wheel-spin-btn');
-    const text = document.getElementById('wheel-status-text');
 
-    if (!btn || !text) return;
+    if (!textEl || !btn) return;
+
+    if (vipLevel < 3) {
+        textEl.innerText = 'Рулетка доступна только для Elite Meme и выше';
+        btn.disabled = true;
+        btn.innerText = 'VIP 3 REQUIRED';
+        return;
+    }
 
     const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;
 
-    if (vipLevel < 3) {
-        btn.disabled = true;
-        text.innerText = "Открывается с Elite Meme";
-        return;
-    }
-
     if (now - lastSpin >= oneDay) {
+        textEl.innerText = 'Сегодняшний VIP-спин доступен';
         btn.disabled = false;
-        text.innerText = vipLevel >= 4
-            ? "Vegas Legend: доступна ежедневная крутка с лучшими шансами"
-            : "Elite Meme: доступна 1 крутка в день";
+        btn.innerText = 'Крутить рулетку';
     } else {
+        const left = oneDay - (now - lastSpin);
+        const hours = Math.floor(left / (1000 * 60 * 60));
+        const minutes = Math.floor((left % (1000 * 60 * 60)) / (1000 * 60));
+        textEl.innerText = `Следующий спин через ${hours}ч ${minutes}м`;
         btn.disabled = true;
-        const hours = Math.ceil((oneDay - (now - lastSpin)) / 3600000);
-        text.innerText = `Следующая крутка через ${hours} ч.`;
+        btn.innerText = 'СПИН ИСПОЛЬЗОВАН';
     }
 }
 
@@ -2455,7 +2471,6 @@ const wheelRewards = [
     { id: 'vipTrial', label: 'VIP Trial 1D', icon: '👑', rarity: 'legendary', type: 'vipTrial', value: 1, weight: 0.05 }
 ];
 
-let isWheelSpinning = false;
 
 function renderWheelTrack() {
     const track = document.getElementById('wheel-track');
@@ -2485,85 +2500,83 @@ function renderWheelTrack() {
 
 function spinWheel() {
     if (vipLevel < 3) {
-    alert("❌ Рулетка доступна только для Elite Meme и выше");
-    return;
-}
+        alert("❌ Рулетка доступна только для Elite Meme и выше");
+        return;
+    }
 
-const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
-const now = Date.now();
-const oneDay = 24 * 60 * 60 * 1000;
+    const lastSpin = parseInt(localStorage.getItem('wheelSpinTime')) || 0;
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
 
-if (now - lastSpin < oneDay) {
-    alert("⏳ Ты уже крутил сегодня!");
-    return;
-}
+    if (now - lastSpin < oneDay) {
+        alert("⏳ Ты уже крутил сегодня!");
+        return;
+    }
+
     if (isWheelSpinning) return;
 
-    const track = document.getElementById('wheel-track');
+    const wheelEl = document.getElementById('vip-wheel');
     const resultEl = document.getElementById('wheel-result');
     const btn = document.getElementById('wheel-spin-btn');
+    const panel = document.querySelector('.vip-wheel-panel');
 
-    if (!track) return;
-    if (!track.dataset.ready) renderWheelTrack();
+    if (!wheelEl || !btn || !resultEl) return;
+
+    const rewards = wheelRewards.slice(0, 10);
+    const chosenReward = getWeightedWheelReward();
+
+    let chosenIndex = rewards.findIndex(item => item.id === chosenReward.id);
+
+    if (chosenIndex === -1) {
+        chosenIndex = Math.floor(Math.random() * rewards.length);
+    }
+
+    const segmentAngle = 360 / rewards.length;
+
+    const fullSpins = 6;
+    const randomJitter = (Math.random() * 8) - 4;
+
+    const targetAngle = 360 - (chosenIndex * segmentAngle + segmentAngle / 2);
+    const finalRotation = currentWheelRotation + fullSpins * 360 + targetAngle + randomJitter;
 
     isWheelSpinning = true;
     btn.disabled = true;
-    resultEl.innerText = 'Крутим...';
+    resultEl.innerText = 'Крутим VIP рулетку...';
+    if (panel) panel.classList.remove('win-legendary');
 
-    const rewardsSequence = [];
-    for (let i = 0; i < 50; i++) {
-        rewardsSequence.push(wheelRewards[i % wheelRewards.length]);
-    }
+    playSpinSound();
 
-    track.innerHTML = '';
-    rewardsSequence.forEach(reward => {
-        const item = document.createElement('div');
-        item.className = `wheel-item ${reward.rarity}`;
-        item.innerHTML = `
-            <div class="wheel-item-icon">${reward.icon}</div>
-            <div class="wheel-item-label">${reward.label}</div>
-        `;
-        track.appendChild(item);
-    });
+    wheelEl.style.transition = 'transform 5.4s cubic-bezier(0.08, 0.82, 0.17, 1)';
+    wheelEl.style.transform = `rotate(${finalRotation}deg)`;
 
-    const finalRewardIndex = Math.floor(Math.random() * wheelRewards.length);
-    const stopIndex = 35 + finalRewardIndex;
-
-    const itemWidth = 122; // 110 + gap/padding примерно
-    const windowWidth = 560;
-    const centerOffset = windowWidth / 2 - itemWidth / 2;
-
-    const finalX = -(stopIndex * itemWidth - centerOffset);
-
-    track.style.transition = 'none';
-    track.style.transform = 'translateX(0px)';
-
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            track.style.transition = 'transform 4.8s cubic-bezier(0.08, 0.82, 0.17, 1)';
-            track.style.transform = `translateX(${finalX}px)`;
-        });
-    });
+    currentWheelRotation = finalRotation % 360;
 
     setTimeout(() => {
-    giveWheelReward(chosenReward);
+        stopSpinSound();
+        playEndSpinSound();
 
-    if (chosenReward.rarity === 'legendary') {
-        resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
-    } else if (chosenReward.rarity === 'epic') {
-        resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
-    } else {
-        resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
-    }
+        giveWheelReward(chosenReward);
+        localStorage.setItem('wheelSpinTime', Date.now().toString());
 
-    localStorage.setItem('wheelSpinTime', Date.now().toString());
-    updateWheelUI();
+        if (chosenReward.rarity === 'legendary') {
+            resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+            if (panel) panel.classList.add('win-legendary');
+            playJackpotSound();
+            setTimeout(() => stopJackpotSound(), 2200);
+        } else if (chosenReward.rarity === 'epic') {
+            resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
+        } else {
+            resultEl.innerText = `Ты выбил: ${chosenReward.icon} ${chosenReward.label}`;
+        }
 
-    btn.disabled = false;
-    isWheelSpinning = false;
-}, 5000);
+        updateUI();
+        updateBlackMarketUI();
+        updateWheelUI();
+
+        btn.disabled = false;
+        isWheelSpinning = false;
+    }, 5400);
 }
-
 
 
 function giveWheelReward(reward) {
@@ -2781,6 +2794,8 @@ function activateVIPCode() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    renderWheelTrack();
+    updateWheelUI();
     updateVIPStatusUI();
 });
 

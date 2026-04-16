@@ -511,19 +511,53 @@
 <div id="tab-wheel" class="tab-content">
     <h2 class="section-title">🎡 VIP РУЛЕТКА</h2>
 
-    <div class="wheel-panel">
-        <p id="wheel-status-text">Тестовая рулетка. Крути сколько хочешь</p>
+    <div class="vip-wheel-layout">
+        <div class="vip-wheel-panel">
+            <div class="vip-wheel-topbar">
+                <div class="vip-wheel-badge">👑 ELITE VIP ONLY</div>
+                <div class="vip-wheel-subtext" id="wheel-status-text">
+                    1 бесплатный спин в день для Elite Meme и выше
+                </div>
+            </div>
 
-        <div class="wheel-window">
-            <div id="wheel-track" class="wheel-track"></div>
-            <div class="wheel-pointer"></div>
+            <div class="vip-wheel-stage">
+                <div class="vip-wheel-arrow"></div>
+
+                <div class="vip-wheel-wrap">
+                    <div id="vip-wheel" class="vip-wheel"></div>
+                    <div class="vip-wheel-center">
+                        <div class="vip-wheel-core-glow"></div>
+                        <div class="vip-wheel-core-text">VIP<br>SPIN</div>
+                    </div>
+                </div>
+            </div>
+
+            <button id="wheel-spin-btn" class="btn-wheel btn-wheel-large" onclick="spinWheel()">
+                Крутить рулетку
+            </button>
+
+            <div id="wheel-result" class="wheel-result">Готов к прокруту</div>
         </div>
 
-        <button id="wheel-spin-btn" class="btn-wheel" onclick="spinWheel()">
-            Крутить
-        </button>
+        <div class="vip-wheel-sidecard">
+            <h3 class="vip-wheel-side-title">🎁 Возможные награды</h3>
+            <div id="vip-wheel-rewards-preview" class="vip-wheel-rewards-preview"></div>
 
-        <div id="wheel-result" class="wheel-result"></div>
+            <div class="vip-wheel-legend">
+                <div class="vip-wheel-legend-item">
+                    <span class="legend-dot common"></span> Common
+                </div>
+                <div class="vip-wheel-legend-item">
+                    <span class="legend-dot rare"></span> Rare
+                </div>
+                <div class="vip-wheel-legend-item">
+                    <span class="legend-dot epic"></span> Epic
+                </div>
+                <div class="vip-wheel-legend-item">
+                    <span class="legend-dot legendary"></span> Legendary
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
