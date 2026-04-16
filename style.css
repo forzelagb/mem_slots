@@ -76,11 +76,13 @@ body::before {
 }
 
 /* HEADER */
-.header-bar, .game-header {
+.header-bar,
+.game-header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 12px;
     margin-bottom: 20px;
     padding: 14px 16px;
     background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
@@ -92,16 +94,27 @@ body::before {
 
 .logo {
     font-size: 24px;
+    line-height: 1.05;
     letter-spacing: 1px;
+    flex: 0 0 auto;
     background: linear-gradient(90deg, var(--gold), #fff1a8, var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 18px rgba(255, 211, 106, 0.22);
 }
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
 
 .balance-container {
     background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-    padding: 8px 14px;
+    padding: 10px 14px;
     border-radius: 999px;
     border: 1px solid rgba(255, 211, 106, 0.4);
     display: flex;
@@ -110,6 +123,8 @@ body::before {
     font-size: 16px;
     box-shadow: var(--shadow-gold);
     transition: all 0.3s;
+    white-space: nowrap;
+    flex: 0 0 auto;
 }
 
 .gem-icon { 
@@ -5590,6 +5605,412 @@ body.vip-theme-speed .slot-container.win-pulse {
     padding-right: 4px;
 }
 
+
+
+/* ===== FIX HEADER MOBILE ===== */
+
+.logo {
+    flex-shrink: 0;
+}
+
+.balance-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 100%;
+}
+.btn-buy-gems,
+.btn-profile {
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px;
+    padding: 10px 14px;
+    min-height: 42px;
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.btn-buy-gems {
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    font-weight: 700;
+    box-shadow: var(--shadow-gold);
+}
+
+#lobby-balance {
+    white-space: nowrap;
+}
+
+
+.btn-profile {
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+    font-weight: 700;
+}
+
+.btn-profile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 18px rgba(255,255,255,0.12);
+    filter: brightness(1.05);
+}
+
+@media (max-width: 600px) {
+    .screen {
+        padding: 12px;
+    }
+
+    .header-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .logo {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .header-actions {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .balance-container,
+    .btn-buy-gems,
+    .btn-profile {
+        flex: 1 1 100%;
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* ===== FIX HEADER MOBILE FINAL ===== */
+@media (max-width: 600px) {
+
+    .header-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .logo {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .balance-container {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 10px;
+        border-radius: 14px;
+    }
+
+    .balance-container button {
+        flex: 1 1 100%;
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    .btn-buy-gems,
+    .btn-profile {
+        width: 100%;
+        min-height: 44px;
+    }
+}
+
+
+/* ===== HEADER REBUILD ===== */
+.header-bar {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 14px;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.08), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+    border-radius: 24px;
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-pink), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+}
+
+.logo-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.logo-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #ffe27a, #ffd36a);
+    box-shadow:
+        0 0 20px rgba(255, 211, 106, 0.35),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+    flex: 0 0 auto;
+}
+
+.logo-text {
+    font-size: 24px;
+    line-height: 0.95;
+    letter-spacing: 1px;
+    color: #ffd36a;
+    text-shadow: 0 0 18px rgba(255, 211, 106, 0.18);
+    flex: 0 1 auto;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.balance-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    box-shadow: var(--shadow-gold);
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+.gem-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+#lobby-balance {
+    font-size: 22px;
+    line-height: 1;
+    color: #fff;
+}
+
+.btn-buy-gems,
+.btn-profile {
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+.btn-buy-gems {
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    box-shadow: 0 6px 0 #a56e00, var(--shadow-gold);
+}
+
+.btn-profile {
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 0 18px rgba(255,255,255,0.08);
+}
+
+.btn-buy-gems:hover,
+.btn-profile:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+}
+
+.btn-buy-gems:active,
+.btn-profile:active {
+    transform: translateY(1px);
+}
+
+/* desktop/tablet */
+@media (max-width: 900px) {
+    .logo-text {
+        font-size: 21px;
+    }
+
+    #lobby-balance {
+        font-size: 20px;
+    }
+
+    .btn-buy-gems,
+    .btn-profile {
+        padding: 0 14px;
+        font-size: 13px;
+    }
+}
+
+/* mobile */
+@media (max-width: 600px) {
+    .screen {
+        padding: 12px;
+    }
+
+    .header-bar {
+        padding: 12px;
+        border-radius: 20px;
+    }
+
+    .header-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .logo-block {
+        justify-content: flex-start;
+    }
+
+    .logo-text {
+        font-size: 18px;
+    }
+
+    .logo-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 7px;
+    }
+
+    .header-right {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .balance-container {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-height: 46px;
+        padding: 0 14px;
+    }
+
+    .btn-buy-gems,
+    .btn-profile {
+        width: 100%;
+        min-height: 46px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
+
+    #lobby-balance {
+        font-size: 20px;
+    }
+}
+
+/* very small phones */
+@media (max-width: 380px) {
+    .header-right {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-buy-gems,
+    .btn-profile,
+    .balance-container {
+        grid-column: auto;
+    }
+}
+
+/* ===== HEADER FINAL FIX ===== */
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.logo-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-text {
+    font-size: 22px;
+    line-height: 1;
+    color: #ffd36a;
+}
+
+.logo-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #ffe27a, #ffd36a);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+
+    .header-bar {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .header-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .header-right {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .balance-container {
+        grid-column: 1 / -1;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-buy-gems,
+    .btn-profile {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .logo-block {
+        justify-content: center;
+    }
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

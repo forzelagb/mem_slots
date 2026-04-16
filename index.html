@@ -14,17 +14,27 @@
     <!-- ЛОББИ -->
     <div id="lobby-screen" class="screen active">
         <!-- ШАПКА С БАЛАНСОМ И КНОПКОЙ ПОКУПКИ -->
-        <div class="header-bar">
-    <div class="logo">🎰 MEME VEGAS</div>
-    <div class="balance-container">
-        <span class="gem-icon">💎</span>
-        <span id="lobby-balance">10000</span>
-<button class="btn-buy-gems" onclick="openGemsShop()">
-    Купить 💎
-</button>
-<button class="btn-profile" onclick="openAuthModal()">
-    👤 Профиль
-</button>
+<div class="header-bar">
+    <div class="header-top">
+        <div class="logo-block">
+            <div class="logo-icon"></div>
+            <div class="logo-text">MEME<br>VEGAS</div>
+        </div>
+
+        <div class="header-right">
+            <div class="balance-container">
+                <span class="gem-icon">💎</span>
+                <span id="lobby-balance">10000</span>
+            </div>
+
+            <button class="btn-buy-gems" onclick="openGemsShop()">
+                Купить 💎
+            </button>
+
+            <button class="btn-profile" onclick="openAuthModal()">
+                Профиль
+            </button>
+        </div>
     </div>
 </div>
 <div class="bonus-panel daily-panel">
