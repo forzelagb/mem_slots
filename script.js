@@ -3676,6 +3676,7 @@ leaderboard = snapshot.docs.map(doc => ({
 }));
 
 updateLeaderboardUI();
+updateLeaderboardPanelText();
 await loadMyThemeRank(themeName);
     } catch (error) {
         console.error("Ошибка загрузки лидерборда темы:", error);
@@ -3799,6 +3800,7 @@ async function loadMyGemsRank() {
 }
 
 
+
 async function loadMyThemeRank(themeName) {
     try {
         if (!currentUser) {
@@ -3842,6 +3844,31 @@ async function loadMyThemeRank(themeName) {
         updateMyRankCard();
     } catch (error) {
         console.error("Ошибка загрузки твоего места по теме:", error);
+    }
+}
+
+function updateMyRankCard() {
+    const card = document.getElementById('my-rank-card');
+    const subtitle = document.getElementById('my-rank-subtitle');
+    const position = document.getElementById('my-rank-position');
+    const value = document.getElementById('my-rank-value');
+
+    if (!card || !subtitle || !position || !value) return;
+
+    if (!currentUser || !myLeaderboardRecord || !myLeaderboardRank) {
+        card.style.display = 'none';
+        return;
+    }
+
+    card.style.display = 'flex';
+    position.textContent = `#${myLeaderboardRank}`;
+
+    if (leaderboardMode === 'gems') {
+        subtitle.textContent = 'Твой общий баланс в рейтинге игроков';
+        value.textContent = `${(myLeaderboardRecord.gems || 0).toLocaleString()} 💎`;
+    } else {
+        subtitle.textContent = `Твой лучший рекорд в режиме ${myLeaderboardRecord.theme || ''}`;
+        value.textContent = `${(myLeaderboardRecord.bestWin || 0).toLocaleString()} 💎`;
     }
 }
 
@@ -3926,9 +3953,25 @@ async function loadGemsLeaderboard() {
         }));
 
         updateLeaderboardUI();
+        updateLeaderboardPanelText();
         await loadMyGemsRank();
     } catch (error) {
         console.error("Ошибка загрузки топа по алмазам:", error);
+    }
+}
+
+function updateLeaderboardPanelText() {
+    const titleEl = document.getElementById('leaderboard-panel-title');
+    const subtextEl = document.getElementById('leaderboard-panel-subtext');
+
+    if (!titleEl || !subtextEl) return;
+
+    if (leaderboardMode === 'gems') {
+        titleEl.textContent = '💎 ТОП ИГРОКОВ ПО БАЛАНСУ';
+        subtextEl.textContent = 'Игроки с самым большим текущим количеством алмазов';
+    } else {
+        titleEl.textContent = '🌍 ТОП ИГРОКОВ ПО ТЕМЕ';
+        subtextEl.textContent = 'Лучшие результаты среди всех игроков';
     }
 }
 
