@@ -2472,31 +2472,6 @@ const wheelRewards = [
 ];
 
 
-function renderWheelTrack() {
-    const track = document.getElementById('wheel-track');
-    if (!track) return;
-
-    track.innerHTML = '';
-
-    const repeatedRewards = [];
-    for (let i = 0; i < 30; i++) {
-        repeatedRewards.push(wheelRewards[i % wheelRewards.length]);
-    }
-
-    repeatedRewards.forEach(reward => {
-        const item = document.createElement('div');
-        item.className = `wheel-item ${reward.rarity}`;
-        item.innerHTML = `
-            <div class="wheel-item-icon">${reward.icon}</div>
-            <div class="wheel-item-label">${reward.label}</div>
-        `;
-        track.appendChild(item);
-    });
-
-    track.style.transform = 'translateX(0px)';
-    track.dataset.ready = 'true';
-}
-
 
 function spinWheel() {
     if (vipLevel < 3) {
