@@ -61,19 +61,17 @@
 </div>
         
         <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ -->
-        <div class="tabs-nav">
-            <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
-            <button class="tab-btn" onclick="openTab('wheel')">🎡 Рулетка</button>            
-            <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
-            <button class="tab-btn" onclick="openTab('leaderboard')">🏆 Лидеры</button>
-            <button class="tab-btn" onclick="openTab('market')">🛒 Black Market</button>
-
-            <!-- КНОПКА СЕКРЕТНОЙ ЗОНЫ -->
-<button id="btn-secret" class="tab-btn btn-secret" onclick="openTab('secret')">
-    💎 VIP STORE
-</button>
-            <button class="tab-btn" onclick="openTab('vipzone')">👑 VIP ZONE</button>
-        </div>
+<div class="tabs-shell">
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
+        <button class="tab-btn" onclick="openTab('wheel')">🎡 Рулетка</button>
+        <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
+        <button class="tab-btn" onclick="openTab('leaderboard')">🏆 Лидеры</button>
+        <button class="tab-btn" onclick="openTab('market')">🛒 Black Market</button>
+        <button id="btn-secret" class="tab-btn btn-secret" onclick="openTab('secret')">💎 VIP STORE</button>
+        <button class="tab-btn" onclick="openTab('vipzone')">👑 VIP ZONE</button>
+    </div>
+</div>
         
 
         <!-- === ВКЛАДКА 1: ИГРЫ === -->
