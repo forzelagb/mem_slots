@@ -194,9 +194,16 @@
         <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('speed', this)">⚡ Speed</button>
     </div>
 
-    <div class="leaderboard-panel">
-        <h3>🌍 ТОП ИГРОКОВ ПО ТЕМЕ</h3>
-        <table class="leaderboard-table">
+<div class="leaderboard-panel leaderboard-panel-pretty">
+    <div class="leaderboard-panel-head">
+        <div>
+            <h3>🌍 ТОП ИГРОКОВ ПО ТЕМЕ</h3>
+            <p class="leaderboard-subtext">Лучшие результаты среди всех игроков</p>
+        </div>
+    </div>
+
+    <div class="leaderboard-table-wrap">
+        <table class="leaderboard-table pretty-table">
             <thead>
                 <tr>
                     <th>#</th>
@@ -207,6 +214,7 @@
             <tbody id="leaderboard-body"></tbody>
         </table>
     </div>
+</div>
 </div>
 <div id="tab-market" class="tab-content">
     <h2 class="section-title">🛒 BLACK MARKET</h2>

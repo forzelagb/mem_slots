@@ -856,23 +856,59 @@ function updateLeaderboardUI() {
     if (!leaderboard || leaderboard.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="3" class="leaderboard-empty">Пока нет рекордов</td>
+                <td colspan="3" class="leaderboard-empty">
+                    <div class="leaderboard-empty-box">
+                        <div class="leaderboard-empty-icon">🏆</div>
+                        <div class="leaderboard-empty-title">Пока нет рекордов</div>
+                        <div class="leaderboard-empty-subtitle">Стань первым игроком в этом режиме</div>
+                    </div>
+                </td>
             </tr>
         `;
         return;
     }
 
     leaderboard.forEach((record, index) => {
-        let rankIcon = index + 1;
-        if (index === 0) rankIcon = '🥇';
-        if (index === 1) rankIcon = '🥈';
-        if (index === 2) rankIcon = '🥉';
-
         const row = document.createElement('tr');
+
+        let rankIcon = `${index + 1}`;
+        let rankClass = 'rank-default';
+
+        if (index === 0) {
+            rankIcon = '🥇';
+            rankClass = 'rank-gold';
+        } else if (index === 1) {
+            rankIcon = '🥈';
+            rankClass = 'rank-silver';
+        } else if (index === 2) {
+            rankIcon = '🥉';
+            rankClass = 'rank-bronze';
+        }
+
+        row.className = `leaderboard-row ${index < 3 ? 'top-row' : ''}`;
+
         row.innerHTML = `
-            <td>${rankIcon}</td>
-            <td>${record.nickname || 'Игрок'}</td>
-            <td>${(record.bestWin || 0).toLocaleString()} 💎</td>
+            <td>
+                <div class="leaderboard-rank ${rankClass}">
+                    ${rankIcon}
+                </div>
+            </td>
+            <td>
+                <div class="leaderboard-player">
+                    <div class="leaderboard-avatar">
+                        ${(record.nickname || 'И')[0].toUpperCase()}
+                    </div>
+                    <div class="leaderboard-player-meta">
+                        <div class="leaderboard-player-name">${record.nickname || 'Игрок'}</div>
+                        <div class="leaderboard-player-theme">${record.theme || ''}</div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="leaderboard-score">
+                    ${(record.bestWin || 0).toLocaleString()} <span>💎</span>
+                </div>
+            </td>
         `;
         tbody.appendChild(row);
     });
@@ -3535,14 +3571,13 @@ async function savePlayerData() {
         const db = window.firebaseDb;
 
         await setDoc(doc(db, "players", currentUser.uid), {
-            gems,
-            vipLevel,
-            currentBet,
-            coinsConfig,
-            leaderboard,
-            lastVIPBonusTime,
-            lastSeenAt: serverTimestamp()
-        }, { merge: true });
+    gems,
+    vipLevel,
+    currentBet,
+    leaderboard,
+    lastVIPBonusTime,
+    lastSeenAt: serverTimestamp()
+}, { merge: true });
     } catch (error) {
         console.error("Ошибка сохранения игрока:", error);
     }
