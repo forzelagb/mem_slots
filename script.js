@@ -1,15 +1,4 @@
 // === КОНФИГУРАЦИЯ БИЗНЕСОВ ===
-
-
-const coinsConfig = {
-    burmal: { name: "БурмалCOIN", basePrice: 100, volatility: 0.05, amount: 0, history: [], currentPrice: 100 },
-    burmaldook: { name: "БурмалДук", basePrice: 500, volatility: 0.08, amount: 0, history: [], currentPrice: 500 },
-    hecio: { name: "HeCION", basePrice: 50, volatility: 0.1, amount: 0, history: [], currentPrice: 50 },
-    ciondic: { name: "CIONдиции", basePrice: 200, volatility: 0.06, amount: 0, history: [], currentPrice: 200 },
-    analdoc: { name: "ANalDOCion", basePrice: 10, volatility: 0.15, amount: 0, history: [], currentPrice: 10 },
-    tuncion: { name: "TunCION", basePrice: 1000, volatility: 0.04, amount: 0, history: [], currentPrice: 1000 }
-};
-
 const spinSound = new Audio('sounds/spin.mp3');
 const endSpinSound = new Audio('sounds/end.mp3');
 const jackpotSound = new Audio('sounds/jackpot.mp3');
@@ -54,11 +43,7 @@ let totalGemsEarned = 0;
 let vipLevel = 0;
 let currentBet = 250;
 let lastVIPBonusTime = 0;
-let currentSelectedCoin = 'burmal';
-let marketInterval;
 let chartInstance = null;
-let autoSpinActive = false; // <-- ОБЪЯВЛЕНО ДО ИСПОЛЬЗОВАНИЯ
-let autoSpinCount = 0;
 let isSpinning = false;
 let currentTheme = '';
 const dailyRewardTable = [
@@ -151,7 +136,6 @@ const gameScreen = document.getElementById('game-screen');
 const gridEl = document.getElementById('grid');
 const resultText = document.getElementById('result-text');
 const spinBtn = document.getElementById('spin-btn');
-const autoBtn = document.getElementById('auto-btn');
 const winModal = document.getElementById('win-modal');
 const modalAmount = document.getElementById('modal-amount');
 const slotTitle = document.getElementById('slot-title');
@@ -182,117 +166,6 @@ function openTab(tabName) {
     if (activeBtn) {
         activeBtn.classList.add('active');
     }
-}
-
-// === ЛОГИКА БИРЖИ ===
-function simulateMarket() {
-    for (let key in coinsConfig) {
-        let coin = coinsConfig[key];
-        let change = 1 + (Math.random() * coin.volatility * 2 - coin.volatility);
-        coin.currentPrice *= change;
-        if (coin.currentPrice < coin.basePrice * 0.01) coin.currentPrice = coin.basePrice * 0.01;
-        coin.history.push(coin.currentPrice);
-        if (coin.history.length > 50) coin.history.shift();
-    }
-    saveData();
-    updateMarketUI();
-}
-
-function selectCoin(coinKey, btnElement) {
-    currentSelectedCoin = coinKey;
-    document.querySelectorAll('.coin-tab').forEach(tab => tab.classList.remove('active'));
-    if(btnElement) btnElement.classList.add('active');
-    updateMarketUI();
-}
-
-function tradeCoin(type) {
-    const amountInput = document.getElementById('trade-amount');
-    const amount = parseInt(amountInput.value);
-    if (!amount || amount <= 0) return;
-    const coin = coinsConfig[currentSelectedCoin];
-    const totalCost = coin.currentPrice * amount;
-    if (type === 'buy') {
-        if (gems >= totalCost) { gems -= totalCost; coin.amount += amount; }
-        else { alert("Недостаточно средств!"); return; }
-    } else if (type === 'sell') {
-        if (coin.amount >= amount) { gems += totalCost; coin.amount -= amount; }
-        else { alert("Недостаточно монет!"); return; }
-    }
-    saveData();
-    updateUI();
-    updateMarketUI();
-}
-
-function updateMarketUI() {
-    const coin = coinsConfig[currentSelectedCoin];
-    const nameEl = document.getElementById('display-name');
-    const priceEl = document.getElementById('display-price');
-    const amountEl = document.getElementById('display-amount');
-    const valueEl = document.getElementById('display-value');
-    const changeEl = document.getElementById('display-change');
-    if(nameEl) nameEl.innerText = coin.name;
-    if(priceEl) priceEl.innerText = coin.currentPrice.toFixed(2) + ' ₽';
-    if(amountEl) amountEl.innerText = coin.amount;
-    if(valueEl) valueEl.innerText = (coin.amount * coin.currentPrice).toFixed(2);
-    if(changeEl) {
-        const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
-        const changePercent = ((coin.currentPrice - lastPrice) / lastPrice) * 100;
-        changeEl.innerText = (changePercent >= 0 ? '+' : '') + changePercent.toFixed(2) + '%';
-        changeEl.className = 'coin-change ' + (changePercent >= 0 ? 'up' : 'down');
-    }
-    updateChart(coin);
-}
-
-function updateChart(coin) {
-    // Просто обновляем цену и процент изменения — без графика
-    const priceEl = document.getElementById('display-price');
-    const changeEl = document.getElementById('display-change');
-    
-    if (priceEl) {
-        priceEl.innerText = coin.currentPrice.toFixed(2) + ' ₽';
-    }
-    
-    if (changeEl) {
-        const lastPrice = coin.history[coin.history.length - 2] || coin.currentPrice;
-        const changePercent = ((coin.currentPrice - lastPrice) / lastPrice) * 100;
-        changeEl.innerText = (changePercent >= 0 ? '+' : '') + changePercent.toFixed(2) + '%';
-        changeEl.className = 'coin-change ' + (changePercent >= 0 ? 'up' : 'down');
-    }
-
-    // Если хочешь, можно добавить простую визуализацию цены через прогресс-бар
-    // Но это опционально
-}
-
-// === ЛОГИКА ИГРЫ ===
-function adjustBet(amount) {
-    let newBet = currentBet + amount;
-    if (newBet < 250) newBet = 250;
-    if (newBet > gems) newBet = gems;
-    currentBet = newBet;
-    saveData();
-    updateUI();
-}
-
-function doubleBet() {
-    let newBet = currentBet * 2;
-    if (newBet > gems) newBet = gems;
-    currentBet = newBet;
-    saveData();
-    updateUI();
-}
-
-function halveBet() {
-    let newBet = Math.floor(currentBet / 2);
-    if (newBet < 250) newBet = 250;
-    currentBet = newBet;
-    saveData();
-    updateUI();
-}
-
-function maxBet() {
-    currentBet = gems;
-    saveData();
-    updateUI();
 }
 
 function createGrid() {
@@ -393,11 +266,7 @@ function startGame(themeName) {
     // Создаём сетку и обновляем UI
     createGrid();
     updateUI();
-    resultText.innerText = "Нажми SPIN!";
-    
-    // Сбрасываем авто-спин
-    autoSpinActive = false;
-    autoBtn.innerText = "AUTO";
+    resultText.innerText = "Нажми PLAY!";
 
     // Показываем счётчик лимита ТОЛЬКО если это Ronaldo (опционально)
     const limitEl = document.getElementById('ronaldo-win-limit-display');
@@ -426,7 +295,6 @@ function goBack() {
 
     gameScreen.classList.remove('active');
     lobbyScreen.classList.add('active');
-    autoSpinActive = false;
 
     // Скрываем счётчик лимита Ronaldo
     const limitEl = document.getElementById('ronaldo-win-limit-display');
@@ -571,29 +439,6 @@ function getWheelRewardById(id) {
     return wheelRewards.find(item => item.id === id);
 }
 
-
-function toggleAuto() {
-    if (autoSpinActive) {
-        autoSpinActive = false;
-        autoBtn.innerText = "AUTO";
-        autoBtn.style.background = "linear-gradient(to bottom, #00f2ff, #0099cc)";
-    } else {
-        autoSpinActive = true;
-        autoSpinCount = 5 + (upgrades.auto || 0) * 2;
-
-        if ((blackMarketItems.autoPack || 0) > 0) {
-            autoSpinCount += 10;
-            blackMarketItems.autoPack -= 1;
-            saveBlackMarket();
-            updateBlackMarketUI();
-        }
-
-        autoBtn.innerText = "STOP";
-        autoBtn.style.background = "linear-gradient(to bottom, #ff4444, #cc0000)";
-        spin();
-    }
-}
-
 function spin() {
     console.log("=== DEBUG SPIN ===");
     console.log("Тема:", currentTheme);
@@ -623,7 +468,6 @@ function spin() {
 
     isSpinning = true;
     spinBtn.disabled = true;
-    autoBtn.disabled = true;
 
     if (spinBtn) {
         spinBtn.classList.remove('ready-pulse');
@@ -643,21 +487,7 @@ function spin() {
         checkWins(finalGrid);
 
         isSpinning = false;
-        spinBtn.disabled = false;
-        autoBtn.disabled = false;
         updateUI();
-
-        if (autoSpinActive) {
-            autoSpinCount--;
-
-            if (autoSpinCount > 0 && gems >= currentBet) {
-                setTimeout(() => spin(), 700);
-            } else {
-                autoSpinActive = false;
-                autoBtn.innerText = "AUTO";
-                autoBtn.style.background = "linear-gradient(to bottom, #ff00de, #aa0094)";
-            }
-        }
     });
 }
 function checkWins(grid) {
@@ -1317,7 +1147,6 @@ function updateSecretContentByLevel() {
         
         let statusText = "";
         let btnClass = "btn-buy-level";
-        let btnAction = `window.open('https://www.donationalerts.com/r/forzelagb?amount=${lvl.price}&message=ХОЧУ+${lvl.name.toUpperCase()}', '_blank')`;
 
         if (isCurrent) {
             statusText = "<span style='color:#00ff88'>✅ АКТИВЕН</span>";
@@ -3538,15 +3367,6 @@ function hasNearMiss(grid) {
     return false;
 }
 
-function openGemsShop() {
-    const modal = document.getElementById('gems-shop-modal');
-    if (modal) modal.classList.add('active');
-}
-
-function closeGemsShop() {
-    const modal = document.getElementById('gems-shop-modal');
-    if (modal) modal.classList.remove('active');
-}
 
 window.addEventListener('click', (e) => {
     const modal = document.getElementById('gems-shop-modal');
@@ -3554,24 +3374,6 @@ window.addEventListener('click', (e) => {
         closeGemsShop();
     }
 });
-function openPurchaseConfirm(packName, amount, bonus, price, paymentUrl) {
-    closeGemsShop();
-
-    const modal = document.getElementById('purchase-confirm-modal');
-    const nameEl = document.getElementById('confirm-pack-name');
-    const amountEl = document.getElementById('confirm-pack-amount');
-    const bonusEl = document.getElementById('confirm-pack-bonus');
-    const priceEl = document.getElementById('confirm-pack-price');
-    const paymentLink = document.getElementById('confirm-payment-link');
-
-    if (nameEl) nameEl.innerText = packName;
-    if (amountEl) amountEl.innerText = amount;
-    if (bonusEl) bonusEl.innerText = bonus;
-    if (priceEl) priceEl.innerText = price;
-    if (paymentLink) paymentLink.href = paymentUrl;
-
-    if (modal) modal.classList.add('active');
-}
 
 function closePurchaseConfirm() {
     const modal = document.getElementById('purchase-confirm-modal');

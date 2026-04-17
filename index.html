@@ -26,11 +26,6 @@
                 <span class="gem-icon">💎</span>
                 <span id="lobby-balance">10000</span>
             </div>
-
-            <button class="btn-buy-gems" onclick="openGemsShop()">
-                Купить 💎
-            </button>
-
             <button class="btn-profile" onclick="openAuthModal()">
                 Профиль
             </button>
@@ -67,7 +62,6 @@
         <button class="tab-btn" onclick="openTab('wheel')">🎡 Рулетка</button>
         <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
         <button class="tab-btn" onclick="openTab('leaderboard')">🏆 Лидеры</button>
-        <button class="tab-btn" onclick="openTab('market')">🛒 Black Market</button>
         <button id="btn-secret" class="tab-btn btn-secret" onclick="openTab('secret')">💎 VIP STORE</button>
         <button class="tab-btn" onclick="openTab('vipzone')">👑 VIP ZONE</button>
     </div>
@@ -130,56 +124,6 @@
         <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
     </div>
 
-</div>
-<div id="tab-upgrades" class="tab-content">
-    <h2 class="section-title">⬆️ УЛУЧШЕНИЯ АККАУНТА</h2>
-
-    <div class="upgrades-grid">
-        <div class="upgrade-card">
-            <h3>🎯 Critical Spin</h3>
-            <p>Уровень: <span id="upgrade-crit-level">0</span></p>
-            <p>Шанс на x2 к выигрышу при удачном спине</p>
-            <button class="btn-upgrade-main" onclick="buyUpgrade('crit')">
-                Купить за <span id="upgrade-crit-cost">1200</span> 💎
-            </button>
-        </div>
-
-        <div class="upgrade-card">
-            <h3>🛟 Bet Saver</h3>
-            <p>Уровень: <span id="upgrade-saver-level">0</span></p>
-            <p>Шанс вернуть ставку при проигрыше</p>
-            <button class="btn-upgrade-main" onclick="buyUpgrade('saver')">
-                Купить за <span id="upgrade-saver-cost">1800</span> 💎
-            </button>
-        </div>
-
-        <div class="upgrade-card">
-            <h3>⚡ Auto Spin</h3>
-            <p>Уровень: <span id="upgrade-auto-level">0</span></p>
-            <p>Даёт больше автоспинов за запуск</p>
-            <button class="btn-upgrade-main" onclick="buyUpgrade('auto')">
-                Купить за <span id="upgrade-auto-cost">2200</span> 💎
-            </button>
-        </div>
-
-        <div class="upgrade-card">
-            <h3>💎 Rare Drop</h3>
-            <p>Уровень: <span id="upgrade-rare-level">0</span></p>
-            <p>Повышает шанс выпадения редких символов</p>
-            <button class="btn-upgrade-main" onclick="buyUpgrade('rare')">
-                Купить за <span id="upgrade-rare-cost">2600</span> 💎
-            </button>
-        </div>
-
-        <div class="upgrade-card">
-            <h3>👑 High Roller Access</h3>
-<p>Уровень: <span id="upgrade-highroller-level">0</span></p>
-<p>Навсегда даёт +10% к каждому выигрышу</p>
-<button class="btn-upgrade-main" onclick="buyUpgrade('highroller')">
-    Купить за <span id="upgrade-highroller-cost">500000</span> 💎
-</button>
-        </div>
-    </div>
 </div>
 <div id="tab-leaderboard" class="tab-content">
     <h2 class="section-title">🏆 ТАБЛИЦЫ ЛИДЕРОВ</h2>
@@ -246,64 +190,6 @@
         </table>
     </div>
 </div>
-</div>
-<div id="tab-market" class="tab-content">
-    <h2 class="section-title">🛒 BLACK MARKET</h2>
-
-    <div class="market-inventory">
-        <div class="inventory-pill">🎲 Double Roll: <span id="inv-doubleRoll">0</span></div>
-        <div class="inventory-pill">⚡ Auto Pack: <span id="inv-autoPack">0</span></div>
-        <div class="inventory-pill">💎 Gem Booster: <span id="inv-gemBooster">0</span></div>
-        <div class="inventory-pill">🔥 Rage Spin: <span id="inv-rageSpin">0</span></div>
-        <div class="inventory-pill">👑 Pass: <span id="inv-highRollerPass">0</span></div>
-    </div>
-
-    <div class="market-shop-grid">
-        <div class="shop-card">
-            <h3>🎲 Double Roll</h3>
-            <p>Следующий спин прокручивается дважды, берётся лучший результат</p>
-            <p class="shop-owned">У тебя: <span id="owned-doubleRoll">0</span></p>
-            <button class="shop-btn" onclick="buyBlackMarketItem('doubleRoll')">
-                Купить за 2200 💎
-            </button>
-        </div>
-
-        <div class="shop-card">
-            <h3>⚡ Auto Spin Pack</h3>
-            <p>+10 автоспинов на следующий запуск</p>
-            <p class="shop-owned">У тебя: <span id="owned-autoPack">0</span></p>
-            <button class="shop-btn" onclick="buyBlackMarketItem('autoPack')">
-                Купить за 1800 💎
-            </button>
-        </div>
-
-        <div class="shop-card">
-            <h3>💎 Gem Booster</h3>
-            <p>Следующие 5 выигрышных спинов дают +50% к выплате</p>
-            <p class="shop-owned">У тебя: <span id="owned-gemBooster">0</span></p>
-            <button class="shop-btn" onclick="buyBlackMarketItem('gemBooster')">
-                Купить за 3200 💎
-            </button>
-        </div>
-
-        <div class="shop-card">
-            <h3>🔥 Rage Spin</h3>
-            <p>Один рискованный спин: выигрыш x3, но шанс провала выше</p>
-            <p class="shop-owned">У тебя: <span id="owned-rageSpin">0</span></p>
-            <button class="shop-btn" onclick="buyBlackMarketItem('rageSpin')">
-                Купить за 2600 💎
-            </button>
-        </div>
-
-        <div class="shop-card">
-           <h3>👑 High Roller Pass</h3>
-<p>На выигрышном спине имеет 25% шанс дать +25% к выплате</p>
-<p class="shop-owned">У тебя: <span id="owned-highRollerPass">0</span></p>
-<button class="shop-btn" onclick="buyBlackMarketItem('highRollerPass')">
-    Купить за 4500 💎
-</button>
-        </div>
-    </div>
 </div>
 
         <!-- === ВКЛАДКА 4: СЕКРЕТНАЯ ЗОНА (VIP) === -->
@@ -509,7 +395,6 @@
             <h3 style="margin-top: 24px;">🎡 VIP Механики</h3>
             <div class="vip-zone-actions">
                 <button class="vip-zone-action-btn" onclick="openTab('wheel')">Открыть VIP рулетку</button>
-                <button class="vip-zone-action-btn" onclick="openTab('market')">Открыть Black Market</button>
             </div>
         </div>
     </div>
@@ -593,27 +478,11 @@
             <div class="message-box" id="result-text">Удачи!</div>
             
             <div class="controls">
-                <div class="bet-adjuster">
-                    <button class="btn-adjust" onclick="adjustBet(-10)">➖</button>
-                    <div class="bet-display">
-                        <span class="bet-label">СТАВКА</span>
-                        <span id="bet-value-display">250</span> 💎
-                    </div>
-                    <button class="btn-adjust" onclick="adjustBet(10)">➕</button>
-                </div>
-                <div class="bet-quick-actions">
-                    <button class="btn-quick" onclick="halveBet()">÷2</button>
-                    <button class="btn-quick" onclick="doubleBet()">x2</button>
-                    <button class="btn-quick btn-max" onclick="maxBet()">MAX</button>
-                </div>
             </div>
 
-            <div class="spin-controls">
-                <button class="btn-spin" id="spin-btn" onclick="spin()">
-                    SPIN <br><span class="cost">-<span id="current-cost">250</span> 💎</span>
-                </button>
-                <button class="btn-auto" id="auto-btn" onclick="toggleAuto()">AUTO</button>
-            </div>
+<div class="spin-controls">
+    <button id="spin-btn" class="btn-spin" onclick="spin()">SPIN</button>
+</div>
         </div>
     </div>
  <!-- === ЭКРАН CRASH GAME === -->
@@ -804,80 +673,7 @@
         </div>
     </div>
 </div>
-<div id="gems-shop-modal" class="modal">
-    <div class="modal-content gems-shop-modal-content">
-        <button class="gems-shop-close" onclick="closeGemsShop()">✕</button>
 
-        <div class="gems-shop-header">
-            <div class="gems-shop-badge">💎 GEM SHOP</div>
-            <h2>Магазин алмазов</h2>
-            <p>Выбери набор и пополни баланс</p>
-        </div>
-        <div class="gems-special-offer">
-    <div class="gems-special-badge">⚡ LIMITED BONUS</div>
-    <div class="gems-special-title">Сейчас действуют спеццены на все наборы</div>
-    <div class="gems-special-text">
-        Первое пополнение даёт +10% алмазов к любому набору.
-    </div>
-</div>
-
-        <div class="gems-packs-grid">
-         <div class="gems-pack-card">
-    <div class="gems-pack-discount">-29%</div>
-    <div class="gems-pack-title">💎 START PACK</div>
-    <div class="gems-pack-amount">5 000 💎</div>
-    <div class="gems-pack-old-price">69 ₽</div>
-    <div class="gems-pack-price">49 ₽</div>
-    <div class="gems-pack-desc">Быстрый возврат в игру</div>
-<button class="gems-pack-btn" onclick="openPurchaseConfirm('START PACK', '5 000 💎', 'Без бонуса', '49 ₽', 'https://www.donationalerts.com/r/forzelagb?amount=49&message=START+5000')">
-    Купить за 49 ₽
-</button>
-</div>
-
-<div class="gems-pack-card popular">
-    <div class="gems-pack-discount hot">-34%</div>
-    <div class="gems-pack-tag">🔥 Популярный</div>
-    <div class="gems-pack-title">🎁 POPULAR</div>
-    <div class="gems-pack-amount">12 000 💎</div>
-    <div class="gems-pack-bonus">+2 000 бонусом</div>
-    <div class="gems-pack-old-price">149 ₽</div>
-    <div class="gems-pack-price">99 ₽</div>
-    <div class="gems-pack-desc">Лучший старт для игры</div>
-<button class="gems-pack-btn" onclick="openPurchaseConfirm('POPULAR', '12 000 💎', '+2 000 бонусом', '99 ₽', 'https://www.donationalerts.com/r/forzelagb?amount=99&message=POPULAR+12000')">
-    Купить за 99 ₽
-</button>
-</div>
-
-<div class="gems-pack-card best">
-    <div class="gems-pack-discount gold">-20%</div>
-    <div class="gems-pack-tag">💎 Выгодно</div>
-    <div class="gems-pack-title">🪙 BEST VALUE</div>
-    <div class="gems-pack-amount">30 000 💎</div>
-    <div class="gems-pack-bonus">+7 000 бонусом</div>
-    <div class="gems-pack-old-price">249 ₽</div>
-    <div class="gems-pack-price">199 ₽</div>
-    <div class="gems-pack-desc">Лучший курс за рубль</div>
-<button class="gems-pack-btn" onclick="openPurchaseConfirm('BEST VALUE', '30 000 💎', '+7 000 бонусом', '199 ₽', 'https://www.donationalerts.com/r/forzelagb?amount=199&message=BEST+30000')">
-    Купить за 199 ₽
-</button>
-</div>
-
-<div class="gems-pack-card vip">
-    <div class="gems-pack-discount vip-sale">-25%</div>
-    <div class="gems-pack-tag">👑 VIP</div>
-    <div class="gems-pack-title">👑 VIP CHEST</div>
-    <div class="gems-pack-amount">80 000 💎</div>
-    <div class="gems-pack-bonus">+20 000 бонусом</div>
-    <div class="gems-pack-old-price">599 ₽</div>
-    <div class="gems-pack-price">449 ₽</div>
-    <div class="gems-pack-desc">Максимум алмазов для хайроллеров</div>
-<button class="gems-pack-btn" onclick="openPurchaseConfirm('VIP CHEST', '80 000 💎', '+20 000 бонусом', '449 ₽', 'https://www.donationalerts.com/r/forzelagb?amount=449&message=VIP+80000')">
-    Купить за 449 ₽
-</button>
-</div>
-        </div>
-    </div>
-</div>
 <div id="purchase-confirm-modal" class="modal">
     <div class="modal-content purchase-confirm-content">
         <button class="purchase-confirm-close" onclick="closePurchaseConfirm()">✕</button>
