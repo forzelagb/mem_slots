@@ -20,6 +20,23 @@ const progressPaths = {
 const coinsConfig = {
     defaultCoins: 0
 };
+const collectionGroups = [
+    {
+        id: 'streamers',
+        title: '🔥 Meme Streamers',
+        themes: ['helin', 'melstroy', 'lexapaws']
+    },
+    {
+        id: 'internet',
+        title: '🌐 Internet Memes',
+        themes: ['brain', 'skibiditoilet', 'slovopatsana']
+    },
+    {
+        id: 'random',
+        title: '🎲 Random Pack',
+        themes: ['rostick', 'sasich', 'rejiboi', 'nikkifn', 'litwin']
+    }
+];
 
 function playRollSound() {
 }
@@ -134,7 +151,143 @@ const winModal = document.getElementById('win-modal');
 const modalAmount = document.getElementById('modal-amount');
 const slotTitle = document.getElementById('slot-title');
 
+function renderCollectionGroups() {
+    console.log('renderCollectionGroups works', collectionGroups);
+    const groupsEl = document.getElementById('collection-groups');
+    const themesEl = document.getElementById('collection-themes');
+    const detailEl = document.getElementById('collection-theme-detail');
 
+    if (!groupsEl || !themesEl || !detailEl) return;
+
+    themesEl.style.display = 'none';
+    detailEl.style.display = 'none';
+    themesEl.innerHTML = '';
+    detailEl.innerHTML = '';
+    groupsEl.innerHTML = '';
+
+    collectionGroups.forEach(group => {
+        let totalCompleted = 0;
+        let totalCards = 0;
+
+        group.themes.forEach(themeName => {
+            const items = themes[themeName] || [];
+            totalCards += items.length;
+
+            items.forEach(item => {
+                const fileName = getFileNameFromSrc(item.src);
+                const cardKey = getCardKey(themeName, item.src);
+                const rarity = cardRarity[fileName];
+                const stage = getCurrentStage(cardKey);
+                const maxStage = progressPaths[rarity]?.length || 0;
+
+                if (stage >= maxStage) {
+                    totalCompleted++;
+                }
+            });
+        });
+
+        const card = document.createElement('div');
+        card.className = 'collection-group-card';
+        card.innerHTML = `
+            <div class="collection-group-title">${group.title}</div>
+            <div class="collection-group-meta">${totalCompleted} / ${totalCards} карт завершено</div>
+        `;
+        card.onclick = () => openCollectionGroup(group.id);
+
+        groupsEl.appendChild(card);
+    });
+}
+
+function openCollectionGroup(groupId) {
+    const group = collectionGroups.find(g => g.id === groupId);
+    if (!group) return;
+
+    const themesEl = document.getElementById('collection-themes');
+    const detailEl = document.getElementById('collection-theme-detail');
+
+    if (!themesEl || !detailEl) return;
+
+    themesEl.style.display = 'block';
+    detailEl.style.display = 'none';
+    detailEl.innerHTML = '';
+    themesEl.innerHTML = '';
+
+    const header = document.createElement('div');
+    header.className = 'collection-subheader';
+    header.innerHTML = `
+        <div class="collection-subheader-title">${group.title}</div>
+        <button class="collection-back-btn" onclick="renderCollectionGroups()">← Назад к группам</button>
+    `;
+    themesEl.appendChild(header);
+
+    group.themes.forEach(themeName => {
+        const items = themes[themeName] || [];
+        let completed = 0;
+
+        items.forEach(item => {
+            const fileName = getFileNameFromSrc(item.src);
+            const cardKey = getCardKey(themeName, item.src);
+            const rarity = cardRarity[fileName];
+            const stage = getCurrentStage(cardKey);
+            const maxStage = progressPaths[rarity]?.length || 0;
+
+            if (stage >= maxStage) {
+                completed++;
+            }
+        });
+
+        const themeCard = document.createElement('div');
+        themeCard.className = 'collection-theme-card';
+        themeCard.innerHTML = `
+            <div class="collection-theme-title">${titles[themeName] || themeName}</div>
+            <div class="collection-theme-progress">${completed} / ${items.length}</div>
+        `;
+        themeCard.onclick = () => openThemeDetail(themeName, groupId);
+
+        themesEl.appendChild(themeCard);
+    });
+}
+
+function openThemeDetail(themeName, groupId) {
+    const detailEl = document.getElementById('collection-theme-detail');
+    if (!detailEl) return;
+
+    const items = themes[themeName] || [];
+    detailEl.style.display = 'block';
+    detailEl.innerHTML = '';
+
+    const header = document.createElement('div');
+    header.className = 'collection-subheader';
+    header.innerHTML = `
+        <div class="collection-subheader-title">${titles[themeName] || themeName}</div>
+        <button class="collection-back-btn" onclick="openCollectionGroup('${groupId}')">← Назад к темам</button>
+    `;
+    detailEl.appendChild(header);
+
+    const path = document.createElement('div');
+    path.className = 'collection-path';
+
+    items.forEach((item, index) => {
+        const fileName = getFileNameFromSrc(item.src);
+        const cardKey = getCardKey(themeName, item.src);
+        const rarity = cardRarity[fileName];
+        const progress = playerData.cards?.[cardKey] || 0;
+        const stage = getCurrentStage(cardKey);
+
+        const node = document.createElement('div');
+        node.className = 'path-node';
+        node.innerHTML = `
+            <img src="${item.src}" alt="card ${index + 1}">
+            <div class="node-title">${index + 1}.jpg</div>
+            <div class="node-rarity collection-rarity-${rarity}">${rarity}</div>
+            <div class="node-stage">lvl ${stage}</div>
+            <div class="node-progress">${progress}</div>
+        `;
+        path.appendChild(node);
+    });
+
+    detailEl.appendChild(path);
+}
 // === ЛОГИКА ВКЛАДОК ===
 function openTab(tabName) {
     const tab = document.getElementById('tab-' + tabName);
@@ -153,9 +306,10 @@ function openTab(tabName) {
     if (activeBtn) {
         activeBtn.classList.add('active');
     }
+
     if (tabName === 'collection') {
-    renderCollectionScreen();
-}
+        renderCollectionGroups();
+    }
 }
 
 function createGrid() {
@@ -3887,7 +4041,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemes();
     regenEnergy();
     updateUI();
-    renderCollectionScreen();
+    renderCollectionGroups();
 });
 function hideRewardPreview() {
     const box = document.getElementById('reward-preview');
@@ -3912,25 +4066,6 @@ function showRewardPreview(item) {
 
     box.style.display = 'grid';
 }
-
-
-const collectionGroups = [
-    {
-        id: 'streamers',
-        title: '🔥 Meme Streamers',
-        themes: ['helin', 'melstroy', 'lexapaws']
-    },
-    {
-        id: 'internet',
-        title: '🌐 Internet Memes',
-        themes: ['brain', 'skibiditoilet', 'slovopatsana']
-    },
-    {
-        id: 'random',
-        title: '🎲 Random Pack',
-        themes: ['rostick', 'sasich', 'rejiboi', 'nikkifn']
-    }
-];
 
 function renderCollectionGroups() {
     const container = document.getElementById('collection-groups');

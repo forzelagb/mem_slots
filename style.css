@@ -5742,6 +5742,100 @@ html, body {
     font-size: 12px;
     color: #ffd36a;
 }
+
+.collection-group-card,
+.collection-theme-card {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.collection-group-card:hover,
+.collection-theme-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 211, 106, 0.45);
+    box-shadow: 0 0 18px rgba(255, 211, 106, 0.14);
+}
+
+.collection-group-title,
+.collection-theme-title,
+.collection-subheader-title {
+    color: #fff;
+    font-size: 18px;
+}
+
+.collection-group-meta,
+.collection-theme-progress {
+    margin-top: 6px;
+    color: rgba(255,255,255,0.72);
+    font-size: 14px;
+}
+
+.collection-subheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 16px;
+    flex-wrap: wrap;
+}
+
+.collection-back-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: inherit;
+    cursor: pointer;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+
+.collection-path {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.path-node {
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    text-align: center;
+}
+
+.path-node img {
+    width: 100%;
+    max-width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 0 auto 10px;
+    display: block;
+}
+
+.node-title {
+    color: #fff;
+    font-size: 14px;
+}
+
+.node-rarity,
+.node-stage,
+.node-progress {
+    margin-top: 4px;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .collection-path {
+        grid-template-columns: 1fr 1fr;
+    }
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
