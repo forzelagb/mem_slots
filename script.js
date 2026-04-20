@@ -1,48 +1,62 @@
 // === КОНФИГУРАЦИЯ БИЗНЕСОВ ===
-const spinSound = new Audio('sounds/spin.mp3');
-const endSpinSound = new Audio('sounds/end.mp3');
-const jackpotSound = new Audio('sounds/jackpot.mp3');
+const rollSound = new Audio('sounds/spin.mp3');
+const resultSound = new Audio('sounds/end.mp3');
+const rareHitSound = new Audio('sounds/jackpot.mp3');
+const cardRarity = {
+ "1.jpg":"common",
+ "2.jpg":"common",
+ "3.jpg":"rare",
+ "4.jpg":"rare",
+ "5.jpg":"epic",
+ "6.jpg":"epic",
+ "7.jpg":"legendary",
+ "8.jpg":"legendary"
+};
 
-spinSound.volume = 0.45;
-endSpinSound.volume = 0.65;
-jackpotSound.volume = 0.8;
+loadPlayer();
+initThemes();
+regenEnergy();
+const progressPaths = {
+ common: [50,150,400,900,1800,3500],
+ rare: [30,100,250,600,1300,2600],
+ epic: [15,50,140,350,800,1700],
+ legendary: [8,20,60,150,350,900]
+};
+rollSound.volume = 0.45;
+resultSound.volume = 0.65;
+rareHitSound.volume = 0.8;
 
-function playSpinSound() {
-    spinSound.pause();
-    spinSound.currentTime = 0;
-    spinSound.play().catch(() => {});
+function playRollSound() {
+    rollSound.pause();
+    rollSound.currentTime = 0;
+    rollSound.play().catch(() => {});
 }
 
-function stopSpinSound() {
-    spinSound.pause();
-    spinSound.currentTime = 0;
+function stopRollSound() {
+    rollSound.pause();
+    rollSound.currentTime = 0;
 }
 
-function playEndSpinSound() {
-    endSpinSound.pause();
-    endSpinSound.currentTime = 0;
-    endSpinSound.play().catch(() => {});
+function playResultSound() {
+    resultSound.pause();
+    resultSound.currentTime = 0;
+    resultSound.play().catch(() => {});
 }
 
-function playJackpotSound() {
-    jackpotSound.pause();
-    jackpotSound.currentTime = 0;
-    jackpotSound.play().catch(() => {});
+function playRareHitSound() {
+    rareHitSound.pause();
+    rareHitSound.currentTime = 0;
+    rareHitSound.play().catch(() => {});
 }
 
-function stopJackpotSound() {
-    jackpotSound.pause();
-    jackpotSound.currentTime = 0;
+function stopRareHitSound() {
+    rareHitSound.pause();
+    rareHitSound.currentTime = 0;
 }
 let isBigWinSoundPlaying = false;
 
 // === ПЕРЕМЕННЫЕ СОСТОЯНИЯ ===
-let gems = 10000;
-let totalGemsEarned = 0;
-// === VIP УРОВНИ ===
-let vipLevel = 0;
-let currentBet = 250;
-let lastVIPBonusTime = 0;
+let currentEnergyCost = 1;
 let chartInstance = null;
 let isSpinning = false;
 let currentTheme = '';
@@ -124,10 +138,10 @@ const titles = {
     sasich: "🗣️ SASICH", 
     skibiditoilet: "🚽 SKIBIDI", 
     slovopatsana: "👊 SLOVO PATSANA",
-    ronaldo: "🐐 RONALDO VIP",
-    shrek: "🟢 SHREK VIP",
-    spongebob: "🧽 SPONGEBOB VIP",
-    speed: "⚡ SPEED VIP",
+ronaldo: "🐐 RONALDO",
+shrek: "🟢 SHREK",
+spongebob: "🧽 SPONGEBOB",
+speed: "⚡ SPEED",
 };
 
 // === ЭЛЕМЕНТЫ DOM ===
@@ -139,7 +153,6 @@ const spinBtn = document.getElementById('spin-btn');
 const winModal = document.getElementById('win-modal');
 const modalAmount = document.getElementById('modal-amount');
 const slotTitle = document.getElementById('slot-title');
-const currentCostEl = document.getElementById('current-cost');
 
 
 // === ЛОГИКА ВКЛАДОК ===
@@ -203,57 +216,29 @@ function animateBalanceChange(type) {
 function updateUI() {
     const lobbyBal = document.getElementById('lobby-balance');
     const gameBal = document.getElementById('game-balance');
-    if(lobbyBal) lobbyBal.innerText = gems;
-    if(gameBal) gameBal.innerText = gems;
-    const betDisplay = document.getElementById('bet-value-display');
-    if (betDisplay) betDisplay.innerText = currentBet;
-    if(currentCostEl) currentCostEl.innerText = currentBet;
-    const btnMinus = document.querySelector('.btn-adjust:first-child');
-    const btnPlus = document.querySelector('.btn-adjust:last-child');
-    if (btnMinus) btnMinus.disabled = (currentBet <= 250);
-    if (btnPlus) btnPlus.disabled = (currentBet >= gems);
-    const btnMax = document.querySelector('.btn-max');
-    if (btnMax) {
-        btnMax.disabled = (currentBet >= gems);
-        btnMax.style.opacity = (currentBet >= gems) ? "0.5" : "1";
-    }
-if (gems < currentBet) {
-    if (spinBtn) {
+
+    const energy = playerData.resources?.energy ?? 0;
+
+    if (lobbyBal) lobbyBal.innerText = energy;
+    if (gameBal) gameBal.innerText = energy;
+
+    if (!spinBtn) return;
+
+    if (energy < currentEnergyCost) {
         spinBtn.disabled = true;
         spinBtn.classList.remove('ready-pulse');
-        spinBtn.innerHTML = `НЕ ХВАТАЕТ<br><span class="cost">Нужно ${currentBet} 💎</span>`;
-    }
-    if (autoBtn) autoBtn.disabled = true;
-} else {
-    if (spinBtn) {
+        spinBtn.innerHTML = `НЕТ ЭНЕРГИИ`;
+    } else {
         spinBtn.disabled = false;
         if (!isSpinning) {
             spinBtn.classList.add('ready-pulse');
         }
-        spinBtn.innerHTML = `SPIN <br><span class="cost">-${currentBet} 💎</span>`;
+        spinBtn.innerHTML = `PLAY`;
     }
-    if (autoBtn) autoBtn.disabled = false;
-}
 }
 
 function startGame(themeName) {
     applyVIPTheme(themeName);
-    // Проверка баланса
-    if (currentBet > gems) { 
-    currentBet = 250; 
-    saveData(); 
-    }
-    
-    if (gems < currentBet) {
-        if (gems <= 0) { 
-            gems += 100; 
-            saveData(); 
-            updateUI(); 
-            alert("Банкрот! Дали 100 гемов."); 
-        } else { 
-            return; 
-        }
-    }
 
     // Устанавливаем тему
     currentTheme = themeName;
@@ -266,7 +251,7 @@ function startGame(themeName) {
     // Создаём сетку и обновляем UI
     createGrid();
     updateUI();
-    resultText.innerText = "Нажми PLAY!";
+    resultText.innerText = "Запусти игру!";
 
     // Показываем счётчик лимита ТОЛЬКО если это Ronaldo (опционально)
     const limitEl = document.getElementById('ronaldo-win-limit-display');
@@ -337,8 +322,8 @@ function animateDrop(cells, items, callback) {
 
             // звук последней клетки
             if (isLastCell) {
-    stopSpinSound();
-    playEndSpinSound();
+    stopRollSound();
+    playResultSound();
 }
         }, delay);
     });
@@ -352,7 +337,6 @@ function animateDrop(cells, items, callback) {
 }
 
 
-let isWheelSpinning = false;
 let currentWheelRotation = 0;
 
 function getWeightedWheelReward() {
@@ -439,21 +423,158 @@ function getWheelRewardById(id) {
     return wheelRewards.find(item => item.id === id);
 }
 
+
+let currentStreakCard = null;
+let currentStreakCount = 0;
+
+function getFileNameFromSrc(src) {
+    if (!src) return "";
+    return src.split("/").pop();
+}
+function getCardKey(theme, src) {
+    const fileName = getFileNameFromSrc(src);
+    return `${theme}:${fileName}`;
+}
+
+function getCardRarityBySrc(src) {
+    const fileName = getFileNameFromSrc(src);
+    return cardRarity[fileName];
+}
+
+function getMatchRewardAmount(matchCount) {
+    if (matchCount === 3) return 3;
+    if (matchCount === 4) return 5;
+    if (matchCount >= 5) return 8;
+    return 0;
+}
+function ensureCardProgressExists(cardKey) {
+    if (!playerData.cards) {
+        playerData.cards = {};
+    }
+
+    if (typeof playerData.cards[cardKey] !== "number") {
+        playerData.cards[cardKey] = 0;
+    }
+
+    if (!playerData.claimedRewards) {
+        playerData.claimedRewards = {};
+    }
+
+    if (!playerData.resources) {
+        playerData.resources = {};
+    }
+
+    if (typeof playerData.resources.energy !== "number") {
+        playerData.resources.energy = 100;
+    }
+
+    if (typeof playerData.resources.maxEnergy !== "number") {
+        playerData.resources.maxEnergy = 100;
+    }
+
+    if (typeof playerData.resources.styleCoins !== "number") {
+        playerData.resources.styleCoins = 0;
+    }
+}
+
+function rewardMilestone(cardKey, stage) {
+    const rewardKey = `${cardKey}_stage_${stage}`;
+
+    if (playerData.claimedRewards[rewardKey]) return;
+
+    playerData.claimedRewards[rewardKey] = true;
+
+    let coins = 0;
+    let energyBonus = 0;
+
+    if (stage === 1) {
+        energyBonus = 5;
+    } else if (stage === 2) {
+        coins = 2;
+    } else if (stage === 3) {
+        coins = 4;
+    } else if (stage === 4) {
+        coins = 7;
+    } else if (stage === 5) {
+        coins = 12;
+    } else if (stage === 6) {
+        coins = 20;
+    }
+
+    if (coins > 0) {
+        playerData.resources.styleCoins += coins;
+    }
+
+    if (energyBonus > 0) {
+        playerData.resources.energy = Math.min(
+            playerData.resources.maxEnergy,
+            playerData.resources.energy + energyBonus
+        );
+    }
+}
+
+function checkMilestones(cardKey) {
+    ensureCardProgressExists(cardKey);
+
+    const fileName = cardKey.split(":")[1];
+    const rarity = cardRarity[fileName];
+    const path = progressPaths[rarity];
+    const progress = playerData.cards[cardKey];
+
+    if (!path) return;
+
+    for (let i = 0; i < path.length; i++) {
+        if (progress >= path[i]) {
+            rewardMilestone(cardKey, i + 1);
+        }
+    }
+}
+
+function updateCardStreak(cardKey) {
+    let streakBonus = 0;
+
+    if (!cardKey) {
+        currentStreakCard = null;
+        currentStreakCount = 0;
+        return streakBonus;
+    }
+
+    if (currentStreakCard === cardKey) {
+        currentStreakCount += 1;
+    } else {
+        currentStreakCard = cardKey;
+        currentStreakCount = 1;
+    }
+
+    if (currentStreakCount === 3) {
+        streakBonus = 2;
+        addCardProgress(cardKey, 3);
+    } else if (currentStreakCount === 5) {
+        streakBonus = 5;
+        addCardProgress(cardKey, 4);
+    }
+
+    return streakBonus;
+}
+
+
 function spin() {
     console.log("=== DEBUG SPIN ===");
     console.log("Тема:", currentTheme);
     console.log("Количество картинок в теме:", themes[currentTheme]?.length);
     console.log("Функция getRandomWeightedItem существует?", typeof getRandomWeightedItem === 'function');
 
-    if (isSpinning || !currentTheme || gems < currentBet) return;
+    const currentEnergy = playerData.resources?.energy ?? 0;
 
-    stopJackpotSound();
-    playSpinSound();
+    if (isSpinning || !currentTheme || currentEnergy < currentEnergyCost) return;
+
+    stopRareHitSound();
+    playRollSound();
 
     const items = themes[currentTheme];
     if (!items || items.length === 0) {
         alert("Ошибка: тема не найдена!");
-        stopSpinSound();
+        stopRollSound();
         return;
     }
 
@@ -462,7 +583,9 @@ function spin() {
         finalGrid.push(getRandomWeightedItem(items));
     }
 
-    gems -= currentBet;
+    playerData.resources.energy -= currentEnergyCost;
+    savePlayer();
+
     updateUI();
     animateBalanceChange('loss');
 
@@ -491,24 +614,48 @@ function spin() {
     });
 }
 function checkWins(grid) {
-    console.log("=== ПРОВЕРКА ВЫИГРЫШЕЙ ===");
-    console.log("Ставка:", currentBet);
-
     clearHighlightedCells();
 
-    const profile = getSlotProfile(currentTheme);
-    let totalWin = 0;
+    let totalEnergyReward = 0;
+    let totalXpReward = 1; // базовый XP за сам спин
     const rows = 5;
     const cols = 5;
-
-    // собираем все выигрышные ячейки, чтобы подсветить их разом
     const allWinningIndexes = new Set();
+
+    let spinMainMatchedCard = null;
+    let spinMainMatchedCount = 0;
+    const rewardedCards = [];
 
     function addIndexesToHighlight(indexes) {
         indexes.forEach(i => allWinningIndexes.add(i));
     }
 
-    // === ГОРИЗОНТАЛЬНЫЕ ЛИНИИ ===
+    function registerMatch(item, matchCount, indexes) {
+        const rewardAmount = getMatchRewardAmount(matchCount);
+        const fileName = getFileNameFromSrc(item.src);
+        const cardKey = getCardKey(currentTheme, item.src);
+
+        totalEnergyReward += rewardAmount;
+        totalXpReward += matchCount;
+
+        addCardProgress(cardKey, matchCount);
+
+        rewardedCards.push({
+            cardKey,
+            fileName,
+            amount: rewardAmount,
+            matchCount
+        });
+
+        if (matchCount > spinMainMatchedCount) {
+            spinMainMatchedCount = matchCount;
+            spinMainMatchedCard = cardKey;
+        }
+
+        addIndexesToHighlight(indexes);
+    }
+
+    // ГОРИЗОНТАЛЬНЫЕ ЛИНИИ
     for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols - 2; col++) {
             const idx = row * cols + col;
@@ -516,44 +663,24 @@ function checkWins(grid) {
             const item2 = grid[idx + 1];
             const item3 = grid[idx + 2];
 
-            if (
-                item1 &&
-                item2 &&
-                item3 &&
-                item1.src === item2.src &&
-                item2.src === item3.src
-            ) {
+            if (item1 && item2 && item3 && item1.src === item2.src && item2.src === item3.src) {
                 let matchCount = 3;
 
                 if (col + 3 < cols && grid[idx + 3] && grid[idx + 3].src === item1.src) matchCount++;
                 if (col + 4 < cols && grid[idx + 4] && grid[idx + 4].src === item1.src) matchCount++;
 
-                const multiplier =
-                    item1.mult && !isNaN(parseFloat(item1.mult))
-                        ? parseFloat(item1.mult)
-                        : 1;
-
-                let winAmount = 0;
-
-                if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
-                else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
-                else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
-
-                totalWin += winAmount;
-
                 const winIndexes = [];
                 for (let i = 0; i < matchCount; i++) {
                     winIndexes.push(idx + i);
                 }
-                addIndexesToHighlight(winIndexes);
 
-                // пропускаем уже учтённые клетки в этой линии
+                registerMatch(item1, matchCount, winIndexes);
                 col += matchCount - 1;
             }
         }
     }
 
-    // === ВЕРТИКАЛЬНЫЕ ЛИНИИ ===
+    // ВЕРТИКАЛЬНЫЕ ЛИНИИ
     for (let col = 0; col < cols; col++) {
         for (let row = 0; row < rows - 2; row++) {
             const idx = row * cols + col;
@@ -561,221 +688,70 @@ function checkWins(grid) {
             const item2 = grid[idx + cols];
             const item3 = grid[idx + cols * 2];
 
-            if (
-                item1 &&
-                item2 &&
-                item3 &&
-                item1.src === item2.src &&
-                item2.src === item3.src
-            ) {
+            if (item1 && item2 && item3 && item1.src === item2.src && item2.src === item3.src) {
                 let matchCount = 3;
 
                 if (row + 3 < rows && grid[idx + cols * 3] && grid[idx + cols * 3].src === item1.src) matchCount++;
                 if (row + 4 < rows && grid[idx + cols * 4] && grid[idx + cols * 4].src === item1.src) matchCount++;
 
-                const multiplier =
-                    item1.mult && !isNaN(parseFloat(item1.mult))
-                        ? parseFloat(item1.mult)
-                        : 1;
-
-                let winAmount = 0;
-
-                if (matchCount === 3) winAmount = currentBet * profile.pay3 * multiplier;
-                else if (matchCount === 4) winAmount = currentBet * profile.pay4 * multiplier;
-                else if (matchCount === 5) winAmount = currentBet * profile.pay5 * multiplier;
-
-                totalWin += winAmount;
-
                 const winIndexes = [];
                 for (let i = 0; i < matchCount; i++) {
                     winIndexes.push(idx + cols * i);
                 }
-                addIndexesToHighlight(winIndexes);
+
+                registerMatch(item1, matchCount, winIndexes);
+                row += matchCount - 1;
             }
         }
     }
 
-    // === ДИАГОНАЛИ: слева направо ===
-    for (let row = 0; row < rows - 2; row++) {
-        for (let col = 0; col < cols - 2; col++) {
-            const idx = row * cols + col;
-            const item1 = grid[idx];
-            const item2 = grid[idx + cols + 1];
-            const item3 = grid[idx + cols * 2 + 2];
+    highlightWinningCells([...allWinningIndexes]);
 
-            if (
-                item1 &&
-                item2 &&
-                item3 &&
-                item1.src === item2.src &&
-                item2.src === item3.src
-            ) {
-                const multiplier =
-                    item1.mult && !isNaN(parseFloat(item1.mult))
-                        ? parseFloat(item1.mult)
-                        : 1;
+    let streakBonus = 0;
 
-                totalWin += currentBet * profile.diag3 * multiplier;
-
-                const winIndexes = [
-                    idx,
-                    idx + cols + 1,
-                    idx + cols * 2 + 2
-                ];
-                addIndexesToHighlight(winIndexes);
-            }
-        }
-    }
-
-    // === ДИАГОНАЛИ: справа налево ===
-    for (let row = 0; row < rows - 2; row++) {
-        for (let col = 2; col < cols; col++) {
-            const idx = row * cols + col;
-            const item1 = grid[idx];
-            const item2 = grid[idx + cols - 1];
-            const item3 = grid[idx + cols * 2 - 2];
-
-            if (
-                item1 &&
-                item2 &&
-                item3 &&
-                item1.src === item2.src &&
-                item2.src === item3.src
-            ) {
-                const multiplier =
-                    item1.mult && !isNaN(parseFloat(item1.mult))
-                        ? parseFloat(item1.mult)
-                        : 1;
-
-                totalWin += currentBet * profile.diag3 * multiplier;
-
-                const winIndexes = [
-                    idx,
-                    idx + cols - 1,
-                    idx + cols * 2 - 2
-                ];
-                addIndexesToHighlight(winIndexes);
-            }
-        }
-    }
-
-    // === ПОДСВЕТКА ВСЕХ ВЫИГРЫШНЫХ ЯЧЕЕК ===
-    if (allWinningIndexes.size > 0) {
-        const shouldUseStrongHighlight = allWinningIndexes.size >= 4 || totalWin >= currentBet * 2;
-        highlightCells([...allWinningIndexes], shouldUseStrongHighlight);
-        flashSlotContainer();
-    }
-
-    // === НАЧИСЛЕНИЕ ВЫИГРЫША ===
-if (totalWin > 0) {
-    let finalMultiplier = 1;
-    let isCrit = false;
-    let isHighRollerPassTriggered = false;
-
-    // Rare Drop
-    finalMultiplier += (upgrades.rare || 0) * 0.03;
-
-    // High Roller Access: +10% навсегда
-    if ((upgrades.highroller || 0) >= 1) {
-        finalMultiplier *= 1.10;
-    }
-
-    // Critical Spin
-    const critChance = Math.min(0.05 + (upgrades.crit || 0) * 0.02, 0.25);
-    isCrit = Math.random() < critChance;
-    if (isCrit) {
-        finalMultiplier *= 2;
-    }
-
-    // Gem Booster
-    if ((activeEffects.gemBoosterSpins || 0) > 0) {
-        finalMultiplier *= 1.5;
-        activeEffects.gemBoosterSpins -= 1;
-        saveBlackMarket();
-    }
-
-    // High Roller Pass: 25% шанс дать +25% к выигрышу
-    if ((blackMarketItems.highRollerPass || 0) > 0) {
-        blackMarketItems.highRollerPass -= 1; // тратим на выигрышный спин
-        const passChance = 0.25;
-        if (Math.random() < passChance) {
-            finalMultiplier *= 1.25;
-            isHighRollerPassTriggered = true;
-        }
-        saveBlackMarket();
-        updateBlackMarketUI();
-    }
-
-    totalWin = Math.floor(totalWin * finalMultiplier);
-
-    const maxAllowedWin = Math.floor(currentBet * profile.maxWinMultiplier);
-    if (totalWin > maxAllowedWin) {
-        totalWin = maxAllowedWin;
-    }
-
-    gems += totalWin;
-    totalGemsEarned += totalWin;
-
-    saveData();
-    updateUI();
-    animateBalanceChange('win');
-
-    if (typeof addToLeaderboard === 'function') {
-        addToLeaderboard(totalWin);
-    }
-
-    // Сначала даём игроку увидеть подсветку, потом показываем текст выигрыша
-setTimeout(() => {
-    let resultMessage = "";
-
-    if (totalWin >= currentBet * 10) {
-        resultMessage = getBigWinMessage(totalWin);
-    } else if (totalWin >= currentBet * 2) {
-        resultMessage = getMediumWinMessage(totalWin);
+    if (spinMainMatchedCard) {
+        streakBonus = updateCardStreak(spinMainMatchedCard);
+        totalEnergyReward += streakBonus;
     } else {
-        resultMessage = getSmallWinMessage(totalWin);
+        currentStreakCard = null;
+        currentStreakCount = 0;
     }
 
-    if (isCrit) {
-        resultMessage += " — CRITICAL x2!";
-    }
-
-    if (isHighRollerPassTriggered) {
-        resultMessage += " — HIGH ROLLER PASS +25%!";
-    }
-
-    resultText.innerText = resultMessage;
-}, 350);
-
-    // Big Win показываем чуть позже, чтобы анимация клеток успела сыграть
-    if (totalWin >= currentBet * 10) {
-        setTimeout(() => {
-            showBigWin(totalWin);
-        }, 550);
-    }
-} else {
-    const saverChance = Math.min((upgrades.saver || 0) * 0.04, 0.20);
-
-    if (Math.random() < saverChance) {
-        gems += currentBet;
-        saveData();
-        updateUI();
+    if (totalEnergyReward > 0) {
+        playerData.resources.energy = Math.min(
+            playerData.resources.maxEnergy,
+            playerData.resources.energy + totalEnergyReward
+        );
         animateBalanceChange('win');
-        resultText.innerText = "🛟 Bet Saver сработал! Ставка возвращена";
-    } else {
-        if (hasNearMiss(grid)) {
-            resultText.innerText = getRandomFrom([
-                "Почти! Комбинация была рядом 👀",
-                "Очень близко...",
-                "Ещё чуть-чуть!"
-            ]);
-        } else {
-            resultText.innerText = getLossMessage();
-        }
     }
-}
 
-    saveData();
+    addXP(totalXpReward);
+    savePlayer();
+
+    if (rewardedCards.length > 0) {
+        const firstReward = rewardedCards[0];
+        let text = `+${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+
+        if (firstReward.matchCount === 4) {
+            text = `Совпадение x4 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+        }
+
+        if (firstReward.matchCount >= 5) {
+            text = `Совпадение x5 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+        }
+
+        text += ` • +${totalXpReward} XP`;
+
+        if (streakBonus > 0) {
+            text += ` • Серия +${streakBonus} энергии`;
+        }
+
+        resultText.innerText = text;
+    } else {
+        resultText.innerText = `Нет совпадений • +${totalXpReward} XP • серия сброшена`;
+    }
+
+    updateUI();
 }
 
 function fireConfetti() {
@@ -793,7 +769,7 @@ function fireConfetti() {
 }
 
 function showBigWin(amount) {
-    stopSpinSound();
+    stopRollSound();
 
     modalAmount.innerText = amount;
     winModal.classList.add('active');
@@ -804,11 +780,11 @@ function showBigWin(amount) {
     }
 
     fireConfetti();
-    playJackpotSound();
+    playRareHitSound();
 }
 
 function closeModal() {
-    stopJackpotSound();
+    stopRareHitSound();
 
     winModal.classList.remove('active');
 
@@ -1463,226 +1439,6 @@ function getRandomItem(arr) {
 }
 
 
-
-function goBackToLobby() {
-    document.getElementById('game-screen').style.display = 'none';
-    document.getElementById('crash-screen').style.display = 'none';
-    document.getElementById('mines-screen').style.display = 'none';
-    
-    document.getElementById('lobby-screen').classList.add('active');
-    
-    autoSpinActive = false;
-    clearInterval(crashInterval);
-    cancelAnimationFrame(animationFrameId); // 👈 Добавь это, если используешь requestAnimationFrame
-}
-
-
-
-
-// === ПЕРЕМЕННЫЕ РАКЕТКИ ===
-let crashGameActive = false;
-let currentCrashMultiplier = 1.00;
-let crashPoint = 0;
-let crashInterval;
-let crashBet = 0;
-let animationFrameId;
-
-function openCrashGame() {
-    // Скрываем лобби и слоты
-    document.getElementById('lobby-screen').classList.remove('active');
-    document.getElementById('game-screen').style.display = 'none';
-    
-    // Показываем экран ракетки
-    document.getElementById('crash-screen').style.display = 'block';
-    updateCrashBalance();
-}
-
-function openMinesGame() {
-    // Скрываем лобби и слоты
-    document.getElementById('lobby-screen').classList.remove('active');
-    document.getElementById('game-screen').style.display = 'none';
-    
-    // Показываем экран сапёра
-    document.getElementById('mines-screen').style.display = 'block';
-    
-    // Инициализируем сетку сапёра при первом открытии
-    if (!document.getElementById('mines-grid').hasChildNodes()) {
-        renderMinesGridVisuals();
-    }
-}
-
-function updateCrashBalance() {
-    const crashBalEl = document.getElementById('crash-balance-display');
-    if (crashBalEl) {
-        crashBalEl.innerText = gems.toLocaleString();
-    }
-}
-
-
-
-function changeCrashBet(multiplier) {
-    const input = document.getElementById('crash-bet-input');
-    if (crashGameActive) return; // Нельзя менять ставку во время игры
-
-    let currentBet = parseInt(input.value);
-    let newBet = Math.floor(currentBet * multiplier);
-
-    // Ограничения
-    if (newBet < 250) newBet = 250;
-    if (newBet > gems) newBet = gems;
-
-    input.value = newBet;
-}
-
-function setMaxCrashBet() {
-    const input = document.getElementById('crash-bet-input');
-    if (!crashGameActive) {
-        input.value = gems;
-    }
-}
-
-
-function changeCrashBet(multiplier) {
-    const input = document.getElementById('crash-bet-input');
-    let currentBet = parseInt(input.value);
-    if (crashGameActive) return;
-
-    let newBet = Math.floor(currentBet * multiplier);
-    if (newBet < 250) newBet = 250;
-    if (newBet > gems) newBet = gems;
-    input.value = newBet;
-}
-
-function setMaxCrashBet() {
-    const input = document.getElementById('crash-bet-input');
-    if (!crashGameActive) {
-        input.value = gems;
-    }
-}
-
-
-function updateCrashBalance() {
-    const crashBalEl = document.getElementById('crash-balance-display');
-    if (crashBalEl) {
-        crashBalEl.innerText = gems.toLocaleString();
-    }
-}
-
-
-
-// === ОСНОВНАЯ ЛОГИКА CRASH GAME ===
-
-function playCrash() {
-    const betInput = document.getElementById('crash-bet-input');
-    const bet = parseInt(betInput.value);
-    const btn = document.getElementById('crash-btn');
-    const display = document.getElementById('multiplier-display');
-    const rocket = document.getElementById('rocket-container');
-    const pilotFace = document.getElementById('pilot-face');
-
-    if (bet > gems || bet <= 0) {
-        alert("Недостаточно гемов!");
-        return;
-    }
-
-    if (crashGameActive) {
-        cashOutCrash();
-        return;
-    }
-
-    gems -= bet;
-    crashBet = bet;
-    updateUI();
-    updateCrashBalance();
-
-    // Генерация точки краша
-    crashPoint = (0.99 / (1 - Math.random())).toFixed(2);
-    if (Math.random() < 0.03) crashPoint = 1.00;
-
-    currentCrashMultiplier = 1.00;
-    crashGameActive = true;
-
-    // Сброс визуала
-    display.classList.remove('crashing', 'winning');
-    display.innerText = "1.00x";
-    display.style.color = "#fff";
-    
-    rocket.style.transform = "translateY(0)";
-    rocket.style.display = 'block'; // Показываем ракету
-    pilotFace.src = "image/melstroy_calm.png";
-
-    btn.innerText = "ЗАБРАТЬ";
-    btn.style.background = "linear-gradient(to bottom, #00ff88, #00cc6a)";
-
-    let startTime = Date.now();
-    let particleInterval;
-
-    function animate() {
-        if (!crashGameActive) return;
-
-        let elapsed = (Date.now() - startTime) / 1000;
-        // Формула роста множителя
-        currentCrashMultiplier = Math.pow(Math.E, 0.15 * elapsed).toFixed(2);
-        
-        display.innerText = currentCrashMultiplier + "x";
-
-        // Движение ракеты вверх (до 80% высоты экрана)
-        let progress = Math.min(elapsed / 8, 1); 
-        let yOffset = progress * 80; 
-        rocket.style.transform = `translateY(-${yOffset}%)`;
-
-        // Смена эмоции Мелстроя
-        if (currentCrashMultiplier > 15) {
-            pilotFace.src = "image/melstroy_scared.png"; // Нужна картинка melstroy_scared.png
-        } else if (currentCrashMultiplier > 5) {
-            pilotFace.src = "image/melstroy_surprised.png"; // Нужна картинка melstroy_surprised.png
-        }
-
-        // Генерация частиц (монеты, гемы и т.д.)
-        if (Math.random() < 0.3) {
-            spawnParticle();
-        }
-
-        // Проверка на краш
-        if (parseFloat(currentCrashMultiplier) >= parseFloat(crashPoint)) {
-            endCrashGame(false);
-            clearInterval(particleInterval);
-            return;
-        }
-
-        animationFrameId = requestAnimationFrame(animate);
-    }
-
-    // Запуск генерации частиц каждые 100мс
-    particleInterval = setInterval(() => {
-        if (crashGameActive) spawnParticle();
-    }, 100);
-
-    animate();
-}
-
-function spawnParticle() {
-    const container = document.getElementById('engine-effects');
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    
-    // Случайный выбор: монета, гем, огонь или кубок
-    const types = ['coin', 'gem-particle', 'fire-particle', 'trophy'];
-    const randomType = types[Math.floor(Math.random() * types.length)];
-    particle.classList.add(randomType);
-    
-    // Разброс влево-вправо
-    let randomX = (Math.random() - 0.5) * 60;
-    particle.style.left = `calc(50% - 15px + ${randomX}px)`;
-    particle.style.bottom = '-10px';
-    
-    container.appendChild(particle);
-    
-    setTimeout(() => {
-        if (particle.parentNode) particle.parentNode.removeChild(particle);
-    }, 1200);
-}
-
 function endCrashGame(win) {
     crashGameActive = false;
     cancelAnimationFrame(animationFrameId);
@@ -1828,7 +1584,7 @@ function startMinesGame() {
     const bet = parseInt(betInput.value);
     
     if (bet > gems || bet <= 0) {
-        alert("Недостаточно гемов или неверная ставка!");
+        alert("Недостаточно энергии !");
         return;
     }
 
@@ -2021,75 +1777,11 @@ function showMineExplosion() {
     document.body.appendChild(overlay);
     setTimeout(() => overlay.remove(), 300);
 }
-
-
-
-let upgrades = JSON.parse(localStorage.getItem('memeUpgrades')) || {
-    crit: 0,
-    saver: 0,
-    auto: 0,
-    rare: 0,
-    highroller: 0
-};
-
-const upgradeBaseCosts = {
-    crit: 1200,
-    saver: 1800,
-    auto: 2200,
-    rare: 2600,
-    highroller: 500000// или 500000, если хочешь реально элитную цену
-};
-
-function saveUpgrades() {
-    localStorage.setItem('memeUpgrades', JSON.stringify(upgrades));
-}
-
-function updateUpgradesUI() {
-    const mapping = [
-        ['crit', 'upgrade-crit-level', 'upgrade-crit-cost'],
-        ['saver', 'upgrade-saver-level', 'upgrade-saver-cost'],
-        ['auto', 'upgrade-auto-level', 'upgrade-auto-cost'],
-        ['rare', 'upgrade-rare-level', 'upgrade-rare-cost'],
-        ['highroller', 'upgrade-highroller-level', 'upgrade-highroller-cost']
-    ];
-
-    mapping.forEach(([type, levelId, costId]) => {
-        const levelEl = document.getElementById(levelId);
-        const costEl = document.getElementById(costId);
-
-        if (levelEl) levelEl.innerText = upgrades[type] || 0;
-        if (costEl) costEl.innerText = getUpgradeCost(type);
-    });
-}
-
 function getUpgradeCost(type) {
     if (type === 'highroller') {
         return upgradeBaseCosts.highroller;
     }
     return Math.floor(upgradeBaseCosts[type] * Math.pow(1.55, upgrades[type] || 0));
-}
-
-function buyUpgrade(type) {
-    if (type === 'highroller' && (upgrades.highroller || 0) >= 1) {
-        alert('High Roller Access уже куплен!');
-        return;
-    }
-
-    const cost = getUpgradeCost(type);
-
-    if (gems < cost) {
-        alert('Недостаточно гемов!');
-        return;
-    }
-
-    gems -= cost;
-    upgrades[type] = (upgrades[type] || 0) + 1;
-
-    saveUpgrades();
-    saveData();
-    updateUI();
-    updateUpgradesUI();
-    animateBalanceChange('loss');
 }
 
 
@@ -2312,42 +2004,6 @@ function updateWheelUI() {
     }
 }
 
-
-
-const wheelRewards = [
-    // COMMON
-    { id: 'gems300', label: '300 💎', icon: '💎', rarity: 'common', type: 'gems', value: 300, weight: 32 },
-    { id: 'gems700', label: '700 💎', icon: '💎', rarity: 'common', type: 'gems', value: 700, weight: 24 },
-    { id: 'gems1200', label: '1200 💎', icon: '💎', rarity: 'common', type: 'gems', value: 1200, weight: 18 },
-
-    // RARE
-    { id: 'ticket1', label: 'Lucky Ticket', icon: '🎟', rarity: 'rare', type: 'ticket', value: 1, weight: 10 },
-    { id: 'auto1', label: 'Auto Pack', icon: '⚡', rarity: 'rare', type: 'auto', value: 1, weight: 8 },
-    { id: 'shield1', label: 'Shield', icon: '🛡', rarity: 'rare', type: 'shield', value: 1, weight: 7 },
-    { id: 'doubleRoll1', label: 'Double Roll', icon: '🎲', rarity: 'rare', type: 'doubleRoll', value: 1, weight: 5 },
-    { id: 'rageSpin1', label: 'Rage Spin', icon: '🔥', rarity: 'rare', type: 'rageSpin', value: 1, weight: 4 },
-
-    // EPIC
-    { id: 'gems5000', label: '5000 💎', icon: '💎', rarity: 'epic', type: 'gems', value: 5000, weight: 2.4 },
-    { id: 'ticket2', label: '2x Lucky Ticket', icon: '🎟', rarity: 'epic', type: 'ticket', value: 2, weight: 1.4 },
-    { id: 'auto2', label: '2x Auto Pack', icon: '⚡', rarity: 'epic', type: 'auto', value: 2, weight: 1.0 },
-    { id: 'shield2', label: '2x Shield', icon: '🛡', rarity: 'epic', type: 'shield', value: 2, weight: 0.9 },
-    { id: 'gemBooster', label: 'Gem Booster x5', icon: '🚀', rarity: 'epic', type: 'gemBooster', value: 5, weight: 0.9 },
-
-    // LEGENDARY
-    { id: 'gems12000', label: '12000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 12000, weight: 0.35 },
-    { id: 'gems25000', label: '25000 💎', icon: '💎', rarity: 'legendary', type: 'gems', value: 25000, weight: 0.08 },
-    { id: 'hrpass2', label: '2x HR Pass', icon: '💠', rarity: 'legendary', type: 'pass', value: 2, weight: 0.22 },
-    { id: 'doubleRoll3', label: '3x Double Roll', icon: '🎲', rarity: 'legendary', type: 'doubleRoll', value: 3, weight: 0.12 },
-
-// MYTHIC
-{ id: 'secretBox', label: 'Secret Box', icon: '🎁', rarity: 'mythic', type: 'secretBox', value: 1, weight: 0.02 },
-{ id: 'secretKey', label: 'Secret Key', icon: '🔑', rarity: 'mythic', type: 'secretKey', value: 1, weight: 0.012 },
-{ id: 'gems50000', label: '50000 💎', icon: '💎', rarity: 'mythic', type: 'gems', value: 50000, weight: 0.01 }
-];
-
-
-
 function spinWheel() {
     const effectiveVIP = getEffectiveVIPLevel();
 
@@ -2411,7 +2067,7 @@ function spinWheel() {
         panel.classList.remove('win-legendary', 'win-mythic');
     }
 
-    playSpinSound();
+    playRollSound();
 
     wheelEl.style.transition = 'transform 5.4s cubic-bezier(0.08, 0.82, 0.17, 1)';
     wheelEl.style.transform = `rotate(${finalRotation}deg)`;
@@ -2419,8 +2075,8 @@ function spinWheel() {
     currentWheelRotation = finalRotation % 360;
 
     setTimeout(() => {
-        stopSpinSound();
-        playEndSpinSound();
+        stopRollSound();
+        playResultSound();
 
         giveWheelReward(chosenReward);
         localStorage.setItem('wheelSpinTime', Date.now().toString());
@@ -2435,15 +2091,15 @@ function spinWheel() {
             }
 
             if (panel) panel.classList.add('win-mythic');
-            playJackpotSound();
-            setTimeout(() => stopJackpotSound(), 2600);
+            playRareHitSound();
+            setTimeout(() => stopRareHitSound(), 2600);
 
         } else if (chosenReward.rarity === 'legendary') {
             resultEl.innerText = `👑 ЛЕГЕНДАРНЫЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
 
             if (panel) panel.classList.add('win-legendary');
-            playJackpotSound();
-            setTimeout(() => stopJackpotSound(), 2200);
+            playRareHitSound();
+            setTimeout(() => stopRareHitSound(), 2200);
 
         } else if (chosenReward.rarity === 'epic') {
             resultEl.innerText = `✨ ЭПИЧЕСКИЙ ПРИЗ: ${chosenReward.icon} ${chosenReward.label}`;
@@ -3903,31 +3559,31 @@ function updateLeaderboardPanelText() {
 }
 
 
-function playSpinSound() {
+function playRollSound() {
     spinSound.pause();
     spinSound.currentTime = 0;
     spinSound.play().catch(() => {});
 }
 
-function stopSpinSound() {
+function stopRollSound(){
     spinSound.pause();
     spinSound.currentTime = 0;
 }
 
-function playEndSpinSound() {
+function playResultSound() {
     endSpinSound.pause();
     endSpinSound.currentTime = 0;
     endSpinSound.play().catch(() => {});
 }
 
-function playJackpotSound() {
+function playRareHitSound() {
     jackpotSound.pause();
     jackpotSound.currentTime = 0;
     jackpotSound.play().catch(() => {});
     isBigWinSoundPlaying = true;
 }
 
-function stopJackpotSound() {
+function stopRareHitSound() {
     jackpotSound.pause();
     jackpotSound.currentTime = 0;
     isBigWinSoundPlaying = false;
@@ -3945,6 +3601,181 @@ function getEffectiveVIPLevel() {
         storedMain,
         trialLevel
     );
+}
+
+
+const playerData = {
+    cards: {
+   "1.jpg": 0,
+   "2.jpg": 0,
+   "3.jpg": 0,
+   "4.jpg": 0,
+   "5.jpg": 0,
+   "6.jpg": 0,
+   "7.jpg": 0,
+   "8.jpg": 0
+},
+    profile: {
+        name: "Player",
+        level: 1,
+        xp: 0,
+        xpNeeded: 50
+    },
+
+    resources: {
+        energy: 100,
+        maxEnergy: 100,
+        styleCoins: 0,
+        premiumTokens: 0
+    },
+
+    timers: {
+        lastEnergyRegen: Date.now(),
+        dailyClaim: 0
+    },
+
+    stats: {
+        totalSpins: 0,
+        totalCardsCollected: 0,
+        totalThemesCompleted: 0
+    },
+
+    themes: {},
+
+    achievements: {},
+
+    battlePass: {
+        level: 1,
+        xp: 0,
+        premium: false
+    },
+
+    settings: {
+        sound: true,
+        music: true
+    }
+};
+
+function savePlayer() {
+    localStorage.setItem("mcc_player", JSON.stringify(playerData));
+}
+
+function loadPlayer() {
+    const save = localStorage.getItem("mcc_player");
+
+    if (save) {
+        const parsed = JSON.parse(save);
+        Object.assign(playerData, parsed);
+    }
+}
+
+function regenEnergy() {
+    const now = Date.now();
+    const diff = now - playerData.timers.lastEnergyRegen;
+
+    const minutes = Math.floor(diff / 60000);
+
+    const gained = Math.floor(minutes / 8);
+
+    if (gained > 0) {
+        playerData.resources.energy = Math.min(
+            playerData.resources.maxEnergy,
+            playerData.resources.energy + gained
+        );
+
+        playerData.timers.lastEnergyRegen = now;
+        savePlayer();
+    }
+}
+
+function addXP(amount) {
+    playerData.profile.xp += amount;
+
+    while (playerData.profile.xp >= playerData.profile.xpNeeded) {
+        playerData.profile.xp -= playerData.profile.xpNeeded;
+        playerData.profile.level++;
+
+        playerData.profile.xpNeeded = Math.floor(
+            playerData.profile.xpNeeded * 1.15
+        );
+
+        playerData.resources.energy = playerData.resources.maxEnergy;
+    }
+
+    savePlayer();
+}
+function addCard(theme, cardId, amount = 1) {
+    playerData.themes[theme].cards[cardId] += amount;
+    playerData.stats.totalCardsCollected += amount;
+
+    savePlayer();
+}
+
+function initThemes() {
+    const themeNames = [
+        "sasavot",
+        "ronaldo",
+        "mellstroy"
+    ];
+
+    themeNames.forEach(theme => {
+        if (!playerData.themes[theme]) {
+            playerData.themes[theme] = {
+                unlocked: true,
+                progress: 0,
+
+                cards: {
+                    card1:0, card2:0, card3:0, card4:0,
+                    card5:0, card6:0, card7:0, card8:0
+                },
+
+                rewardsClaimed: {},
+
+                cosmetics: {
+                    head:"default",
+                    body:"default",
+                    legs:"default",
+                    aura:"none",
+                    background:"default"
+                }
+            };
+        }
+    });
+}
+function addCardProgress(cardKey, matchCount) {
+    ensureCardProgressExists(cardKey);
+
+    const amount = getMatchRewardAmount(matchCount);
+    playerData.cards[cardKey] += amount;
+
+    checkMilestones(cardKey);
+    savePlayer();
+}ы
+function rewardMilestone(cardName, stage) {
+
+    const key = cardName + "_stage_" + stage;
+
+    if (playerData.claimedRewards?.[key]) return;
+
+    if (!playerData.claimedRewards) {
+        playerData.claimedRewards = {};
+    }
+
+    playerData.claimedRewards[key] = true;
+
+    let coins = 0;
+
+    if (stage === 1) coins = 2;
+    if (stage === 2) coins = 3;
+    if (stage === 3) coins = 5;
+    if (stage === 4) coins = 8;
+    if (stage === 5) coins = 12;
+    if (stage === 6) coins = 20;
+
+    playerData.resources.styleCoins += coins;
+
+    resultText.innerText =
+      `Награда! +${coins} монет`;
 }
 // === ЗАПУСК ===
 window.onload = () => {
