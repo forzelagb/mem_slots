@@ -9,6 +9,7 @@ const cardRarity = {
  "7.jpg":"legendary",
  "8.jpg":"legendary"
 };
+let vipLevel = 0;
 
 const progressPaths = {
  common: [50,150,400,900,1800,3500],
@@ -174,6 +175,22 @@ function createGrid() {
         cell.appendChild(img);
         gridEl.appendChild(cell);
     }
+}
+
+
+function clearHighlightedCells() {
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.classList.remove('win-cell');
+    });
+}
+
+function highlightWinningCells(indexes) {
+    indexes.forEach(index => {
+        const cell = document.querySelectorAll('.cell')[index];
+        if (cell) {
+            cell.classList.add('win-cell');
+        }
+    });
 }
 
 function animateBalanceChange(type) {
@@ -448,6 +465,16 @@ function ensureCardProgressExists(cardKey) {
     if (typeof playerData.resources.styleCoins !== "number") {
         playerData.resources.styleCoins = 0;
     }
+}
+
+
+
+function addCardProgress(cardKey, amount) {
+    ensureCardProgressExists(cardKey);
+
+    playerData.cards[cardKey] += amount;
+
+    checkMilestones(cardKey);
 }
 
 function rewardMilestone(cardKey, stage) {
