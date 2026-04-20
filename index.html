@@ -95,11 +95,22 @@
 
 </div>
 <div id="tab-collection" class="tab-content">
-    <h2 class="section-title">🗂 КОЛЛЕКЦИЯ</h2>
+    <div id="collection-home-view" class="collection-page">
+        <h2 class="section-title">🗂 КОЛЛЕКЦИЯ</h2>
+        <div class="collection-page-subtitle">Открывай темы, собирай все 8 карточек и закрывай прогресс на 100%</div>
 
-    <div id="collection-themes"></div>
+        <div id="collection-theme-list" class="collection-theme-list"></div>
+    </div>
 
-    <div id="collection-theme-detail" style="display:none;"></div>
+    <div id="collection-detail-view" class="collection-page" style="display:none;">
+        <div class="collection-detail-top">
+            <button class="collection-back-btn" onclick="closeThemeDetail()">← Назад ко всем темам</button>
+        </div>
+
+        <div id="collection-detail-hero" class="collection-detail-hero"></div>
+
+        <div id="collection-detail-grid" class="collection-detail-grid"></div>
+    </div>
 </div>
     </div>
 
