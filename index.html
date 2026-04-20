@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEME SPIN PRO 💎</title>
+    <title>Meme Collection Club</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <!-- Аналитика GoatCounter -->
@@ -34,24 +34,22 @@
 </div>
 <div class="bonus-panel daily-panel">
     <h3>🎁 Ежедневный бонус</h3>
-    <p id="daily-reward-text">
-    Ежедневная награда для всех<br>
-    <span style="color:#ffd700;">С VIP — больше бонусов 💎</span>
-    </p>
+<p id="daily-reward-text">
+    Ежедневная бесплатная награда для всех игроков
+</p>
     <button class="btn-bonus" id="daily-reward-btn" onclick="openDailyCalendar()">
     Открыть награды
     </button>
 </div>
 
 <div class="hero-banner">
-    <div class="hero-badge">🔥 MEME CASINO OF THE INTERNET</div>
-    <h1 class="hero-title">Крути. Фарми. Рискуй. Забирай джекпоты.</h1>
-    <p class="hero-subtitle">
-        Бесплатные алмазы, мем-слоты, мины, ракета и VIP режим.
-    </p>
+    <div class="hero-badge">🔥 MEME FUN HUB OF THE INTERNET</div>
+    <h1 class="hero-title">Играй. Собирай. Открывай редкие комбо.</h1>
+<p class="hero-subtitle">
+    Бесплатная энергия, мем-темы, коллекции, комбо и кастомизация.
+</p>
     <div class="hero-actions">
-        <button class="hero-btn hero-btn-primary" onclick="openTab('games')">🎰 Играть сейчас</button>
-        <button class="hero-btn hero-btn-secondary" onclick="openTab('market')">🛒 BLACK MARKET</button>
+<button class="hero-btn hero-btn-primary" onclick="openTab('games')">🎮 Играть сейчас</button>
     </div>
 </div>
         
@@ -59,11 +57,7 @@
 <div class="tabs-shell">
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
-        <button class="tab-btn" onclick="openTab('wheel')">🎡 Рулетка</button>
-        <button class="tab-btn" onclick="openTab('upgrades')">⬆️ Улучшения</button>
         <button class="tab-btn" onclick="openTab('leaderboard')">🏆 Лидеры</button>
-        <button id="btn-secret" class="tab-btn btn-secret" onclick="openTab('secret')">💎 VIP STORE</button>
-        <button class="tab-btn" onclick="openTab('vipzone')">👑 VIP ZONE</button>
     </div>
 </div>
         
@@ -74,54 +68,29 @@
     <h2 class="section-title">🔥 ГЛАВНЫЕ РЕЖИМЫ</h2>
 
     <div class="games-grid featured-grid">
-        <div class="game-card" onclick="openCrashGame()">
-            <div class="card-image crash-bg"></div>
-            <div class="card-content">
-                <h3>🚀 CRASH GAME</h3>
-                <p>Успей забрать до взрыва!</p>
-            </div>
-        </div>
-
-        <div class="game-card" onclick="openMinesGame()">
-            <div class="card-image mines-bg"></div>
-            <div class="card-content">
-                <h3>💣 MINESWEEPER</h3>
-                <p>Не подорвись на мине!</p>
-            </div>
-        </div>
 
         <div class="game-card" onclick="startGame('brain')">
             <div class="card-image brain-bg"></div>
             <div class="card-content">
-                <h3>🎰 CLASSIC SLOT</h3>
-                <p>Главный слот для быстрого старта</p>
+<h3>🎮 CLASSIC GRID</h3>
+<p>Главный режим для быстрого старта</p>
             </div>
         </div>
-
-<div class="game-card vip-zone-card" onclick="openTab('vipzone')">
-    <div class="card-image vip-zone-bg">
-        <div class="vip-zone-badge">PREMIUM</div>
-    </div>
-    <div class="card-content">
-        <h3>👑 VIP ZONE</h3>
-        <p>Эксклюзивные слоты, рулетка и премиум-бонусы</p>
-    </div>
-</div>
     </div>
 
-    <h3 class="sub-section-title">🎰 МЕМ-СЛОТЫ</h3>
+    <h3 class="sub-section-title">🎮 МЕМ-ТЕМЫ</h3>
 
     <div class="games-grid">
-        <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('lexapaws')"><div class="card-image lexapaws-bg"></div><div class="card-content"><h3>🐾 LEXA PAWS</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('litwin')"><div class="card-image litwin-bg"></div><div class="card-content"><h3>🎮 LITWIN</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('melstroy')"><div class="card-image melstroy-bg"></div><div class="card-content"><h3>👑 MELLSTROY</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('nikkifn')"><div class="card-image nikkifn-bg"></div><div class="card-content"><h3>🎯 NIKKIFN</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('rejiboi')"><div class="card-image rejiboi-bg"></div><div class="card-content"><h3>🕺 REJIBOI</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('rostick')"><div class="card-image rostick-bg"></div><div class="card-content"><h3>🌭 ROSTICK</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('sasich')"><div class="card-image sasich-bg"></div><div class="card-content"><h3>🗣️ SASICH</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3><p>Ставка настраивается в игре</p></div></div>
-        <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3><p>Ставка настраивается в игре</p></div></div>
+        <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3></div></div>
+        <div class="game-card" onclick="startGame('lexapaws')"><div class="card-image lexapaws-bg"></div><div class="card-content"><h3>🐾 LEXA PAWS</h3></div></div>
+        <div class="game-card" onclick="startGame('litwin')"><div class="card-image litwin-bg"></div><div class="card-content"><h3>🎮 LITWIN</h3></div></div>
+        <div class="game-card" onclick="startGame('melstroy')"><div class="card-image melstroy-bg"></div><div class="card-content"><h3>👑 MELLSTROY</h3></div></div>
+        <div class="game-card" onclick="startGame('nikkifn')"><div class="card-image nikkifn-bg"></div><div class="card-content"><h3>🎯 NIKKIFN</h3></div></div>
+        <div class="game-card" onclick="startGame('rejiboi')"><div class="card-image rejiboi-bg"></div><div class="card-content"><h3>🕺 REJIBOI</h3></div></div>
+        <div class="game-card" onclick="startGame('rostick')"><div class="card-image rostick-bg"></div><div class="card-content"><h3>🌭 ROSTICK</h3></div></div>
+        <div class="game-card" onclick="startGame('sasich')"><div class="card-image sasich-bg"></div><div class="card-content"><h3>🗣️ SASICH</h3></div></div>
+        <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3></div></div>
+        <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3></div></div>
     </div>
 
 </div>
@@ -192,271 +161,6 @@
 </div>
 </div>
 
-        <!-- === ВКЛАДКА 4: СЕКРЕТНАЯ ЗОНА (VIP) === -->
-<div id="tab-secret" class="tab-content">
-    <div class="vip-store-panel">
-        <div class="vip-store-header">
-            <div class="vip-store-badge">🛒 VIP STORE</div>
-            <h2 class="vip-store-title">Выбери VIP-подписку</h2>
-            <p class="vip-store-subtitle">
-                Здесь можно посмотреть VIP-уровни, их бонусы, цены и активировать промокод.
-                Это витрина + донат-панель.
-            </p>
-        </div>
-
-        <div class="vip-status-box">
-            <p class="vip-status-label">Твой текущий статус:</p>
-            <p class="vip-status-value" id="vip-current-status">Без VIP</p>
-        </div>
-
-        <div class="vip-products-grid">
-            <div class="vip-product-card vip-tier-1">
-                <div class="vip-product-level">VIP 1</div>
-                <h3 class="vip-product-title">👑 Ronaldo Pass</h3>
-                <div class="vip-product-price">49 ₽ / месяц</div>
-
-                <ul class="vip-product-benefits">
-                    <li>+1000 💎 каждый день</li>
-                    <li>Доступ к VIP ZONE</li>
-                    <li>Открывает слот Ronaldo</li>
-                    <li>+5 автоспинов ежедневно</li>
-                </ul>
-
-                <a href="https://www.donationalerts.com/r/forzelagb?amount=49&message=VIP1"
-                   target="_blank"
-                   class="vip-product-btn">
-                    Купить VIP 1
-                </a>
-            </div>
-
-            <div class="vip-product-card vip-tier-2">
-                <div class="vip-product-level">VIP 2</div>
-                <h3 class="vip-product-title">🟢 Shrek Club</h3>
-                <div class="vip-product-price">99 ₽ / месяц</div>
-
-                <ul class="vip-product-benefits">
-                    <li>+2500 💎 каждый день</li>
-                    <li>Все бонусы VIP 1</li>
-                    <li>Открывает слот Shrek</li>
-                    <li>VIP-рулетка</li>
-                </ul>
-
-                <a href="https://www.donationalerts.com/r/forzelagb?amount=99&message=VIP2"
-                   target="_blank"
-                   class="vip-product-btn">
-                    Купить VIP 2
-                </a>
-            </div>
-
-            <div class="vip-product-card vip-tier-3">
-                <div class="vip-product-level">VIP 3</div>
-                <h3 class="vip-product-title">🧽 SpongeBob Elite</h3>
-                <div class="vip-product-price">149 ₽ / месяц</div>
-
-                <ul class="vip-product-benefits">
-                    <li>+5000 💎 каждый день</li>
-                    <li>Все бонусы VIP 1–2</li>
-                    <li>Открывает слот SpongeBob</li>
-                    <li>Эксклюзивные VIP-награды</li>
-                </ul>
-
-                <a href="https://www.donationalerts.com/r/forzelagb?amount=149&message=VIP3"
-                   target="_blank"
-                   class="vip-product-btn">
-                    Купить VIP 3
-                </a>
-            </div>
-
-            <div class="vip-product-card vip-tier-4">
-                <div class="vip-product-level">VIP 4</div>
-                <h3 class="vip-product-title">⚡ Speed Legend</h3>
-                <div class="vip-product-price">199 ₽ / месяц</div>
-
-                <ul class="vip-product-benefits">
-                    <li>+10000 💎 каждый день</li>
-                    <li>Все VIP-бонусы сразу</li>
-                    <li>Открывает слот Speed</li>
-                    <li>Максимальные VIP-привилегии</li>
-                </ul>
-
-                <a href="https://www.donationalerts.com/r/forzelagb?amount=199&message=VIP4"
-                   target="_blank"
-                   class="vip-product-btn">
-                    Купить VIP 4
-                </a>
-            </div>
-        </div>
-<div class="vip-details-box">
-    <h3 class="vip-details-title">📦 Что входит в VIP уровни</h3>
-    <p class="vip-details-subtitle">
-        Все VIP-уровни открывают доступ к премиум-контенту, но каждый следующий тариф даёт больше бонусов,
-        больше наград и больше эксклюзивных возможностей.
-    </p>
-
-    <div class="vip-details-grid">
-        <div class="vip-details-card">
-            <div class="vip-details-head">
-                <span class="vip-details-badge">VIP 1</span>
-                <h4>👑 Ronaldo Pass</h4>
-            </div>
-            <ul class="vip-details-list">
-                <li>Доступ к VIP ZONE</li>
-                <li>Открывает VIP-слот Ronaldo</li>
-                <li>+1000 💎 ежедневный VIP-бонус</li>
-                <li>+5 автоспинов каждый день</li>
-                <li>Участие в VIP-акциях и специальных раздачах</li>
-            </ul>
-        </div>
-
-        <div class="vip-details-card">
-            <div class="vip-details-head">
-                <span class="vip-details-badge">VIP 2</span>
-                <h4>🟢 Shrek Club</h4>
-            </div>
-            <ul class="vip-details-list">
-                <li>Всё, что входит в VIP 1</li>
-                <li>Открывает VIP-слот Shrek</li>
-                <li>VIP-рулетка с отдельными наградами</li>
-                <li>+2500 💎 ежедневный VIP-бонус</li>
-                <li>Дополнительные еженедельные награды</li>
-            </ul>
-        </div>
-
-        <div class="vip-details-card">
-            <div class="vip-details-head">
-                <span class="vip-details-badge">VIP 3</span>
-                <h4>🧽 SpongeBob Elite</h4>
-            </div>
-            <ul class="vip-details-list">
-                <li>Всё, что входит в VIP 1–2</li>
-                <li>Открывает VIP-слот SpongeBob</li>
-                <li>+5000 💎 ежедневный VIP-бонус</li>
-                <li>Эксклюзивные бонусные выдачи</li>
-                <li>Редкие промокоды и доступ к особым ивентам</li>
-            </ul>
-        </div>
-
-        <div class="vip-details-card">
-            <div class="vip-details-head">
-                <span class="vip-details-badge">VIP 4</span>
-                <h4>⚡ Speed Legend</h4>
-            </div>
-            <ul class="vip-details-list">
-                <li>Полный доступ ко всему VIP-контенту</li>
-                <li>Открывает VIP-слот Speed</li>
-                <li>+10000 💎 ежедневный VIP-бонус</li>
-                <li>Максимальные бонусы, награды и привилегии</li>
-                <li>Топ-статус для самых активных игроков</li>
-            </ul>
-        </div>
-    </div>
-</div>
-        <div class="vip-promo-box">
-            <h3 class="vip-promo-title">🎟 Промокод</h3>
-            <p class="vip-promo-text">
-                Если у тебя есть промокод или VIP-код — введи его ниже.
-            </p>
-
-            <div class="vip-promo-form">
-                <input type="text" id="vip-code-input" placeholder="Введите промокод...">
-                <button class="vip-promo-btn" onclick="activateVIPCode()">Активировать</button>
-            </div>
-
-            <p id="vip-message" class="vip-message"></p>
-        </div>
-    </div>
-</div>
-        <div id="tab-vipzone" class="tab-content">
-    <div class="secret-panel">
-        <div id="vip-zone-locked" style="display: none;">
-            <h2 class="secret-title-open">👑 VIP ZONE</h2>
-            <p style="color:#aaa; margin-bottom: 18px;">
-                Доступ только для VIP-игроков.
-            </p>
-            <p style="color:#fff; margin-bottom: 20px;">
-                Открой VIP и получи доступ к эксклюзивным слотам, ежедневным бонусам и VIP-рулетке.
-            </p>
-            <button class="vip-buy-btn" onclick="openTab('secret')">Открыть VIP STORE</button>
-        </div>
-
-        <div id="vip-zone-content" style="display: none;">
-            <h2 class="secret-title-open">👑 VIP ZONE</h2>
-
-            <div class="vip-info-box">
-                <p>Текущий статус: <span id="vip-zone-level-name">Guest</span></p>
-                <p>Ежедневный бонус: <span id="vip-zone-daily-bonus">0</span> 💎</p>
-                <button id="btn-daily-vip-zone" class="btn-claim-bonus" onclick="openVIPRewardsModal()">Забрать ежедневный приз</button>
-                <p id="vip-zone-timer-msg" style="font-size: 12px; color: #aaa; margin-top: 8px;"></p>
-            </div>
-
-            <h3 style="margin-top: 24px;">🎰 VIP Слоты</h3>
-            <div class="vip-slots-grid" id="vip-zone-slots-container"></div>
-
-            <h3 style="margin-top: 24px;">🎡 VIP Механики</h3>
-            <div class="vip-zone-actions">
-                <button class="vip-zone-action-btn" onclick="openTab('wheel')">Открыть VIP рулетку</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="tab-wheel" class="tab-content">
-    <h2 class="section-title">🎡 VIP РУЛЕТКА</h2>
-
-    <div class="vip-wheel-layout">
-        <div class="vip-wheel-panel">
-            <div class="vip-wheel-topbar">
-                <div class="vip-wheel-badge">👑 ELITE VIP ONLY</div>
-                <div class="vip-wheel-subtext" id="wheel-status-text">
-                    1 бесплатный спин в день для Elite Meme и выше
-                </div>
-            </div>
-
-            <div class="vip-wheel-stage">
-                <div class="vip-wheel-arrow"></div>
-
-                <div class="vip-wheel-wrap">
-                    <div id="vip-wheel" class="vip-wheel"></div>
-                    <div class="vip-wheel-center">
-                        <div class="vip-wheel-core-glow"></div>
-                        <div class="vip-wheel-core-text">VIP<br>SPIN</div>
-                    </div>
-                </div>
-            </div>
-
-            <button id="wheel-spin-btn" class="btn-wheel btn-wheel-large" onclick="spinWheel()">
-                Крутить рулетку
-            </button>
-
-            <div id="wheel-result" class="wheel-result">Готов к прокруту</div>
-        </div>
-
-        <div class="vip-wheel-sidecard">
-            <h3 class="vip-wheel-side-title">🎁 Возможные награды</h3>
-            <div id="vip-wheel-rewards-preview" class="vip-wheel-rewards-preview"></div>
-
-            <div class="vip-wheel-legend">
-                <div class="vip-wheel-legend-item">
-                    <span class="legend-dot common"></span> Common
-                </div>
-                <div class="vip-wheel-legend-item">
-                    <span class="legend-dot rare"></span> Rare
-                </div>
-                <div class="vip-wheel-legend-item">
-                    <span class="legend-dot epic"></span> Epic
-                </div>
-                <div class="vip-wheel-legend-item">
-                    <span class="legend-dot legendary"></span> Legendary
-                </div>
-                    <div class="vip-wheel-legend-item">
-        <span class="legend-dot mythic"></span> Mythic
-    </div>
-            </div>
-        </div>
-    </div>
-</div>
-
     </div>
 
     <!-- ЭКРАН ИГРЫ (САМИ СЛОТЫ) -->
@@ -481,124 +185,10 @@
             </div>
 
 <div class="spin-controls">
-    <button id="spin-btn" class="btn-spin" onclick="spin()">SPIN</button>
+    <button id="spin-btn" class="btn-spin" onclick="spin()">PLAY</button>
 </div>
         </div>
     </div>
- <!-- === ЭКРАН CRASH GAME === -->
-<div id="crash-screen" style="display: none;">
-
-    <!-- Кнопка назад -->
-    <button class="btn-back-game" onclick="goBackToLobby()">← Назад</button>
-
-    <!-- Баланс сверху справа -->
-    <div style="position: absolute; top: 25px; right: 25px; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 20px; border: 1px solid #ffd700; z-index: 100;">
-        <span style="color: #fff; font-weight: bold;">Баланс: </span>
-        <span id="crash-balance-display" style="color: #00ff88; font-weight: bold; font-size: 20px;">0</span> 💎
-    </div>
-
-    <!-- Игровая зона -->
-    <div id="game-area">
-        
-        <!-- Ракета с Мелстроем -->
-        <div id="rocket-container">
-            <!-- Лицо Мелстроя -->
-            <img id="pilot-face" src="image/melstroy_calm.png" alt="Melstroy">
-            <!-- Тело ракеты -->
-            <img id="rocket-body" src="image/rocket.png" alt="Rocket">
-            <!-- Контейнер для частиц (монеты, гемы и т.д.) -->
-            <div id="engine-effects"></div>
-        </div>
-
-        <!-- Множитель по центру -->
-        <div id="multiplier-display">1.00x</div>
-    </div>
-
-    <!-- Панель управления внизу -->
-    <div id="control-panel">
-        
-        <!-- Поле ставки -->
-        <input type="number" id="crash-bet-input" value="500" readonly>
-
-        <!-- Кнопки изменения ставки -->
-        <div style="display: flex; gap: 10px;">
-            <button onclick="changeCrashBet(0.5)" style="padding: 10px 15px; background: #ff4444; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">/2</button>
-            <button onclick="changeCrashBet(2)" style="padding: 10px 15px; background: #00ff88; border: none; border-radius: 5px; color: black; font-weight: bold; cursor: pointer;">x2</button>
-            <button onclick="setMaxCrashBet()" style="padding: 10px 15px; background: #ffd700; border: none; border-radius: 5px; color: black; font-weight: bold; cursor: pointer;">MAX</button>
-        </div>
-
-        <!-- Главная кнопка СТАРТ / ЗАБРАТЬ -->
-        <button id="crash-btn" onclick="playCrash()">СТАРТ</button>
-    </div>
-
-</div>
-
-<!-- ЭКРАН MINES -->
-<!-- MINES SCREEN -->
-<div id="mines-screen">
-    <button class="btn-back-game" onclick="goBackToLobby()">← Назад</button>
-    
-    <div class="mines-wrapper">
-        <!-- Левая панель управления -->
-        <div class="mines-controls-panel">
-            <h2 class="game-title-mines">💣 MINES</h2>
-            
-            <div class="control-group">
-                <label>Сумма ставки</label>
-                <input type="number" id="mines-bet-input" value="500" min="100">
-                <div class="bet-actions-row">
-                    <button class="btn-action half" onclick="changeMinesBet(0.5)">/2</button>
-                    <button class="btn-action double" onclick="changeMinesBet(2)">x2</button>
-                    <button class="btn-action max" onclick="setMaxMinesBet()">MAX</button>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label>Количество мин</label>
-                <div class="mines-count-buttons">
-                    <button class="btn-mine-count active" onclick="setMinesCount(1, this)">1</button>
-                    <button class="btn-mine-count" onclick="setMinesCount(3, this)">3</button>
-                    <button class="btn-mine-count" onclick="setMinesCount(5, this)">5</button>
-                    <button class="btn-mine-count" onclick="setMinesCount(10, this)">10</button>
-                    <button class="btn-mine-count" onclick="setMinesCount(20, this)">20</button>
-                </div>
-            </div>
-
-            <button id="mines-start-btn" class="btn-start-mines" onclick="startMinesGame()">НАЧАТЬ ИГРУ</button>
-            <button id="mines-cashout-btn" class="btn-cashout-mines" onclick="cashOutMines()" style="display:none;">ЗАБРАТЬ <span id="cashout-amount-display">0</span> 💎</button>
-
-            <div class="mines-info-box">
-                <div class="info-row">
-                    <span>💎 Осталось:</span>
-                    <span id="diamonds-left">22</span>
-                </div>
-                <div class="info-row">
-                    <span>⚠️ Риск мины:</span>
-                    <span id="mine-risk">12%</span>
-                </div>
-                <div class="info-row">
-                    <span>🔲 Открыто:</span>
-                    <span id="tiles-opened">0/24</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Правая часть — поле игры -->
-        <div class="mines-game-area">
-            <div class="balance-display-top">
-                Баланс: <span id="mines-balance-display">0</span> 💎
-            </div>
-
-            <div class="mines-grid-container" id="mines-grid">
-                <!-- Ячейки генерируются через JS -->
-            </div>
-
-            <div class="current-win-display">
-                Текущий выигрыш: <span id="mines-current-win">0</span> 💎
-            </div>
-        </div>
-    </div>
-</div>
 
     <!-- ОКНО ВЫИГРЫША -->
     <div id="win-modal" class="modal">
