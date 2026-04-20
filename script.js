@@ -4309,6 +4309,8 @@ function updateUpgradesUI() {
     // временно пусто (удалено вместе со старой системой)
 }
 function updateMarketUI() {}
+function simulateMarket() {}
+function updateUpgradesUI() {}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
