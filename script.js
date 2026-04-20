@@ -153,6 +153,9 @@ function openTab(tabName) {
     if (activeBtn) {
         activeBtn.classList.add('active');
     }
+    if (tabName === 'collection') {
+    renderCollectionScreen();
+}
 }
 
 function createGrid() {
@@ -429,6 +432,111 @@ function getCardKey(theme, src) {
 function getCardRarityBySrc(src) {
     const fileName = getFileNameFromSrc(src);
     return cardRarity[fileName];
+}
+function getSelectedCollectionTheme() {
+    const select = document.getElementById('collection-theme-select');
+    if (!select) return currentTheme || 'brain';
+    return select.value || 'brain';
+}
+
+function getCurrentStage(cardKey) {
+    ensureCardProgressExists(cardKey);
+
+    const fileName = cardKey.split(":")[1];
+    const rarity = cardRarity[fileName];
+    const path = progressPaths[rarity] || [];
+    const progress = playerData.cards[cardKey] || 0;
+
+    let stage = 0;
+    for (let i = 0; i < path.length; i++) {
+        if (progress >= path[i]) {
+            stage = i + 1;
+        }
+    }
+    return stage;
+}
+
+function getNextMilestoneValue(cardKey) {
+    ensureCardProgressExists(cardKey);
+
+    const fileName = cardKey.split(":")[1];
+    const rarity = cardRarity[fileName];
+    const path = progressPaths[rarity] || [];
+    const progress = playerData.cards[cardKey] || 0;
+
+    for (let i = 0; i < path.length; i++) {
+        if (progress < path[i]) {
+            return path[i];
+        }
+    }
+
+    return path[path.length - 1] || 1;
+}
+
+function renderCollectionScreen() {
+    const grid = document.getElementById('collection-grid');
+    const energyEl = document.getElementById('collection-energy');
+    const styleCoinsEl = document.getElementById('collection-style-coins');
+    const summaryEl = document.getElementById('collection-summary');
+
+    if (!grid || !energyEl || !styleCoinsEl || !summaryEl) return;
+
+    const themeName = getSelectedCollectionTheme();
+    const themeItems = themes[themeName] || [];
+
+    energyEl.innerText = playerData.resources?.energy ?? 0;
+    styleCoinsEl.innerText = playerData.resources?.styleCoins ?? 0;
+
+    grid.innerHTML = '';
+
+    let completedCount = 0;
+
+    themeItems.forEach((item, index) => {
+        const fileName = getFileNameFromSrc(item.src);
+        const cardKey = getCardKey(themeName, item.src);
+
+        ensureCardProgressExists(cardKey);
+
+        const rarity = cardRarity[fileName];
+        const progress = playerData.cards[cardKey] || 0;
+        const stage = getCurrentStage(cardKey);
+        const nextValue = getNextMilestoneValue(cardKey);
+        const percent = Math.max(0, Math.min(100, (progress / nextValue) * 100));
+        const isCompleted = stage >= (progressPaths[rarity]?.length || 0);
+
+        if (isCompleted) {
+            completedCount += 1;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'collection-card';
+
+        card.innerHTML = `
+            <img src="${item.src}" alt="card ${index + 1}">
+            <div class="collection-card-body">
+                <div class="collection-card-title">
+                    Карточка ${index + 1}
+                    <span class="collection-rarity-${rarity}">• ${rarity}</span>
+                </div>
+
+                <div class="collection-card-meta">
+                    Прогресс: ${progress} / ${nextValue}
+                </div>
+
+                <div class="collection-progress-bar">
+                    <div class="collection-progress-fill" style="width: ${percent}%"></div>
+                </div>
+
+                <div class="collection-card-meta">
+                    Этап: ${stage} ${isCompleted ? '• completed' : ''}
+                </div>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+    summaryEl.innerText = `Прогресс темы: ${completedCount} / ${themeItems.length}`;
 }
 
 function getMatchRewardAmount(matchCount) {
@@ -752,6 +860,7 @@ function checkWins(grid) {
     }
 
     updateUI();
+    renderCollectionScreen();
 }
 
 function fireConfetti() {
@@ -3767,7 +3876,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemes();
     regenEnergy();
     updateUI();
+    renderCollectionScreen();
 });
+
+
+
+
+
 function updateMarketUI() {}
 // === ЗАПУСК ===
 window.onload = () => {
