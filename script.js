@@ -4305,6 +4305,9 @@ function isThemeCompleted(themeName) {
     const data = getThemeCompletionData(themeName);
     return data.total > 0 && data.completed >= data.total;
 }
+function updateUpgradesUI() {
+    // временно пусто (удалено вместе со старой системой)
+}
 function updateMarketUI() {}
 // === ЗАПУСК ===
 window.onload = () => {
@@ -4314,7 +4317,6 @@ window.onload = () => {
     updateUI();
     //updateMarketUI();
     updateLeaderboardUI();
-    updateUpgradesUI();
     updateDailyRewardUI();
     updateBlackMarketUI();
     updateWheelUI();
