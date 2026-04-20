@@ -3775,6 +3775,7 @@ document.addEventListener('DOMContentLoaded', () => {
     regenEnergy();
     updateUI();
 });
+function updateMarketUI() {}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
