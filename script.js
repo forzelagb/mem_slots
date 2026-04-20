@@ -1,7 +1,4 @@
 // === КОНФИГУРАЦИЯ БИЗНЕСОВ ===
-const rollSound = new Audio('sounds/spin.mp3');
-const resultSound = new Audio('sounds/end.mp3');
-const rareHitSound = new Audio('sounds/jackpot.mp3');
 const cardRarity = {
  "1.jpg":"common",
  "2.jpg":"common",
@@ -22,36 +19,20 @@ const progressPaths = {
 const coinsConfig = {
     defaultCoins: 0
 };
-rollSound.volume = 0.45;
-resultSound.volume = 0.65;
-rareHitSound.volume = 0.8;
 
 function playRollSound() {
-    rollSound.pause();
-    rollSound.currentTime = 0;
-    rollSound.play().catch(() => {});
 }
 
 function stopRollSound() {
-    rollSound.pause();
-    rollSound.currentTime = 0;
 }
 
 function playResultSound() {
-    resultSound.pause();
-    resultSound.currentTime = 0;
-    resultSound.play().catch(() => {});
 }
 
 function playRareHitSound() {
-    rareHitSound.pause();
-    rareHitSound.currentTime = 0;
-    rareHitSound.play().catch(() => {});
 }
 
 function stopRareHitSound() {
-    rareHitSound.pause();
-    rareHitSound.currentTime = 0;
 }
 let isBigWinSoundPlaying = false;
 
@@ -3552,33 +3533,18 @@ function updateLeaderboardPanelText() {
 
 
 function playRollSound() {
-    spinSound.pause();
-    spinSound.currentTime = 0;
-    spinSound.play().catch(() => {});
 }
 
 function stopRollSound(){
-    spinSound.pause();
-    spinSound.currentTime = 0;
 }
 
 function playResultSound() {
-    endSpinSound.pause();
-    endSpinSound.currentTime = 0;
-    endSpinSound.play().catch(() => {});
 }
 
 function playRareHitSound() {
-    rareHitSound.pause();
-    rareHitSound.currentTime = 0;
-    rareHitSound.play().catch(() => {});
-    isBigWinSoundPlaying = true;
 }
 
 function stopRareHitSound() {
-    rareHitSound.pause();
-    rareHitSound.currentTime = 0;
-    isBigWinSoundPlaying = false;
 }
 function getEffectiveVIPLevel() {
     const storedMain = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
