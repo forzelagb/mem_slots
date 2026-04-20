@@ -248,7 +248,7 @@ function openCollectionGroup(groupId) {
     });
 }
 
-function openThemeDetail(themeName, groupId) {
+function openThemeDetail(themeName) {
     const detailEl = document.getElementById('collection-theme-detail');
     if (!detailEl) return;
 
@@ -260,7 +260,7 @@ function openThemeDetail(themeName, groupId) {
     header.className = 'collection-subheader';
     header.innerHTML = `
         <div class="collection-subheader-title">${titles[themeName] || themeName}</div>
-        <button class="collection-back-btn" onclick="openCollectionGroup('${groupId}')">← Назад к темам</button>
+        <button class="collection-back-btn" onclick="renderAllThemesCollection()">← Назад ко всем темам</button>
     `;
     detailEl.appendChild(header);
 
@@ -286,6 +286,7 @@ function openThemeDetail(themeName, groupId) {
         path.appendChild(node);
     });
 
+    detailEl.appendChild(header);
     detailEl.appendChild(path);
 }
 // === ЛОГИКА ВКЛАДОК ===
@@ -308,7 +309,7 @@ function openTab(tabName) {
     }
 
     if (tabName === 'collection') {
-        renderCollectionGroups();
+        renderAllThemesCollection();
     }
 }
 
@@ -4041,7 +4042,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemes();
     regenEnergy();
     updateUI();
-    renderCollectionGroups();
+    renderAllThemesCollection();
 });
 function hideRewardPreview() {
     const box = document.getElementById('reward-preview');
@@ -4143,6 +4144,57 @@ function openThemeDetail(themeName) {
         `;
 
         container.appendChild(el);
+    });
+}
+function renderAllThemesCollection() {
+    const themesEl = document.getElementById('collection-themes');
+    const detailEl = document.getElementById('collection-theme-detail');
+
+    if (!themesEl || !detailEl) return;
+
+    detailEl.style.display = 'none';
+    detailEl.innerHTML = '';
+    themesEl.innerHTML = '';
+
+    const orderedThemes = [
+        'brain',
+        'helin',
+        'lexapaws',
+        'litwin',
+        'melstroy',
+        'nikkifn',
+        'rejiboi',
+        'rostick',
+        'sasich',
+        'skibiditoilet',
+        'slovopatsana'
+    ];
+
+    orderedThemes.forEach(themeName => {
+        const items = themes[themeName] || [];
+        let completed = 0;
+
+        items.forEach(item => {
+            const fileName = getFileNameFromSrc(item.src);
+            const cardKey = getCardKey(themeName, item.src);
+            const rarity = cardRarity[fileName];
+            const stage = getCurrentStage(cardKey);
+            const maxStage = progressPaths[rarity]?.length || 0;
+
+            if (stage >= maxStage) {
+                completed++;
+            }
+        });
+
+        const themeCard = document.createElement('div');
+        themeCard.className = 'collection-theme-card';
+        themeCard.innerHTML = `
+            <div class="collection-theme-title">${titles[themeName] || themeName}</div>
+            <div class="collection-theme-progress">${completed} / ${items.length}</div>
+        `;
+        themeCard.onclick = () => openThemeDetail(themeName);
+
+        themesEl.appendChild(themeCard);
     });
 }
 
