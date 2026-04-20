@@ -43,24 +43,6 @@ const progressPaths = {
 const coinsConfig = {
     defaultCoins: 0
 };
-const collectionGroups = [
-    {
-        id: 'streamers',
-        title: '🔥 Meme Streamers',
-        themes: ['helin', 'melstroy', 'lexapaws']
-    },
-    {
-        id: 'internet',
-        title: '🌐 Internet Memes',
-        themes: ['brain', 'skibiditoilet', 'slovopatsana']
-    },
-    {
-        id: 'random',
-        title: '🎲 Random Pack',
-        themes: ['rostick', 'sasich', 'rejiboi', 'nikkifn', 'litwin']
-    }
-];
-
 function playRollSound() {
 }
 
@@ -646,11 +628,6 @@ function getCardRarityBySrc(src) {
     const fileName = getFileNameFromSrc(src);
     return cardRarity[fileName];
 }
-function getSelectedCollectionTheme() {
-    const select = document.getElementById('collection-theme-select');
-    if (!select) return currentTheme || 'brain';
-    return select.value || 'brain';
-}
 
 function getCurrentStage(cardKey) {
     ensureCardProgressExists(cardKey);
@@ -684,72 +661,6 @@ function getNextMilestoneValue(cardKey) {
     }
 
     return path[path.length - 1] || 1;
-}
-
-function renderCollectionScreen() {
-    const grid = document.getElementById('collection-grid');
-    const energyEl = document.getElementById('collection-energy');
-    const styleCoinsEl = document.getElementById('collection-style-coins');
-    const summaryEl = document.getElementById('collection-summary');
-
-    if (!grid || !energyEl || !styleCoinsEl || !summaryEl) return;
-
-    const themeName = getSelectedCollectionTheme();
-    const themeItems = themes[themeName] || [];
-
-    energyEl.innerText = playerData.resources?.energy ?? 0;
-    styleCoinsEl.innerText = playerData.resources?.styleCoins ?? 0;
-
-    grid.innerHTML = '';
-
-    let completedCount = 0;
-
-    themeItems.forEach((item, index) => {
-        const fileName = getFileNameFromSrc(item.src);
-        const cardKey = getCardKey(themeName, item.src);
-
-        ensureCardProgressExists(cardKey);
-
-        const rarity = cardRarity[fileName];
-        const progress = playerData.cards[cardKey] || 0;
-        const stage = getCurrentStage(cardKey);
-        const nextValue = getNextMilestoneValue(cardKey);
-        const percent = Math.max(0, Math.min(100, (progress / nextValue) * 100));
-        const isCompleted = stage >= (progressPaths[rarity]?.length || 0);
-
-        if (isCompleted) {
-            completedCount += 1;
-        }
-
-        const card = document.createElement('div');
-        card.className = 'collection-card';
-
-        card.innerHTML = `
-            <img src="${item.src}" alt="card ${index + 1}">
-            <div class="collection-card-body">
-                <div class="collection-card-title">
-                    Карточка ${index + 1}
-                    <span class="collection-rarity-${rarity}">• ${rarity}</span>
-                </div>
-
-                <div class="collection-card-meta">
-                    Прогресс: ${progress} / ${nextValue}
-                </div>
-
-                <div class="collection-progress-bar">
-                    <div class="collection-progress-fill" style="width: ${percent}%"></div>
-                </div>
-
-                <div class="collection-card-meta">
-                    Этап: ${stage} ${isCompleted ? '• completed' : ''}
-                </div>
-            </div>
-        `;
-
-        grid.appendChild(card);
-    });
-
-    summaryEl.innerText = `Прогресс темы: ${completedCount} / ${themeItems.length}`;
 }
 
 function getMatchRewardAmount(matchCount) {
@@ -4126,85 +4037,6 @@ function showRewardPreview(item) {
     box.style.display = 'grid';
 }
 
-function renderCollectionGroups() {
-    const container = document.getElementById('collection-groups');
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    collectionGroups.forEach(group => {
-        const el = document.createElement('div');
-        el.className = 'collection-group';
-        el.innerText = group.title;
-
-        el.onclick = () => openCollectionGroup(group.id);
-
-        container.appendChild(el);
-    });
-}
-
-function openCollectionGroup(groupId) {
-    const group = collectionGroups.find(g => g.id === groupId);
-    if (!group) return;
-
-    const container = document.getElementById('collection-themes');
-    container.style.display = 'block';
-
-    container.innerHTML = '';
-
-    group.themes.forEach(theme => {
-        const items = themes[theme] || [];
-
-        let completed = 0;
-
-        items.forEach(item => {
-            const key = getCardKey(theme, item.src);
-            const stage = getCurrentStage(key);
-            const rarity = cardRarity[getFileNameFromSrc(item.src)];
-
-            if (stage >= (progressPaths[rarity]?.length || 0)) {
-                completed++;
-            }
-        });
-
-        const el = document.createElement('div');
-        el.className = 'collection-theme-card';
-
-        el.innerHTML = `
-            <div class="theme-title">${theme.toUpperCase()}</div>
-            <div class="theme-progress">${completed} / ${items.length}</div>
-        `;
-
-        el.onclick = () => openThemeDetail(theme);
-
-        container.appendChild(el);
-    });
-}
-
-function openThemeDetail(themeName) {
-    const container = document.getElementById('collection-theme-detail');
-    container.style.display = 'block';
-
-    const items = themes[themeName] || [];
-
-    container.innerHTML = '';
-
-    items.forEach((item, index) => {
-        const key = getCardKey(themeName, item.src);
-        const stage = getCurrentStage(key);
-
-        const el = document.createElement('div');
-        el.className = 'path-node';
-
-        el.innerHTML = `
-            <img src="${item.src}">
-            <div class="node-stage">lvl ${stage}</div>
-        `;
-
-        container.appendChild(el);
-        animateThemeDetailEntrance();
-    });
-}
 function animateThemeDetailEntrance() {
     const hero = document.getElementById('collection-detail-hero');
     const cards = document.querySelectorAll('.collection-card-detail');
