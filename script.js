@@ -13,9 +13,6 @@ const cardRarity = {
  "8.jpg":"legendary"
 };
 
-loadPlayer();
-initThemes();
-regenEnergy();
 const progressPaths = {
  common: [50,150,400,900,1800,3500],
  rare: [30,100,250,600,1300,2600],
@@ -68,7 +65,10 @@ const dailyRewardTable = [
     2200, 2400, 2600, 2800, 3000,
     3200, 3500, 3800, 4200, 5000
 ];
-
+loadPlayer();
+initThemes();
+regenEnergy();
+updateUI();
 
 
 // === ТЕМЫ ИГРЫ ===
@@ -3777,6 +3777,12 @@ function rewardMilestone(cardName, stage) {
     resultText.innerText =
       `Награда! +${coins} монет`;
 }
+document.addEventListener('DOMContentLoaded', () => {
+    loadPlayer();
+    initThemes();
+    regenEnergy();
+    updateUI();
+});
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
