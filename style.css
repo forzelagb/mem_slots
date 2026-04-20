@@ -6018,6 +6018,54 @@ html, body {
     transition: 0.22s ease;
 }
 
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeSlideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+}
+
+.collection-detail-hero {
+    opacity: 0;
+}
+
+.collection-detail-hero.animate-in {
+    animation: fadeSlideUp 0.35s ease forwards;
+}
+
+.collection-card-detail {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+}
+
+.collection-card-detail.animate-in {
+    animation: fadeSlideUp 0.42s ease forwards;
+}
+
+.collection-detail-view.closing .collection-detail-hero,
+.collection-detail-view.closing .collection-card-detail {
+    animation: fadeSlideDown 0.22s ease forwards;
+}
+.collection-card-detail-status.in-progress {
+    background: rgba(77, 227, 255, 0.12);
+    color: #7eefff;
+}
+
 .theme-showcase-cover-wrap {
     width: 72px;
     height: 72px;

@@ -208,10 +208,14 @@ function closeThemeDetail() {
 
     if (!homeView || !detailView) return;
 
-    detailView.style.display = 'none';
-    homeView.style.display = 'block';
+    detailView.classList.add('closing');
 
-    renderAllThemesCollection();
+    setTimeout(() => {
+        detailView.classList.remove('closing');
+        detailView.style.display = 'none';
+        homeView.style.display = 'block';
+        renderAllThemesCollection();
+    }, 220);
 }
 
 function getRewardMilestones(cardKey) {
@@ -327,6 +331,7 @@ card.innerHTML = `
 `;
 
         gridEl.appendChild(card);
+        animateThemeDetailEntrance();
     });
 }
 // === ЛОГИКА ВКЛАДОК ===
@@ -4099,7 +4104,7 @@ function getCardStatus(cardKey) {
     const progress = playerData.cards?.[cardKey] || 0;
 
     if (stage >= maxStage) return "completed";
-    if (progress > 0) return "in progress";
+    if (progress > 0) return "in-progress";
     return "locked";
 }
 function isThemeCompleted(themeName) {
@@ -4132,6 +4137,26 @@ function animateThemeDetailEntrance() {
         });
     });
 }
+
+function animateThemeDetailEntrance() {
+    const hero = document.getElementById('collection-detail-hero');
+    const cards = document.querySelectorAll('.collection-card-detail');
+
+    if (hero) {
+        hero.classList.remove('animate-in');
+        void hero.offsetWidth;
+        hero.classList.add('animate-in');
+    }
+
+    cards.forEach((card, index) => {
+        card.classList.remove('animate-in');
+        card.style.animationDelay = `${index * 70}ms`;
+
+        requestAnimationFrame(() => {
+            card.classList.add('animate-in');
+        });
+    });
+}ы
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
