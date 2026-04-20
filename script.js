@@ -3914,7 +3914,102 @@ function showRewardPreview(item) {
 }
 
 
+const collectionGroups = [
+    {
+        id: 'streamers',
+        title: '🔥 Meme Streamers',
+        themes: ['helin', 'melstroy', 'lexapaws']
+    },
+    {
+        id: 'internet',
+        title: '🌐 Internet Memes',
+        themes: ['brain', 'skibiditoilet', 'slovopatsana']
+    },
+    {
+        id: 'random',
+        title: '🎲 Random Pack',
+        themes: ['rostick', 'sasich', 'rejiboi', 'nikkifn']
+    }
+];
 
+function renderCollectionGroups() {
+    const container = document.getElementById('collection-groups');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    collectionGroups.forEach(group => {
+        const el = document.createElement('div');
+        el.className = 'collection-group';
+        el.innerText = group.title;
+
+        el.onclick = () => openCollectionGroup(group.id);
+
+        container.appendChild(el);
+    });
+}
+
+function openCollectionGroup(groupId) {
+    const group = collectionGroups.find(g => g.id === groupId);
+    if (!group) return;
+
+    const container = document.getElementById('collection-themes');
+    container.style.display = 'block';
+
+    container.innerHTML = '';
+
+    group.themes.forEach(theme => {
+        const items = themes[theme] || [];
+
+        let completed = 0;
+
+        items.forEach(item => {
+            const key = getCardKey(theme, item.src);
+            const stage = getCurrentStage(key);
+            const rarity = cardRarity[getFileNameFromSrc(item.src)];
+
+            if (stage >= (progressPaths[rarity]?.length || 0)) {
+                completed++;
+            }
+        });
+
+        const el = document.createElement('div');
+        el.className = 'collection-theme-card';
+
+        el.innerHTML = `
+            <div class="theme-title">${theme.toUpperCase()}</div>
+            <div class="theme-progress">${completed} / ${items.length}</div>
+        `;
+
+        el.onclick = () => openThemeDetail(theme);
+
+        container.appendChild(el);
+    });
+}
+
+function openThemeDetail(themeName) {
+    const container = document.getElementById('collection-theme-detail');
+    container.style.display = 'block';
+
+    const items = themes[themeName] || [];
+
+    container.innerHTML = '';
+
+    items.forEach((item, index) => {
+        const key = getCardKey(themeName, item.src);
+        const stage = getCurrentStage(key);
+
+        const el = document.createElement('div');
+        el.className = 'path-node';
+
+        el.innerHTML = `
+            <img src="${item.src}">
+            <div class="node-stage">lvl ${stage}</div>
+        `;
+
+        container.appendChild(el);
+    });
+}
 
 function updateMarketUI() {}
 // === ЗАПУСК ===
