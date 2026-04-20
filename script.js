@@ -65,11 +65,6 @@ const dailyRewardTable = [
     2200, 2400, 2600, 2800, 3000,
     3200, 3500, 3800, 4200, 5000
 ];
-loadPlayer();
-initThemes();
-regenEnergy();
-updateUI();
-
 
 // === ТЕМЫ ИГРЫ ===
 const themes = {
@@ -3750,7 +3745,7 @@ function addCardProgress(cardKey, matchCount) {
 
     checkMilestones(cardKey);
     savePlayer();
-}ы
+}
 function rewardMilestone(cardName, stage) {
 
     const key = cardName + "_stage_" + stage;
