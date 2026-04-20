@@ -713,7 +713,7 @@ function spin() {
     ]);
 
     const cells = Array.from(document.querySelectorAll('.slot-img'));
-
+    hideRewardPreview();
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
 
@@ -836,28 +836,39 @@ function checkWins(grid) {
     addXP(totalXpReward);
     savePlayer();
 
-    if (rewardedCards.length > 0) {
-        const firstReward = rewardedCards[0];
-        let text = `+${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+if (rewardedCards.length > 0) {
+    const firstReward = rewardedCards[0];
 
-        if (firstReward.matchCount === 4) {
-            text = `Совпадение x4 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
-        }
+    showRewardPreview({
+        src: `image/${currentTheme}/${firstReward.fileName}`,
+        fileName: firstReward.fileName,
+        amount: firstReward.amount,
+        matchCount: firstReward.matchCount,
+        xp: totalXpReward,
+        streakBonus
+    });
 
-        if (firstReward.matchCount >= 5) {
-            text = `Совпадение x5 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
-        }
+    let text = `+${firstReward.amount} к прогрессу ${firstReward.fileName}`;
 
-        text += ` • +${totalXpReward} XP`;
-
-        if (streakBonus > 0) {
-            text += ` • Серия +${streakBonus} энергии`;
-        }
-
-        resultText.innerText = text;
-    } else {
-        resultText.innerText = `Нет совпадений • +${totalXpReward} XP • серия сброшена`;
+    if (firstReward.matchCount === 4) {
+        text = `Совпадение x4 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
     }
+
+    if (firstReward.matchCount >= 5) {
+        text = `Совпадение x5 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+    }
+
+    text += ` • +${totalXpReward} XP`;
+
+    if (streakBonus > 0) {
+        text += ` • Серия +${streakBonus} энергии`;
+    }
+
+    resultText.innerText = text;
+} else {
+    hideRewardPreview();
+    resultText.innerText = `Нет совпадений • +${totalXpReward} XP • серия сброшена`;
+}
 
     updateUI();
     renderCollectionScreen();
@@ -3878,7 +3889,29 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUI();
     renderCollectionScreen();
 });
+function hideRewardPreview() {
+    const box = document.getElementById('reward-preview');
+    if (box) {
+        box.style.display = 'none';
+    }
+}
 
+function showRewardPreview(item) {
+    const box = document.getElementById('reward-preview');
+    const image = document.getElementById('reward-preview-image');
+    const title = document.getElementById('reward-preview-title');
+    const meta = document.getElementById('reward-preview-meta');
+    const extra = document.getElementById('reward-preview-extra');
+
+    if (!box || !image || !title || !meta || !extra) return;
+
+    image.src = item.src;
+    title.innerText = `Карточка • ${item.fileName}`;
+    meta.innerText = `+${item.amount} к прогрессу • ${item.matchCount} match`;
+    extra.innerText = `+${item.xp} XP${item.streakBonus > 0 ? ` • +${item.streakBonus} энергии` : ''}`;
+
+    box.style.display = 'grid';
+}
 
 
 
