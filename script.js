@@ -19,6 +19,9 @@ const progressPaths = {
  epic: [15,50,140,350,800,1700],
  legendary: [8,20,60,150,350,900]
 };
+const coinsConfig = {
+    defaultCoins: 0
+};
 rollSound.volume = 0.45;
 resultSound.volume = 0.65;
 rareHitSound.volume = 0.8;
@@ -152,24 +155,18 @@ const slotTitle = document.getElementById('slot-title');
 
 // === ЛОГИКА ВКЛАДОК ===
 function openTab(tabName) {
+    const tab = document.getElementById('tab-' + tabName);
+    if (!tab) return;
+
     document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-    const tab = document.getElementById('tab-' + tabName);
-    if (tab) {
-        tab.classList.add('active');
-    }
+    tab.classList.add('active');
 
-    let activeBtn = null;
-
-    if (tabName === 'secret') {
-        activeBtn = document.getElementById('btn-secret');
-    } else {
-        activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => {
-            const onclick = btn.getAttribute('onclick') || '';
-            return onclick.includes(`openTab('${tabName}')`);
-        });
-    }
+    const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => {
+        const onclick = btn.getAttribute('onclick') || '';
+        return onclick.includes(`openTab('${tabName}')`);
+    });
 
     if (activeBtn) {
         activeBtn.classList.add('active');
@@ -3094,7 +3091,7 @@ async function registerPlayer() {
         currentBet = 250;
 
         updateUI();
-        updateMarketUI();
+        //updateMarketUI();
         closeAuthModal();
         alert("Аккаунт создан!");
     } catch (error) {
@@ -3150,7 +3147,7 @@ async function loadPlayerData(user) {
         }
 
         updateUI();
-        updateMarketUI();
+        //updateMarketUI();
         updateLeaderboardUI();
         updateVIPBonusButton();
         updateProfileUI(data);
@@ -3572,15 +3569,15 @@ function playResultSound() {
 }
 
 function playRareHitSound() {
-    jackpotSound.pause();
-    jackpotSound.currentTime = 0;
-    jackpotSound.play().catch(() => {});
+    rareHitSound.pause();
+    rareHitSound.currentTime = 0;
+    rareHitSound.play().catch(() => {});
     isBigWinSoundPlaying = true;
 }
 
 function stopRareHitSound() {
-    jackpotSound.pause();
-    jackpotSound.currentTime = 0;
+    rareHitSound.pause();
+    rareHitSound.currentTime = 0;
     isBigWinSoundPlaying = false;
 }
 function getEffectiveVIPLevel() {
@@ -3784,7 +3781,7 @@ window.onload = () => {
 
     createGrid();
     updateUI();
-    updateMarketUI();
+    //updateMarketUI();
     updateLeaderboardUI();
     updateUpgradesUI();
     updateDailyRewardUI();

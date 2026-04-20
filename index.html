@@ -57,7 +57,6 @@
 <div class="tabs-shell">
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
-        <button class="tab-btn" onclick="openTab('leaderboard')">🏆 Лидеры</button>
     </div>
 </div>
         
@@ -94,73 +93,6 @@
     </div>
 
 </div>
-<div id="tab-leaderboard" class="tab-content">
-    <h2 class="section-title">🏆 ТАБЛИЦЫ ЛИДЕРОВ</h2>
-    <div class="leaderboard-mode-tabs">
-    <button id="mode-theme-btn" class="leaderboard-mode-btn active" onclick="switchLeaderboardMode('theme')">
-        🎰 По теме
-    </button>
-    <button id="mode-gems-btn" class="leaderboard-mode-btn" onclick="switchLeaderboardMode('gems')">
-    💎 По алмазам
-</button>
-</div>
-
-    <div class="leaderboard-theme-tabs">
-        <button class="leaderboard-theme-btn active" onclick="loadThemeLeaderboard('brain', this)">🧠 Brain</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('helin', this)">🎤 Helin</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('lexapaws', this)">🐾 Lexa</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('litwin', this)">🎮 Litwin</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('melstroy', this)">👑 Mellstroy</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('nikkifn', this)">🎯 Nikkifn</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('rejiboi', this)">🕺 Rejiboi</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('rostick', this)">🌭 Rostick</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('sasich', this)">🗣️ Sasich</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('skibiditoilet', this)">🚽 Skibidi</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('slovopatsana', this)">👊 Slovo</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('ronaldo', this)">🐐 Ronaldo</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('shrek', this)">🟢 Shrek</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('spongebob', this)">🧽 SpongeBob</button>
-        <button class="leaderboard-theme-btn" onclick="loadThemeLeaderboard('speed', this)">⚡ Speed</button>
-    </div>
-
-    <div id="my-rank-card" class="my-rank-card" style="display:none;">
-    <div class="my-rank-left">
-        <div class="my-rank-icon">👑</div>
-        <div class="my-rank-meta">
-            <div class="my-rank-title">ТВОЁ МЕСТО</div>
-            <div id="my-rank-subtitle" class="my-rank-subtitle">Загрузка...</div>
-        </div>
-    </div>
-
-    <div class="my-rank-right">
-        <div id="my-rank-position" class="my-rank-position">#—</div>
-        <div id="my-rank-value" class="my-rank-value">0 💎</div>
-    </div>
-</div>
-
-<div class="leaderboard-panel leaderboard-panel-pretty">
-    <div class="leaderboard-panel-head">
-        <div>
-            <h3 id="leaderboard-panel-title">🌍 ТОП ИГРОКОВ ПО ТЕМЕ</h3>
-            <p id="leaderboard-panel-subtext" class="leaderboard-subtext">Лучшие результаты среди всех игроков</p>
-        </div>
-    </div>
-
-    <div class="leaderboard-table-wrap">
-        <table class="leaderboard-table pretty-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Игрок</th>
-                    <th>Рекорд</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body"></tbody>
-        </table>
-    </div>
-</div>
-</div>
-
     </div>
 
     <!-- ЭКРАН ИГРЫ (САМИ СЛОТЫ) -->
