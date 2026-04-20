@@ -4202,6 +4202,26 @@ function openThemeDetail(themeName) {
         `;
 
         container.appendChild(el);
+        animateThemeDetailEntrance();
+    });
+}
+function animateThemeDetailEntrance() {
+    const hero = document.getElementById('collection-detail-hero');
+    const cards = document.querySelectorAll('.collection-card-detail');
+
+    if (hero) {
+        hero.classList.remove('animate-in');
+        void hero.offsetWidth;
+        hero.classList.add('animate-in');
+    }
+
+    cards.forEach((card, index) => {
+        card.classList.remove('animate-in');
+        card.style.animationDelay = `${index * 70}ms`;
+
+        requestAnimationFrame(() => {
+            card.classList.add('animate-in');
+        });
     });
 }
 function renderAllThemesCollection() {
@@ -4311,6 +4331,26 @@ function updateUpgradesUI() {
 function updateMarketUI() {}
 function simulateMarket() {}
 function updateUpgradesUI() {}
+
+function animateThemeDetailEntrance() {
+    const hero = document.getElementById('collection-detail-hero');
+    const cards = document.querySelectorAll('.collection-card-detail');
+
+    if (hero) {
+        hero.classList.remove('animate-in');
+        void hero.offsetWidth;
+        hero.classList.add('animate-in');
+    }
+
+    cards.forEach((card, index) => {
+        card.classList.remove('animate-in');
+        card.style.animationDelay = `${index * 70}ms`;
+
+        requestAnimationFrame(() => {
+            card.classList.add('animate-in');
+        });
+    });
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
