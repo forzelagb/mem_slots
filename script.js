@@ -814,7 +814,6 @@ function updateCardStreak(cardKey) {
 
 
 function spin() {
-    clearWinHighlight();
     console.log("=== DEBUG SPIN ===");
     console.log("Тема:", currentTheme);
     console.log("Количество картинок в теме:", themes[currentTheme]?.length);
@@ -1021,7 +1020,6 @@ if (rewardedCards.length > 0) {
 }
 
     updateUI();
-    renderCollectionScreen();
 }
 
 function fireConfetti() {
