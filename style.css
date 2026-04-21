@@ -7442,6 +7442,92 @@ html, body {
     min-height: 110px;
     max-height: 150px;
 }
+.slot-title,
+.message-box {
+    display: none;
+}
+
+.reward-preview {
+    display: none !important;
+}
+/* ==== TEMP CLEANUP SLOT UI ==== */
+.slot-title,
+.message-box {
+    display: none !important;
+}
+
+.reward-preview {
+    display: none !important;
+}
+/* ==== NEW SLOT SCREEN CLEAN LAYOUT ==== */
+#game-screen.screen {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+#game-screen .game-header {
+    width: min(1400px, 94vw);
+    margin: 18px auto 12px;
+    padding: 12px 18px;
+    border-radius: 24px;
+    backdrop-filter: blur(16px);
+}
+
+.slot-scene {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 110px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px 24px;
+    overflow: hidden;
+}
+
+.slot-container {
+    width: min(980px, 92vw);
+    margin: 0 auto;
+    padding: 16px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.slot-stage {
+    padding: 12px;
+    border-radius: 24px;
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.cell {
+    aspect-ratio: 1 / 1;
+    min-height: 110px;
+    max-height: 150px;
+    border-radius: 16px;
+}
+
+.spin-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn-spin {
+    min-width: 220px;
+    padding: 14px 30px;
+    font-size: 22px;
+    border-radius: 16px;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
