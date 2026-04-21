@@ -362,22 +362,19 @@ function openTab(tabName) {
 }
 
 function createGrid() {
-    gridEl.innerHTML = ''; // Очищаем сетку
-    
-    // 👇 ИЗМЕНЕНИЕ: было 20, стало 25 (5 строк * 5 столбцов)
-    for (let i = 0; i < 25; i++) {
+    gridEl.innerHTML = '';
+
+    for (let i = 0; i < 15; i++) {
         const cell = document.createElement('div');
         cell.className = 'cell';
-        
+
         const img = document.createElement('img');
         img.className = 'slot-img';
-        img.style.opacity = '0'; 
-        img.style.background = '#1a1a1a'; 
-        img.style.borderRadius = '5px';
+        img.style.opacity = '0';
         img.style.width = '100%';
         img.style.height = '100%';
         img.style.objectFit = 'cover';
-        
+
         cell.appendChild(img);
         gridEl.appendChild(cell);
     }

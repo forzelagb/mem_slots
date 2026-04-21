@@ -36,6 +36,9 @@ body {
     justify-content: center;
     overflow-x: hidden;
     position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body::before {
@@ -6980,11 +6983,11 @@ html, body {
 .slot-scene {
     position: relative;
     width: 100%;
-    min-height: 760px;
+    min-height: calc(100vh - 110px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: 16px 16px 24px;
     overflow: hidden;
 }
 
@@ -7186,9 +7189,11 @@ html, body {
     background: rgba(0,0,0,0.4);
 }
 #game-screen.screen {
-    max-width: 1400px;
+    max-width: 100%;
     width: 100%;
-    padding: 12px 20px 20px;
+    padding: 0;
+    align-items: stretch;
+    justify-content: flex-start;
 }
 #game-screen {
     align-items: stretch;
@@ -7403,6 +7408,39 @@ html, body {
     background: linear-gradient(180deg, #ffd95e, #f7b500);
 
     border: none;
+}
+#game-screen.screen {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+.slot-container {
+    position: relative;
+    z-index: 2;
+    width: min(980px, 92vw);
+    padding: 14px 14px 16px;
+    border-radius: 28px;
+    background: linear-gradient(180deg, #1c2147, #0e1333);
+    box-shadow: 0 20px 80px rgba(0,0,0,0.55);
+    overflow: hidden;
+}
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 8px;
+    border-radius: 20px;
+}
+.cell {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #09113a;
+    min-height: 110px;
+    max-height: 150px;
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
