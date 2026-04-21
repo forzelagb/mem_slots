@@ -7185,6 +7185,160 @@ html, body {
     inset: 0;
     background: rgba(0,0,0,0.4);
 }
+#game-screen.screen {
+    max-width: 1400px;
+    width: 100%;
+    padding: 12px 20px 20px;
+}
+#game-screen {
+    align-items: stretch;
+}
+
+.slot-scene {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 110px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+    border-radius: 28px;
+}
+#game-screen.screen {
+    max-width: 100%;
+    padding: 0;
+}
+
+.slot-scene {
+    min-height: 100vh;
+    border-radius: 0;
+}
+.slot-container {
+    width: min(980px, 100%);
+    padding: 16px 16px 14px;
+}
+
+.slot-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.slot-stage {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 22px;
+}
+
+.grid-wrapper {
+    gap: 8px;
+    padding: 8px;
+    border-radius: 18px;
+}
+
+.cell {
+    border-radius: 12px;
+}
+
+.message-box {
+    height: auto;
+    min-height: 24px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.reward-preview {
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.btn-spin {
+    min-width: 180px;
+    padding: 12px 24px;
+    font-size: 18px;
+}
+.grid-wrapper {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.cell {
+    aspect-ratio: 1 / 1;
+    max-height: clamp(78px, 11vw, 132px);
+}
+
+.slot-container {
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+}
+#game-screen.screen {
+    max-width: 1400px;
+    width: 100%;
+    padding: 10px 16px 16px;
+    align-items: stretch;
+}
+
+#game-screen .game-header {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 12px;
+}
+
+.slot-scene {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 110px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    overflow: hidden;
+    border-radius: 28px;
+}
+
+.slot-container {
+    width: min(980px, 100%);
+    margin: 0 auto;
+    padding: 14px 14px 12px;
+    border-radius: 28px;
+}
+
+.slot-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.slot-stage {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 22px;
+}
+
+.grid-wrapper {
+    gap: 8px;
+    padding: 8px;
+    border-radius: 18px;
+}
+
+.cell {
+    border-radius: 12px;
+}
+
+.message-box {
+    min-height: 24px;
+    height: auto;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.spin-controls {
+    margin-top: 8px;
+}
+
+.btn-spin {
+    min-width: 180px;
+    padding: 12px 24px;
+    font-size: 18px;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
