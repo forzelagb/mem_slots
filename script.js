@@ -10,14 +10,14 @@ const cardRarity = {
  "8.jpg":"legendary"
 };
 const cardDisplayNames = {
-    "1.jpg": "Card I",
-    "2.jpg": "Card II",
-    "3.jpg": "Card III",
-    "4.jpg": "Card IV",
-    "5.jpg": "Card V",
-    "6.jpg": "Card VI",
-    "7.jpg": "Card VII",
-    "8.jpg": "Card VIII"
+    "1.jpg": "Origin",
+    "2.jpg": "Drop",
+    "3.jpg": "Rare Face",
+    "4.jpg": "Wild Form",
+    "5.jpg": "Epic Shift",
+    "6.jpg": "Power Meme",
+    "7.jpg": "Legend Core",
+    "8.jpg": "Final Skin"
 };
 const orderedThemes = [
     'brain',
