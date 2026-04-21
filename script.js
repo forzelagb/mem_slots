@@ -508,11 +508,22 @@ function animateDrop(cells, items, callback) {
     let completed = 0;
 
     cells.forEach((cell, index) => {
-        const img = cell.querySelector('img');
-        if (!img) {
+        const img = cell.querySelector('.slot-img');
+        const item = items[index];
+
+        if (!img || !item) {
             completed++;
             if (completed === cells.length && callback) callback();
             return;
+        }
+
+        img.src = item.src;
+        img.style.opacity = '1';
+
+        if (item.mult !== "" && item.mult !== undefined && item.mult !== null) {
+            cell.setAttribute('data-multiplier', item.mult);
+        } else {
+            cell.setAttribute('data-multiplier', '');
         }
 
         cell.classList.remove('drop-anim', 'drop-land');
@@ -520,7 +531,6 @@ function animateDrop(cells, items, callback) {
 
         const col = index % 5;
         const row = Math.floor(index / 5);
-
         const delay = col * 70 + row * 35;
 
         setTimeout(() => {
@@ -861,7 +871,7 @@ function spin() {
         "Сейчас будет жарко..."
     ]);
 
-    const cells = Array.from(document.querySelectorAll('.slot-img'));
+    const cells = Array.from(document.querySelectorAll('.cell'));
     hideRewardPreview();
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
