@@ -449,35 +449,21 @@ function updateUI() {
 function startGame(themeName) {
     applyVIPTheme(themeName);
 
-    // Устанавливаем тему
     currentTheme = themeName;
     gameScreen.classList.add('game-screen-themed');
     slotTitle.innerText = titles[themeName];
-    
-    // Переключаем экраны
+
+    const scene = document.querySelector('.slot-scene');
+    if (scene) {
+        scene.className = 'slot-scene theme-' + themeName;
+    }
+
     lobbyScreen.classList.remove('active');
     gameScreen.classList.add('active');
-    
-    // Создаём сетку и обновляем UI
+
     createGrid();
     updateUI();
     resultText.innerText = "Запусти игру!";
-
-    // Показываем счётчик лимита ТОЛЬКО если это Ronaldo (опционально)
-    const limitEl = document.getElementById('ronaldo-win-limit-display');
-    if (limitEl) {
-        if (themeName === 'ronaldo') {
-            // Если хочешь показать лимит — раскомментируй следующие строки
-            // checkAndResetDailyWinLimit();
-            // const leftEl = document.getElementById('win-limit-left');
-            // if (leftEl) {
-            //     limitEl.style.display = 'block';
-            //     leftEl.innerText = (MAX_RONALDO_WIN_PER_DAY - todayRonaldoWinnings).toLocaleString();
-            // }
-        } else {
-            limitEl.style.display = 'none';
-        }
-    }
 }
 
 function goBack() {
@@ -501,7 +487,7 @@ function goBack() {
 
 function animateDrop(cells, items, callback) {
     if (!cells || !items || cells.length !== items.length) {
-        if (callback) callback();
+        callback?.();
         return;
     }
 
@@ -513,32 +499,31 @@ function animateDrop(cells, items, callback) {
 
         if (!img || !item) {
             completed++;
-            if (completed === cells.length && callback) callback();
+            if (completed === cells.length) callback?.();
             return;
         }
 
-        img.src = item.src;
-        img.style.opacity = '1';
+        const col = index % 5;
+        const row = Math.floor(index / 5);
 
-        if (item.mult !== "" && item.mult !== undefined && item.mult !== null) {
-            cell.setAttribute('data-multiplier', item.mult);
-        } else {
-            cell.setAttribute('data-multiplier', '');
-        }
+        const delay = col * 90 + row * 45;
 
         cell.classList.remove('drop-anim', 'drop-land');
         void cell.offsetWidth;
 
-        const col = index % 5;
-        const row = Math.floor(index / 5);
-        const delay = col * 70 + row * 35;
-
         setTimeout(() => {
+            img.src = item.src;
+            img.style.opacity = '1';
+
+            if (item.mult !== "" && item.mult !== undefined && item.mult !== null) {
+                cell.setAttribute('data-multiplier', item.mult);
+            } else {
+                cell.setAttribute('data-multiplier', '');
+            }
+
             cell.classList.add('drop-anim');
 
-            const onDropEnd = () => {
-                img.removeEventListener('animationend', onDropEnd);
-
+            setTimeout(() => {
                 cell.classList.remove('drop-anim');
                 cell.classList.add('drop-land');
 
@@ -546,13 +531,11 @@ function animateDrop(cells, items, callback) {
                     cell.classList.remove('drop-land');
                     completed++;
 
-                    if (completed === cells.length && callback) {
-                        callback();
+                    if (completed === cells.length) {
+                        callback?.();
                     }
                 }, 180);
-            };
-
-            img.addEventListener('animationend', onDropEnd, { once: true });
+            }, 540);
         }, delay);
     });
 }
