@@ -261,14 +261,42 @@ body::before {
 /* Контейнер всего слота */
 .slot-container {
     width: 100%;
-    max-width: 640px;
+    max-width: 760px;
     margin: 0 auto;
-    padding: 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-    border-radius: 22px;
-    border: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 18px 45px rgba(0,0,0,0.45), var(--shadow-pink);
-    backdrop-filter: blur(10px);
+    padding: 22px;
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+
+    background:
+        linear-gradient(180deg, #1b1e4a, #0c0f2e) padding-box,
+        linear-gradient(145deg, #ffd76a, #ffb347, #fff2a8) border-box;
+
+    border: 4px solid transparent;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.6),
+        0 0 40px rgba(255, 200, 80, 0.25),
+        inset 0 0 20px rgba(255, 230, 150, 0.1);
+}
+.slot-container::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 240, 180, 0.35);
+    pointer-events: none;
+}
+
+.slot-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    pointer-events: none;
+    box-shadow:
+        inset 0 0 24px rgba(255, 211, 106, 0.08),
+        inset 0 -20px 40px rgba(0,0,0,0.25);
 }
 
 .slot-container.win-pulse {
@@ -289,34 +317,86 @@ body::before {
 
 /* Сетка 5x5 */
 .grid-wrapper {
+    position: relative;
+    overflow: hidden;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    padding: 10px;
-    background: rgba(0,0,0,0.45);
-    border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.10);
-    box-shadow: inset 0 0 25px rgba(0,0,0,0.35);
-}
+    gap: 10px;
+    padding: 14px;
+    border-radius: 22px;
 
+    background:
+        radial-gradient(circle at top center, rgba(120,180,255,0.15), transparent 30%),
+        linear-gradient(180deg, #1a3a8f, #0c1c55);
+
+    border: 2px solid rgba(255, 230, 160, 0.22);
+
+    box-shadow:
+        inset 0 0 40px rgba(0,0,0,0.5),
+        inset 0 10px 25px rgba(255,255,255,0.05);
+}
+.grid-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.15),
+        transparent
+    );
+    pointer-events: none;
+}
+.grid-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.15),
+        transparent
+    );
+    pointer-events: none;
+}
 /* Сама ячейка с картинкой */
 .cell {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 10px;
-    background: #1a1024;
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: inset 0 0 10px rgba(255,255,255,0.04);
-}
+    border-radius: 14px;
 
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        rgba(18, 10, 36, 0.82);
+
+    border: 1px solid rgba(255,255,255,0.10);
+
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.04),
+        0 4px 10px rgba(0,0,0,0.16);
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.cell:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 6px 15px rgba(0,0,0,0.3),
+        0 0 10px rgba(255,255,255,0.1);
+}
 /* Картинка внутри ячейки */
 .cell img {
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Картинка заполняет ячейку, обрезая лишнее, но не искажаясь */
+    object-fit: cover;
     display: block;
+    transform: scale(1.02);
 }
 
 .cell::after {
@@ -6734,6 +6814,51 @@ html, body {
     color: #ffd36a;
     font-size: 12px;
     letter-spacing: 0.4px;
+}
+.game-screen-themed {
+    background-image: url('image/slot-bg-main.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.game-screen-themed::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(7, 4, 20, 0.35) 0%,
+        rgba(7, 4, 20, 0.55) 45%,
+        rgba(7, 4, 20, 0.78) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.game-screen-themed > * {
+    position: relative;
+    z-index: 1;
+}
+.slot-container::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 230, 160, 0.35);
+    pointer-events: none;
+}
+
+.slot-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    pointer-events: none;
+    box-shadow:
+        inset 0 0 24px rgba(255, 211, 106, 0.08),
+        inset 0 -20px 40px rgba(0,0,0,0.25);
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }

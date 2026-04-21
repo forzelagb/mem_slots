@@ -438,6 +438,7 @@ function startGame(themeName) {
 
     // Устанавливаем тему
     currentTheme = themeName;
+    gameScreen.classList.add('game-screen-themed');
     slotTitle.innerText = titles[themeName];
     
     // Переключаем экраны
@@ -467,6 +468,7 @@ function startGame(themeName) {
 }
 
 function goBack() {
+    gameScreen.classList.remove('game-screen-themed');
     document.body.classList.remove(
         'vip-theme-ronaldo',
         'vip-theme-shrek',
