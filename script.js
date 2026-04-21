@@ -296,6 +296,9 @@ const milestoneRail = milestones.map((value, i) => {
 
 const card = document.createElement('div');
 card.className = `collection-card-detail rarity-${rarity} status-${status}`;
+if (status === "completed") {
+    card.classList.add("completed");
+}
 
 card.innerHTML = `
     <div class="collection-card-detail-image-wrap">
@@ -331,8 +334,8 @@ card.innerHTML = `
 `;
 
         gridEl.appendChild(card);
-        animateThemeDetailEntrance();
     });
+    animateThemeDetailEntrance();
 }
 // === ЛОГИКА ВКЛАДОК ===
 function openTab(tabName) {

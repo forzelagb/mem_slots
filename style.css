@@ -6495,6 +6495,184 @@ html, body {
         0 0 18px rgba(255,211,106,0.10);
     transition: 0.22s ease;
 }
+
+
+.collection-card-detail[data-rarity="common"] {
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.collection-card-detail[data-rarity="rare"] {
+    border: 1px solid rgba(77,227,255,0.4);
+    box-shadow: 0 0 18px rgba(77,227,255,0.15);
+}
+
+.collection-card-detail[data-rarity="epic"] {
+    border: 1px solid rgba(183,77,255,0.5);
+    box-shadow: 0 0 20px rgba(183,77,255,0.25);
+}
+
+.collection-card-detail[data-rarity="legendary"] {
+    border: 1px solid rgba(255,200,80,0.7);
+    box-shadow: 0 0 25px rgba(255,200,80,0.35);
+}
+
+.collection-card-detail {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.collection-card-detail:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+}
+
+.collection-card-detail.completed {
+    box-shadow: 
+        0 0 25px rgba(255,215,100,0.35),
+        0 0 60px rgba(255,215,100,0.15);
+    border-color: rgba(255,215,100,0.9);
+}
+
+.collection-card-detail.completed::after {
+    content: "✔";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: gold;
+    color: black;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.collection-card-progress-fill {
+    background: linear-gradient(90deg, #ffd36a, #ff9f2f);
+    box-shadow: 0 0 10px rgba(255, 200, 80, 0.5);
+}
+.reward-line {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+.collection-card-detail.rarity-common {
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.collection-card-detail.rarity-rare {
+    border: 1px solid rgba(77,227,255,0.4);
+    box-shadow: 0 0 18px rgba(77,227,255,0.15);
+}
+
+.collection-card-detail.rarity-epic {
+    border: 1px solid rgba(183,77,255,0.5);
+    box-shadow: 0 0 20px rgba(183,77,255,0.25);
+}
+
+.collection-card-detail.rarity-legendary {
+    border: 1px solid rgba(255,200,80,0.7);
+    box-shadow: 0 0 25px rgba(255,200,80,0.35);
+}
+
+.collection-card-detail.completed {
+    box-shadow:
+        0 0 25px rgba(255,215,100,0.35),
+        0 0 60px rgba(255,215,100,0.15);
+    border-color: rgba(255,215,100,0.9);
+    position: relative;
+}
+
+.collection-card-detail.completed::after {
+    content: "✔";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: gold;
+    color: black;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.collection-card-detail {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+/* редкости */
+.collection-card-detail.rarity-common {
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.collection-card-detail.rarity-rare {
+    border: 1px solid rgba(77, 227, 255, 0.40);
+    box-shadow: 0 0 18px rgba(77, 227, 255, 0.15);
+}
+
+.collection-card-detail.rarity-epic {
+    border: 1px solid rgba(183, 77, 255, 0.50);
+    box-shadow: 0 0 20px rgba(183, 77, 255, 0.22);
+}
+
+.collection-card-detail.rarity-legendary {
+    border: 1px solid rgba(255, 200, 80, 0.70);
+    box-shadow: 0 0 25px rgba(255, 200, 80, 0.30);
+}
+
+/* hover */
+.collection-card-detail:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.40);
+}
+
+/* completed */
+.collection-card-detail.completed {
+    position: relative;
+    border-color: rgba(255, 215, 100, 0.95);
+    box-shadow:
+        0 0 25px rgba(255, 215, 100, 0.35),
+        0 0 60px rgba(255, 215, 100, 0.15);
+}
+
+.collection-card-detail.completed::after {
+    content: "✔";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: gold;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+}
+
+/* статусы */
+.collection-card-detail-status.locked {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.65);
+}
+
+.collection-card-detail-status.in-progress {
+    background: rgba(77, 227, 255, 0.12);
+    color: #7eefff;
+}
+
+.collection-card-detail-status.completed {
+    background: rgba(255, 211, 106, 0.14);
+    color: #ffd36a;
+    box-shadow: 0 0 12px rgba(255, 211, 106, 0.18);
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
