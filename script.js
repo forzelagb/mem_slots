@@ -383,20 +383,33 @@ function createGrid() {
     }
 }
 
-
 function clearHighlightedCells() {
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.classList.remove('win-cell');
+        cell.classList.remove('win-cell', 'dim-cell', 'pulse');
     });
 }
 
 function highlightWinningCells(indexes) {
-    indexes.forEach(index => {
-        const cell = document.querySelectorAll('.cell')[index];
-        if (cell) {
+    const cells = Array.from(document.querySelectorAll('.cell'));
+    const winSet = new Set(indexes);
+
+    cells.forEach((cell, index) => {
+        cell.classList.remove('win-cell', 'dim-cell', 'pulse');
+
+        if (winSet.has(index)) {
             cell.classList.add('win-cell');
+        } else if (winSet.size > 0) {
+            cell.classList.add('dim-cell');
         }
     });
+
+    setTimeout(() => {
+        cells.forEach((cell, index) => {
+            if (winSet.has(index)) {
+                cell.classList.add('pulse');
+            }
+        });
+    }, 40);
 }
 
 function animateBalanceChange(type) {
@@ -487,51 +500,51 @@ function goBack() {
 }
 
 function animateDrop(cells, items, callback) {
-    cells.forEach((img, index) => {
-        const item = items[index];
-        if (!item) return;
+    if (!cells || !items || cells.length !== items.length) {
+        if (callback) callback();
+        return;
+    }
 
-        img.style.transition = 'none';
-        img.style.transform = 'translateY(-200px)';
-        img.style.opacity = '0';
-        img.src = item.src;
-        img.style.background = 'transparent';
+    let completed = 0;
 
-        const cell = img.parentElement;
-        cell.setAttribute('data-multiplier', item.mult || '');
-
-        let delay = index * 30;
-
-        // последние 3 клетки падают медленнее
-        if (index >= cells.length - 3) {
-            const extraIndex = index - (cells.length - 3); // 0,1,2
-            delay += extraIndex * 200;
+    cells.forEach((cell, index) => {
+        const img = cell.querySelector('img');
+        if (!img) {
+            completed++;
+            if (completed === cells.length && callback) callback();
+            return;
         }
 
+        cell.classList.remove('drop-anim', 'drop-land');
+        void cell.offsetWidth;
+
+        const col = index % 5;
+        const row = Math.floor(index / 5);
+
+        const delay = col * 70 + row * 35;
+
         setTimeout(() => {
-            const isLastCell = index === cells.length - 1;
+            cell.classList.add('drop-anim');
 
-            img.style.transition = isLastCell
-                ? 'transform 0.9s cubic-bezier(0.2, 1.5, 0.5, 1), opacity 0.3s ease'
-                : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
+            const onDropEnd = () => {
+                img.removeEventListener('animationend', onDropEnd);
 
-            img.style.transform = 'translateY(0)';
-            img.style.opacity = '1';
+                cell.classList.remove('drop-anim');
+                cell.classList.add('drop-land');
 
-            // звук последней клетки
-            if (isLastCell) {
-    stopRollSound();
-    playResultSound();
-}
+                setTimeout(() => {
+                    cell.classList.remove('drop-land');
+                    completed++;
+
+                    if (completed === cells.length && callback) {
+                        callback();
+                    }
+                }, 180);
+            };
+
+            img.addEventListener('animationend', onDropEnd, { once: true });
         }, delay);
     });
-
-    // финальное время анимации с учётом последних 3 клеток
-    const animationTime = (cells.length - 1) * 30 + 400 + 900;
-
-    setTimeout(() => {
-        callback();
-    }, animationTime);
 }
 
 
@@ -801,6 +814,7 @@ function updateCardStreak(cardKey) {
 
 
 function spin() {
+    clearWinHighlight();
     console.log("=== DEBUG SPIN ===");
     console.log("Тема:", currentTheme);
     console.log("Количество картинок в теме:", themes[currentTheme]?.length);
@@ -809,6 +823,8 @@ function spin() {
     const currentEnergy = playerData.resources?.energy ?? 0;
 
     if (isSpinning || !currentTheme || currentEnergy < currentEnergyCost) return;
+
+    clearHighlightedCells();
 
     stopRareHitSound();
     playRollSound();
@@ -3156,14 +3172,6 @@ function closeDailyCalendar() {
     const modal = document.getElementById('daily-calendar-modal');
     if (modal) modal.classList.remove('active');
 }
-
-
-function clearHighlightedCells() {
-    document.querySelectorAll('.cell.win-cell, .cell.win-cell-strong').forEach(cell => {
-        cell.classList.remove('win-cell', 'win-cell-strong');
-    });
-}
-
 function flashSlotContainer() {
     const slotContainer = document.querySelector('.slot-container');
     if (!slotContainer) return;
@@ -4161,7 +4169,38 @@ function animateThemeDetailEntrance() {
             card.classList.add('animate-in');
         });
     });
-}ы
+}
+function clearWinHighlight() {
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.classList.remove('win-cell', 'dim-cell', 'pulse');
+    });
+}
+
+function highlightWinningCells(winningIndexes) {
+    const cells = Array.from(document.querySelectorAll('.cell'));
+
+    if (!cells.length) return;
+
+    const winSet = new Set(winningIndexes);
+
+    cells.forEach((cell, index) => {
+        cell.classList.remove('win-cell', 'dim-cell', 'pulse');
+
+        if (winSet.has(index)) {
+            cell.classList.add('win-cell');
+        } else {
+            cell.classList.add('dim-cell');
+        }
+    });
+
+    setTimeout(() => {
+        cells.forEach((cell, index) => {
+            if (winSet.has(index)) {
+                cell.classList.add('pulse');
+            }
+        });
+    }, 40);
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
