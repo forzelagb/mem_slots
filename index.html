@@ -115,39 +115,34 @@
     </div>
 
     <!-- ЭКРАН ИГРЫ (САМИ СЛОТЫ) -->
-    <div id="game-screen" class="screen">
-        <div class="game-header">
-            <button class="btn-back" onclick="goBack()">← НАЗАД</button>
-            <div class="balance-container small">
-                <span class="gem-icon">⚡</span>
-                <span id="game-balance">100</span>
-            </div>
-        </div>
-        <div class="slot-container">
-            <!-- Счётчик дневного лимита для Ronaldo -->
-<div id="ronaldo-win-limit-display" style="display:none; text-align:center; color:#ffd700; font-weight:bold; margin-bottom:10px; font-size: 14px;">
-    Осталось выиграть сегодня: <span id="win-limit-left">5000000</span> 💎
-</div>
-            <div class="slot-title" id="slot-title">SLOT NAME</div>
-            <div class="grid-wrapper" id="grid"></div>
-            <div class="message-box" id="result-text">Удачи!</div>
-            <div id="reward-preview" class="reward-preview" style="display:none;">
-    <img id="reward-preview-image" class="reward-preview-image" src="" alt="reward">
-    <div class="reward-preview-body">
-        <div id="reward-preview-title" class="reward-preview-title">Карточка</div>
-        <div id="reward-preview-meta" class="reward-preview-meta">+0 progress</div>
-        <div id="reward-preview-extra" class="reward-preview-extra">+0 XP</div>
-    </div>
-</div>
-            
-            <div class="controls">
-            </div>
+<div id="game-screen" class="screen">
 
-<div class="spin-controls">
-    <button id="spin-btn" class="btn-spin" onclick="spin()">PLAY</button>
-</div>
+  <div class="game-header">
+    <button class="btn-back">Назад</button>
+    <div class="energy">⚡ 100</div>
+  </div>
+
+<div class="slot-scene">
+    <div class="slot-container slot-container--ornate">
+        <div class="slot-ornament slot-ornament--tl"></div>
+        <div class="slot-ornament slot-ornament--tr"></div>
+        <div class="slot-ornament slot-ornament--bl"></div>
+        <div class="slot-ornament slot-ornament--br"></div>
+
+        <div class="slot-gem slot-gem--top"></div>
+        <div class="slot-gem slot-gem--bottom"></div>
+        <div class="slot-gem slot-gem--left"></div>
+        <div class="slot-gem slot-gem--right"></div>
+
+        <div class="slot-stage">
+            <div class="grid-wrapper" id="grid"></div>
+        </div>
+
+        <div class="spin-controls">
+            <button id="spin-btn" class="btn-spin" onclick="spin()">PLAY</button>
         </div>
     </div>
+</div>
 
     <!-- ОКНО ВЫИГРЫША -->
     <div id="win-modal" class="modal">
