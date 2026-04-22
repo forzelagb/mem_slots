@@ -448,7 +448,10 @@ function startGame(themeName) {
 
     currentTheme = themeName;
     gameScreen.classList.add('game-screen-themed');
-    slotTitle.innerText = titles[themeName];
+
+    if (slotTitle) {
+        slotTitle.innerText = titles[themeName];
+    }
 
     const scene = document.querySelector('.slot-scene');
     if (scene) {
@@ -460,7 +463,10 @@ function startGame(themeName) {
 
     createGrid();
     updateUI();
-    resultText.innerText = "Запусти игру!";
+
+    if (resultText) {
+        resultText.innerText = "Запусти игру!";
+    }
 }
 
 function goBack() {
