@@ -410,12 +410,22 @@ function highlightWinningCells(indexes) {
 }
 
 function animateBalanceChange(type) {
-    const els = [document.getElementById('lobby-balance'), document.getElementById('game-balance')];
+    const els = [
+        document.getElementById('lobby-balance'),
+        document.getElementById('game-balance')
+    ].filter(Boolean);
+
     els.forEach(el => {
         el.classList.remove('balance-pop', 'balance-loss');
         void el.offsetWidth;
-        if (type === 'win') el.classList.add('balance-pop');
-        if (type === 'loss') el.classList.add('balance-loss');
+
+        if (type === 'win') {
+            el.classList.add('balance-pop');
+        }
+
+        if (type === 'loss') {
+            el.classList.add('balance-loss');
+        }
     });
 }
 
@@ -830,11 +840,10 @@ function spin() {
         stopRollSound();
         return;
     }
-
-    const finalGrid = [];
-    for (let i = 0; i < 25; i++) {
-        finalGrid.push(getRandomWeightedItem(items));
-    }
+const finalGrid = [];
+for (let i = 0; i < 15; i++) {
+    finalGrid.push(getRandomWeightedItem(items));
+}
 
     playerData.resources.energy -= currentEnergyCost;
     savePlayer();
@@ -850,12 +859,14 @@ function spin() {
         spinBtn.innerHTML = `КРУТИМ...`;
     }
 
+if (resultText) {
     resultText.innerText = getRandomItem([
         "Крутим барабаны...",
         "Смотрим удачу...",
         "Символы летят...",
         "Сейчас будет жарко..."
     ]);
+}
 
     const cells = Array.from(document.querySelectorAll('.cell'));
     hideRewardPreview();
