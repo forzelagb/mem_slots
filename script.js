@@ -434,6 +434,16 @@ function updateUI() {
     const gameBal = document.getElementById('game-balance');
 
     const energy = playerData.resources?.energy ?? 0;
+    const globalEnergy = document.getElementById('global-energy-value');
+const energyMiniFill = document.getElementById('energy-mini-fill');
+
+if (globalEnergy) globalEnergy.innerText = energy;
+
+if (energyMiniFill) {
+    const maxEnergy = 100;
+    const percent = Math.max(0, Math.min(100, (energy / maxEnergy) * 100));
+    energyMiniFill.style.width = percent + '%';
+}
 
     if (lobbyBal) lobbyBal.innerText = energy;
     if (gameBal) gameBal.innerText = energy;

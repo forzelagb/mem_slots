@@ -10,6 +10,41 @@
     <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
+<div class="main-header">
+
+    <!-- ЛЕВАЯ ЧАСТЬ -->
+    <div class="main-header__left">
+        <div class="main-header__logo">MEME VEGAS</div>
+
+        <button class="main-header__nav-btn" onclick="openTab('games')">
+            🎮 Игры
+        </button>
+
+        <button class="main-header__nav-btn" onclick="openTab('collection')">
+            🗂 Коллекция
+        </button>
+    </div>
+
+    <!-- ПРАВАЯ ЧАСТЬ -->
+    <div class="main-header__right">
+
+        <!-- ЭНЕРГИЯ -->
+        <div class="main-header__energy">
+            ⚡ <span id="global-energy-value">100</span>
+        </div>
+
+        <!-- ВОТ СЮДА ВСТАВЛЯЕТСЯ PROFILE -->
+        <div class="main-header__profile">
+            <div class="main-header__avatar">M</div>
+            <div class="main-header__profile-text">
+                <div class="main-header__nickname">Player</div>
+                <div class="main-header__vip">VIP FREE</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
     <!-- ЛОББИ -->
     <div id="lobby-screen" class="screen active">
