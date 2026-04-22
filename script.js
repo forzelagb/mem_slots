@@ -881,8 +881,8 @@ function checkWins(grid) {
     clearHighlightedCells();
 
     let totalEnergyReward = 0;
-    let totalXpReward = 1; // базовый XP за сам спин
-    const rows = 5;
+    let totalXpReward = 1; // базовый XP за спин
+    const rows = 3;
     const cols = 5;
     const allWinningIndexes = new Set();
 
@@ -908,7 +908,8 @@ function checkWins(grid) {
             cardKey,
             fileName,
             amount: rewardAmount,
-            matchCount
+            matchCount,
+            src: item.src
         });
 
         if (matchCount > spinMainMatchedCount) {
@@ -955,9 +956,6 @@ function checkWins(grid) {
             if (item1 && item2 && item3 && item1.src === item2.src && item2.src === item3.src) {
                 let matchCount = 3;
 
-                if (row + 3 < rows && grid[idx + cols * 3] && grid[idx + cols * 3].src === item1.src) matchCount++;
-                if (row + 4 < rows && grid[idx + cols * 4] && grid[idx + cols * 4].src === item1.src) matchCount++;
-
                 const winIndexes = [];
                 for (let i = 0; i < matchCount; i++) {
                     winIndexes.push(idx + cols * i);
@@ -992,39 +990,49 @@ function checkWins(grid) {
     addXP(totalXpReward);
     savePlayer();
 
-if (rewardedCards.length > 0) {
-    const firstReward = rewardedCards[0];
+    // старый reward UI теперь безопасный
+    if (rewardedCards.length > 0) {
+        const firstReward = rewardedCards[0];
 
-    showRewardPreview({
-        src: `image/${currentTheme}/${firstReward.fileName}`,
-        fileName: firstReward.fileName,
-        amount: firstReward.amount,
-        matchCount: firstReward.matchCount,
-        xp: totalXpReward,
-        streakBonus
-    });
+        if (typeof showRewardPreview === 'function') {
+            showRewardPreview({
+                src: firstReward.src,
+                fileName: firstReward.fileName,
+                amount: firstReward.amount,
+                matchCount: firstReward.matchCount,
+                xp: totalXpReward,
+                streakBonus
+            });
+        }
 
-    let text = `+${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+        if (resultText) {
+            let text = `+${firstReward.amount} к прогрессу ${firstReward.fileName}`;
 
-    if (firstReward.matchCount === 4) {
-        text = `Совпадение x4 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+            if (firstReward.matchCount === 4) {
+                text = `Совпадение x4 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+            }
+
+            if (firstReward.matchCount >= 5) {
+                text = `Совпадение x5 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
+            }
+
+            text += ` • +${totalXpReward} XP`;
+
+            if (streakBonus > 0) {
+                text += ` • Серия +${streakBonus} энергии`;
+            }
+
+            resultText.innerText = text;
+        }
+    } else {
+        if (typeof hideRewardPreview === 'function') {
+            hideRewardPreview();
+        }
+
+        if (resultText) {
+            resultText.innerText = `Нет совпадений • +${totalXpReward} XP • серия сброшена`;
+        }
     }
-
-    if (firstReward.matchCount >= 5) {
-        text = `Совпадение x5 • +${firstReward.amount} к прогрессу ${firstReward.fileName}`;
-    }
-
-    text += ` • +${totalXpReward} XP`;
-
-    if (streakBonus > 0) {
-        text += ` • Серия +${streakBonus} энергии`;
-    }
-
-    resultText.innerText = text;
-} else {
-    hideRewardPreview();
-    resultText.innerText = `Нет совпадений • +${totalXpReward} XP • серия сброшена`;
-}
 
     updateUI();
 }
