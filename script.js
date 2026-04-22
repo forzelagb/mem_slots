@@ -75,54 +75,54 @@ const dailyRewardTable = [
 
 // === ТЕМЫ ИГРЫ ===
 const themes = {
-    brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: 2}, {src: "image/brain/4.jpg", mult: ""}, {src: "image/brain/5.jpg", mult: 3}, {src: "image/brain/6.jpg", mult: ""}, {src: "image/brain/7.jpg", mult: ""}, {src: "image/brain/8.jpg", mult: 5}],
-    helin: [{src: "image/helin/1.jpg", mult: ""}, {src: "image/helin/2.jpg", mult: ""}, {src: "image/helin/3.jpg", mult: 2}, {src: "image/helin/4.jpg", mult: ""}, {src: "image/helin/5.jpg", mult: 3}, {src: "image/helin/6.jpg", mult: ""}, {src: "image/helin/7.jpg", mult: ""}, {src: "image/helin/8.jpg", mult: 5}],
-    lexapaws: [{src: "image/lexapaws/1.jpg", mult: ""}, {src: "image/lexapaws/2.jpg", mult: ""}, {src: "image/lexapaws/3.jpg", mult: 2}, {src: "image/lexapaws/4.jpg", mult: ""}, {src: "image/lexapaws/5.jpg", mult: 3}, {src: "image/lexapaws/6.jpg", mult: ""}, {src: "image/lexapaws/7.jpg", mult: ""}, {src: "image/lexapaws/8.jpg", mult: 5}],
-    litwin: [{src: "image/litwin/1.jpg", mult: ""}, {src: "image/litwin/2.jpg", mult: ""}, {src: "image/litwin/3.jpg", mult: 2}, {src: "image/litwin/4.jpg", mult: ""}, {src: "image/litwin/5.jpg", mult: 3}, {src: "image/litwin/6.jpg", mult: ""}, {src: "image/litwin/7.jpg", mult: ""}, {src: "image/litwin/8.jpg", mult: 5}],
-    melstroy: [{src: "image/melstroy/1.jpg", mult: ""}, {src: "image/melstroy/2.jpg", mult: ""}, {src: "image/melstroy/3.jpg", mult: 2}, {src: "image/melstroy/4.jpg", mult: ""}, {src: "image/melstroy/5.jpg", mult: 3}, {src: "image/melstroy/6.jpg", mult: ""}, {src: "image/melstroy/7.jpg", mult: ""}, {src: "image/melstroy/8.jpg", mult: 5}],
-    nikkifn: [{src: "image/nikkifn/1.jpg", mult: ""}, {src: "image/nikkifn/2.jpg", mult: ""}, {src: "image/nikkifn/3.jpg", mult: 2}, {src: "image/nikkifn/4.jpg", mult: ""}, {src: "image/nikkifn/5.jpg", mult: 3}, {src: "image/nikkifn/6.jpg", mult: ""}, {src: "image/nikkifn/7.jpg", mult: ""}, {src: "image/nikkifn/8.jpg", mult: 5}],
-    rejiboi: [{src: "image/rejiboi/1.jpg", mult: ""}, {src: "image/rejiboi/2.jpg", mult: ""}, {src: "image/rejiboi/3.jpg", mult: 2}, {src: "image/rejiboi/4.jpg", mult: ""}, {src: "image/rejiboi/5.jpg", mult: 3}, {src: "image/rejiboi/6.jpg", mult: ""}, {src: "image/rejiboi/7.jpg", mult: ""}, {src: "image/rejiboi/8.jpg", mult: 5}],
-    rostick: [{src: "image/rostick/1.jpg", mult:""}, {src: "image/rostick/2.jpg", mult: ""}, {src: "image/rostick/3.jpg", mult: 2}, {src: "image/rostick/4.jpg", mult: ""}, {src: "image/rostick/5.jpg", mult: 3}, {src: "image/rostick/6.jpg", mult: ""}, {src: "image/rostick/7.jpg", mult: ""}, {src: "image/rostick/8.jpg", mult: 5}],
-    sasich: [{src: "image/sasich/1.jpg", mult: ""}, {src: "image/sasich/2.jpg", mult: ""}, {src: "image/sasich/3.jpg", mult: 2}, {src: "image/sasich/4.jpg", mult: ""}, {src: "image/sasich/5.jpg", mult: 3}, {src: "image/sasich/6.jpg", mult: ""}, {src: "image/sasich/7.jpg", mult: ""}, {src: "image/sasich/8.jpg", mult: 5}],
-    skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: 2}, {src: "image/skibiditoilet/4.jpg", mult: ""}, {src: "image/skibiditoilet/5.jpg", mult: 3}, {src: "image/skibiditoilet/6.jpg", mult: ""}, {src: "image/skibiditoilet/7.jpg", mult: ""}, {src: "image/skibiditoilet/8.jpg", mult: 5}],
-    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: 2}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: 3}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: 5}],
+    brain: [{src: "image/brain/1.jpg", mult: ""}, {src: "image/brain/2.jpg", mult: ""}, {src: "image/brain/3.jpg", mult: ""}, {src: "image/brain/4.jpg", mult: ""}, {src: "image/brain/5.jpg", mult: ""}, {src: "image/brain/6.jpg", mult: ""}, {src: "image/brain/7.jpg", mult: ""}, {src: "image/brain/8.jpg", mult: ""}],
+    helin: [{src: "image/helin/1.jpg", mult: ""}, {src: "image/helin/2.jpg", mult: ""}, {src: "image/helin/3.jpg", mult: ""}, {src: "image/helin/4.jpg", mult: ""}, {src: "image/helin/5.jpg", mult: ""}, {src: "image/helin/6.jpg", mult: ""}, {src: "image/helin/7.jpg", mult: ""}, {src: "image/helin/8.jpg", mult: ""}],
+    lexapaws: [{src: "image/lexapaws/1.jpg", mult: ""}, {src: "image/lexapaws/2.jpg", mult: ""}, {src: "image/lexapaws/3.jpg", mult: ""}, {src: "image/lexapaws/4.jpg", mult: ""}, {src: "image/lexapaws/5.jpg", mult: 3}, {src: "image/lexapaws/6.jpg", mult: ""}, {src: "image/lexapaws/7.jpg", mult: ""}, {src: "image/lexapaws/8.jpg", mult: ""}],
+    litwin: [{src: "image/litwin/1.jpg", mult: ""}, {src: "image/litwin/2.jpg", mult: ""}, {src: "image/litwin/3.jpg", mult: ""}, {src: "image/litwin/4.jpg", mult: ""}, {src: "image/litwin/5.jpg", mult: ""}, {src: "image/litwin/6.jpg", mult: ""}, {src: "image/litwin/7.jpg", mult: ""}, {src: "image/litwin/8.jpg", mult: ""}],
+    melstroy: [{src: "image/melstroy/1.jpg", mult: ""}, {src: "image/melstroy/2.jpg", mult: ""}, {src: "image/melstroy/3.jpg", mult: ""}, {src: "image/melstroy/4.jpg", mult: ""}, {src: "image/melstroy/5.jpg", mult: 3}, {src: "image/melstroy/6.jpg", mult: ""}, {src: "image/melstroy/7.jpg", mult: ""}, {src: "image/melstroy/8.jpg", mult: ""}],
+    nikkifn: [{src: "image/nikkifn/1.jpg", mult: ""}, {src: "image/nikkifn/2.jpg", mult: ""}, {src: "image/nikkifn/3.jpg", mult: ""}, {src: "image/nikkifn/4.jpg", mult: ""}, {src: "image/nikkifn/5.jpg", mult: ""}, {src: "image/nikkifn/6.jpg", mult: ""}, {src: "image/nikkifn/7.jpg", mult: ""}, {src: "image/nikkifn/8.jpg", mult: ""}],
+    rejiboi: [{src: "image/rejiboi/1.jpg", mult: ""}, {src: "image/rejiboi/2.jpg", mult: ""}, {src: "image/rejiboi/3.jpg", mult: ""}, {src: "image/rejiboi/4.jpg", mult: ""}, {src: "image/rejiboi/5.jpg", mult: ""}, {src: "image/rejiboi/6.jpg", mult: ""}, {src: "image/rejiboi/7.jpg", mult: ""}, {src: "image/rejiboi/8.jpg", mult: ""}],
+    rostick: [{src: "image/rostick/1.jpg", mult:""}, {src: "image/rostick/2.jpg", mult: ""}, {src: "image/rostick/3.jpg", mult: ""}, {src: "image/rostick/4.jpg", mult: ""}, {src: "image/rostick/5.jpg", mult: ""}, {src: "image/rostick/6.jpg", mult: ""}, {src: "image/rostick/7.jpg", mult: ""}, {src: "image/rostick/8.jpg", mult: ""}],
+    sasich: [{src: "image/sasich/1.jpg", mult: ""}, {src: "image/sasich/2.jpg", mult: ""}, {src: "image/sasich/3.jpg", mult: ""}, {src: "image/sasich/4.jpg", mult: ""}, {src: "image/sasich/5.jpg", mult: ""}, {src: "image/sasich/6.jpg", mult: ""}, {src: "image/sasich/7.jpg", mult: ""}, {src: "image/sasich/8.jpg", mult: ""}],
+    skibiditoilet: [{src: "image/skibiditoilet/1.jpg", mult: ""}, {src: "image/skibiditoilet/2.jpg", mult: ""}, {src: "image/skibiditoilet/3.jpg", mult: 2}, {src: "image/skibiditoilet/4.jpg", mult: ""}, {src: "image/skibiditoilet/5.jpg", mult: ""}, {src: "image/skibiditoilet/6.jpg", mult: ""}, {src: "image/skibiditoilet/7.jpg", mult: ""}, {src: "image/skibiditoilet/8.jpg", mult: ""}],
+    slovopatsana: [{src: "image/slovopatsana/1.jpg", mult: ""}, {src: "image/slovopatsana/2.jpg", mult: ""}, {src: "image/slovopatsana/3.jpg", mult: 2}, {src: "image/slovopatsana/4.jpg", mult: ""}, {src: "image/slovopatsana/5.jpg", mult: ""}, {src: "image/slovopatsana/6.jpg", mult: ""}, {src: "image/slovopatsana/7.jpg", mult: ""}, {src: "image/slovopatsana/8.jpg", mult: ""}],
     ronaldo: [
-        {src: "image/ronaldo/1.jpg", mult: 8},
+        {src: "image/ronaldo/1.jpg", mult: ""},
         {src: "image/ronaldo/2.jpg", mult: ""}, 
-        {src: "image/ronaldo/3.jpg", mult: 3}, 
+        {src: "image/ronaldo/3.jpg", mult: ""}, 
         {src: "image/ronaldo/4.jpg", mult: ""}, 
-        {src: "image/ronaldo/5.jpg", mult: 10}, 
-        {src: "image/ronaldo/6.jpg", mult: 5}, 
+        {src: "image/ronaldo/5.jpg", mult: ""}, 
+        {src: "image/ronaldo/6.jpg", mult: ""}, 
         {src: "image/ronaldo/7.jpg", mult: ""} // SIUUU JACKPOT!
     ],
 
 shrek: [
     {src: "image/shrek/1.jpg", mult: ""},
-    {src: "image/shrek/2.jpg", mult: 2},
-    {src: "image/shrek/3.jpg", mult: 3},
-    {src: "image/shrek/4.jpg", mult: 5},
-    {src: "image/shrek/5.jpg", mult: 8},
+    {src: "image/shrek/2.jpg", mult: ""},
+    {src: "image/shrek/3.jpg", mult: ""},
+    {src: "image/shrek/4.jpg", mult: ""},
+    {src: "image/shrek/5.jpg", mult: ""},
     {src: "image/shrek/6.jpg", mult: ""},
-    {src: "image/shrek/7.jpg", mult: 10}
+    {src: "image/shrek/7.jpg", mult: ""}
 ],
 
 spongebob: [
     {src: "image/spongebob/1.jpg", mult: ""},
-    {src: "image/spongebob/2.jpg", mult: 2},
-    {src: "image/spongebob/3.jpg", mult: 3},
-    {src: "image/spongebob/4.jpg", mult: 5},
-    {src: "image/spongebob/5.jpg", mult: 8},
-    {src: "image/spongebob/6.jpg", mult: 10},
+    {src: "image/spongebob/2.jpg", mult: ""},
+    {src: "image/spongebob/3.jpg", mult: ""},
+    {src: "image/spongebob/4.jpg", mult: ""},
+    {src: "image/spongebob/5.jpg", mult: ""},
+    {src: "image/spongebob/6.jpg", mult: ""},
     {src: "image/spongebob/7.jpg", mult: ""}
 ],
 
 speed: [
     {src: "image/speed/1.jpg", mult: ""},
-    {src: "image/speed/2.jpg", mult: 2},
-    {src: "image/speed/3.jpg", mult: 3},
-    {src: "image/speed/4.jpg", mult: 5},
-    {src: "image/speed/5.jpg", mult: 8},
-    {src: "image/speed/6.jpg", mult: 10},
+    {src: "image/speed/2.jpg", mult: ""},
+    {src: "image/speed/3.jpg", mult: ""},
+    {src: "image/speed/4.jpg", mult: ""},
+    {src: "image/speed/5.jpg", mult: ""},
+    {src: "image/speed/6.jpg", mult: ""},
     {src: "image/speed/7.jpg", mult: ""}
 ]
 
@@ -504,53 +504,56 @@ function animateDrop(cells, items, callback) {
         return;
     }
 
+    const cols = 5;
+    const rows = 3;
     let completed = 0;
 
-    cells.forEach((cell, index) => {
-        const img = cell.querySelector('.slot-img');
-        const item = items[index];
+    for (let col = 0; col < cols; col++) {
+        const columnDelay = col * 120;
 
-        if (!img || !item) {
-            completed++;
-            if (completed === cells.length) callback?.();
-            return;
-        }
+        for (let row = 0; row < rows; row++) {
+            const index = row * cols + col;
+            const cell = cells[index];
+            const item = items[index];
+            const img = cell?.querySelector('.slot-img');
 
-        const col = index % 5;
-        const row = Math.floor(index / 5);
-
-        const delay = col * 90 + row * 45;
-
-        cell.classList.remove('drop-anim', 'drop-land');
-        void cell.offsetWidth;
-
-        setTimeout(() => {
-            img.src = item.src;
-            img.style.opacity = '1';
-
-            if (item.mult !== "" && item.mult !== undefined && item.mult !== null) {
-                cell.setAttribute('data-multiplier', item.mult);
-            } else {
-                cell.setAttribute('data-multiplier', '');
+            if (!cell || !item || !img) {
+                completed++;
+                if (completed === cells.length) callback?.();
+                continue;
             }
 
-            cell.classList.add('drop-anim');
+            cell.classList.remove('reel-spin', 'reel-land');
+            void cell.offsetWidth;
 
             setTimeout(() => {
-                cell.classList.remove('drop-anim');
-                cell.classList.add('drop-land');
+                img.src = item.src;
+                img.style.opacity = '1';
+
+                if (item.mult !== "" && item.mult !== undefined && item.mult !== null) {
+                    cell.setAttribute('data-multiplier', item.mult);
+                } else {
+                    cell.setAttribute('data-multiplier', '');
+                }
+
+                cell.classList.add('reel-spin');
 
                 setTimeout(() => {
-                    cell.classList.remove('drop-land');
-                    completed++;
+                    cell.classList.remove('reel-spin');
+                    cell.classList.add('reel-land');
 
-                    if (completed === cells.length) {
-                        callback?.();
-                    }
-                }, 180);
-            }, 540);
-        }, delay);
-    });
+                    setTimeout(() => {
+                        cell.classList.remove('reel-land');
+                        completed++;
+
+                        if (completed === cells.length) {
+                            callback?.();
+                        }
+                    }, 180);
+                }, 560);
+            }, columnDelay + row * 35);
+        }
+    }
 }
 
 
