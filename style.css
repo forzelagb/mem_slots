@@ -8769,6 +8769,208 @@ html, body {
         font-size: 16px;
     }
 }
+.collection-card-detail {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.collection-card-detail:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.28);
+}
+
+.collection-card-detail-open {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--gold);
+    opacity: 0.95;
+}
+
+/* MODAL CARD PATH */
+.card-path-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+}
+
+.card-path-modal.active {
+    display: block;
+}
+
+.card-path-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(6px);
+}
+
+.card-path-modal__content {
+    position: relative;
+    z-index: 2;
+    width: min(920px, calc(100% - 32px));
+    margin: 60px auto;
+    border-radius: 24px;
+    padding: 24px;
+    background:
+        radial-gradient(circle at top center, rgba(255,255,255,0.05), transparent 32%),
+        linear-gradient(135deg, rgba(24,18,48,0.98), rgba(10,8,28,0.98));
+    border: 1px solid rgba(255,255,255,0.10);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.card-path-modal__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.card-path-modal__header {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-path-modal__image-wrap {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.04);
+}
+
+.card-path-modal__image-wrap img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.card-path-modal__title {
+    font-size: 30px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.card-path-modal__rarity {
+    display: inline-block;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    color: var(--gold);
+    border: 1px solid rgba(255, 211, 106, 0.22);
+    background: rgba(255, 211, 106, 0.06);
+}
+
+.card-path-modal__progress-text {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: var(--text-soft);
+}
+
+.card-path-modal__progress-bar {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.08);
+}
+
+.card-path-modal__progress-fill {
+    width: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--gold), var(--primary));
+    transition: width 0.25s ease;
+}
+
+.card-path-modal__section-title {
+    margin-bottom: 14px;
+    font-size: 22px;
+    color: var(--gold);
+}
+
+.card-path-stages {
+    display: grid;
+    gap: 12px;
+}
+
+.card-path-stage {
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+}
+
+.card-path-stage.done {
+    border-color: rgba(52,255,156,0.32);
+    background: rgba(52,255,156,0.08);
+}
+
+.card-path-stage.active {
+    border-color: rgba(255,211,106,0.35);
+    box-shadow: 0 0 20px rgba(255,211,106,0.08);
+}
+
+.card-path-stage__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.card-path-stage__step {
+    font-size: 18px;
+    color: #fff;
+}
+
+.card-path-stage__reward {
+    font-size: 13px;
+    color: var(--gold);
+}
+
+.card-path-stage__value,
+.card-path-stage__state {
+    font-size: 14px;
+    color: var(--text-soft);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+@media (max-width: 700px) {
+    .card-path-modal__content {
+        width: min(100% - 20px, 100%);
+        margin: 20px auto;
+        padding: 18px;
+    }
+
+    .card-path-modal__header {
+        grid-template-columns: 1fr;
+    }
+
+    .card-path-modal__title {
+        font-size: 24px;
+    }
+
+    .card-path-stage__top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
