@@ -320,6 +320,36 @@
         </div>
     </div>
 </div>
+<div id="card-path-modal" class="card-path-modal">
+    <div class="card-path-modal__overlay" onclick="closeCardPath()"></div>
+
+    <div class="card-path-modal__content">
+        <button class="card-path-modal__close" onclick="closeCardPath()">✕</button>
+
+        <div class="card-path-modal__header">
+            <div class="card-path-modal__image-wrap">
+                <img id="card-path-image" src="" alt="">
+            </div>
+
+            <div class="card-path-modal__info">
+                <div id="card-path-title" class="card-path-modal__title">Название карточки</div>
+                <div id="card-path-rarity" class="card-path-modal__rarity">RARE</div>
+
+                <div class="card-path-modal__progress">
+                    <div id="card-path-progress-text" class="card-path-modal__progress-text">0 / 0</div>
+                    <div class="card-path-modal__progress-bar">
+                        <div id="card-path-progress-fill" class="card-path-modal__progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-path-modal__body">
+            <h3 class="card-path-modal__section-title">Путь карточки</h3>
+            <div id="card-path-stages" class="card-path-stages"></div>
+        </div>
+    </div>
+</div>
     <!-- СКРИПТЫ -->
      <script type="module" src="firebase-init.js"></script>
     <script src="script.js"></script>

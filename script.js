@@ -252,7 +252,9 @@ function openThemeDetail(themeName) {
 
         <div class="collection-detail-hero-body">
             <div class="collection-detail-hero-title">${themeTitle}</div>
-            <div class="collection-detail-hero-subtitle">Собрано ${data.completed} из ${data.total} карточек</div>
+            <div class="collection-detail-hero-subtitle">
+                Собрано ${data.completed} из ${data.total} карточек
+            </div>
 
             <div class="collection-detail-hero-progress">
                 <div class="collection-detail-hero-progress-fill" style="width:${data.percent}%"></div>
@@ -265,76 +267,55 @@ function openThemeDetail(themeName) {
 
     const items = themes[themeName] || [];
 
-    items.forEach((item, index) => {
+    items.forEach((item) => {
         const fileName = getFileNameFromSrc(item.src);
         const cardKey = getCardKey(themeName, item.src);
         const rarity = cardRarity[fileName];
         const progress = playerData.cards?.[cardKey] || 0;
         const nextValue = getNextMilestoneValue(cardKey);
-        const stage = getCurrentStage(cardKey);
-        const milestones = getRewardMilestones(cardKey);
         const percentToNext = Math.max(0, Math.min(100, (progress / nextValue) * 100));
+        const status = getCardStatus(cardKey);
 
-const status = getCardStatus(cardKey);
+        const card = document.createElement('div');
+        card.className = `collection-card-detail rarity-${rarity} status-${status}`;
+        card.onclick = () => openCardPath(themeName, item.src);
 
-const milestoneRail = milestones.map((value, i) => {
-    const stageIndex = i + 1;
-    const done = progress >= value;
-    const active = !done && value === nextValue;
-    const rewardLabel = getMilestoneRewardLabel(stageIndex);
+        if (status === "completed") {
+            card.classList.add("completed");
+        }
 
-    return `
-        <div class="milestone-item">
-            <div 
-                class="milestone-dot ${done ? 'done' : ''} ${active ? 'active' : ''}" 
-                title="${rewardLabel}"
-            ></div>
-            <div class="milestone-label">${rewardLabel}</div>
-        </div>
-    `;
-}).join('');
+        card.innerHTML = `
+            <div class="collection-card-detail-image-wrap">
+                <img src="${item.src}" alt="${fileName}">
+            </div>
 
-const card = document.createElement('div');
-card.className = `collection-card-detail rarity-${rarity} status-${status}`;
-if (status === "completed") {
-    card.classList.add("completed");
-}
+            <div class="collection-card-detail-body">
+                <div class="collection-card-detail-topline">
+                    <div class="collection-card-detail-name">${cardDisplayNames[fileName] || fileName}</div>
+                    <div class="collection-card-detail-rarity">${rarity}</div>
+                </div>
 
-card.innerHTML = `
-    <div class="collection-card-detail-image-wrap">
-        <img src="${item.src}" alt="${fileName}">
-    </div>
+                <div class="collection-card-detail-status ${status}">
+                    ${status === 'completed' ? 'COMPLETED' : status === 'in-progress' ? 'IN PROGRESS' : 'LOCKED'}
+                </div>
 
-    <div class="collection-card-detail-body">
-        <div class="collection-card-detail-topline">
-            <div class="collection-card-detail-name">${cardDisplayNames[fileName] || fileName}</div>
-            <div class="collection-card-detail-rarity">${rarity}</div>
-        </div>
+                <div class="collection-card-detail-progress-text">
+                    ${progress} / ${nextValue}
+                </div>
 
-        <div class="collection-card-detail-status ${status}">
-            ${status === 'completed' ? 'COMPLETED' : status === 'in-progress' ? 'IN PROGRESS' : 'LOCKED'}
-        </div>
+                <div class="collection-card-detail-progress-bar">
+                    <div class="collection-card-detail-progress-fill" style="width:${percentToNext}%"></div>
+                </div>
 
-        <div class="collection-card-detail-progress-text">
-            ${progress} / ${nextValue}
-        </div>
-
-        <div class="collection-card-detail-progress-bar">
-            <div class="collection-card-detail-progress-fill" style="width:${percentToNext}%"></div>
-        </div>
-
-        <div class="collection-card-detail-stage">
-            Уровень: ${stage}
-        </div>
-
-        <div class="milestone-rail">
-            ${milestoneRail}
-        </div>
-    </div>
-`;
+                <div class="collection-card-detail-open">
+                    Открыть путь карточки →
+                </div>
+            </div>
+        `;
 
         gridEl.appendChild(card);
     });
+
     animateThemeDetailEntrance();
 }
 // === ЛОГИКА ВКЛАДОК ===
@@ -4226,6 +4207,72 @@ function highlightWinningCells(winningIndexes) {
             }
         });
     }, 40);
+}
+function openCardPath(themeName, cardSrc) {
+    const modal = document.getElementById('card-path-modal');
+    const titleEl = document.getElementById('card-path-title');
+    const rarityEl = document.getElementById('card-path-rarity');
+    const imgEl = document.getElementById('card-path-image');
+    const progressEl = document.getElementById('card-path-progress-text');
+    const fillEl = document.getElementById('card-path-progress-fill');
+    const stagesEl = document.getElementById('card-path-stages');
+
+    if (!modal || !titleEl || !rarityEl || !imgEl || !progressEl || !fillEl || !stagesEl) return;
+
+    const fileName = getFileNameFromSrc(cardSrc);
+    const cardKey = getCardKey(themeName, cardSrc);
+    const rarity = cardRarity[fileName];
+    const progress = playerData.cards?.[cardKey] || 0;
+    const nextValue = getNextMilestoneValue(cardKey);
+    const stage = getCurrentStage(cardKey);
+    const milestones = getRewardMilestones(cardKey);
+    const percentToNext = Math.max(0, Math.min(100, (progress / nextValue) * 100));
+
+    titleEl.textContent = cardDisplayNames[fileName] || fileName;
+    rarityEl.textContent = rarity.toUpperCase();
+    imgEl.src = cardSrc;
+    imgEl.alt = fileName;
+    progressEl.textContent = `${progress} / ${nextValue} · Уровень ${stage}`;
+    fillEl.style.width = `${percentToNext}%`;
+
+    stagesEl.innerHTML = '';
+
+    milestones.forEach((value, index) => {
+        const step = index + 1;
+        const done = progress >= value;
+        const active = !done && value === nextValue;
+
+        const stageItem = document.createElement('div');
+        stageItem.className = `card-path-stage ${done ? 'done' : ''} ${active ? 'active' : ''}`;
+
+        stageItem.innerHTML = `
+            <div class="card-path-stage__top">
+                <div class="card-path-stage__step">Этап ${step}</div>
+                <div class="card-path-stage__reward">${getMilestoneRewardLabel(step)}</div>
+            </div>
+
+            <div class="card-path-stage__value">
+                Нужно: ${value}
+            </div>
+
+            <div class="card-path-stage__state">
+                ${done ? 'Получено' : active ? 'Текущий этап' : 'Заблокировано'}
+            </div>
+        `;
+
+        stagesEl.appendChild(stageItem);
+    });
+
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+}
+
+function closeCardPath() {
+    const modal = document.getElementById('card-path-modal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
 }
 // === ЗАПУСК ===
 window.onload = () => {
