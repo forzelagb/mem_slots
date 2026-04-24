@@ -717,8 +717,20 @@ function ensureCardProgressExists(cardKey) {
         playerData.resources.maxEnergy = 100;
     }
 
-    if (typeof playerData.resources.styleCoins !== "number") {
-        playerData.resources.styleCoins = 0;
+    if (typeof playerData.resources.memeCoins !== "number") {
+        playerData.resources.memeCoins = playerData.resources.styleCoins || 0;
+    }
+
+    if (typeof playerData.resources.collectionTokens !== "number") {
+        playerData.resources.collectionTokens = 0;
+    }
+
+    if (typeof playerData.playerLevel !== "number") {
+        playerData.playerLevel = 1;
+    }
+
+    if (typeof playerData.playerXP !== "number") {
+        playerData.playerXP = 0;
     }
 }
 
@@ -733,38 +745,30 @@ function addCardProgress(cardKey, amount) {
 }
 
 function rewardMilestone(cardKey, stage) {
-    const rewardKey = `${cardKey}_stage_${stage}`;
+    ensureCardProgressExists(cardKey);
 
+    const rewardKey = `${cardKey}_stage_${stage}`;
     if (playerData.claimedRewards[rewardKey]) return;
 
     playerData.claimedRewards[rewardKey] = true;
 
-    let coins = 0;
-    let energyBonus = 0;
+    const fileName = cardKey.split(":")[1];
+    const rarity = cardRarity[fileName];
+    const reward = getMilestoneReward(stage, rarity);
 
-    if (stage === 1) {
-        energyBonus = 5;
-    } else if (stage === 2) {
-        coins = 2;
-    } else if (stage === 3) {
-        coins = 4;
-    } else if (stage === 4) {
-        coins = 7;
-    } else if (stage === 5) {
-        coins = 12;
-    } else if (stage === 6) {
-        coins = 20;
-    }
-
-    if (coins > 0) {
-        playerData.resources.styleCoins += coins;
-    }
-
-    if (energyBonus > 0) {
+    if (reward.energy) {
         playerData.resources.energy = Math.min(
             playerData.resources.maxEnergy,
-            playerData.resources.energy + energyBonus
+            playerData.resources.energy + reward.energy
         );
+    }
+
+    if (reward.memeCoins) {
+        playerData.resources.memeCoins += reward.memeCoins;
+    }
+
+    if (reward.collectionTokens) {
+        playerData.resources.collectionTokens += reward.collectionTokens;
     }
 }
 
@@ -875,7 +879,7 @@ function checkWins(grid) {
     clearHighlightedCells();
 
     let totalEnergyReward = 0;
-    let totalXpReward = 1; // базовый XP за спин
+    let totalXpReward = 5; // базовый XP за спин
     const rows = 3;
     const cols = 5;
     const allWinningIndexes = new Set();
@@ -981,7 +985,7 @@ function checkWins(grid) {
         animateBalanceChange('win');
     }
 
-    addXP(totalXpReward);
+    addPlayerXP(totalXpReward);
     savePlayer();
 
     // старый reward UI теперь безопасный
@@ -4107,14 +4111,16 @@ function getThemePreviewImage(themeName) {
     const items = themes[themeName] || [];
     return items[0]?.src || '';
 }
-function getMilestoneRewardLabel(stage) {
-    if (stage === 1) return "+5 energy";
-    if (stage === 2) return "+2 style coins";
-    if (stage === 3) return "+4 style coins";
-    if (stage === 4) return "+7 style coins";
-    if (stage === 5) return "+12 style coins";
-    if (stage === 6) return "+20 style coins";
-    return "reward";
+function getMilestoneRewardLabel(stage, rarity) {
+    const reward = getMilestoneReward(stage, rarity);
+
+    const parts = [];
+
+    if (reward.energy) parts.push(`+${reward.energy} ⚡`);
+    if (reward.memeCoins) parts.push(`+${reward.memeCoins} 🪙`);
+    if (reward.collectionTokens) parts.push(`+${reward.collectionTokens} 🎟`);
+
+    return parts.length ? parts.join(' · ') : 'Награда';
 }
 function getCardStatus(cardKey) {
     const fileName = cardKey.split(':')[1];
@@ -4248,7 +4254,7 @@ function openCardPath(themeName, cardSrc) {
         stageItem.innerHTML = `
             <div class="card-path-stage__top">
                 <div class="card-path-stage__step">Этап ${step}</div>
-                <div class="card-path-stage__reward">${getMilestoneRewardLabel(step)}</div>
+                <div class="card-path-stage__reward">${getMilestoneRewardLabel(step, rarity)}</div>
             </div>
 
             <div class="card-path-stage__value">
@@ -4274,6 +4280,85 @@ function closeCardPath() {
     modal.classList.remove('active');
     document.body.classList.remove('modal-open');
 }
+function getXPNeededForLevel(level) {
+    return Math.floor(100 * level * 1.18);
+}
+
+function addPlayerXP(amount) {
+    if (!playerData) return;
+
+    if (typeof playerData.playerLevel !== "number") {
+        playerData.playerLevel = 1;
+    }
+
+    if (typeof playerData.playerXP !== "number") {
+        playerData.playerXP = 0;
+    }
+
+    playerData.playerXP += amount;
+
+    let needed = getXPNeededForLevel(playerData.playerLevel);
+
+    while (playerData.playerXP >= needed) {
+        playerData.playerXP -= needed;
+        playerData.playerLevel += 1;
+        needed = getXPNeededForLevel(playerData.playerLevel);
+    }
+
+    updatePlayerLevelUI();
+}
+function updatePlayerLevelUI() {
+    const levelEl = document.getElementById('player-level-value');
+    const xpFillEl = document.getElementById('player-xp-fill');
+
+    if (!levelEl && !xpFillEl) return;
+
+    const level = playerData.playerLevel || 1;
+    const xp = playerData.playerXP || 0;
+    const need = getXPNeededForLevel(level);
+    const percent = Math.max(0, Math.min(100, (xp / need) * 100));
+
+    if (levelEl) levelEl.innerText = level;
+    if (xpFillEl) xpFillEl.style.width = percent + '%';
+}
+function getMilestoneReward(stage, rarity) {
+    const table = {
+        common: [
+            { energy: 2, memeCoins: 5 },
+            { memeCoins: 8 },
+            { energy: 3, memeCoins: 10 },
+            { memeCoins: 15 },
+            { energy: 5, memeCoins: 20 },
+            { collectionTokens: 1 }
+        ],
+        rare: [
+            { energy: 3, memeCoins: 8 },
+            { memeCoins: 12 },
+            { energy: 4, memeCoins: 16 },
+            { memeCoins: 24 },
+            { energy: 6, memeCoins: 32 },
+            { collectionTokens: 2 }
+        ],
+        epic: [
+            { energy: 4, memeCoins: 12 },
+            { memeCoins: 18 },
+            { energy: 5, memeCoins: 25 },
+            { memeCoins: 38 },
+            { energy: 8, memeCoins: 50 },
+            { collectionTokens: 3 }
+        ],
+        legendary: [
+            { energy: 5, memeCoins: 18 },
+            { memeCoins: 30 },
+            { energy: 8, memeCoins: 45 },
+            { memeCoins: 70 },
+            { energy: 12, memeCoins: 100 },
+            { collectionTokens: 5 }
+        ]
+    };
+
+    return table[rarity]?.[stage - 1] || {};
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
@@ -4287,6 +4372,7 @@ window.onload = () => {
     updateWheelUI();
     renderWheelTrack();
     updateVIPZoneUI();
+    updatePlayerLevelUI();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 
