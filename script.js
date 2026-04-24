@@ -4469,6 +4469,160 @@ function goHome() {
         'vip-theme-speed'
     );
 }
+function selectCharacter(key) {
+  playerData.activeCharacter = key;
+  renderCharacter();
+}
+function renderCharacter() {
+  const char = playerData.characters[playerData.activeCharacter];
+
+  document.getElementById("active-character").src =
+    `image/characters/${playerData.activeCharacter}/${char.style}.png`;
+
+  if (char.pet) {
+    document.getElementById("active-pet").src =
+      `image/pets/${char.pet}.png`;
+  }
+}
+const charactersConfig = {
+    brain: {
+        name: "Brain Rot",
+        theme: "brain",
+        defaultStyle: "default",
+        image: "image/characters/brain/default.png"
+    },
+    helin: {
+        name: "Helin",
+        theme: "helin",
+        defaultStyle: "default",
+        image: "image/characters/helin/default.png"
+    },
+    litwin: {
+        name: "Litwin",
+        theme: "litwin",
+        defaultStyle: "default",
+        image: "image/characters/litwin/default.png"
+    },
+    melstroy: {
+        name: "Mellstroy",
+        theme: "melstroy",
+        defaultStyle: "default",
+        image: "image/characters/melstroy/default.png"
+    }
+};
+
+function ensureCharactersData() {
+    if (!playerData.characters) {
+        playerData.characters = {};
+    }
+
+    if (!playerData.activeCharacter) {
+        playerData.activeCharacter = "brain";
+    }
+
+    Object.keys(charactersConfig).forEach(key => {
+        if (!playerData.characters[key]) {
+            playerData.characters[key] = {
+                unlocked: key === "brain",
+                level: 1,
+                style: "default",
+                pet: null,
+                accessories: []
+            };
+        }
+    });
+}
+
+function openCharactersScreen() {
+    ensureCharactersData();
+
+    lobbyScreen.classList.remove('active');
+    gameScreen.classList.remove('active');
+
+    const charactersScreen = document.getElementById('characters-screen');
+    if (charactersScreen) {
+        charactersScreen.classList.add('active');
+    }
+
+    renderCharactersScreen();
+}
+
+function renderCharactersScreen() {
+    renderCharactersList();
+    renderActiveCharacter();
+}
+
+function renderCharactersList() {
+    const listEl = document.getElementById('characters-list');
+    if (!listEl) return;
+
+    listEl.innerHTML = '';
+
+    Object.keys(charactersConfig).forEach(key => {
+        const config = charactersConfig[key];
+        const data = playerData.characters[key];
+        const isActive = playerData.activeCharacter === key;
+
+        const item = document.createElement('div');
+        item.className = `character-list-item ${isActive ? 'active' : ''} ${!data.unlocked ? 'locked' : ''}`;
+
+        item.innerHTML = `
+            <div class="character-list-avatar">
+                <img src="${config.image}" alt="${config.name}">
+            </div>
+            <div>
+                <div class="character-list-name">${config.name}</div>
+                <div class="character-list-status">
+                    ${data.unlocked ? 'Открыт' : 'Закрыт'}
+                </div>
+            </div>
+        `;
+
+        item.onclick = () => {
+            if (!data.unlocked) return;
+            selectCharacter(key);
+        };
+
+        listEl.appendChild(item);
+    });
+}
+
+function selectCharacter(key) {
+    ensureCharactersData();
+
+    const character = playerData.characters[key];
+    if (!character || !character.unlocked) return;
+
+    playerData.activeCharacter = key;
+    savePlayer();
+
+    renderCharactersScreen();
+}
+
+function renderActiveCharacter() {
+    const imgEl = document.getElementById('active-character');
+    const petEl = document.getElementById('active-pet');
+
+    if (!imgEl) return;
+
+    const key = playerData.activeCharacter || "brain";
+    const config = charactersConfig[key];
+    const data = playerData.characters[key];
+
+    if (!config || !data) return;
+
+    imgEl.src = `image/characters/${key}/${data.style}.png`;
+    imgEl.alt = config.name;
+
+    if (petEl) {
+        if (data.pet) {
+            petEl.src = `image/pets/${data.pet}.png`;
+            petEl.style.display = 'block';
+        } else {
+            petEl.style.display = 'none';
+        }
+    }
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;

@@ -9295,6 +9295,40 @@ body.modal-open {
     max-width: none;
     min-height: calc(100vh - 90px);
 }
+#characters-screen {
+  min-height: 100vh;
+  background: url("image/backgrounds/character-stage.jpg") center/cover no-repeat;
+}
+
+.characters-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.characters-sidebar {
+  width: 200px;
+}
+
+.character-stage {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#active-character {
+  height: 400px;
+  z-index: 2;
+}
+
+#active-pet {
+  position: absolute;
+  bottom: 0;
+  right: 30%;
+  height: 120px;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
