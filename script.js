@@ -340,6 +340,11 @@ function openTab(tabName) {
     if (tabName === 'collection') {
         renderAllThemesCollection();
     }
+    const homeIntro = document.getElementById('home-intro');
+
+if (homeIntro) {
+    homeIntro.style.display = tabName === 'games' ? 'block' : 'none';
+}
 }
 
 function createGrid() {
@@ -4450,6 +4455,19 @@ function updatePlayerProfileUI() {
     if (profileEnergy) profileEnergy.innerText = playerData.resources?.energy || 0;
     if (profileMemeCoins) profileMemeCoins.innerText = playerData.resources?.memeCoins || 0;
     if (profileCollectionTokens) profileCollectionTokens.innerText = playerData.resources?.collectionTokens || 0;
+}
+function goHome() {
+    gameScreen.classList.remove('active');
+    lobbyScreen.classList.add('active');
+
+    openTab('games');
+
+    document.body.classList.remove(
+        'vip-theme-ronaldo',
+        'vip-theme-shrek',
+        'vip-theme-spongebob',
+        'vip-theme-speed'
+    );
 }
 // === ЗАПУСК ===
 window.onload = () => {

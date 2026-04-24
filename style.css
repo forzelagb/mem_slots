@@ -9254,6 +9254,24 @@ body.modal-open {
         grid-template-columns: 1fr;
     }
 }
+.header-bar,
+.game-header {
+    display: none !important;
+}
+.game-screen-themed::before,
+.game-screen-themed::after,
+.slot-scene::before,
+.slot-scene::after {
+    display: none !important;
+}
+
+#game-screen {
+    background: transparent !important;
+}
+
+.slot-scene {
+    background: transparent !important;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
