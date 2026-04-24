@@ -4406,6 +4406,11 @@ function claimCardMilestone(cardKey, stage) {
 
     openCardPath(themeName, cardSrc);
 }
+const memeCoinsEl = document.getElementById('header-meme-coins');
+const collectionTokensEl = document.getElementById('header-collection-tokens');
+
+if (memeCoinsEl) memeCoinsEl.innerText = playerData.resources?.memeCoins || 0;
+if (collectionTokensEl) collectionTokensEl.innerText = playerData.resources?.collectionTokens || 0;
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
