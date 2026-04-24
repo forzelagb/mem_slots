@@ -9272,6 +9272,29 @@ body.modal-open {
 .slot-scene {
     background: transparent !important;
 }
+.main-header__logo {
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    cursor: pointer;
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-shadow: 0 0 14px rgba(255, 211, 106, 0.35);
+    padding: 0;
+}
+
+.main-header__logo:hover {
+    transform: scale(1.03);
+    filter: brightness(1.15);
+}
+#game-screen {
+    background:
+        linear-gradient(rgba(5, 0, 15, 0.45), rgba(5, 0, 15, 0.75)),
+        url("image/backgrounds/slot-bg.jpg") center / cover no-repeat fixed !important;
+    max-width: none;
+    min-height: calc(100vh - 90px);
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
