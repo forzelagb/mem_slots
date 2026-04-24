@@ -750,11 +750,11 @@ function rewardMilestone(cardKey, stage) {
     const rewardKey = `${cardKey}_stage_${stage}`;
     if (playerData.claimedRewards[rewardKey]) return;
 
-    playerData.claimedRewards[rewardKey] = true;
-
     const fileName = cardKey.split(":")[1];
     const rarity = cardRarity[fileName];
     const reward = getMilestoneReward(stage, rarity);
+
+    playerData.claimedRewards[rewardKey] = true;
 
     if (reward.energy) {
         playerData.resources.energy = Math.min(
@@ -774,19 +774,8 @@ function rewardMilestone(cardKey, stage) {
 
 function checkMilestones(cardKey) {
     ensureCardProgressExists(cardKey);
-
-    const fileName = cardKey.split(":")[1];
-    const rarity = cardRarity[fileName];
-    const path = progressPaths[rarity];
-    const progress = playerData.cards[cardKey];
-
-    if (!path) return;
-
-    for (let i = 0; i < path.length; i++) {
-        if (progress >= path[i]) {
-            rewardMilestone(cardKey, i + 1);
-        }
-    }
+    // Награды больше НЕ выдаются автоматически.
+    // Игрок сам забирает их в окне "Путь карточки".
 }
 
 function updateCardStreak(cardKey) {
@@ -4245,16 +4234,25 @@ function openCardPath(themeName, cardSrc) {
 
     milestones.forEach((value, index) => {
         const step = index + 1;
-        const done = progress >= value;
-        const active = !done && value === nextValue;
+        const reached = isMilestoneReached(cardKey, step);
+        const claimed = isMilestoneClaimed(cardKey, step);
+        const claimable = canClaimMilestone(cardKey, step);
+        const active = !reached && value === nextValue;
 
         const stageItem = document.createElement('div');
-        stageItem.className = `card-path-stage ${done ? 'done' : ''} ${active ? 'active' : ''}`;
+        stageItem.className = `
+            card-path-stage 
+            ${claimed ? 'done' : ''} 
+            ${claimable ? 'claimable' : ''} 
+            ${active ? 'active' : ''}
+        `;
 
         stageItem.innerHTML = `
             <div class="card-path-stage__top">
                 <div class="card-path-stage__step">Этап ${step}</div>
-                <div class="card-path-stage__reward">${getMilestoneRewardLabel(step, rarity)}</div>
+                <div class="card-path-stage__reward-box">
+                    ${getMilestoneRewardLabel(step, rarity)}
+                </div>
             </div>
 
             <div class="card-path-stage__value">
@@ -4262,8 +4260,22 @@ function openCardPath(themeName, cardSrc) {
             </div>
 
             <div class="card-path-stage__state">
-                ${done ? 'Получено' : active ? 'Текущий этап' : 'Заблокировано'}
+                ${
+                    claimed 
+                    ? 'Получено' 
+                    : claimable 
+                    ? 'Можно забрать' 
+                    : active 
+                    ? 'Текущий этап' 
+                    : 'Заблокировано'
+                }
             </div>
+
+            ${
+                claimable
+                ? `<button class="card-path-claim-btn" onclick="claimCardMilestone('${cardKey}', ${step})">Забрать</button>`
+                : ''
+            }
         `;
 
         stagesEl.appendChild(stageItem);
@@ -4358,6 +4370,41 @@ function getMilestoneReward(stage, rarity) {
     };
 
     return table[rarity]?.[stage - 1] || {};
+}
+function isMilestoneReached(cardKey, stage) {
+    ensureCardProgressExists(cardKey);
+
+    const milestones = getRewardMilestones(cardKey);
+    const target = milestones[stage - 1];
+    const progress = playerData.cards?.[cardKey] || 0;
+
+    return progress >= target;
+}
+
+function isMilestoneClaimed(cardKey, stage) {
+    ensureCardProgressExists(cardKey);
+
+    const rewardKey = `${cardKey}_stage_${stage}`;
+    return !!playerData.claimedRewards?.[rewardKey];
+}
+
+function canClaimMilestone(cardKey, stage) {
+    return isMilestoneReached(cardKey, stage) && !isMilestoneClaimed(cardKey, stage);
+}
+
+function claimCardMilestone(cardKey, stage) {
+    ensureCardProgressExists(cardKey);
+
+    if (!canClaimMilestone(cardKey, stage)) return;
+
+    rewardMilestone(cardKey, stage);
+    savePlayer();
+    updateUI();
+
+    const [themeName, fileName] = cardKey.split(':');
+    const cardSrc = `image/${themeName}/${fileName}`;
+
+    openCardPath(themeName, cardSrc);
 }
 // === ЗАПУСК ===
 window.onload = () => {

@@ -9031,6 +9031,40 @@ body.modal-open {
     font-size: 11px;
     color: var(--gold);
 }
+.card-path-stage.claimable {
+    border-color: rgba(255, 211, 106, 0.55);
+    background: rgba(255, 211, 106, 0.08);
+    box-shadow: 0 0 22px rgba(255, 211, 106, 0.10);
+}
+
+.card-path-stage__reward-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255, 211, 106, 0.22);
+    color: var(--gold);
+    font-size: 13px;
+}
+
+.card-path-claim-btn {
+    margin-top: 12px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #a56e00;
+}
+
+.card-path-claim-btn:hover {
+    transform: translateY(-2px);
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
