@@ -4623,70 +4623,7 @@ function renderActiveCharacter() {
         }
     }
 }
-// === CHARACTERS SYSTEM ===
 
-const charactersConfig = {
-    melstroy: {
-        name: "Melstroy Style",
-        src: "image/characters/melstroy/default.png"
-    }
-};
-
-const petsConfig = {
-    pony: {
-        name: "Pony",
-        src: "image/pets/pony/default.png"
-    }
-};
-
-function openCharactersScreen() {
-    if (lobbyScreen) lobbyScreen.classList.remove('active');
-    if (gameScreen) gameScreen.classList.remove('active');
-
-    const charactersScreen = document.getElementById('characters-screen');
-    if (charactersScreen) {
-        charactersScreen.classList.add('active');
-    }
-
-    loadSelectedCharacter();
-}
-
-function closeCharactersScreen() {
-    const charactersScreen = document.getElementById('characters-screen');
-    if (charactersScreen) {
-        charactersScreen.classList.remove('active');
-    }
-
-    if (lobbyScreen) {
-        lobbyScreen.classList.add('active');
-    }
-}
-
-function selectCharacter(characterId) {
-    localStorage.setItem('selectedCharacter', characterId);
-    loadSelectedCharacter();
-}
-
-function selectPet(petId) {
-    localStorage.setItem('selectedPet', petId);
-    loadSelectedCharacter();
-}
-
-function loadSelectedCharacter() {
-    const selectedCharacter = localStorage.getItem('selectedCharacter') || 'melstroy';
-    const selectedPet = localStorage.getItem('selectedPet') || 'pony';
-
-    const characterImg = document.getElementById('active-character-img');
-    const petImg = document.getElementById('active-pet-img');
-
-    if (characterImg && charactersConfig[selectedCharacter]) {
-        characterImg.src = charactersConfig[selectedCharacter].src;
-    }
-
-    if (petImg && petsConfig[selectedPet]) {
-        petImg.src = petsConfig[selectedPet].src;
-    }
-}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
