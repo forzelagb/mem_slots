@@ -9329,6 +9329,130 @@ body.modal-open {
   right: 30%;
   height: 120px;
 }
+.characters-stage {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background: url("image/characters/stage.png") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+/* ПЕРСОНАЖ */
+.character-img {
+    position: absolute;
+    bottom: 60px;
+    height: 260px;
+    z-index: 2;
+    transition: 0.3s;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+}
+
+/* ПИТОМЕЦ */
+.pet-img {
+    position: absolute;
+    bottom: 50px;
+    left: 25%;
+    height: 120px;
+    z-index: 1;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+/* === CHARACTERS SCREEN === */
+
+#characters-screen {
+    min-height: 100vh;
+}
+
+.characters-stage {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 520px;
+    margin: 0 auto 24px;
+    background: url("image/characters/stage.png") center/cover no-repeat;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.55),
+        0 0 35px rgba(255, 211, 106, 0.18);
+}
+
+.character-img {
+    position: absolute;
+    left: 50%;
+    bottom: 72px;
+    transform: translateX(-50%);
+    height: 390px;
+    z-index: 3;
+    filter: drop-shadow(0 18px 28px rgba(0,0,0,0.75));
+}
+
+.pet-img {
+    position: absolute;
+    left: 24%;
+    bottom: 72px;
+    height: 170px;
+    z-index: 4;
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.65));
+}
+
+.characters-panel {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 18px;
+    text-align: center;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+.characters-panel h3 {
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+.characters-panel p {
+    color: var(--text-soft);
+    margin-bottom: 14px;
+}
+
+.characters-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.characters-actions button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    color: #1b1200;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .characters-stage {
+        height: 420px;
+        border-radius: 20px;
+    }
+
+    .character-img {
+        height: 310px;
+        bottom: 58px;
+    }
+
+    .pet-img {
+        height: 120px;
+        left: 18%;
+        bottom: 58px;
+    }
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
