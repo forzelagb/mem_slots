@@ -43,7 +43,7 @@
 </div>
 
         <!-- ВОТ СЮДА ВСТАВЛЯЕТСЯ PROFILE -->
-        <div class="main-header__profile">
+        <div class="main-header__profile" onclick="openPlayerProfile()">
     <div class="main-header__level">
         <span>LVL</span>
         <strong id="player-level-value">1</strong>
@@ -362,6 +362,65 @@
         <div class="card-path-modal__body">
             <h3 class="card-path-modal__section-title">Путь карточки</h3>
             <div id="card-path-stages" class="card-path-stages"></div>
+        </div>
+    </div>
+</div>
+<div id="player-profile-modal" class="player-profile-modal">
+    <div class="player-profile-modal__overlay" onclick="closePlayerProfile()"></div>
+
+    <div class="player-profile-modal__content">
+        <button class="player-profile-modal__close" onclick="closePlayerProfile()">✕</button>
+
+        <div class="player-profile-header">
+            <div class="player-profile-avatar">M</div>
+
+            <div>
+                <div class="player-profile-name">Player</div>
+                <div class="player-profile-vip">VIP FREE</div>
+            </div>
+        </div>
+
+        <div class="player-profile-level">
+            <div class="player-profile-level-row">
+                <span>LVL <b id="profile-level-value">1</b></span>
+                <span id="profile-xp-text">0 / 100 XP</span>
+            </div>
+
+            <div class="player-profile-xp-bar">
+                <div id="profile-xp-fill" class="player-profile-xp-fill"></div>
+            </div>
+        </div>
+
+        <div class="player-profile-resources">
+            <div class="player-profile-resource">
+                <span>⚡</span>
+                <b id="profile-energy">0</b>
+                <small>Энергия</small>
+            </div>
+
+            <div class="player-profile-resource">
+                <span>🪙</span>
+                <b id="profile-meme-coins">0</b>
+                <small>Meme Coins</small>
+            </div>
+
+            <div class="player-profile-resource">
+                <span>🎟</span>
+                <b id="profile-collection-tokens">0</b>
+                <small>Tokens</small>
+            </div>
+        </div>
+
+        <div class="player-profile-coming">
+            <h3>Скоро</h3>
+            <div class="player-profile-coming-grid">
+                <div>🏆 Достижения</div>
+                <div>🎖 Титулы</div>
+                <div>🎨 Скины</div>
+                <div>🐾 Питомцы</div>
+                <div>🎁 Пропуски</div>
+                <div>✨ Аксессуары</div>
+            </div>
         </div>
     </div>
 </div>

@@ -4411,6 +4411,46 @@ const collectionTokensEl = document.getElementById('header-collection-tokens');
 
 if (memeCoinsEl) memeCoinsEl.innerText = playerData.resources?.memeCoins || 0;
 if (collectionTokensEl) collectionTokensEl.innerText = playerData.resources?.collectionTokens || 0;
+function openPlayerProfile() {
+    const modal = document.getElementById('player-profile-modal');
+    if (!modal) return;
+
+    updatePlayerProfileUI();
+
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+}
+
+function closePlayerProfile() {
+    const modal = document.getElementById('player-profile-modal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.classList.remove('modal-open');
+}
+
+function updatePlayerProfileUI() {
+    const level = playerData.playerLevel || 1;
+    const xp = playerData.playerXP || 0;
+    const need = getXPNeededForLevel(level);
+    const xpPercent = Math.max(0, Math.min(100, (xp / need) * 100));
+
+    const profileLevel = document.getElementById('profile-level-value');
+    const profileXpText = document.getElementById('profile-xp-text');
+    const profileXpFill = document.getElementById('profile-xp-fill');
+
+    const profileEnergy = document.getElementById('profile-energy');
+    const profileMemeCoins = document.getElementById('profile-meme-coins');
+    const profileCollectionTokens = document.getElementById('profile-collection-tokens');
+
+    if (profileLevel) profileLevel.innerText = level;
+    if (profileXpText) profileXpText.innerText = `${xp} / ${need} XP`;
+    if (profileXpFill) profileXpFill.style.width = xpPercent + '%';
+
+    if (profileEnergy) profileEnergy.innerText = playerData.resources?.energy || 0;
+    if (profileMemeCoins) profileMemeCoins.innerText = playerData.resources?.memeCoins || 0;
+    if (profileCollectionTokens) profileCollectionTokens.innerText = playerData.resources?.collectionTokens || 0;
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
