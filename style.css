@@ -9353,13 +9353,6 @@ body.modal-open {
   border-radius: 18px !important;
   padding: 14px !important;
 }
-#characters-screen {
-    min-height: 100vh;
-    background: url("image/backgrounds/your-bg.jpg") center/cover no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .character-stage {
     display: flex;
     justify-content: center;
@@ -9371,6 +9364,13 @@ body.modal-open {
     max-height: 80vh;
     object-fit: contain;
     filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
+}
+#characters-screen {
+    min-height: 100vh !important;
+    background: url("image/backgrounds/your-bg.jpg") center/cover no-repeat !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
