@@ -4559,37 +4559,49 @@ function renderCharactersScreen() {
 }
 
 function renderCharactersList() {
-    const listEl = document.getElementById('characters-list');
-    if (!listEl) return;
+    const list = document.getElementById('characters-list');
 
-    listEl.innerHTML = '';
+    const characters = [
+        {
+            key: 'melstroy',
+            name: 'Mellstroy',
+            image: 'image/characters/melstroy/default.png'
+        },
+        {
+            key: 'sasavot',
+            name: 'Сасавот',
+            image: 'image/characters/sasavot/default.png'
+        }
+    ];
 
-    Object.keys(charactersConfig).forEach(key => {
-        const config = charactersConfig[key];
-        const data = playerData.characters[key];
-        const isActive = playerData.activeCharacter === key;
+    list.innerHTML = '';
 
-        const item = document.createElement('div');
-        item.className = `character-list-item ${isActive ? 'active' : ''} ${!data.unlocked ? 'locked' : ''}`;
+    characters.forEach((char, index) => {
+        const div = document.createElement('div');
+        div.className = 'character-list-item';
 
-        item.innerHTML = `
+        div.innerHTML = `
             <div class="character-list-avatar">
-                <img src="${config.image}" alt="${config.name}">
+                <img src="${char.image}">
             </div>
-            <div>
-                <div class="character-list-name">${config.name}</div>
-                <div class="character-list-status">
-                    ${data.unlocked ? 'Открыт' : 'Закрыт'}
-                </div>
-            </div>
+            <div class="character-list-name">${char.name}</div>
         `;
 
-        item.onclick = () => {
-            if (!data.unlocked) return;
-            selectCharacter(key);
+        div.onclick = () => {
+            document.getElementById('active-character').src = char.image;
+
+            document.querySelectorAll('.character-list-item')
+                .forEach(el => el.classList.remove('active'));
+
+            div.classList.add('active');
         };
 
-        listEl.appendChild(item);
+        list.appendChild(div);
+
+        if (index === 0) {
+            document.getElementById('active-character').src = char.image;
+            div.classList.add('active');
+        }
     });
 }
 
@@ -4632,6 +4644,12 @@ function renderActiveCharacter() {
 function selectCharacter(name) {
     const char = charactersConfig[name];
     document.getElementById("active-character").src = char.image;
+}
+function openCharactersScreen() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('characters-screen').classList.add('active');
+
+    renderCharactersList();
 }
 
 // === ЗАПУСК ===
