@@ -9318,11 +9318,6 @@ body.modal-open {
   align-items: center;
 }
 
-#active-character {
-  height: 400px;
-  z-index: 2;
-}
-
 #active-pet {
   position: absolute;
   bottom: 0;
@@ -9499,6 +9494,21 @@ body.modal-open {
     border: 1px solid rgba(255,255,255,0.14);
     border-radius: 18px;
     padding: 14px;
+}
+.characters-stage {
+    position: relative;
+    height: 500px;
+    background: url("image/characters/stage.png") center/cover no-repeat;
+    border-radius: 30px;
+}
+
+.character-img {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 400px;
+    z-index: 3;
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
