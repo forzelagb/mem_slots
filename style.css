@@ -9895,6 +9895,47 @@ body.modal-open {
     min-width: 90px;
     text-align: center;
 }
+/* === FINAL CHARACTER SCREEN POSITION FIX === */
+
+#characters-screen .characters-sidebar {
+    left: 8px !important;
+    top: 95px !important;
+    width: 300px !important;
+}
+
+#characters-screen .character-info-scroll {
+    right: 8px !important;
+    top: 92px !important;
+    width: 320px !important;
+}
+
+#characters-screen #active-character {
+    height: 80vh !important;
+    max-height: 800px !important;
+    margin-bottom: 18px !important;
+}
+
+#characters-screen .active-pet {
+    bottom: 145px !important;
+    left: calc(50% + 135px) !important;
+    width: 165px !important;
+    height: 165px !important;
+}
+#characters-list {
+    height: 300px !important;
+    max-height: 300px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    transition: transform 0.25s ease;
+}
+.characters-list-window {
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+#characters-list {
+    transition: transform 0.25s ease;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
