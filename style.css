@@ -9467,6 +9467,98 @@ body.modal-open {
     color: var(--gold);
     font-size: 11px;
 }
+/* === CHARACTER SCREEN VISUAL FIX === */
+
+#characters-screen {
+    min-height: calc(100vh - 90px) !important;
+    height: calc(100vh - 90px) !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: url("image/backgrounds/your-bg.jpg") center/cover no-repeat !important;
+}
+
+#characters-screen .header-bar {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    padding: 10px 24px;
+    z-index: 10;
+    background: rgba(0,0,0,0.35);
+}
+
+.characters-container {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.characters-sidebar {
+    position: absolute !important;
+    left: 90px !important;
+    top: 130px !important;
+    width: 280px !important;
+    z-index: 20 !important;
+    padding: 16px !important;
+    border-radius: 22px !important;
+    background: rgba(0,0,0,0.35) !important;
+    border: 1px solid rgba(255,255,255,0.16) !important;
+    backdrop-filter: blur(10px);
+}
+
+.character-list-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 78px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.48);
+    border: 1px solid rgba(255,255,255,0.14);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.character-list-item:hover,
+.character-list-item.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 22px rgba(255, 211, 106, 0.28);
+    transform: translateX(4px);
+}
+
+.character-list-avatar img {
+    width: 48px;
+    height: 58px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6));
+}
+
+.character-list-name {
+    font-size: 16px;
+    color: white;
+}
+
+.character-stage {
+    position: absolute !important;
+    inset: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    pointer-events: none;
+}
+
+#active-character {
+    height: 62vh !important;
+    max-height: 620px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    margin-bottom: 18px !important;
+    filter: drop-shadow(0 40px 50px rgba(0,0,0,0.75));
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
