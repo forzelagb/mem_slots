@@ -9327,14 +9327,13 @@ body.modal-open {
 }
 
 #active-character {
-  position: absolute !important;
-  left: 50% !important;
-  bottom: 62px !important;
-  transform: translateX(-50%) !important;
-  height: 330px !important;
-  width: auto !important;
-  z-index: 3 !important;
-  object-fit: contain !important;
+    height: 72vh !important;
+    max-height: 720px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    margin-bottom: 8px !important;
+    transform-origin: center bottom;
+    filter: drop-shadow(0 40px 50px rgba(0,0,0,0.75));
 }
 
 #active-pet {
@@ -9510,9 +9509,9 @@ body.modal-open {
 /* ЛЕВАЯ ПАНЕЛЬ */
 .characters-sidebar {
     position: absolute !important;
-    left: 70px !important;
-    top: 120px !important;
-    width: 290px !important;
+    left: 28px !important;
+    top: 105px !important;
+    width: 300px !important;
     z-index: 20 !important;
     padding: 14px !important;
     border-radius: 24px !important;
@@ -9583,7 +9582,7 @@ body.modal-open {
     inset: 0 !important;
     display: flex !important;
     justify-content: center !important;
-    align-items: flex-end !important;
+    align-items: center !important;
     pointer-events: none;
 }
 
@@ -9592,15 +9591,15 @@ body.modal-open {
     max-height: 620px !important;
     width: auto !important;
     object-fit: contain !important;
-    margin-bottom: 18px !important;
+    margin-top: 40px !important;
     filter: drop-shadow(0 40px 50px rgba(0,0,0,0.75));
 }
 
 /* ПИТОМЕЦ РЯДОМ */
 .active-pet-placeholder {
     position: absolute;
-    bottom: 70px;
-    left: calc(50% + 170px);
+    bottom: 48px;
+    left: calc(50% + 210px);
     width: 96px;
     height: 96px;
     border-radius: 24px;
@@ -9632,10 +9631,10 @@ body.modal-open {
 /* ПРАВЫЙ СВИТОК */
 .character-info-scroll {
     position: absolute;
-    right: 60px;
-    top: 105px;
-    width: 310px;
-    min-height: 560px;
+    right: 28px;
+    top: 96px;
+    width: 320px;
+    min-height: 580px;
     z-index: 20;
     padding: 28px 24px;
     color: #3a210c;
