@@ -4487,19 +4487,99 @@ function renderCharacter() {
 const charactersConfig = {
     melstroy: {
         name: "Mellstroy",
-        image: "image/characters/melstroy/default.png"
+        folder: "melstroy",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
     },
 
     helin: {
         name: "Helin",
-        image: "image/characters/helin/helin.png"
+        folder: "helin",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
     },
 
     sasavot: {
         name: "Sasavot",
-        image: "image/characters/sasavot/default.png"
+        folder: "sasavot",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
+    },
+
+    facekid: {
+        name: "Facekid",
+        folder: "facekid",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
+    },
+
+    lexapaws: {
+        name: "Lexa Paws",
+        folder: "lexapaws",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
+    },
+
+    nikkifn: {
+        name: "Nikkifn",
+        folder: "nikkifn",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
+    },
+
+    litwin: {
+        name: "Litwin",
+        folder: "litwin",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
+    },
+
+    rejiboy: {
+        name: "Rejiboy",
+        folder: "rejiboy",
+        styles: [
+            "style1.png",
+            "style2.png",
+            "style3.png",
+            "style4.png"
+        ]
     }
 };
+function getCharacterImagePath(characterKey, styleIndex = 0) {
+    const config = charactersConfig[characterKey];
+    if (!config) return "";
+
+    const styleFile = config.styles[styleIndex] || config.styles[0];
+    return `image/characters/${config.folder}/${styleFile}`;
+}
 
 function ensureCharactersData() {
     if (!playerData.characters) {
@@ -4566,7 +4646,7 @@ function renderCharactersList() {
 
         div.innerHTML = `
             <div class="character-list-avatar">
-                <img src="${char.image}">
+                <img src="${getCharacterImagePath(char.key, 0)}">
             </div>
             <div class="character-list-name">${char.name}</div>
         `;
@@ -4625,7 +4705,8 @@ function renderActiveCharacter() {
     imgEl.classList.remove('character-change');
     void imgEl.offsetWidth;
 
-    imgEl.src = config.image;
+    const styleIndex = playerData.activeCharacterStyle || 0;
+imgEl.src = getCharacterImagePath(activeKey, styleIndex);
     imgEl.alt = config.name;
     imgEl.classList.add('character-change');
 
@@ -4633,6 +4714,12 @@ function renderActiveCharacter() {
     if (nameEl) {
         nameEl.innerText = config.name;
     }
+    const styleLabel = document.getElementById("character-style-label");
+
+if (styleLabel) {
+    const styleIndex = playerData.activeCharacterStyle || 0;
+    styleLabel.innerText = `Стиль ${styleIndex + 1} / ${config.styles.length}`;
+}
 }
 function selectCharacter(characterKey) {
     playerData.activeCharacter = characterKey;
@@ -4649,6 +4736,27 @@ function openCharactersScreen() {
     document.getElementById('characters-screen').classList.add('active');
 
     renderCharactersList();
+}
+function switchCharacterStyle(direction) {
+    const activeKey = playerData.activeCharacter || "melstroy";
+    const config = charactersConfig[activeKey];
+    if (!config) return;
+
+    const total = config.styles.length;
+    let current = playerData.activeCharacterStyle || 0;
+
+    current += direction;
+
+    if (current < 0) current = total - 1;
+    if (current >= total) current = 0;
+
+    playerData.activeCharacterStyle = current;
+
+    if (typeof savePlayerData === "function") {
+        savePlayerData();
+    }
+
+    renderActiveCharacter();
 }
 
 // === ЗАПУСК ===
