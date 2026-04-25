@@ -9295,7 +9295,83 @@ body.modal-open {
     max-width: none;
     min-height: calc(100vh - 90px);
 }
+/* === CHARACTERS FINAL CLEAN === */
 
+#characters-screen {
+  background: none !important;
+  max-width: none !important;
+  width: 100% !important;
+  min-height: calc(100vh - 90px) !important;
+  padding-top: 80px !important;
+}
+
+.characters-container {
+  width: 100% !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 180px 1fr 140px !important;
+  gap: 18px !important;
+  align-items: center !important;
+}
+
+.characters-stage {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 760px !important;
+  height: 460px !important;
+  background: url("image/characters/stage.png") center / cover no-repeat !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55) !important;
+}
+
+#active-character {
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 62px !important;
+  transform: translateX(-50%) !important;
+  height: 330px !important;
+  width: auto !important;
+  z-index: 3 !important;
+  object-fit: contain !important;
+}
+
+#active-pet {
+  position: absolute !important;
+  left: 20% !important;
+  bottom: 70px !important;
+  height: 120px !important;
+  width: auto !important;
+  z-index: 4 !important;
+}
+
+.characters-sidebar,
+.character-tabs {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  border-radius: 18px !important;
+  padding: 14px !important;
+}
+#characters-screen {
+    min-height: 100vh;
+    background: url("image/backgrounds/your-bg.jpg") center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.character-stage {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100vh;
+}
+
+#active-character {
+    max-height: 80vh;
+    object-fit: contain;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
