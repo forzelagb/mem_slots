@@ -4517,13 +4517,13 @@ function ensureCharactersData() {
     }
 
     if (!playerData.activeCharacter) {
-        playerData.activeCharacter = "brain";
+        playerData.activeCharacter = "melstroy";
     }
 
     Object.keys(charactersConfig).forEach(key => {
         if (!playerData.characters[key]) {
             playerData.characters[key] = {
-                unlocked: key === "brain",
+                unlocked: key === "melstroy",
                 level: 1,
                 style: "default",
                 pet: null,

@@ -417,14 +417,18 @@
         </div>
     </div>
 </div>
-<div id="characters-screen" class="screen hidden">
-  <div class="characters-container">
 
+<div id="characters-screen" class="screen">
+  <button class="btn-back-game" onclick="closeCharactersScreen()">← Назад</button>
+
+  <h2 class="section-title">🧍 ПЕРСОНАЖИ</h2>
+
+  <div class="characters-container">
     <div class="characters-sidebar" id="characters-list"></div>
 
-    <div class="character-stage">
-      <img id="active-character" src="" />
-      <img id="active-pet" src="" />
+    <div class="characters-stage">
+      <img id="active-character" class="character-img" src="" alt="Персонаж">
+      <img id="active-pet" class="pet-img" src="" alt="Питомец">
     </div>
 
     <div class="character-tabs">
@@ -432,38 +436,7 @@
       <button>Питомцы</button>
       <button>Аксессуары</button>
     </div>
-
   </div>
-</div>
-<div id="characters-screen" class="screen">
-
-    <div class="characters-stage">
-
-        <img id="active-character-img" class="character-img" src="">
-        <img id="active-pet-img" class="pet-img" src="">
-
-    </div>
-
-</div>
-<div id="characters-screen" class="screen">
-    <button class="btn-back-game" onclick="closeCharactersScreen()">← Назад</button>
-
-    <h2 class="section-title">🧍 ПЕРСОНАЖИ</h2>
-
-    <div class="characters-stage">
-        <img id="active-character-img" class="character-img" src="image/characters/melstroy/default.png" alt="Персонаж">
-        <img id="active-pet-img" class="pet-img" src="image/pets/pony/default.png" alt="Питомец">
-    </div>
-
-    <div class="characters-panel">
-        <h3>Текущий персонаж</h3>
-        <p>Melstroy Style</p>
-
-        <div class="characters-actions">
-            <button onclick="selectCharacter('melstroy')">Выбрать</button>
-            <button onclick="selectPet('pony')">Питомец</button>
-        </div>
-    </div>
 </div>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>
