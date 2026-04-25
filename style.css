@@ -9421,6 +9421,52 @@ body.modal-open {
         transform: translateY(0);
     }
 }
+.characters-container {
+    position: relative !important;
+    width: 100% !important;
+    height: calc(100vh - 90px) !important;
+}
+
+.characters-sidebar {
+    position: absolute !important;
+    left: 32px !important;
+    top: 120px !important;
+    width: 260px !important;
+    z-index: 20 !important;
+}
+
+.character-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 14px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.18);
+    cursor: pointer;
+}
+
+.character-list-item.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 18px rgba(255, 211, 106, 0.35);
+}
+
+.character-list-avatar img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+}
+
+.character-list-name {
+    color: white;
+    font-size: 14px;
+}
+
+.character-list-status {
+    color: var(--gold);
+    font-size: 11px;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
