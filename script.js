@@ -4714,10 +4714,9 @@ imgEl.src = getCharacterImagePath(activeKey, styleIndex);
     if (nameEl) {
         nameEl.innerText = config.name;
     }
-    const styleLabel = document.getElementById("character-style-label");
+const styleLabel = document.getElementById("character-style-label");
 
 if (styleLabel) {
-    const styleIndex = playerData.activeCharacterStyle || 0;
     styleLabel.innerText = `Стиль ${styleIndex + 1} / ${config.styles.length}`;
 }
 }
@@ -4758,7 +4757,34 @@ function switchCharacterStyle(direction) {
 
     renderActiveCharacter();
 }
+function getCharacterImagePath(characterKey, styleIndex = 0) {
+    const config = charactersConfig[characterKey];
+    if (!config) return "";
 
+    const styleFile = config.styles[styleIndex] || config.styles[0];
+    return `image/characters/${config.folder}/${styleFile}`;
+}
+function switchCharacterStyle(direction) {
+    const activeKey = playerData.activeCharacter || "melstroy";
+    const config = charactersConfig[activeKey];
+    if (!config) return;
+
+    const total = config.styles.length;
+    let current = playerData.activeCharacterStyle || 0;
+
+    current += direction;
+
+    if (current < 0) current = total - 1;
+    if (current >= total) current = 0;
+
+    playerData.activeCharacterStyle = current;
+
+    if (typeof savePlayerData === "function") {
+        savePlayerData();
+    }
+
+    renderActiveCharacter();
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
