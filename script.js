@@ -4705,8 +4705,7 @@ function renderActiveCharacter() {
     imgEl.classList.remove('character-change');
     void imgEl.offsetWidth;
 
-    const styleIndex = playerData.activeCharacterStyle || 0;
-imgEl.src = getCharacterImagePath(activeKey, styleIndex);
+imgEl.src = getCharacterImagePath(activeKey, 0);
     imgEl.alt = config.name;
     imgEl.classList.add('character-change');
 
@@ -4714,11 +4713,6 @@ imgEl.src = getCharacterImagePath(activeKey, styleIndex);
     if (nameEl) {
         nameEl.innerText = config.name;
     }
-const styleLabel = document.getElementById("character-style-label");
-
-if (styleLabel) {
-    styleLabel.innerText = `Стиль ${styleIndex + 1} / ${config.styles.length}`;
-}
 }
 function selectCharacter(characterKey) {
     playerData.activeCharacter = characterKey;
