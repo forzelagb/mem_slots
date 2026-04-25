@@ -179,19 +179,77 @@
 </div>
 </div>
 <!-- ЭКРАН ПЕРСОНАЖЕЙ -->
+<!-- ЭКРАН ПЕРСОНАЖЕЙ -->
 <div id="characters-screen" class="screen">
-    <div class="header-bar">
-        <h2 class="section-title">🧍 ПЕРСОНАЖИ</h2>
-    </div>
+    <button class="characters-back-btn" onclick="goHome()">← Назад</button>
 
     <div class="characters-container">
+
+        <!-- ЛЕВАЯ ПАНЕЛЬ: ВЫБОР ПЕРСОНАЖА -->
         <div class="characters-sidebar">
+            <button class="characters-arrow" onclick="scrollCharacters(-1)">▲</button>
+
             <div id="characters-list"></div>
+
+            <button class="characters-arrow" onclick="scrollCharacters(1)">▼</button>
         </div>
 
+        <!-- ЦЕНТР: ПЕРСОНАЖ + ПИТОМЕЦ -->
         <div class="character-stage">
             <img id="active-character" src="" alt="">
+
+            <!-- пока просто место под питомца -->
+            <div class="active-pet-placeholder">
+                <span>🐾</span>
+                <small>Питомец</small>
+            </div>
         </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ: СВИТОК -->
+        <div class="character-info-scroll">
+            <div class="scroll-title">ПЕРСОНАЖ</div>
+
+            <div class="scroll-character-name" id="character-info-name">
+                Mellstroy
+            </div>
+
+            <div class="scroll-divider"></div>
+
+            <div class="scroll-section-title">Характеристики</div>
+
+            <div class="scroll-empty-text">
+                Скоро здесь будут сила, удача, энергия и бонусы.
+            </div>
+
+            <div class="scroll-divider"></div>
+
+            <div class="scroll-section-title">Аксессуары</div>
+
+            <div class="equipment-slots">
+                <div class="equipment-slot active">
+                    <span>+</span>
+                    <small>Акс 1</small>
+                </div>
+
+                <div class="equipment-slot locked">
+                    <span>🔒</span>
+                    <small>LVL 5</small>
+                </div>
+
+                <div class="equipment-slot locked">
+                    <span>🔒</span>
+                    <small>LVL 10</small>
+                </div>
+            </div>
+
+            <div class="scroll-section-title">Питомец</div>
+
+            <div class="pet-slot">
+                <span>🐾</span>
+                <small>Выбрать питомца позже</small>
+            </div>
+        </div>
+
     </div>
 </div>
 

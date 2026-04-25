@@ -4558,27 +4558,27 @@ function renderCharactersScreen() {
     renderActiveCharacter();
 }
 
+let charactersScrollIndex = 0;
+
 function renderCharactersList() {
     const list = document.getElementById('characters-list');
+    if (!list) return;
 
-    const characters = [
-        {
-            key: 'melstroy',
-            name: 'Mellstroy',
-            image: 'image/characters/melstroy/default.png'
-        },
-        {
-            key: 'sasavot',
-            name: 'Сасавот',
-            image: 'image/characters/sasavot/default.png'
-        }
-    ];
+    const characters = Object.keys(charactersConfig).map(key => ({
+        key,
+        name: charactersConfig[key].name,
+        image: charactersConfig[key].image
+    }));
 
     list.innerHTML = '';
 
-    characters.forEach((char, index) => {
+    characters.forEach((char) => {
         const div = document.createElement('div');
         div.className = 'character-list-item';
+
+        if (playerData.activeCharacter === char.key) {
+            div.classList.add('active');
+        }
 
         div.innerHTML = `
             <div class="character-list-avatar">
@@ -4588,21 +4588,33 @@ function renderCharactersList() {
         `;
 
         div.onclick = () => {
-            document.getElementById('active-character').src = char.image;
-
-            document.querySelectorAll('.character-list-item')
-                .forEach(el => el.classList.remove('active'));
-
-            div.classList.add('active');
+            selectCharacter(char.key);
         };
 
         list.appendChild(div);
-
-        if (index === 0) {
-            document.getElementById('active-character').src = char.image;
-            div.classList.add('active');
-        }
     });
+
+    updateCharactersScroll();
+}
+function scrollCharacters(direction) {
+    const list = document.getElementById('characters-list');
+    if (!list) return;
+
+    const items = list.querySelectorAll('.character-list-item');
+    const maxIndex = Math.max(0, items.length - 3);
+
+    charactersScrollIndex += direction;
+    charactersScrollIndex = Math.max(0, Math.min(charactersScrollIndex, maxIndex));
+
+    updateCharactersScroll();
+}
+
+function updateCharactersScroll() {
+    const list = document.getElementById('characters-list');
+    if (!list) return;
+
+    const itemHeight = 90;
+    list.style.transform = `translateY(-${charactersScrollIndex * itemHeight}px)`;
 }
 
 function selectCharacter(key) {
@@ -4631,6 +4643,10 @@ function renderActiveCharacter() {
 
     imgEl.src = `image/characters/${key}/${data.style}.png`;
     imgEl.alt = config.name;
+    const nameEl = document.getElementById('character-info-name');
+if (nameEl) {
+    nameEl.innerText = config.name;
+}
 
     if (petEl) {
         if (data.pet) {

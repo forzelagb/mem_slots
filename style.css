@@ -9467,7 +9467,7 @@ body.modal-open {
     color: var(--gold);
     font-size: 11px;
 }
-/* === CHARACTER SCREEN VISUAL FIX === */
+/* === CHARACTER SCREEN / RPG LAYOUT === */
 
 #characters-screen {
     min-height: calc(100vh - 90px) !important;
@@ -9476,18 +9476,9 @@ body.modal-open {
     width: 100% !important;
     padding: 0 !important;
     overflow: hidden !important;
-    background: url("image/backgrounds/your-bg.jpg") center/cover no-repeat !important;
-}
-
-#characters-screen .header-bar {
-    position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    padding: 10px 24px;
-    z-index: 10;
-    background: rgba(0,0,0,0.35);
+    background:
+        linear-gradient(90deg, rgba(0,0,0,0.65), transparent 35%, rgba(0,0,0,0.72)),
+        url("image/backgrounds/your-bg.jpg") center/cover no-repeat !important;
 }
 
 .characters-container {
@@ -9496,17 +9487,61 @@ body.modal-open {
     height: 100% !important;
 }
 
+.characters-back-btn {
+    position: absolute;
+    top: 24px;
+    left: 28px;
+    z-index: 50;
+    padding: 12px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    font-family: inherit;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.characters-back-btn:hover {
+    border-color: var(--gold);
+    box-shadow: var(--shadow-gold);
+}
+
+/* ЛЕВАЯ ПАНЕЛЬ */
 .characters-sidebar {
     position: absolute !important;
-    left: 90px !important;
-    top: 130px !important;
-    width: 280px !important;
+    left: 70px !important;
+    top: 120px !important;
+    width: 290px !important;
     z-index: 20 !important;
-    padding: 16px !important;
-    border-radius: 22px !important;
-    background: rgba(0,0,0,0.35) !important;
-    border: 1px solid rgba(255,255,255,0.16) !important;
-    backdrop-filter: blur(10px);
+    padding: 14px !important;
+    border-radius: 24px !important;
+    background: rgba(8, 4, 12, 0.72) !important;
+    border: 1px solid rgba(255, 211, 106, 0.28) !important;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+}
+
+.characters-arrow {
+    width: 100%;
+    height: 34px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.05);
+    color: var(--gold);
+    font-family: inherit;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.characters-arrow:last-child {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+#characters-list {
+    max-height: 270px;
+    overflow: hidden;
 }
 
 .character-list-item {
@@ -9517,7 +9552,7 @@ body.modal-open {
     padding: 10px 14px;
     margin-bottom: 12px;
     border-radius: 16px;
-    background: rgba(0,0,0,0.48);
+    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
     border: 1px solid rgba(255,255,255,0.14);
     cursor: pointer;
     transition: 0.2s;
@@ -9542,6 +9577,7 @@ body.modal-open {
     color: white;
 }
 
+/* ЦЕНТР */
 .character-stage {
     position: absolute !important;
     inset: 0 !important;
@@ -9558,6 +9594,166 @@ body.modal-open {
     object-fit: contain !important;
     margin-bottom: 18px !important;
     filter: drop-shadow(0 40px 50px rgba(0,0,0,0.75));
+}
+
+/* ПИТОМЕЦ РЯДОМ */
+.active-pet-placeholder {
+    position: absolute;
+    bottom: 70px;
+    left: calc(50% + 170px);
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
+    border: 1px dashed rgba(255, 211, 106, 0.45);
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    gap: 4px;
+    animation: petFloat 2.4s ease-in-out infinite;
+}
+
+.active-pet-placeholder span {
+    font-size: 32px;
+}
+
+.active-pet-placeholder small {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+}
+
+@keyframes petFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ПРАВЫЙ СВИТОК */
+.character-info-scroll {
+    position: absolute;
+    right: 60px;
+    top: 105px;
+    width: 310px;
+    min-height: 560px;
+    z-index: 20;
+    padding: 28px 24px;
+    color: #3a210c;
+    background:
+        radial-gradient(circle at top, rgba(255,255,255,0.35), transparent 35%),
+        linear-gradient(180deg, #e5c17b, #b9853f);
+    border: 2px solid #5a3514;
+    border-radius: 18px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.5),
+        inset 0 0 25px rgba(80, 35, 10, 0.35);
+}
+
+.character-info-scroll::before,
+.character-info-scroll::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    height: 16px;
+    background: rgba(90, 53, 20, 0.35);
+    border-radius: 999px;
+}
+
+.character-info-scroll::before {
+    top: 10px;
+}
+
+.character-info-scroll::after {
+    bottom: 10px;
+}
+
+.scroll-title {
+    text-align: center;
+    font-size: 20px;
+    color: #3a210c;
+    margin-bottom: 12px;
+}
+
+.scroll-character-name {
+    text-align: center;
+    font-size: 24px;
+    color: #1e1006;
+    margin-bottom: 14px;
+}
+
+.scroll-divider {
+    height: 1px;
+    background: rgba(58, 33, 12, 0.35);
+    margin: 14px 0;
+}
+
+.scroll-section-title {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: #2a1607;
+}
+
+.scroll-empty-text {
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(42, 22, 7, 0.75);
+}
+
+.equipment-slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 12px 0 18px;
+}
+
+.equipment-slot {
+    height: 72px;
+    border-radius: 14px;
+    border: 1px dashed rgba(58, 33, 12, 0.45);
+    background: rgba(255,255,255,0.22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.equipment-slot span {
+    font-size: 22px;
+}
+
+.equipment-slot small {
+    font-size: 10px;
+}
+
+.equipment-slot.active {
+    border-style: solid;
+    box-shadow: inset 0 0 14px rgba(255,255,255,0.35);
+}
+
+.equipment-slot.locked {
+    opacity: 0.55;
+    filter: grayscale(1);
+}
+
+.pet-slot {
+    height: 58px;
+    border-radius: 14px;
+    border: 1px dashed rgba(58, 33, 12, 0.45);
+    background: rgba(255,255,255,0.22);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+}
+
+.pet-slot span {
+    font-size: 24px;
+}
+
+.pet-slot small {
+    font-size: 11px;
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
