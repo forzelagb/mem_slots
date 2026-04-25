@@ -4503,12 +4503,18 @@ const charactersConfig = {
         defaultStyle: "default",
         image: "image/characters/litwin/default.png"
     },
-    melstroy: {
-        name: "Mellstroy",
-        theme: "melstroy",
-        defaultStyle: "default",
-        image: "image/characters/melstroy/default.png"
-    }
+melstroy: {
+    name: "Mellstroy",
+    theme: "melstroy",
+    defaultStyle: "default",
+    image: "image/characters/melstroy/default.png"
+},
+sasavot: {
+    name: "Сасавот",
+    theme: "sasavot",
+    defaultStyle: "default",
+    image: "image/characters/sasavot/default.png"
+}
 };
 
 function ensureCharactersData() {
@@ -4523,7 +4529,7 @@ function ensureCharactersData() {
     Object.keys(charactersConfig).forEach(key => {
         if (!playerData.characters[key]) {
             playerData.characters[key] = {
-                unlocked: key === "melstroy",
+                unlocked: key === "melstroy" || key === "sasavot",
                 level: 1,
                 style: "default",
                 pet: null,
@@ -4622,6 +4628,10 @@ function renderActiveCharacter() {
             petEl.style.display = 'none';
         }
     }
+}
+function selectCharacter(name) {
+    const char = charactersConfig[name];
+    document.getElementById("active-character").src = char.image;
 }
 
 // === ЗАПУСК ===

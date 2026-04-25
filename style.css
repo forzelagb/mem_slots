@@ -9366,11 +9366,60 @@ body.modal-open {
     filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
 }
 #characters-screen {
-    min-height: 100vh !important;
+    min-height: 100vh;
     background: url("image/backgrounds/your-bg.jpg") center/cover no-repeat !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
+    justify-content: center;
+    align-items: center;
+}
+#characters-screen:not(.active) {
+    display: none !important;
+}
+.character-stage {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+#active-character {
+    max-height: 85vh;
+    object-fit: contain;
+    filter: drop-shadow(0 40px 80px rgba(0,0,0,0.9));
+    z-index: 2;
+}
+#characters-screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.8));
+    pointer-events: none;
+}
+#characters-screen::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,200,100,0.4), transparent);
+    filter: blur(40px);
+}
+#active-character {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
