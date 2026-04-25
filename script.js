@@ -4485,36 +4485,20 @@ function renderCharacter() {
   }
 }
 const charactersConfig = {
-    brain: {
-        name: "Brain Rot",
-        theme: "brain",
-        defaultStyle: "default",
-        image: "image/characters/brain/default.png"
+    melstroy: {
+        name: "Mellstroy",
+        image: "image/characters/melstroy/default.png"
     },
+
     helin: {
         name: "Helin",
-        theme: "helin",
-        defaultStyle: "default",
-        image: "image/characters/helin/default.png"
+        image: "image/characters/helin/helin.png"
     },
-    litwin: {
-        name: "Litwin",
-        theme: "litwin",
-        defaultStyle: "default",
-        image: "image/characters/litwin/default.png"
-    },
-melstroy: {
-    name: "Mellstroy",
-    theme: "melstroy",
-    defaultStyle: "default",
-    image: "image/characters/melstroy/default.png"
-},
-sasavot: {
-    name: "Сасавот",
-    theme: "sasavot",
-    defaultStyle: "default",
-    image: "image/characters/sasavot/default.png"
-}
+
+    sasavot: {
+        name: "Sasavot",
+        image: "image/characters/sasavot/default.png"
+    }
 };
 
 function ensureCharactersData() {
@@ -4631,35 +4615,34 @@ function selectCharacter(key) {
 
 function renderActiveCharacter() {
     const imgEl = document.getElementById('active-character');
-    const petEl = document.getElementById('active-pet');
-
     if (!imgEl) return;
 
-    const key = playerData.activeCharacter || "brain";
-    const config = charactersConfig[key];
-    const data = playerData.characters[key];
+    const activeKey = playerData.activeCharacter || 'melstroy';
+    const config = charactersConfig[activeKey];
 
-    if (!config || !data) return;
+    if (!config) return;
 
-    imgEl.src = `image/characters/${key}/${data.style}.png`;
+    imgEl.classList.remove('character-change');
+    void imgEl.offsetWidth;
+
+    imgEl.src = config.image;
     imgEl.alt = config.name;
-    const nameEl = document.getElementById('character-info-name');
-if (nameEl) {
-    nameEl.innerText = config.name;
-}
+    imgEl.classList.add('character-change');
 
-    if (petEl) {
-        if (data.pet) {
-            petEl.src = `image/pets/${data.pet}.png`;
-            petEl.style.display = 'block';
-        } else {
-            petEl.style.display = 'none';
-        }
+    const nameEl = document.getElementById('character-info-name');
+    if (nameEl) {
+        nameEl.innerText = config.name;
     }
 }
-function selectCharacter(name) {
-    const char = charactersConfig[name];
-    document.getElementById("active-character").src = char.image;
+function selectCharacter(characterKey) {
+    playerData.activeCharacter = characterKey;
+    if (typeof savePlayerData === "function") {
+        savePlayerData();
+    }
+
+    renderCharactersList();
+
+    renderActiveCharacter();
 }
 function openCharactersScreen() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
