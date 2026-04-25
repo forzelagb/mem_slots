@@ -9509,7 +9509,7 @@ body.modal-open {
 /* ЛЕВАЯ ПАНЕЛЬ */
 .characters-sidebar {
     position: absolute !important;
-    left: 28px !important;
+    left: 12px !important;
     top: 105px !important;
     width: 300px !important;
     z-index: 20 !important;
@@ -9587,8 +9587,8 @@ body.modal-open {
 }
 
 #active-character {
-    height: 62vh !important;
-    max-height: 620px !important;
+    height: 78vh !important;
+    max-height: 780px !important;
     width: auto !important;
     object-fit: contain !important;
     margin-top: 40px !important;
@@ -9631,7 +9631,7 @@ body.modal-open {
 /* ПРАВЫЙ СВИТОК */
 .character-info-scroll {
     position: absolute;
-    right: 28px;
+    right: 12px;
     top: 96px;
     width: 320px;
     min-height: 580px;
@@ -9812,10 +9812,10 @@ body.modal-open {
 
 .active-pet {
     position: absolute;
-    bottom: 70px;
-    left: calc(50% + 155px);
-    width: 120px;
-    height: 120px;
+    bottom: 130px;
+    left: calc(50% + 190px);
+    width: 155px;
+    height: 155px;
     z-index: 8;
     pointer-events: none;
 }
