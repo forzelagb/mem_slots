@@ -340,6 +340,9 @@ function openTab(tabName) {
     if (tabName === 'collection') {
         renderAllThemesCollection();
     }
+    if (tabName === 'pass') {
+    renderPassTrack();
+}
     const homeIntro = document.getElementById('home-intro');
 
 if (homeIntro) {
@@ -4778,6 +4781,79 @@ function switchCharacterStyle(direction) {
     }
 
     renderActiveCharacter();
+}
+let activePassType = "heroes";
+
+const passRewards = {
+    heroes: [
+        { level: 1, premium: "🧩 Пазл стиля", free: "🪙 100 монет" },
+        { level: 2, premium: "🎁 Редкий сундук", free: "🧩 Пазл" },
+        { level: 3, premium: "💎 25 гемов", free: "🪙 150 монет" },
+        { level: 4, premium: "🏆 Эпик сундук", free: "🎁 Обычный сундук" },
+        { level: 5, premium: "👑 Стиль героя", free: "🧩 Пазл стиля" }
+    ],
+
+    items: [
+        { level: 1, premium: "🐾 Пазл питомца", free: "🪙 100 монет" },
+        { level: 2, premium: "🎒 Аксессуар", free: "🎁 Обычный сундук" },
+        { level: 3, premium: "💎 25 гемов", free: "🐾 Пазл питомца" },
+        { level: 4, premium: "🏆 Эпик сундук", free: "🧩 Пазл аксессуара" },
+        { level: 5, premium: "🐉 Редкий питомец", free: "🎁 Редкий сундук" }
+    ]
+};
+
+function switchPassTab(type) {
+    activePassType = type;
+
+    document.querySelectorAll(".pass-tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const activeBtn = Array.from(document.querySelectorAll(".pass-tab-btn")).find(btn => {
+        return btn.getAttribute("onclick")?.includes(type);
+    });
+
+    if (activeBtn) {
+        activeBtn.classList.add("active");
+    }
+
+    renderPassTrack();
+}
+
+function renderPassTrack() {
+    const track = document.getElementById("pass-track");
+    if (!track) return;
+
+    const rewards = passRewards[activePassType] || [];
+    const currentPassLevel = 2; // временно, потом заменим на playerData
+
+    track.innerHTML = "";
+
+    rewards.forEach(item => {
+        const unlocked = item.level <= currentPassLevel;
+
+        const row = document.createElement("div");
+        row.className = `pass-row ${unlocked ? "unlocked" : "locked"}`;
+
+        row.innerHTML = `
+            <div class="pass-reward premium">
+                <div class="pass-reward-icon">${item.premium.split(" ")[0]}</div>
+                <div class="pass-reward-text">${item.premium}</div>
+            </div>
+
+            <div class="pass-level">
+                <div class="pass-candle ${unlocked ? "lit" : ""}">🕯</div>
+                <div class="pass-level-number">${item.level}</div>
+            </div>
+
+            <div class="pass-reward free">
+                <div class="pass-reward-icon">${item.free.split(" ")[0]}</div>
+                <div class="pass-reward-text">${item.free}</div>
+            </div>
+        `;
+
+        track.appendChild(row);
+    });
 }
 // === ЗАПУСК ===
 window.onload = () => {

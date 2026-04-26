@@ -10140,6 +10140,211 @@ body.modal-open {
     min-width: 88px !important;
     text-align: center !important;
 }
+/* === SEASON PASS UI === */
+
+.pass-page {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.pass-subtitle {
+    text-align: center;
+    color: var(--text-soft);
+    margin: -8px 0 18px;
+    font-size: 14px;
+}
+
+.pass-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.pass-tab-btn {
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    background: rgba(0,0,0,0.35);
+    color: var(--text-soft);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.pass-tab-btn.active {
+    color: #1b1200;
+    background: linear-gradient(180deg, var(--gold), var(--gold-strong));
+    box-shadow: var(--shadow-gold);
+}
+
+.pass-track-shell {
+    position: relative;
+    padding: 22px;
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.12), transparent 35%),
+        linear-gradient(180deg, rgba(12, 5, 18, 0.92), rgba(35, 16, 8, 0.88));
+    border: 1px solid rgba(255, 211, 106, 0.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    overflow: hidden;
+}
+
+.pass-chain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 18px;
+    opacity: 0.45;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 211, 106, 0.75) 0 10px,
+        transparent 10px 20px
+    );
+}
+
+.pass-chain-left {
+    left: 14px;
+}
+
+.pass-chain-right {
+    right: 14px;
+}
+
+.pass-track-header {
+    display: grid;
+    grid-template-columns: 1fr 110px 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+    color: var(--gold);
+    text-align: center;
+    font-size: 13px;
+}
+
+.pass-track {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.pass-row {
+    display: grid;
+    grid-template-columns: 1fr 110px 1fr;
+    gap: 14px;
+    align-items: center;
+}
+
+.pass-reward {
+    min-height: 82px;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pass-reward.premium {
+    border-color: rgba(255, 211, 106, 0.35);
+}
+
+.pass-reward.free {
+    border-color: rgba(77, 227, 255, 0.25);
+}
+
+.pass-reward-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.pass-reward-text {
+    font-size: 13px;
+    color: #fff;
+}
+
+.pass-level {
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+
+.pass-level::before {
+    content: "";
+    position: absolute;
+    top: -42px;
+    bottom: -42px;
+    width: 8px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 211, 106, 0.15), rgba(255, 211, 106, 0.45));
+    z-index: 0;
+}
+
+.pass-candle {
+    position: relative;
+    z-index: 2;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.18);
+    filter: grayscale(1);
+}
+
+.pass-candle.lit {
+    filter: none;
+    box-shadow:
+        0 0 18px rgba(255, 211, 106, 0.55),
+        0 0 40px rgba(255, 120, 40, 0.25);
+    animation: candlePulse 1.6s ease-in-out infinite;
+}
+
+.pass-level-number {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--gold);
+}
+
+.pass-row.locked {
+    opacity: 0.55;
+}
+
+@keyframes candlePulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.07);
+    }
+}
+
+@media (max-width: 700px) {
+    .pass-track-header,
+    .pass-row {
+        grid-template-columns: 1fr 70px 1fr;
+        gap: 8px;
+    }
+
+    .pass-reward {
+        min-height: 74px;
+        padding: 8px;
+    }
+
+    .pass-reward-text {
+        font-size: 11px;
+    }
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }

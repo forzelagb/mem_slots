@@ -132,6 +132,7 @@
         <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
         <button class="tab-btn" onclick="openTab('collection')">🗂 Коллекция</button>
         <button class="tab-btn" onclick="openCharactersScreen()">🧍 Персонажи</button>
+        <button class="tab-btn" onclick="openTab('pass')">🕯 Пропуск</button>
     </div>
 </div>
 </div>
@@ -159,6 +160,30 @@
 
 </div>
 <div id="tab-collection" class="tab-content">
+    <div id="tab-pass" class="tab-content">
+    <div class="pass-page">
+        <h2 class="section-title">🕯 СЕЗОННЫЙ ПРОПУСК</h2>
+        <div class="pass-subtitle">Проходи путь, открывай сундуки, пазлы и редкие награды.</div>
+
+        <div class="pass-tabs">
+            <button class="pass-tab-btn active" onclick="switchPassTab('heroes')">🧍 Герои</button>
+            <button class="pass-tab-btn" onclick="switchPassTab('items')">🎒 Предметы & Питомцы</button>
+        </div>
+
+        <div class="pass-track-shell">
+            <div class="pass-chain pass-chain-left"></div>
+            <div class="pass-chain pass-chain-right"></div>
+
+            <div class="pass-track-header">
+                <div>Платный путь</div>
+                <div>Уровень</div>
+                <div>Бесплатный путь</div>
+            </div>
+
+            <div id="pass-track" class="pass-track"></div>
+        </div>
+    </div>
+</div>
     <!-- ЭКРАН ПЕРСОНАЖЕЙ -->
     <div id="collection-home-view" class="collection-page">
         <h2 class="section-title">🗂 КОЛЛЕКЦИЯ</h2>
