@@ -5104,7 +5104,6 @@ function renderNewHeroesScreen() {
         if (index === 0) selectHero(key, 0);
     });
 }
-
 function selectHero(key, skinIndex = 0) {
     const char = charactersConfig[key];
     if (!char) return;
@@ -5113,7 +5112,15 @@ function selectHero(key, skinIndex = 0) {
     selectedHeroSkinIndex = skinIndex;
 
     const skinFile = char.styles[skinIndex] || "skin-1.png";
-    const rarity = heroSkinRarities[skinIndex] || heroSkinRarities[0];
+
+    const rarityEl = document.getElementById('hero-rarity');
+    rarityEl.innerText = char.rarityText || "ДЕФОЛТ";
+    rarityEl.className = "hero-rarity";
+
+    if (char.rarity === "common") rarityEl.classList.add("rarity-common");
+    if (char.rarity === "rare") rarityEl.classList.add("rarity-rare");
+    if (char.rarity === "epic") rarityEl.classList.add("rarity-epic");
+    if (char.rarity === "legendary") rarityEl.classList.add("rarity-legendary");
 
     document.getElementById('hero-name').innerText = char.name;
     document.getElementById('hero-desc').innerText = char.desc || '';
@@ -5124,23 +5131,12 @@ function selectHero(key, skinIndex = 0) {
     document.getElementById('hero-defense').innerText = char.stats?.defense || 0;
     document.getElementById('hero-luck').innerText = char.stats?.luck || '0%';
 
-    const rarityEl = document.getElementById('hero-rarity');
-    rarityEl.innerText = rarity.name;
-    rarityEl.dataset.rarity = rarity.id;
-
     document.getElementById('hero-main-img').src =
         `image/characters/${char.folder}/${skinFile}`;
-
-    const glow = document.querySelector('.hero-glow');
-    if (glow) {
-        glow.style.background = `radial-gradient(circle, ${rarity.color}99, transparent 65%)`;
-    }
 
     document.querySelectorAll('.hero-card').forEach(card => {
         card.classList.toggle('active', card.dataset.heroKey === key);
     });
-
-    //renderHeroSkins();
 }
 
 function renderHeroSkins() {

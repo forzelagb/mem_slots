@@ -10764,18 +10764,20 @@ body.modal-open {
 }
 
 .hero-glow {
+    opacity: 0.4;
     position: absolute;
     width: 520px;
     height: 520px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(198, 54, 255, 0.65), transparent 65%);
-    filter: blur(8px);
+    filter: blur(60px);
 }
 
 .hero-main-img {
     position: relative;
     z-index: 2;
-    max-height: 500px;
+    object-fit: contain;
+    height: 500px;
     max-width: 620px;
     object-fit: contain;
     filter: drop-shadow(0 0 28px rgba(201, 64, 255, 0.7));
@@ -10921,7 +10923,34 @@ body.modal-open {
 #hero-rarity[data-rarity="mythic"] {
     border-color: #ff7a1a;
     color: #ffd0a0;
+    
 }
+.hero-center-panel {
+    position: relative;
+}
+
+.hero-bg-art {
+    position: absolute;
+    width: 500px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(170,0,255,0.6) 0%, transparent 70%);
+    filter: blur(40px);
+    z-index: 1;
+}
+.hero-rarity {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* цвета редкости */
+.rarity-common { background: #555; }
+.rarity-rare { background: #1e90ff; }
+.rarity-epic { background: #8a2be2; }
+.rarity-legendary { background: #ff4500; }
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
