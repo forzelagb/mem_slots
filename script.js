@@ -5071,16 +5071,105 @@ function openNewCharactersScreen() {
 
     renderNewHeroesScreen();
 }
+
 function renderNewHeroesScreen() {
-    const list = document.getElementById('heroes-list');
+    const list = document.getElementById('heroes-carousel');
     if (!list) return;
 
-    list.innerHTML = `
-        <div style="color:white; font-size:30px; padding:30px;">
-            Новый экран героев работает ✅
-        </div>
-    `;
+    list.innerHTML = '';
+
+    Object.entries(charactersConfig).forEach(([key, char], index) => {
+        const card = document.createElement('div');
+        card.className = 'hero-card';
+        card.dataset.heroKey = key;
+
+        card.innerHTML = `
+            <img src="image/characters/${char.folder}/skin-1.png" />
+            <div>${char.name}</div>
+        `;
+
+        card.onclick = () => selectHero(key, 0);
+        list.appendChild(card);
+
+        if (index === 0) selectHero(key, 0);
+    });
 }
+
+function selectHero(key, skinIndex = 0) {
+    const char = charactersConfig[key];
+    if (!char) return;
+
+    selectedHeroKey = key;
+    selectedHeroSkinIndex = skinIndex;
+
+    const skinFile = char.styles[skinIndex] || "skin-1.png";
+    const rarity = heroSkinRarities[skinIndex] || heroSkinRarities[0];
+
+    document.getElementById('hero-name').innerText = char.name;
+    document.getElementById('hero-desc').innerText = char.desc || '';
+    document.getElementById('hero-ability').innerText = char.ability || '';
+
+    document.getElementById('hero-hp').innerText = char.stats?.hp || 0;
+    document.getElementById('hero-attack').innerText = char.stats?.attack || 0;
+    document.getElementById('hero-defense').innerText = char.stats?.defense || 0;
+    document.getElementById('hero-luck').innerText = char.stats?.luck || '0%';
+
+    const rarityEl = document.getElementById('hero-rarity');
+    rarityEl.innerText = rarity.name;
+    rarityEl.dataset.rarity = rarity.id;
+
+    document.getElementById('hero-main-img').src =
+        `image/characters/${char.folder}/${skinFile}`;
+
+    const glow = document.querySelector('.hero-glow');
+    if (glow) {
+        glow.style.background = `radial-gradient(circle, ${rarity.color}99, transparent 65%)`;
+    }
+
+    document.querySelectorAll('.hero-card').forEach(card => {
+        card.classList.toggle('active', card.dataset.heroKey === key);
+    });
+
+    renderHeroSkins();
+}
+
+function renderHeroSkins() {
+    const list = document.getElementById('hero-skins-list');
+    if (!list || !selectedHeroKey) return;
+
+    const char = charactersConfig[selectedHeroKey];
+    if (!char) return;
+
+    list.innerHTML = '';
+
+    char.styles.forEach((skinFile, index) => {
+        const rarity = heroSkinRarities[index] || heroSkinRarities[0];
+
+        const btn = document.createElement('button');
+        btn.className = 'hero-skin-btn';
+        btn.dataset.rarity = rarity.id;
+
+        if (index === selectedHeroSkinIndex) {
+            btn.classList.add('active');
+        }
+
+        btn.innerHTML = `<span>${rarity.name}</span>`;
+        btn.onclick = () => selectHero(selectedHeroKey, index);
+
+        list.appendChild(btn);
+    });
+}
+
+
+const heroSkinRarities = [
+    { id: "default", name: "ДЕФОЛТ", color: "#b8b8b8" },
+    { id: "rare", name: "РЕДКИЙ", color: "#3aa0ff" },
+    { id: "epic", name: "ЭПИЧЕСКИЙ", color: "#b84dff" },
+    { id: "mythic", name: "МИФИЧЕСКИЙ", color: "#ff7a1a" }
+];
+
+let selectedHeroKey = null;
+let selectedHeroSkinIndex = 0;
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;

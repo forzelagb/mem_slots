@@ -10666,6 +10666,262 @@ body.modal-open {
     cursor: pointer;
     font-weight: bold;
 }
+/* === NEW HEROES SCREEN === */
+
+#heroes-screen {
+    min-height: calc(100vh - 90px);
+    max-width: 100%;
+    padding: 20px 40px;
+    background:
+        radial-gradient(circle at center, rgba(147, 37, 255, 0.28), transparent 38%),
+        linear-gradient(135deg, #09000f, #160020 45%, #050008);
+}
+
+.hero-select-screen {
+    width: 100%;
+    max-width: 1280px;
+    min-height: 560px;
+    display: grid;
+    grid-template-columns: 320px 1fr 150px;
+    gap: 25px;
+    align-items: center;
+    position: relative;
+}
+
+.hero-left-panel {
+    z-index: 2;
+}
+
+.hero-left-panel h1 {
+    font-size: 42px;
+    color: #fff;
+    margin-bottom: 12px;
+    text-shadow: 0 0 18px rgba(255,255,255,0.25);
+}
+
+.hero-rarity {
+    display: inline-block;
+    padding: 8px 22px;
+    margin-bottom: 18px;
+    background: linear-gradient(180deg, #8b1010, #3d0505);
+    border: 1px solid #ff6868;
+    color: #ffd1a1;
+    font-size: 18px;
+}
+
+#hero-desc {
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.hero-stats {
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,211,106,0.35);
+    padding: 14px;
+    margin-bottom: 20px;
+}
+
+.hero-stats div {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #d6c3a0;
+}
+
+.hero-stats div:last-child {
+    border-bottom: none;
+}
+
+.hero-stats b {
+    color: #fff;
+}
+
+.hero-ability {
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,211,106,0.35);
+    padding: 14px;
+    color: #d6c3a0;
+}
+
+.hero-ability strong {
+    color: #ffd36a;
+}
+
+.hero-ability p {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.hero-center-panel {
+    position: relative;
+    height: 560px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-glow {
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(198, 54, 255, 0.65), transparent 65%);
+    filter: blur(8px);
+}
+
+.hero-main-img {
+    position: relative;
+    z-index: 2;
+    max-height: 500px;
+    max-width: 620px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 28px rgba(201, 64, 255, 0.7));
+}
+
+.hero-select-btn {
+    position: absolute;
+    bottom: 10px;
+    z-index: 4;
+    padding: 13px 38px;
+    background: linear-gradient(180deg, #2c163b, #09000f);
+    color: #ffd36a;
+    border: 2px solid rgba(255,211,106,0.7);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(190, 67, 255, 0.45);
+}
+
+.hero-right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    z-index: 3;
+}
+
+.hero-right-panel button {
+    width: 130px;
+    height: 100px;
+    background: linear-gradient(180deg, rgba(42, 25, 20, 0.95), rgba(8, 3, 4, 0.95));
+    border: 2px solid rgba(255,211,106,0.45);
+    color: #d6b06a;
+    font-family: inherit;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.hero-right-panel span {
+    display: block;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.heroes-carousel {
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 16px;
+}
+
+.hero-card {
+    width: 150px;
+    min-width: 150px;
+    height: 120px;
+    background: rgba(0,0,0,0.55);
+    border: 2px solid rgba(255,211,106,0.35);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+    overflow: hidden;
+}
+
+.hero-card.active {
+    border-color: #ff55ff;
+    box-shadow: 0 0 22px rgba(255, 85, 255, 0.8);
+}
+
+.hero-card img {
+    width: 100%;
+    height: 80px;
+    object-fit: contain;
+}
+
+.hero-card div {
+    color: #ffd36a;
+    font-size: 13px;
+}
+.hero-skins-list {
+    position: absolute;
+    bottom: 70px;
+    z-index: 5;
+    display: flex;
+    gap: 10px;
+}
+
+.hero-skin-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    border: 2px solid #777;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.hero-skin-btn[data-rarity="default"] {
+    border-color: #b8b8b8;
+    box-shadow: 0 0 12px rgba(184,184,184,0.35);
+}
+
+.hero-skin-btn[data-rarity="rare"] {
+    border-color: #3aa0ff;
+    box-shadow: 0 0 12px rgba(58,160,255,0.45);
+}
+
+.hero-skin-btn[data-rarity="epic"] {
+    border-color: #b84dff;
+    box-shadow: 0 0 12px rgba(184,77,255,0.5);
+}
+
+.hero-skin-btn[data-rarity="mythic"] {
+    border-color: #ff7a1a;
+    box-shadow: 0 0 12px rgba(255,122,26,0.55);
+}
+
+.hero-skin-btn.active {
+    transform: scale(1.08);
+    background: rgba(255,211,106,0.18);
+}
+
+#hero-rarity[data-rarity="default"] {
+    border-color: #b8b8b8;
+}
+
+#hero-rarity[data-rarity="rare"] {
+    border-color: #3aa0ff;
+    color: #9ed0ff;
+}
+
+#hero-rarity[data-rarity="epic"] {
+    border-color: #b84dff;
+    color: #ddb2ff;
+}
+
+#hero-rarity[data-rarity="mythic"] {
+    border-color: #ff7a1a;
+    color: #ffd0a0;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
