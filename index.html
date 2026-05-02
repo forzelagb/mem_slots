@@ -24,14 +24,19 @@
         <div class="main-header__energy">
             ⚡ <span id="global-energy-value">100</span>
         </div>
-        <!-- МЕМ-КОИНЫ -->
+<!-- ЗОЛОТО -->
 <div class="main-header__resource">
-    🪙 <span id="header-meme-coins">0</span>
+    🪙 <span id="header-gold">0</span>
 </div>
 
-<!-- ТОКЕНЫ КОЛЛЕКЦИИ -->
+<!-- ОСКОЛКИ СИЛЫ -->
 <div class="main-header__resource">
-    🎟 <span id="header-collection-tokens">0</span>
+    🔮 <span id="header-power-shards">0</span>
+</div>
+
+<!-- ТКАНЬ ТЕКУЩЕГО ПЕРСОНАЖА -->
+<div class="main-header__resource">
+    🧵 <span id="header-cloth-fragments">0</span>
 </div>
 
         <!-- ВОТ СЮДА ВСТАВЛЯЕТСЯ PROFILE -->
@@ -702,8 +707,9 @@
             <button id="style-action-btn" class="styles-dota-main-btn">
                 ВЫБРАТЬ
             </button>
-            <button id="style-upgrade-btn" class="styles-dota-upgrade-btn" onclick="upgradeSelectedStyle()">
-    ПРОКАЧАТЬ
+<button id="style-upgrade-btn" class="styles-dota-upgrade-btn" onclick="upgradeSelectedStyle()">
+    <span class="upgrade-title">ПРОКАЧАТЬ</span>
+    <span id="upgrade-cost-line" class="upgrade-cost-line"></span>
 </button>
 
             <div class="styles-dota-cost">

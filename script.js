@@ -423,6 +423,22 @@ function updateUI() {
     const gameBal = document.getElementById('game-balance');
 
     const energy = playerData.resources?.energy ?? 0;
+    const goldEl = document.getElementById('header-gold');
+const shardsEl = document.getElementById('header-power-shards');
+const clothEl = document.getElementById('header-cloth-fragments');
+
+if (goldEl) goldEl.innerText = playerData.resources.gold ?? 0;
+if (shardsEl) shardsEl.innerText = playerData.resources.powerShards ?? 0;
+
+if (clothEl) {
+    const char = currentCharacter || "sasavot";
+    const rarity = currentRarity || "common";
+
+    const cloth =
+        playerData.resources.clothFragments?.[char]?.[rarity] ?? 0;
+
+    clothEl.innerText = cloth;
+}
     const globalEnergy = document.getElementById('global-energy-value');
 const energyMiniFill = document.getElementById('energy-mini-fill');
 
@@ -5277,6 +5293,7 @@ function selectRarity(rarity) {
     event.target.classList.add('active');
 
     renderStyles();
+    updateUI();
 }
 
 function renderStyles() {
@@ -5330,21 +5347,42 @@ function selectStyle(style) {
         document.getElementById('style-action-btn').innerText =
             `ОТКРЫТЬ: 0/${style.required} ФРАГМЕНТОВ`;
     }
-    const upgradeBtn = document.getElementById('style-upgrade-btn');
-
-if (upgradeBtn) {
-    upgradeBtn.disabled = !style.unlocked;
-}
-    const level = style.level || 0;
+const level = style.level || 0;
+const upgradeCostLine = document.getElementById('upgrade-cost-line');
+const upgradeBtn = document.getElementById('style-upgrade-btn');
+const costText = document.querySelector('.styles-dota-cost');
 
 if (level < maxStyleLevel) {
     const cost = styleUpgradeCosts[level];
 
-    document.querySelector('.styles-dota-cost').innerText =
-        `Нужно: ${cost.gold} золота, ${cost.powerShards} осколков, ${cost.cloth} ткани`;
+    const playerGold = playerData.resources.gold ?? 0;
+    const playerShards = playerData.resources.powerShards ?? 0;
+    const playerCloth =
+        playerData.resources.clothFragments?.[currentCharacter]?.[style.rarity] ?? 0;
+
+    if (upgradeCostLine && upgradeBtn) {
+        upgradeCostLine.innerHTML = `
+            <span class="${playerGold >= cost.gold ? 'cost-ok' : 'cost-bad'}">🪙 ${cost.gold}</span>
+            <span class="${playerShards >= cost.powerShards ? 'cost-ok' : 'cost-bad'}">🔮 ${cost.powerShards}</span>
+            <span class="${playerCloth >= cost.cloth ? 'cost-ok' : 'cost-bad'}">🧵 ${cost.cloth}</span>
+        `;
+
+        upgradeBtn.disabled =
+            !style.unlocked ||
+            playerGold < cost.gold ||
+            playerShards < cost.powerShards ||
+            playerCloth < cost.cloth;
+    }
+
+    if (costText) {
+        costText.innerText = style.unlocked
+            ? "Ресурсы для прокачки"
+            : "Сначала открой этот стиль";
+    }
 } else {
-    document.querySelector('.styles-dota-cost').innerText =
-        `Максимальный уровень`;
+    if (costText) costText.innerText = "Максимальный уровень";
+    if (upgradeCostLine) upgradeCostLine.innerText = "MAX";
+    if (upgradeBtn) upgradeBtn.disabled = true;
 }
 }
 function getStyleRarityText(rarity) {
@@ -5404,12 +5442,36 @@ if (styleActionBtn) {
     styleActionBtn.onclick = function () {
         if (!selectedStyle) return;
 
+        // если уже открыт — просто выбрать
         if (selectedStyle.unlocked) {
             alert("Стиль выбран!");
             return;
         }
 
-        alert("Открытие за тканевые фрагменты подключим следующим шагом.");
+        const char = currentCharacter;
+        const rarity = selectedStyle.rarity;
+
+        const required = selectedStyle.required || 0;
+
+        const playerCloth =
+            playerData.resources.clothFragments?.[char]?.[rarity] ?? 0;
+
+        if (playerCloth < required) {
+            alert("Недостаточно тканевых фрагментов!");
+            return;
+        }
+
+        // списываем ткань
+        playerData.resources.clothFragments[char][rarity] -= required;
+
+        // открываем стиль
+        selectedStyle.unlocked = true;
+
+        // обновляем UI
+        selectStyle(selectedStyle);
+        updateUI();
+
+        alert("Стиль открыт!");
     };
 }
 // === ЗАПУСК ===
