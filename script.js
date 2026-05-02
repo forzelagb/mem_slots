@@ -4488,91 +4488,91 @@ function renderCharacter() {
   }
 }
 const charactersConfig = {
-    melstroy: {
-        name: "Mellstroy",
-        folder: "melstroy",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
-    },
-
     helin: {
-        name: "Helin",
+        name: "HELIN",
         folder: "helin",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
-    },
-
-    sasavot: {
-        name: "Sasavot",
-        folder: "sasavot",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
-    },
-
-    facekid: {
-        name: "Facekid",
-        folder: "facekid",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
+        rarity: "epic",
+        rarityText: "ЭПИЧЕСКИЙ",
+        desc: "Холодная подача, сильная харизма и высокий шанс редких наград.",
+        ability: "Повышает шанс редких наград на 8%",
+        stats: { hp: 820, attack: 110, defense: 85, luck: "16%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
     lexapaws: {
-        name: "Lexa Paws",
+        name: "LEXA PAWS",
         folder: "lexapaws",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
-    },
-
-    nikkifn: {
-        name: "Nikkifn",
-        folder: "nikkifn",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
+        rarity: "legendary",
+        rarityText: "ЛЕГЕНДАРНЫЙ",
+        desc: "Быстрый, стильный и опасный персонаж с высоким бонусом удачи.",
+        ability: "Повышает шанс бонусных выпадений на 10%",
+        stats: { hp: 780, attack: 135, defense: 70, luck: "22%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
     litwin: {
-        name: "Litwin",
+        name: "LITWIN",
         folder: "litwin",
-        styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
-        ]
+        rarity: "rare",
+        rarityText: "РЕДКИЙ",
+        desc: "Уверенный герой с хорошим балансом атаки и защиты.",
+        ability: "Даёт +5% к наградам за серию игр",
+        stats: { hp: 900, attack: 105, defense: 100, luck: "13%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
+    },
+
+    nikkifn: {
+        name: "NIKKIFN",
+        folder: "nikkifn",
+        rarity: "epic",
+        rarityText: "ЭПИЧЕСКИЙ",
+        desc: "Точный персонаж, который хорошо подходит для фарма коллекции.",
+        ability: "Повышает шанс выпадения карточек на 7%",
+        stats: { hp: 800, attack: 125, defense: 80, luck: "17%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
     rejiboy: {
-        name: "Rejiboy",
+        name: "REJIBOY",
         folder: "rejiboy",
+        rarity: "rare",
+        rarityText: "РЕДКИЙ",
+        desc: "Скоростной персонаж с хорошей удачей.",
+        ability: "Иногда возвращает 1 энергию после игры",
+        stats: { hp: 760, attack: 115, defense: 75, luck: "19%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
+    },
+
+    rostickfaceskid: {
+        name: "ROSTICK FACEKID",
+        folder: "rostickfaceskid",
+        rarity: "epic",
+        rarityText: "ЭПИЧЕСКИЙ",
+        desc: "Мемный герой с сильной защитой и стабильными бонусами.",
+        ability: "Повышает награду за обычные карточки на 6%",
+        stats: { hp: 920, attack: 100, defense: 120, luck: "14%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
+    },
+
+    sasavot: {
+        name: "SASAVOT",
+        folder: "sasavot",
+        rarity: "rare",
+        rarityText: "РЕДКИЙ",
+        desc: "Громкий персонаж с хорошим стартовым бонусом.",
+        ability: "Даёт +5% к опыту персонажа",
+        stats: { hp: 850, attack: 118, defense: 88, luck: "15%" },
+        styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
+    }
+};
+const petsConfig = {
+    pony: {
+        name: "PONY",
         styles: [
-            "style1.png",
-            "style2.png",
-            "style3.png",
-            "style4.png"
+            "image/pets/pony/skin-1.png",
+            "image/pets/pony/skin-2.png",
+            "image/pets/pony/skin-3.png",
+            "image/pets/pony/skin-4.png"
         ]
     }
 };
@@ -4785,21 +4785,45 @@ function switchCharacterStyle(direction) {
 let activePassType = "heroes";
 
 const passRewards = {
-    heroes: [
-        { level: 1, premium: "🧩 Пазл стиля", free: "🪙 100 монет" },
-        { level: 2, premium: "🎁 Редкий сундук", free: "🧩 Пазл" },
-        { level: 3, premium: "💎 25 гемов", free: "🪙 150 монет" },
-        { level: 4, premium: "🏆 Эпик сундук", free: "🎁 Обычный сундук" },
-        { level: 5, premium: "👑 Стиль героя", free: "🧩 Пазл стиля" }
-    ],
+    heroes: Array.from({ length: 30 }, (_, i) => {
+        const level = i + 1;
 
-    items: [
-        { level: 1, premium: "🐾 Пазл питомца", free: "🪙 100 монет" },
-        { level: 2, premium: "🎒 Аксессуар", free: "🎁 Обычный сундук" },
-        { level: 3, premium: "💎 25 гемов", free: "🐾 Пазл питомца" },
-        { level: 4, premium: "🏆 Эпик сундук", free: "🧩 Пазл аксессуара" },
-        { level: 5, premium: "🐉 Редкий питомец", free: "🎁 Редкий сундук" }
-    ]
+        return {
+            level,
+            premium:
+                level % 10 === 0 ? "👑 Стиль героя" :
+                level % 5 === 0 ? "🏆 Эпик сундук" :
+                level % 3 === 0 ? "💎 25 гемов" :
+                level % 2 === 0 ? "🎁 Редкий сундук" :
+                "🧩 Пазл стиля",
+
+            free:
+                level % 10 === 0 ? "🎁 Редкий сундук" :
+                level % 5 === 0 ? "🧩 Пазл стиля" :
+                level % 3 === 0 ? "🪙 150 монет" :
+                "🪙 100 монет"
+        };
+    }),
+
+    items: Array.from({ length: 30 }, (_, i) => {
+        const level = i + 1;
+
+        return {
+            level,
+            premium:
+                level % 10 === 0 ? "🐉 Редкий питомец" :
+                level % 5 === 0 ? "🏆 Эпик сундук" :
+                level % 3 === 0 ? "🎒 Аксессуар" :
+                level % 2 === 0 ? "🎁 Редкий сундук" :
+                "🐾 Пазл питомца",
+
+            free:
+                level % 10 === 0 ? "🎁 Редкий сундук" :
+                level % 5 === 0 ? "🧩 Пазл аксессуара" :
+                level % 3 === 0 ? "🪙 150 монет" :
+                "🪙 100 монет"
+        };
+    })
 };
 
 function switchPassTab(type) {
@@ -4854,6 +4878,183 @@ function renderPassTrack() {
 
         track.appendChild(row);
     });
+}
+function getV2CharacterImage(key) {
+    if (typeof getCharacterImagePath === "function") {
+        return getCharacterImagePath(key, 0);
+    }
+
+    const config = charactersConfig[key];
+    return config?.image || "";
+}
+
+function getV2GlowColor(key) {
+    const colors = {
+        helin: "rgba(180, 0, 255, 0.55)",
+        lexapaws: "rgba(0, 255, 150, 0.55)",
+        litwin: "rgba(255, 60, 60, 0.55)",
+        nikkifn: "rgba(255, 211, 106, 0.55)",
+        rejiboy: "rgba(255, 80, 180, 0.55)",
+        rostickfaceskid: "rgba(255, 130, 40, 0.55)",
+        sasavot: "rgba(0, 150, 255, 0.55)"
+    };
+
+    return colors[key] || "rgba(255, 211, 106, 0.45)";
+}
+
+function openCharactersScreenV2() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    const screen = document.getElementById("characters-screen-v2");
+    if (screen) {
+        screen.classList.add("active");
+    }
+
+    renderCharactersV2();
+}
+
+function selectCharacterV2(key) {
+    playerData.activeCharacter = key;
+
+    if (typeof savePlayerData === "function") {
+        savePlayerData();
+    }
+
+    renderCharactersV2();
+}
+
+function renderCharactersV2() {
+    ensureCharactersData();
+
+    const activeKey = playerData.activeCharacter || "helin";
+    const config = charactersConfig[activeKey];
+    if (!config) return;
+
+    const img = document.getElementById("v2-active-character");
+    const name = document.getElementById("v2-character-name");
+    const rarity = document.getElementById("v2-character-rarity");
+    const desc = document.getElementById("v2-character-desc");
+    const glow = document.getElementById("v2-character-glow");
+    const carousel = document.getElementById("characters-v2-carousel");
+
+    if (img) {
+        const selectedSkin = playerData.characterSkins?.[activeKey] || char.styles[0];
+img.src = `image/characters/${char.folder}/${selectedSkin}`;
+        img.alt = config.name;
+    }
+
+    if (name) name.innerText = config.name;
+
+    if (rarity) {
+        rarity.innerText = config.rarityText;
+        rarity.className = `v2-rarity ${config.rarity}`;
+    }
+
+    if (desc) {
+        desc.innerText = config.desc;
+    }
+
+    const statRows = document.querySelectorAll(".v2-stats div b");
+    if (statRows.length >= 4) {
+        statRows[0].innerText = config.stats.hp;
+        statRows[1].innerText = config.stats.attack;
+        statRows[2].innerText = config.stats.defense;
+        statRows[3].innerText = config.stats.luck;
+    }
+
+    if (glow) {
+        glow.style.background = `radial-gradient(circle, ${getV2GlowColor(activeKey)}, transparent 70%)`;
+    }
+
+    if (!carousel) return;
+
+    carousel.innerHTML = "";
+
+    Object.keys(charactersConfig).forEach(key => {
+        const char = charactersConfig[key];
+
+        const card = document.createElement("div");
+        card.className = "v2-character-card";
+
+        if (key === activeKey) card.classList.add("active");
+
+        card.innerHTML = `
+            <img src="${getCharacterImagePath(key, 0)}" alt="${char.name}">
+            <span>${char.name}</span>
+        `;
+
+        card.onclick = () => selectCharacterV2(key);
+        carousel.appendChild(card);
+    });
+}
+function confirmCharacterV2() {
+    const activeKey = playerData.activeCharacter || "helin";
+    playerData.selectedCharacter = activeKey;
+
+    if (typeof savePlayerData === "function") {
+        savePlayerData();
+    }
+
+    alert("Персонаж выбран!");
+}
+function openCharacterStylesV2() {
+    const modal = document.getElementById("character-styles-modal");
+    const list = document.getElementById("character-styles-list");
+
+    const activeKey = playerData.activeCharacter || "helin";
+    const char = charactersConfig[activeKey];
+
+    if (!modal || !list || !char) return;
+
+    list.innerHTML = "";
+
+    char.styles.forEach((skinFile, index) => {
+        const rarity = ["basic", "rare", "epic", "mythic"][index];
+        const rarityText = {
+            basic: "БАЗОВЫЙ",
+            rare: "РЕДКИЙ",
+            epic: "ЭПИЧЕСКИЙ",
+            mythic: "МИФИЧЕСКИЙ"
+        }[rarity];
+
+        const card = document.createElement("div");
+        card.className = `style-card style-${rarity}`;
+
+        card.innerHTML = `
+            <img src="image/characters/${char.folder}/${skinFile}" alt="">
+            <div class="style-rarity">${rarityText}</div>
+            <button onclick="selectCharacterSkinV2('${skinFile}')">ВЫБРАТЬ</button>
+        `;
+
+        list.appendChild(card);
+    });
+
+    modal.classList.add("active");
+}
+
+function closeCharacterStylesV2() {
+    document.getElementById("character-styles-modal")?.classList.remove("active");
+}
+
+function selectCharacterSkinV2(skinFile) {
+    const activeKey = playerData.activeCharacter || "helin";
+    playerData.characterSkins = playerData.characterSkins || {};
+    playerData.characterSkins[activeKey] = skinFile;
+
+    const img = document.getElementById("v2-active-character");
+    if (img) {
+        img.src = `image/characters/${charactersConfig[activeKey].folder}/${skinFile}`;
+    }
+
+    if (typeof savePlayerData === "function") savePlayerData();
+
+    closeCharacterStylesV2();
 }
 // === ЗАПУСК ===
 window.onload = () => {

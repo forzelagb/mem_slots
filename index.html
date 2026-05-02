@@ -131,7 +131,7 @@
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
         <button class="tab-btn" onclick="openTab('collection')">🗂 Коллекция</button>
-        <button class="tab-btn" onclick="openCharactersScreen()">🧍 Персонажи</button>
+        <button class="tab-btn" onclick="openCharactersScreenV2()">🧍 Персонажи</button>
         <button class="tab-btn" onclick="openTab('pass')">🕯 Пропуск</button>
     </div>
 </div>
@@ -160,6 +160,69 @@
 
 </div>
 <div id="tab-collection" class="tab-content">
+    <!-- ЭКРАН ПЕРСОНАЖЕЙ V2 -->
+<div id="characters-screen-v2" class="screen">
+    <button class="characters-v2-back" onclick="goHome()">← НАЗАД</button>
+
+    <div class="characters-v2-title">ПЕРСОНАЖ</div>
+
+    <div class="characters-v2-layout">
+
+        <!-- ЛЕВАЯ ИНФА -->
+        <div class="characters-v2-info">
+            <h1 id="v2-character-name">Mellstroy</h1>
+            <div id="v2-character-rarity" class="v2-rarity epic">ЭПИЧЕСКИЙ</div>
+
+            <p id="v2-character-desc">
+                Персонаж готов к бою. Характеристики появятся позже.
+            </p>
+
+            <div class="v2-stats">
+                <div><span>❤️ Здоровье</span><b>850</b></div>
+                <div><span>⚔️ Атака</span><b>120</b></div>
+                <div><span>🛡 Защита</span><b>90</b></div>
+                <div><span>🍀 Удача</span><b>18%</b></div>
+            </div>
+        </div>
+
+        <!-- ЦЕНТР -->
+        <div class="characters-v2-stage">
+            <div id="v2-character-glow" class="v2-character-glow"></div>
+            <div class="v2-pedestal"></div>
+
+            <img id="v2-active-character" src="" alt="">
+
+            <div class="v2-pet">
+                <img src="image/pets/pony/default.png" alt="Pony">
+            </div>
+            <button class="characters-v2-select-btn" onclick="confirmCharacterV2()">
+    ВЫБРАТЬ ПЕРСОНАЖА
+</button>
+        </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ -->
+        <div class="characters-v2-actions">
+            <button onclick="openCharacterStylesV2()">🎭<span>Стили</span></button>
+            <button>⬆️<span>Прокачка</span></button>
+            <button>📖<span>История</span></button>
+        </div>
+
+    </div>
+
+    <!-- НИЖНЯЯ КАРУСЕЛЬ -->
+    <div class="characters-v2-carousel" id="characters-v2-carousel"></div>
+
+<!-- МОДАЛКА СТИЛЕЙ -->
+<div id="character-styles-modal" class="character-styles-modal">
+    <div class="character-styles-box">
+        <button class="character-styles-close" onclick="closeCharacterStylesV2()">×</button>
+
+        <h2>СТИЛИ ПЕРСОНАЖА</h2>
+
+        <div id="character-styles-list" class="character-styles-list"></div>
+    </div>
+</div>
+</div>
     <!-- ЭКРАН ПЕРСОНАЖЕЙ -->
     <div id="collection-home-view" class="collection-page">
         <h2 class="section-title">🗂 КОЛЛЕКЦИЯ</h2>
