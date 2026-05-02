@@ -4533,7 +4533,7 @@ const charactersConfig = {
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
-    rejiboy: {
+    rejiboi: {
         name: "REJIBOY",
         folder: "rejiboy",
         rarity: "rare",
