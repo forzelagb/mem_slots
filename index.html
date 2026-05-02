@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Collection Club</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <!-- Аналитика GoatCounter -->
+    <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="main-header">
+
+    <!-- ЛЕВАЯ ЧАСТЬ -->
+    <div class="main-header__left">
+        <button class="main-header__logo" onclick="goHome()">🎰 MEME VEGAS</button> 
+    </div>
+
+    <!-- ПРАВАЯ ЧАСТЬ -->
+    <div class="main-header__right">
+
+        <!-- ЭНЕРГИЯ -->
+        <div class="main-header__energy">
+            ⚡ <span id="global-energy-value">100</span>
+        </div>
+        <!-- МЕМ-КОИНЫ -->
+<div class="main-header__resource">
+    🪙 <span id="header-meme-coins">0</span>
+</div>
+
+<!-- ТОКЕНЫ КОЛЛЕКЦИИ -->
+<div class="main-header__resource">
+    🎟 <span id="header-collection-tokens">0</span>
+</div>
+
+        <!-- ВОТ СЮДА ВСТАВЛЯЕТСЯ PROFILE -->
+        <div class="main-header__profile" onclick="openPlayerProfile()">
+    <div class="main-header__level">
+        <span>LVL</span>
+        <strong id="player-level-value">1</strong>
+    </div>
+
+    <div class="main-header__avatar">M</div>
+
+    <div class="main-header__profile-text">
+        <div class="main-header__nickname">Player</div>
+        <div class="main-header__vip">VIP FREE</div>
+    </div>
+</div>
+
+    </div>
+
+</div>
+
+    <!-- ЛОББИ -->
+    <div id="lobby-screen" class="screen active">
+        <!-- ШАПКА С БАЛАНСОМ И КНОПКОЙ ПОКУПКИ -->
+<div class="header-bar">
+    <div class="header-top">
+        <div class="logo-block">
+            <div class="logo-icon"></div>
+            <div class="logo-text">MEME<br>VEGAS</div>
+        </div>
+
+        <div class="header-right">
+            <div class="balance-container">
+                <span class="gem-icon">⚡</span>
+                <span id="lobby-balance">100</span>
+            </div>
+            <button class="btn-profile" onclick="openAuthModal()">
+                Профиль
+            </button>
+        </div>
+    </div>
+</div>
+<!--
+<div class="bonus-panel daily-panel">
+    <h3>🎁 Ежедневный бонус</h3>
+<p id="daily-reward-text">
+    Ежедневная бесплатная награда для всех игроков
+</p>
+    <button class="btn-bonus" id="daily-reward-btn" onclick="openDailyCalendar()">
+    Открыть награды
+    </button>
+</div>-->
+<div id="home-intro">
+<div class="hero-banner">
+    <div class="hero-badge">🔥 MEME SLOT COLLECTION</div>
+
+    <h1 class="hero-title">
+        Играй. Собирай. Открывай редкие карточки.
+    </h1>
+
+    <p class="hero-subtitle">
+        Крути слот, собирай мем-темы, прокачивай коллекцию и открывай новые награды.
+    </p>
+
+    <div class="hero-actions">
+        <button class="hero-btn hero-btn-primary" onclick="openTab('games')">
+            🎮 Играть
+        </button>
+
+        <button class="hero-btn hero-btn-secondary" onclick="openTab('collection')">
+            🗂 Коллекция
+        </button>
+    </div>
+</div>
+<div class="home-info-strip">
+    <div class="home-info-card">
+        <div class="home-info-icon">🎰</div>
+        <div class="home-info-title">Крути слот</div>
+        <div class="home-info-text">Трать энергию и выбивай карточки из разных мем-тем.</div>
+    </div>
+
+    <div class="home-info-card">
+        <div class="home-info-icon">🃏</div>
+        <div class="home-info-title">Собирай карточки</div>
+        <div class="home-info-text">У каждой темы 8 карточек с разной редкостью.</div>
+    </div>
+
+    <div class="home-info-card">
+        <div class="home-info-icon">🏆</div>
+        <div class="home-info-title">Закрывай коллекции</div>
+        <div class="home-info-text">Прокачивай темы и открывай награды за прогресс.</div>
+    </div>
+</div>
+        
+        <!-- НАВИГАЦИЯ ПО ВКЛАДКАМ -->
+<div class="tabs-shell">
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="openTab('games')">🎮 Игры</button>
+        <button class="tab-btn" onclick="openTab('collection')">🗂 Коллекция</button>
+        <button class="tab-btn" onclick="openNewCharactersScreen()">🧙 Герои</button>
+        <button class="tab-btn" onclick="openTab('pass')">🕯 Пропуск</button>
+    </div>
+</div>
+</div>
+
+        <!-- === ВКЛАДКА 1: ИГРЫ === -->
+<div id="tab-games" class="tab-content active">
+   
+
+<h2 class="section-title">🔥 ПОПУЛЯРНЫЕ ТЕМЫ</h2>
+
+    <h3 class="sub-section-title">🎮 МЕМ-ТЕМЫ</h3>
+
+    <div class="games-grid">
+        <div class="game-card" onclick="startGame('helin')"><div class="card-image helin-bg"></div><div class="card-content"><h3>🎤 HELIN</h3></div></div>
+        <div class="game-card" onclick="startGame('lexapaws')"><div class="card-image lexapaws-bg"></div><div class="card-content"><h3>🐾 LEXA PAWS</h3></div></div>
+        <div class="game-card" onclick="startGame('litwin')"><div class="card-image litwin-bg"></div><div class="card-content"><h3>🎮 LITWIN</h3></div></div>
+        <div class="game-card" onclick="startGame('melstroy')"><div class="card-image melstroy-bg"></div><div class="card-content"><h3>👑 MELLSTROY</h3></div></div>
+        <div class="game-card" onclick="startGame('nikkifn')"><div class="card-image nikkifn-bg"></div><div class="card-content"><h3>🎯 NIKKIFN</h3></div></div>
+        <div class="game-card" onclick="startGame('rejiboi')"><div class="card-image rejiboi-bg"></div><div class="card-content"><h3>🕺 REJIBOI</h3></div></div>
+        <div class="game-card" onclick="startGame('rostick')"><div class="card-image rostick-bg"></div><div class="card-content"><h3>🌭 ROSTICK</h3></div></div>
+        <div class="game-card" onclick="startGame('sasich')"><div class="card-image sasich-bg"></div><div class="card-content"><h3>🗣️ SASICH</h3></div></div>
+        <div class="game-card" onclick="startGame('skibiditoilet')"><div class="card-image skibiditoilet-bg"></div><div class="card-content"><h3>🚽 SKIBIDI</h3></div></div>
+        <div class="game-card" onclick="startGame('slovopatsana')"><div class="card-image slovopatsana-bg"></div><div class="card-content"><h3>👊 SLOVO PATSANA</h3></div></div>
+    </div>
+
+</div>
+<div id="tab-collection" class="tab-content">
+    <!-- ЭКРАН ПЕРСОНАЖЕЙ -->
+    <div id="collection-home-view" class="collection-page">
+        <h2 class="section-title">🗂 КОЛЛЕКЦИЯ</h2>
+        <div class="collection-page-subtitle">Открывай темы, собирай все 8 карточек и закрывай прогресс на 100%</div>
+
+        <div id="collection-theme-list" class="collection-theme-list"></div>
+    </div>
+
+    <div id="collection-detail-view" class="collection-page" style="display:none;">
+        <div class="collection-detail-top">
+            <button class="collection-back-btn" onclick="closeThemeDetail()">← Назад ко всем темам</button>
+        </div>
+
+        <div id="collection-detail-hero" class="collection-detail-hero"></div>
+
+        <div id="collection-detail-grid" class="collection-detail-grid"></div>
+    </div>
+</div>
+<div id="characters-screen-v2" class="screen">
+    <button class="characters-v2-back" onclick="goHome()">← НАЗАД</button>
+
+    <div class="characters-v2-title">ПЕРСОНАЖ</div>
+
+    <div class="characters-v2-layout">
+
+        <!-- ЛЕВАЯ ИНФА -->
+        <div class="characters-v2-info">
+            <h1 id="v2-character-name">Mellstroy</h1>
+            <div id="v2-character-rarity" class="v2-rarity epic">ЭПИЧЕСКИЙ</div>
+
+            <p id="v2-character-desc">
+                Персонаж готов к бою. Характеристики появятся позже.
+            </p>
+
+            <div class="v2-stats">
+                <div><span>❤️ Здоровье</span><b>850</b></div>
+                <div><span>⚔️ Атака</span><b>120</b></div>
+                <div><span>🛡 Защита</span><b>90</b></div>
+                <div><span>🍀 Удача</span><b>18%</b></div>
+            </div>
+        </div>
+
+        <!-- ЦЕНТР -->
+        <div class="characters-v2-stage">
+            <div id="v2-character-glow" class="v2-character-glow"></div>
+            <div class="v2-pedestal"></div>
+
+            <img id="v2-active-character" src="" alt="">
+
+            <div class="v2-pet">
+                <img src="image/pets/pony/default.png" alt="Pony">
+            </div>
+            <button class="characters-v2-select-btn" onclick="confirmCharacterV2()">
+    ВЫБРАТЬ ПЕРСОНАЖА
+</button>
+        </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ -->
+        <div class="characters-v2-actions">
+            <button onclick="openCharacterStylesV2()">🎭<span>Стили</span></button>
+            <button>⬆️<span>Прокачка</span></button>
+            <button>📖<span>История</span></button>
+        </div>
+
+    </div>
+
+    <!-- НИЖНЯЯ КАРУСЕЛЬ -->
+    <div class="characters-v2-carousel" id="characters-v2-carousel"></div>
+
+<!-- МОДАЛКА СТИЛЕЙ -->
+<div id="character-styles-modal" class="character-styles-modal">
+    <div class="character-styles-box">
+        <button class="character-styles-close" onclick="closeCharacterStylesV2()">×</button>
+
+        <h2>СТИЛИ ПЕРСОНАЖА</h2>
+
+        <div id="character-styles-list" class="character-styles-list"></div>
+    </div>
+</div>
+</div>
+</div>
+<!-- НОВЫЙ ЭКРАН -->
+<div id="heroes-screen" class="screen">
+    <button class="characters-v2-back" onclick="goHome()">← НАЗАД</button>
+
+    <div class="characters-v2-title">ГЕРОИ</div>
+
+    <div class="hero-select-screen">
+    <div class="hero-left-panel">
+        <h1 id="hero-name">HELIN</h1>
+        <div id="hero-rarity" class="hero-rarity epic">ЭПИЧЕСКИЙ</div>
+
+        <p id="hero-desc">Описание персонажа</p>
+
+        <div class="hero-stats">
+            <div><span>❤️ Здоровье</span><b id="hero-hp">850</b></div>
+            <div><span>⚔️ Атака</span><b id="hero-attack">120</b></div>
+            <div><span>🛡 Защита</span><b id="hero-defense">90</b></div>
+            <div><span>🍀 Удача</span><b id="hero-luck">18%</b></div>
+        </div>
+
+        <div class="hero-ability">
+            <strong>СПОСОБНОСТЬ</strong>
+            <p id="hero-ability">Повышает шанс редких наград</p>
+        </div>
+    </div>
+
+    <div class="hero-center-panel">
+        <div class="hero-glow"></div>
+        <img id="hero-main-img" class="hero-main-img" src="" alt="">
+        <button class="hero-select-btn">ВЫБРАТЬ ПЕРСОНАЖА</button>
+    </div>
+
+    <div class="hero-right-panel">
+        <button>🎭<span>Стили</span></button>
+        <button>⬆️<span>Прокачка</span></button>
+        <button>📖<span>История</span></button>
+    </div>
+</div>
+
+<div id="heroes-carousel" class="heroes-carousel"></div>
+</div>
+<div id="tab-pass" class="tab-content">
+    <div class="pass-page">
+        <h2 class="section-title">🕯 СЕЗОННЫЙ ПРОПУСК</h2>
+        <div class="pass-subtitle">Проходи путь, открывай сундуки, пазлы и редкие награды.</div>
+
+        <div class="pass-tabs">
+            <button class="pass-tab-btn active" onclick="switchPassTab('heroes')">🧍 Герои</button>
+            <button class="pass-tab-btn" onclick="switchPassTab('items')">🎒 Предметы & Питомцы</button>
+        </div>
+
+        <div class="pass-track-shell">
+            <div class="pass-chain pass-chain-left"></div>
+            <div class="pass-chain pass-chain-right"></div>
+
+            <div class="pass-track-header">
+                <div>Платный путь</div>
+                <div>Уровень</div>
+                <div>Бесплатный путь</div>
+            </div>
+
+            <div id="pass-track" class="pass-track"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ЭКРАН ПЕРСОНАЖЕЙ -->
+<!-- ЭКРАН ПЕРСОНАЖЕЙ
+<div id="characters-screen" class="screen">
+    <button class="characters-back-btn" onclick="goHome()">← Назад</button>
+
+    <div class="characters-container">
+
+         ЛЕВАЯ ПАНЕЛЬ: ВЫБОР ПЕРСОНАЖА 
+        <div class="characters-sidebar">
+            <button class="characters-arrow" onclick="scrollCharacters(-1)">▲</button>
+
+            <div class="characters-list-window">
+    <div id="characters-list"></div>
+</div>
+
+            <button class="characters-arrow" onclick="scrollCharacters(1)">▼</button>
+        </div>
+
+ ЦЕНТР: ПЕРСОНАЖ + ПИТОМЕЦ 
+<div class="character-stage">
+    <img id="active-character" src="" alt="">
+
+    <div class="active-pet">
+        <img src="image/pets/pony/default.png" alt="Pony">
+        <div class="pet-shadow"></div>
+    </div>
+</div>
+
+         ПРАВАЯ ПАНЕЛЬ: СВИТОК
+        <div class="character-info-scroll">
+            <div class="scroll-title">ПЕРСОНАЖ</div>
+
+            <div class="scroll-character-name" id="character-info-name">
+                Mellstroy
+            </div>
+
+            <div class="scroll-divider"></div>
+
+            <div class="scroll-section-title">Характеристики</div>
+
+            <div class="scroll-empty-text">
+                Скоро здесь будут сила, удача, энергия и бонусы.
+            </div>
+
+            <div class="scroll-divider"></div>
+
+            <div class="scroll-section-title">Аксессуары</div>
+
+            <div class="equipment-slots">
+                <div class="equipment-slot active">
+                    <span>+</span>
+                    <small>Акс 1</small>
+                </div>
+
+                <div class="equipment-slot locked">
+                    <span>🔒</span>
+                    <small>LVL 5</small>
+                </div>
+
+                <div class="equipment-slot locked">
+                    <span>🔒</span>
+                    <small>LVL 10</small>
+                </div>
+            </div>
+
+            <div class="scroll-section-title">Питомец</div>
+
+            <div class="pet-slot">
+                <span>🐾</span>
+                <small>Выбрать питомца позже</small>
+            </div>
+        </div>
+
+    </div>
+</div>
+ -->
+<div id="game-screen" class="screen">
+
+  <div class="game-header">
+    <button class="btn-back">Назад</button>
+    <div class="energy">⚡ 100</div>
+  </div>
+
+<div class="slot-scene">
+    <div class="slot-container slot-container--ornate">
+        <div class="slot-ornament slot-ornament--tl"></div>
+        <div class="slot-ornament slot-ornament--tr"></div>
+        <div class="slot-ornament slot-ornament--bl"></div>
+        <div class="slot-ornament slot-ornament--br"></div>
+
+        <div class="slot-gem slot-gem--top"></div>
+        <div class="slot-gem slot-gem--bottom"></div>
+        <div class="slot-gem slot-gem--left"></div>
+        <div class="slot-gem slot-gem--right"></div>
+
+        <div class="slot-stage">
+            <div class="grid-wrapper" id="grid"></div>
+        </div>
+
+        <div class="spin-controls">
+            <button id="spin-btn" class="btn-spin" onclick="spin()">PLAY</button>
+        </div>
+    </div>
+</div>
+
+    <!-- ОКНО ВЫИГРЫША -->
+    <div id="win-modal" class="modal">
+        <div class="modal-content">
+            <h1 class="win-title">BIG WIN!</h1>
+            <div class="win-amount" id="modal-amount">0</div>
+            <div class="win-subtitle">GEMS</div>
+            <button class="btn-collect" onclick="closeModal()">ЗАБРАТЬ</button>
+        </div>
+    </div>
+    <!-- === VIP DAILY REWARDS MODAL === -->
+<div id="vip-rewards-modal" class="vip-rewards-modal">
+    <div class="vip-rewards-overlay" onclick="closeVIPRewardsModal()"></div>
+
+    <div class="vip-rewards-content">
+        <div class="vip-rewards-header">
+            <div>
+                <div class="vip-rewards-badge">👑 VIP DAILY REWARDS</div>
+                <h2 class="vip-rewards-title">Ежедневные VIP-награды</h2>
+                <p class="vip-rewards-subtitle">
+                    Календарь наград на 30 дней. Каждый день можно забрать один приз.
+                </p>
+            </div>
+
+            <button class="vip-rewards-close" onclick="closeVIPRewardsModal()">✕</button>
+        </div>
+
+        <div class="vip-rewards-topbar">
+            <div class="vip-rewards-level">
+                Текущий уровень:
+                <span id="vip-rewards-level-name">Без VIP</span>
+            </div>
+
+            <div class="vip-rewards-current-day">
+                День:
+                <span id="vip-rewards-current-day">1</span> / 30
+            </div>
+        </div>
+
+        <div id="vip-rewards-grid" class="vip-rewards-grid"></div>
+
+        <div class="vip-rewards-footer">
+            <div id="vip-rewards-selected-text" class="vip-rewards-selected-text">
+                Выбери доступный день
+            </div>
+
+            <button id="vip-rewards-claim-btn" class="vip-rewards-claim-btn" onclick="claimVIPCalendarReward()">
+                Забрать награду
+            </button>
+        </div>
+    </div>
+</div>
+<div id="daily-calendar-modal" class="modal">
+    <div class="modal-content daily-calendar-content">
+        <button class="daily-close-btn" onclick="closeDailyCalendar()">✕</button>
+
+        <div class="daily-calendar-header">
+            <div class="daily-calendar-badge">🎁 DAILY REWARDS</div>
+            <h2>Ежедневные награды</h2>
+            <p>Заходи каждый день, чтобы увеличивать серию. Пропуск сбрасывает прогресс.</p>
+        </div>
+
+        <div class="daily-calendar-topbar">
+            <div id="daily-streak-label">Серия: 1 день</div>
+            <div id="daily-next-label">День: 1 / 30</div>
+        </div>
+
+        <div id="daily-calendar-grid" class="daily-calendar-grid"></div>
+
+        <div class="daily-calendar-footer">
+            <p class="daily-vip-hint">👑 Хочешь больше наград? VIP открывает отдельный премиум-календарь.</p>
+        </div>
+    </div>
+</div>
+
+<div id="purchase-confirm-modal" class="modal">
+    <div class="modal-content purchase-confirm-content">
+        <button class="purchase-confirm-close" onclick="closePurchaseConfirm()">✕</button>
+
+        <div class="purchase-confirm-header">
+            <div class="purchase-confirm-badge">💎 CONFIRM PURCHASE</div>
+            <h2>Подтверждение покупки</h2>
+            <p>Проверь набор перед переходом к оплате</p>
+        </div>
+
+        <div class="purchase-confirm-card">
+            <div class="purchase-confirm-pack" id="confirm-pack-name">START PACK</div>
+            <div class="purchase-confirm-amount" id="confirm-pack-amount">5 000 💎</div>
+            <div class="purchase-confirm-bonus" id="confirm-pack-bonus">Без бонуса</div>
+            <div class="purchase-confirm-price" id="confirm-pack-price">49 ₽</div>
+        </div>
+
+        <div class="purchase-confirm-actions">
+            <button class="purchase-back-btn" onclick="closePurchaseConfirm()">Назад</button>
+            <a id="confirm-payment-link" href="#" target="_blank" class="purchase-pay-btn">
+                Перейти к оплате
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+<div id="auth-modal" class="modal">
+    <div class="modal-content auth-modal-content">
+        <button class="auth-close" onclick="closeAuthModal()">✕</button>
+
+        <div class="auth-header">
+            <div class="auth-badge">👤 PLAYER ACCOUNT</div>
+            <h2>Личный кабинет</h2>
+            <p>Войди или создай аккаунт, чтобы сохранить прогресс</p>
+        </div>
+
+        <div class="auth-form">
+            <input id="auth-nickname" type="text" placeholder="Твой ник">
+            <input id="auth-email" type="email" placeholder="Email">
+            <input id="auth-password" type="password" placeholder="Пароль">
+
+            <button class="auth-btn" onclick="registerPlayer()">Создать аккаунт</button>
+            <button class="auth-btn auth-btn-secondary" onclick="loginPlayer()">Войти</button>
+        </div>
+    </div>
+</div>
+<div id="card-path-modal" class="card-path-modal">
+    <div class="card-path-modal__overlay" onclick="closeCardPath()"></div>
+
+    <div class="card-path-modal__content">
+        <button class="card-path-modal__close" onclick="closeCardPath()">✕</button>
+
+        <div class="card-path-modal__header">
+            <div class="card-path-modal__image-wrap">
+                <img id="card-path-image" src="" alt="">
+            </div>
+
+            <div class="card-path-modal__info">
+                <div id="card-path-title" class="card-path-modal__title">Название карточки</div>
+                <div id="card-path-rarity" class="card-path-modal__rarity">RARE</div>
+
+                <div class="card-path-modal__progress">
+                    <div id="card-path-progress-text" class="card-path-modal__progress-text">0 / 0</div>
+                    <div class="card-path-modal__progress-bar">
+                        <div id="card-path-progress-fill" class="card-path-modal__progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-path-modal__body">
+            <h3 class="card-path-modal__section-title">Путь карточки</h3>
+            <div id="card-path-stages" class="card-path-stages"></div>
+        </div>
+    </div>
+</div>
+<div id="player-profile-modal" class="player-profile-modal">
+    <div class="player-profile-modal__overlay" onclick="closePlayerProfile()"></div>
+
+    <div class="player-profile-modal__content">
+        <button class="player-profile-modal__close" onclick="closePlayerProfile()">✕</button>
+
+        <div class="player-profile-header">
+            <div class="player-profile-avatar">M</div>
+
+            <div>
+                <div class="player-profile-name">Player</div>
+                <div class="player-profile-vip">VIP FREE</div>
+            </div>
+        </div>
+
+        <div class="player-profile-level">
+            <div class="player-profile-level-row">
+                <span>LVL <b id="profile-level-value">1</b></span>
+                <span id="profile-xp-text">0 / 100 XP</span>
+            </div>
+
+            <div class="player-profile-xp-bar">
+                <div id="profile-xp-fill" class="player-profile-xp-fill"></div>
+            </div>
+        </div>
+
+        <div class="player-profile-resources">
+            <div class="player-profile-resource">
+                <span>⚡</span>
+                <b id="profile-energy">0</b>
+                <small>Энергия</small>
+            </div>
+
+            <div class="player-profile-resource">
+                <span>🪙</span>
+                <b id="profile-meme-coins">0</b>
+                <small>Meme Coins</small>
+            </div>
+
+            <div class="player-profile-resource">
+                <span>🎟</span>
+                <b id="profile-collection-tokens">0</b>
+                <small>Tokens</small>
+            </div>
+        </div>
+
+        <div class="player-profile-coming">
+            <h3>Скоро</h3>
+            <div class="player-profile-coming-grid">
+                <div>🏆 Достижения</div>
+                <div>🎖 Титулы</div>
+                <div>🎨 Скины</div>
+                <div>🐾 Питомцы</div>
+                <div>🎁 Пропуски</div>
+                <div>✨ Аксессуары</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="characters-screen">
+    <div class="character-stage">
+        <img id="active-character" src="image/characters/melstroy/default.png">
+    </div>
+</div>
+    <!-- СКРИПТЫ -->
+    <script type="module" src="firebase-init.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
