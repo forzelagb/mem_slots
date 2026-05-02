@@ -5186,6 +5186,13 @@ const heroSkinRarities = [
 
 let selectedHeroKey = null;
 let selectedHeroSkinIndex = 0;
+function scrollHeroesCarousel(direction) {
+    const carousel = document.getElementById('heroes-carousel');
+    if (!carousel) return;
+
+    const cardWidth = 191; // 175 карточка + 16 gap
+    carousel.scrollLeft += direction * cardWidth;
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;

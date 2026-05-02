@@ -290,7 +290,17 @@
     </div>
 </div>
 
-<div id="heroes-carousel" class="heroes-carousel"></div>
+<div class="heroes-carousel-wrap">
+    <button class="heroes-arrow heroes-arrow-left" onclick="scrollHeroesCarousel(-1)">
+        <img src="image/ui/arrow-left.png" alt="">
+    </button>
+
+    <div id="heroes-carousel" class="heroes-carousel"></div>
+
+    <button class="heroes-arrow heroes-arrow-right" onclick="scrollHeroesCarousel(1)">
+        <img src="image/ui/arrow-right.png" alt="">
+    </button>
+</div>
 </div>
 <div id="tab-pass" class="tab-content">
     <div class="pass-page">

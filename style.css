@@ -10669,6 +10669,7 @@ body.modal-open {
 /* === NEW HEROES SCREEN === */
 
 #heroes-screen {
+    background: url("image/backgrounds/hero-bg.png") center/cover no-repeat;
     min-height: calc(100vh - 90px);
     max-width: 100%;
     padding: 20px 40px;
@@ -10960,6 +10961,57 @@ body.modal-open {
     height: 100%;
     object-fit: contain;
     display: block;
+}
+.heroes-carousel-wrap {
+    position: relative;
+    width: 860px;
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.heroes-carousel {
+    width: 760px;
+    display: flex;
+    gap: 16px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    padding: 16px 8px;
+}
+
+.hero-card {
+    flex: 0 0 175px;
+    width: 175px;
+    height: 145px;
+}
+
+.hero-card img {
+    width: 100%;
+    height: 95px;
+    object-fit: contain;
+}
+
+.heroes-arrow {
+    width: 70px;
+    height: 70px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 5;
+}
+
+.heroes-arrow img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.heroes-arrow:hover {
+    transform: scale(1.08);
+    filter: brightness(1.2);
 }
 /* цвета редкости */
 .rarity-common { background: #555; }
