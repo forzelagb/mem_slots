@@ -276,8 +276,8 @@
 
 
     <div class="hero-right-panel">
-<button class="side-btn">
-  <img src="image/ui/styles.png" />
+<button class="side-btn" onclick="openStylesScreen(playerData.activeCharacter || currentCharacter)">
+    <img src="image/ui/styles.png" />
 </button>
 
 <button class="side-btn">
@@ -645,6 +645,56 @@
     <div class="character-stage">
         <img id="active-character" src="image/characters/melstroy/default.png">
     </div>
+</div>
+<!-- === СТИЛИ ПЕРСОНАЖА === -->
+<div id="styles-screen" class="screen">
+
+    <button class="btn-back-game" onclick="goHome()">← НАЗАД</button>
+
+    <div class="styles-title">СТИЛИ</div>
+
+    <div class="styles-layout">
+
+        <!-- ЛЕВАЯ КОЛОНКА (редкости) -->
+        <div class="styles-sidebar">
+            <div class="style-rarity active" onclick="selectRarity('common')">ОБЫЧНЫЙ</div>
+            <div class="style-rarity" onclick="selectRarity('rare')">РЕДКИЙ</div>
+            <div class="style-rarity" onclick="selectRarity('epic')">ЭПИЧЕСКИЙ</div>
+            <div class="style-rarity" onclick="selectRarity('legendary')">ЛЕГЕНДАРНЫЙ</div>
+        </div>
+
+        <!-- ЦЕНТР -->
+        <div class="styles-center">
+
+            <div id="style-preview" class="style-preview">
+                <img id="style-preview-img" src="" />
+            </div>
+
+            <div class="style-info">
+                <h2 id="style-name">Название</h2>
+                <p id="style-desc">Описание</p>
+
+                <div class="style-stats">
+                    <div>❤️ Здоровье <b id="stat-hp">+0%</b></div>
+                    <div>⚔️ Атака <b id="stat-atk">+0%</b></div>
+                    <div>🛡 Защита <b id="stat-def">+0%</b></div>
+                    <div>🍀 Удача <b id="stat-luck">+0%</b></div>
+                </div>
+
+                <div id="style-level">УРОВЕНЬ 0</div>
+
+                <button id="style-action-btn" class="btn-main">
+                    ВЫБРАТЬ
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- НИЖНЯЯ КАРУСЕЛЬ -->
+    <div class="styles-carousel" id="styles-carousel"></div>
+
 </div>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>

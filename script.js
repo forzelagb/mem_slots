@@ -5167,10 +5167,10 @@ function renderHeroSkins() {
 
 
 const heroSkinRarities = [
-    { id: "default", name: "ДЕФОЛТ", color: "#b8b8b8" },
+    { id: "common", name: "ОБЫЧНЫЙ", color: "#b8b8b8" },
     { id: "rare", name: "РЕДКИЙ", color: "#3aa0ff" },
     { id: "epic", name: "ЭПИЧЕСКИЙ", color: "#b84dff" },
-    { id: "mythic", name: "МИФИЧЕСКИЙ", color: "#ff7a1a" }
+    { id: "legendary", name: "ЛЕГЕНДАРНЫЙ", color: "#ffd36a" }
 ];
 
 let selectedHeroKey = null;
@@ -5182,6 +5182,114 @@ function scrollHeroesCarousel(direction) {
     const cardWidth = 191; // 175 карточка + 16 gap
     carousel.scrollLeft += direction * cardWidth;
 }
+let currentCharacter = "sasavot";
+let currentRarity = "common";
+let selectedStyle = null;
+
+const stylesData = {
+    sasavot: {
+        common: [
+            {
+                id: "default",
+                name: "ДЕФОЛТ",
+                img: "image/characters/sasavot/skin-1.png",
+                unlocked: true,
+                rarity: "common",
+                required: 0,
+                level: 3
+            }
+        ],
+        rare: [
+            {
+                id: "rare",
+                name: "РЕДКИЙ",
+                img: "image/characters/sasavot/skin-2.png",
+                unlocked: false,
+                rarity: "rare",
+                required: 80,
+                level: 0
+            }
+        ],
+        epic: [
+            {
+                id: "epic",
+                name: "ЭПИЧЕСКИЙ",
+                img: "image/characters/sasavot/skin-3.png",
+                unlocked: false,
+                rarity: "epic",
+                required: 150,
+                level: 0
+            }
+        ],
+        legendary: [
+            {
+                id: "legendary",
+                name: "ЛЕГЕНДАРНЫЙ",
+                img: "image/characters/sasavot/skin-4.png",
+                unlocked: false,
+                rarity: "legendary",
+                required: 300,
+                level: 0
+            }
+        ]
+    }
+};
+
+function openStylesScreen(character) {
+    currentCharacter = character;
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('styles-screen').classList.add('active');
+
+    renderStyles();
+}
+
+function selectRarity(rarity) {
+    currentRarity = rarity;
+
+    document.querySelectorAll('.style-rarity').forEach(el => el.classList.remove('active'));
+    event.target.classList.add('active');
+
+    renderStyles();
+}
+
+function renderStyles() {
+    const list = stylesData[currentCharacter][currentRarity] || [];
+    const container = document.getElementById('styles-carousel');
+
+    container.innerHTML = '';
+
+    list.forEach(style => {
+        const div = document.createElement('div');
+        div.className = 'style-card ' + (style.unlocked ? '' : 'locked');
+
+        div.innerHTML = `
+            <img src="${style.img}" style="width:100%">
+            <div>${style.id}</div>
+        `;
+
+        div.onclick = () => selectStyle(style);
+
+        container.appendChild(div);
+    });
+
+    if (list[0]) selectStyle(list[0]);
+}
+
+function selectStyle(style) {
+    selectedStyle = style;
+
+    document.getElementById('style-preview-img').src = style.img;
+    document.getElementById('style-name').innerText = style.name || style.id;
+
+    if (style.unlocked) {
+        document.getElementById('style-action-btn').innerText = "ВЫБРАТЬ";
+    } else {
+        document.getElementById('style-action-btn').innerText =
+            `ОТКРЫТЬ: 0/${style.required} ФРАГМЕНТОВ`;
+    }
+}
+
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
