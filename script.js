@@ -4497,6 +4497,7 @@ const charactersConfig = {
         desc: "Холодная подача, сильная харизма и высокий шанс редких наград.",
         ability: "Повышает шанс редких наград на 8%",
         stats: { hp: 820, attack: 110, defense: 85, luck: "16%" },
+        preview: "image/characters/helin/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
     melstroy: {
@@ -4507,6 +4508,7 @@ const charactersConfig = {
     desc: "Король хайпа с мощной атакой и высоким шансом редких наград.",
     ability: "Повышает шанс редких наград на 12%",
     stats: { hp: 880, attack: 140, defense: 95, luck: "20%" },
+      preview: "image/characters/melstroy/preview.png",
     styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
@@ -4518,6 +4520,7 @@ const charactersConfig = {
         desc: "Быстрый, стильный и опасный персонаж с высоким бонусом удачи.",
         ability: "Повышает шанс бонусных выпадений на 10%",
         stats: { hp: 780, attack: 135, defense: 70, luck: "22%" },
+          preview: "image/characters/lexapaws/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
@@ -4529,6 +4532,7 @@ const charactersConfig = {
         desc: "Уверенный герой с хорошим балансом атаки и защиты.",
         ability: "Даёт +5% к наградам за серию игр",
         stats: { hp: 900, attack: 105, defense: 100, luck: "13%" },
+        preview: "image/characters/litwin/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
@@ -4540,6 +4544,7 @@ const charactersConfig = {
         desc: "Точный персонаж, который хорошо подходит для фарма коллекции.",
         ability: "Повышает шанс выпадения карточек на 7%",
         stats: { hp: 800, attack: 125, defense: 80, luck: "17%" },
+        preview: "image/characters/nikkifn/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
@@ -4551,6 +4556,7 @@ const charactersConfig = {
         desc: "Скоростной персонаж с хорошей удачей.",
         ability: "Иногда возвращает 1 энергию после игры",
         stats: { hp: 760, attack: 115, defense: 75, luck: "19%" },
+        preview: "image/characters/rejiboi/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
@@ -4562,6 +4568,7 @@ const charactersConfig = {
         desc: "Мемный герой с сильной защитой и стабильными бонусами.",
         ability: "Повышает награду за обычные карточки на 6%",
         stats: { hp: 920, attack: 100, defense: 120, luck: "14%" },
+        preview: "image/characters/rostickfacekid/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
 
@@ -4573,6 +4580,7 @@ const charactersConfig = {
         desc: "Громкий персонаж с хорошим стартовым бонусом.",
         ability: "Даёт +5% к опыту персонажа",
         stats: { hp: 850, attack: 118, defense: 88, luck: "15%" },
+        preview: "image/characters/sasavot/preview.png",
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     }
 };
