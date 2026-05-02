@@ -3858,6 +3858,20 @@ function getEffectiveVIPLevel() {
     );
 }
 
+const styleUpgradeCosts = {
+    0: { gold: 100, powerShards: 10, cloth: 5 },
+    1: { gold: 200, powerShards: 20, cloth: 10 },
+    2: { gold: 400, powerShards: 35, cloth: 15 },
+    3: { gold: 700, powerShards: 50, cloth: 20 },
+    4: { gold: 1100, powerShards: 70, cloth: 25 },
+    5: { gold: 1600, powerShards: 95, cloth: 35 },
+    6: { gold: 2300, powerShards: 125, cloth: 45 },
+    7: { gold: 3200, powerShards: 160, cloth: 60 },
+    8: { gold: 4500, powerShards: 210, cloth: 80 },
+    9: { gold: 6000, powerShards: 280, cloth: 100 }
+};
+
+const maxStyleLevel = 10;
 
 const playerData = {
     cards: {
@@ -3878,11 +3892,24 @@ const playerData = {
     },
 
     resources: {
-        energy: 100,
-        maxEnergy: 100,
-        styleCoins: 0,
-        premiumTokens: 0
-    },
+    energy: 100,
+    maxEnergy: 100,
+
+    gold: 5000,
+    powerShards: 500,
+
+    styleCoins: 0,
+    premiumTokens: 0,
+
+    clothFragments: {
+        sasavot: {
+            common: 120,
+            rare: 80,
+            epic: 30,
+            legendary: 10
+        }
+    }
+},
 
     timers: {
         lastEnergyRegen: Date.now(),
@@ -5185,7 +5212,6 @@ function scrollHeroesCarousel(direction) {
 let currentCharacter = "sasavot";
 let currentRarity = "common";
 let selectedStyle = null;
-
 const stylesData = {
     sasavot: {
         common: [
@@ -5304,6 +5330,17 @@ function selectStyle(style) {
         document.getElementById('style-action-btn').innerText =
             `ОТКРЫТЬ: 0/${style.required} ФРАГМЕНТОВ`;
     }
+    const level = style.level || 0;
+
+if (level < maxStyleLevel) {
+    const cost = styleUpgradeCosts[level];
+
+    document.querySelector('.styles-dota-cost').innerText =
+        `Нужно: ${cost.gold} золота, ${cost.powerShards} осколков, ${cost.cloth} ткани`;
+} else {
+    document.querySelector('.styles-dota-cost').innerText =
+        `Максимальный уровень`;
+}
 }
 function getStyleRarityText(rarity) {
     const map = {
@@ -5315,7 +5352,47 @@ function getStyleRarityText(rarity) {
 
     return map[rarity] || rarity;
 }
+function upgradeSelectedStyle() {
+    if (!selectedStyle) return;
 
+    const level = selectedStyle.level || 0;
+
+    if (level >= maxStyleLevel) {
+        alert("Максимальный уровень!");
+        return;
+    }
+
+    const cost = styleUpgradeCosts[level];
+    if (!cost) return;
+
+    const char = currentCharacter;
+    const rarity = selectedStyle.rarity;
+
+    const playerRes = playerData.resources;
+
+    const hasGold = playerRes.gold >= cost.gold;
+    const hasShards = playerRes.powerShards >= cost.powerShards;
+    const hasCloth =
+        playerRes.clothFragments?.[char]?.[rarity] >= cost.cloth;
+
+    if (!hasGold || !hasShards || !hasCloth) {
+        alert("Недостаточно ресурсов!");
+        return;
+    }
+
+    // списываем
+    playerRes.gold -= cost.gold;
+    playerRes.powerShards -= cost.powerShards;
+    playerRes.clothFragments[char][rarity] -= cost.cloth;
+
+    // повышаем уровень
+    selectedStyle.level = level + 1;
+
+    // обновляем UI
+    selectStyle(selectedStyle);
+
+    alert("Стиль улучшен!");
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
