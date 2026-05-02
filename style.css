@@ -10860,6 +10860,68 @@ body.modal-open {
     color: #ffd36a;
     font-size: 13px;
 }
+.hero-skins-list {
+    position: absolute;
+    bottom: 70px;
+    z-index: 5;
+    display: flex;
+    gap: 10px;
+}
+
+.hero-skin-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    border: 2px solid #777;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.hero-skin-btn[data-rarity="default"] {
+    border-color: #b8b8b8;
+    box-shadow: 0 0 12px rgba(184,184,184,0.35);
+}
+
+.hero-skin-btn[data-rarity="rare"] {
+    border-color: #3aa0ff;
+    box-shadow: 0 0 12px rgba(58,160,255,0.45);
+}
+
+.hero-skin-btn[data-rarity="epic"] {
+    border-color: #b84dff;
+    box-shadow: 0 0 12px rgba(184,77,255,0.5);
+}
+
+.hero-skin-btn[data-rarity="mythic"] {
+    border-color: #ff7a1a;
+    box-shadow: 0 0 12px rgba(255,122,26,0.55);
+}
+
+.hero-skin-btn.active {
+    transform: scale(1.08);
+    background: rgba(255,211,106,0.18);
+}
+
+#hero-rarity[data-rarity="default"] {
+    border-color: #b8b8b8;
+}
+
+#hero-rarity[data-rarity="rare"] {
+    border-color: #3aa0ff;
+    color: #9ed0ff;
+}
+
+#hero-rarity[data-rarity="epic"] {
+    border-color: #b84dff;
+    color: #ddb2ff;
+}
+
+#hero-rarity[data-rarity="mythic"] {
+    border-color: #ff7a1a;
+    color: #ffd0a0;
+}
 .messi-bg { background: url('image/messi/1.jpg') center/cover; }
 .neymar-bg { background: url('image/neymar/1.jpg') center/cover; }
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
