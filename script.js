@@ -5279,8 +5279,24 @@ function renderStyles() {
 function selectStyle(style) {
     selectedStyle = style;
 
+    const characterConfig = charactersConfig[currentCharacter];
+
     document.getElementById('style-preview-img').src = style.img;
+    document.getElementById('styles-character-name').innerText =
+        characterConfig?.name || currentCharacter.toUpperCase();
+
     document.getElementById('style-name').innerText = style.name || style.id;
+    document.getElementById('style-desc').innerText =
+        style.unlocked ? "Стиль доступен для выбора." : "Собери тканевые фрагменты, чтобы открыть этот стиль.";
+
+    document.getElementById('style-level').innerText =
+        `УРОВЕНЬ ${style.level || 0}`;
+
+    const badge = document.getElementById('style-rarity-badge');
+    if (badge) {
+        badge.className = `style-rarity-badge ${style.rarity}`;
+        badge.innerText = getStyleRarityText(style.rarity);
+    }
 
     if (style.unlocked) {
         document.getElementById('style-action-btn').innerText = "ВЫБРАТЬ";
@@ -5288,6 +5304,16 @@ function selectStyle(style) {
         document.getElementById('style-action-btn').innerText =
             `ОТКРЫТЬ: 0/${style.required} ФРАГМЕНТОВ`;
     }
+}
+function getStyleRarityText(rarity) {
+    const map = {
+        common: "ОБЫЧНЫЙ",
+        rare: "РЕДКИЙ",
+        epic: "ЭПИЧЕСКИЙ",
+        legendary: "ЛЕГЕНДАРНЫЙ"
+    };
+
+    return map[rarity] || rarity;
 }
 
 // === ЗАПУСК ===

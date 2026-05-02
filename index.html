@@ -646,55 +646,69 @@
         <img id="active-character" src="image/characters/melstroy/default.png">
     </div>
 </div>
-<!-- === СТИЛИ ПЕРСОНАЖА === -->
-<div id="styles-screen" class="screen">
+<!-- === ЭКРАН СТИЛЕЙ ПЕРСОНАЖА === -->
+<div id="styles-screen" class="screen styles-dota-screen">
 
-    <button class="btn-back-game" onclick="goHome()">← НАЗАД</button>
+    <button class="characters-v2-back" onclick="goHome()">← НАЗАД</button>
 
-    <div class="styles-title">СТИЛИ</div>
+    <div class="styles-dota-bg"></div>
 
-    <div class="styles-layout">
+    <div class="styles-dota-layout">
 
-        <!-- ЛЕВАЯ КОЛОНКА (редкости) -->
-        <div class="styles-sidebar">
-            <div class="style-rarity active" onclick="selectRarity('common')">ОБЫЧНЫЙ</div>
-            <div class="style-rarity" onclick="selectRarity('rare')">РЕДКИЙ</div>
-            <div class="style-rarity" onclick="selectRarity('epic')">ЭПИЧЕСКИЙ</div>
-            <div class="style-rarity" onclick="selectRarity('legendary')">ЛЕГЕНДАРНЫЙ</div>
+        <!-- ЛЕВАЯ ЧАСТЬ: БОЛЬШОЙ ПЕРС -->
+        <div class="styles-dota-hero">
+            <div class="styles-dota-glow"></div>
+            <img id="style-preview-img" src="" alt="">
         </div>
 
-        <!-- ЦЕНТР -->
-        <div class="styles-center">
+        <!-- ПРАВАЯ ЧАСТЬ: ИНФА -->
+        <div class="styles-dota-panel">
 
-            <div id="style-preview" class="style-preview">
-                <img id="style-preview-img" src="" />
-            </div>
-
-            <div class="style-info">
-                <h2 id="style-name">Название</h2>
-                <p id="style-desc">Описание</p>
-
-                <div class="style-stats">
-                    <div>❤️ Здоровье <b id="stat-hp">+0%</b></div>
-                    <div>⚔️ Атака <b id="stat-atk">+0%</b></div>
-                    <div>🛡 Защита <b id="stat-def">+0%</b></div>
-                    <div>🍀 Удача <b id="stat-luck">+0%</b></div>
+            <div class="styles-dota-top">
+                <div>
+                    <div class="styles-dota-label">СТИЛИ</div>
+                    <h1 id="styles-character-name">SASAVOT</h1>
                 </div>
 
-                <div id="style-level">УРОВЕНЬ 0</div>
+                <div id="style-rarity-badge" class="style-rarity-badge common">
+                    ОБЫЧНЫЙ
+                </div>
+            </div>
 
-                <button id="style-action-btn" class="btn-main">
-                    ВЫБРАТЬ
-                </button>
+            <h2 id="style-name">ДЕФОЛТ</h2>
+            <p id="style-desc">Описание стиля</p>
+
+            <div class="style-stats">
+                <div>❤️ Здоровье <b id="stat-hp">+0%</b></div>
+                <div>⚔️ Атака <b id="stat-atk">+0%</b></div>
+                <div>🛡 Защита <b id="stat-def">+0%</b></div>
+                <div>🍀 Удача <b id="stat-luck">+0%</b></div>
+            </div>
+
+            <div id="style-level" class="styles-dota-level">УРОВЕНЬ 0</div>
+
+            <!-- КНОПКИ РЕДКОСТИ -->
+            <div class="styles-dota-rarities">
+                <button class="style-rarity active" onclick="selectRarity('common')">ОБЫЧНЫЙ</button>
+                <button class="style-rarity" onclick="selectRarity('rare')">РЕДКИЙ</button>
+                <button class="style-rarity" onclick="selectRarity('epic')">ЭПИЧЕСКИЙ</button>
+                <button class="style-rarity" onclick="selectRarity('legendary')">ЛЕГЕНДАРНЫЙ</button>
+            </div>
+
+            <!-- СПИСОК СКИНОВ ЭТОЙ РЕДКОСТИ -->
+            <div id="styles-carousel" class="styles-dota-items"></div>
+
+            <!-- КНОПКА -->
+            <button id="style-action-btn" class="styles-dota-main-btn">
+                ВЫБРАТЬ
+            </button>
+
+            <div class="styles-dota-cost">
+                Ресурсы для открытия и прокачки добавим позже
             </div>
 
         </div>
-
     </div>
-
-    <!-- НИЖНЯЯ КАРУСЕЛЬ -->
-    <div class="styles-carousel" id="styles-carousel"></div>
-
 </div>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>
