@@ -4499,6 +4499,16 @@ const charactersConfig = {
         stats: { hp: 820, attack: 110, defense: 85, luck: "16%" },
         styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
     },
+    melstroy: {
+    name: "MELSTROY",
+    folder: "melstroy",
+    rarity: "legendary",
+    rarityText: "ЛЕГЕНДАРНЫЙ",
+    desc: "Король хайпа с мощной атакой и высоким шансом редких наград.",
+    ability: "Повышает шанс редких наград на 12%",
+    stats: { hp: 880, attack: 140, defense: 95, luck: "20%" },
+    styles: ["skin-1.png", "skin-2.png", "skin-3.png", "skin-4.png"]
+    },
 
     lexapaws: {
         name: "LEXA PAWS",
@@ -5130,7 +5140,7 @@ function selectHero(key, skinIndex = 0) {
         card.classList.toggle('active', card.dataset.heroKey === key);
     });
 
-    renderHeroSkins();
+    //renderHeroSkins();
 }
 
 function renderHeroSkins() {
