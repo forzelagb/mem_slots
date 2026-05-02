@@ -5057,6 +5057,30 @@ function selectCharacterSkinV2(skinFile) {
 
     closeCharacterStylesV2();
 }
+function openNewCharactersScreen() {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+
+    const screen = document.getElementById('heroes-screen');
+    if (screen) screen.classList.add('active');
+
+    renderNewHeroesScreen();
+}
+function renderNewHeroesScreen() {
+    const list = document.getElementById('heroes-list');
+    if (!list) return;
+
+    list.innerHTML = `
+        <div style="color:white; font-size:30px; padding:30px;">
+            Новый экран героев работает ✅
+        </div>
+    `;
+}
 // === ЗАПУСК ===
 window.onload = () => {
     currentVIPLevel = vipLevel;
