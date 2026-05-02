@@ -10675,7 +10675,7 @@ body.modal-open {
     background:
         radial-gradient(circle at center, rgba(147, 37, 255, 0.22), transparent 38%),
         linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
-        url("image/backgrounds/hero-bg.png") center/cover no-repeat;
+        url("image/ui/hero-bg.png") center/cover no-repeat;
 }
 
 .hero-select-screen {

@@ -4476,18 +4476,7 @@ function selectCharacter(key) {
   playerData.activeCharacter = key;
   renderCharacter();
 }
-/*
-function renderCharacter() {
-  const char = playerData.characters[playerData.activeCharacter];
 
-  document.getElementById("active-character").src =
-    `image/characters/${playerData.activeCharacter}/${char.style}.png`;
-
-  if (char.pet) {
-    document.getElementById("active-pet").src =
-      `image/pets/${char.pet}.png`;
-  }
-}*/
 const charactersConfig = {
     helin: {
         name: "HELIN",
