@@ -5330,6 +5330,11 @@ function selectStyle(style) {
         document.getElementById('style-action-btn').innerText =
             `ОТКРЫТЬ: 0/${style.required} ФРАГМЕНТОВ`;
     }
+    const upgradeBtn = document.getElementById('style-upgrade-btn');
+
+if (upgradeBtn) {
+    upgradeBtn.disabled = !style.unlocked;
+}
     const level = style.level || 0;
 
 if (level < maxStyleLevel) {
@@ -5392,6 +5397,20 @@ function upgradeSelectedStyle() {
     selectStyle(selectedStyle);
 
     alert("Стиль улучшен!");
+}
+const styleActionBtn = document.getElementById('style-action-btn');
+
+if (styleActionBtn) {
+    styleActionBtn.onclick = function () {
+        if (!selectedStyle) return;
+
+        if (selectedStyle.unlocked) {
+            alert("Стиль выбран!");
+            return;
+        }
+
+        alert("Открытие за тканевые фрагменты подключим следующим шагом.");
+    };
 }
 // === ЗАПУСК ===
 window.onload = () => {
