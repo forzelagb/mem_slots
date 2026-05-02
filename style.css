@@ -10669,13 +10669,13 @@ body.modal-open {
 /* === NEW HEROES SCREEN === */
 
 #heroes-screen {
-    background: url("image/backgrounds/hero-bg.png") center/cover no-repeat;
     min-height: calc(100vh - 90px);
     max-width: 100%;
     padding: 20px 40px;
     background:
-        radial-gradient(circle at center, rgba(147, 37, 255, 0.28), transparent 38%),
-        linear-gradient(135deg, #09000f, #160020 45%, #050008);
+        radial-gradient(circle at center, rgba(147, 37, 255, 0.22), transparent 38%),
+        linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
+        url("image/backgrounds/hero-bg.png") center/cover no-repeat;
 }
 
 .hero-select-screen {
