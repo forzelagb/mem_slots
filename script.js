@@ -5089,14 +5089,12 @@ function renderNewHeroesScreen() {
         `;
 
         card.onclick = () => selectHero(key, 0);
-
         list.appendChild(card);
 
-        if (index === 0) {
-            selectHero(key, 0);
-        }
+        if (index === 0) selectHero(key, 0);
     });
 }
+
 function selectHero(key, skinIndex = 0) {
     const char = charactersConfig[key];
     if (!char) return;
@@ -5108,20 +5106,20 @@ function selectHero(key, skinIndex = 0) {
     const rarity = heroSkinRarities[skinIndex] || heroSkinRarities[0];
 
     document.getElementById('hero-name').innerText = char.name;
-    document.getElementById('hero-desc').innerText = char.desc;
-    document.getElementById('hero-ability').innerText = char.ability;
+    document.getElementById('hero-desc').innerText = char.desc || '';
+    document.getElementById('hero-ability').innerText = char.ability || '';
 
-    document.getElementById('hero-hp').innerText = char.stats.hp;
-    document.getElementById('hero-attack').innerText = char.stats.attack;
-    document.getElementById('hero-defense').innerText = char.stats.defense;
-    document.getElementById('hero-luck').innerText = char.stats.luck;
+    document.getElementById('hero-hp').innerText = char.stats?.hp || 0;
+    document.getElementById('hero-attack').innerText = char.stats?.attack || 0;
+    document.getElementById('hero-defense').innerText = char.stats?.defense || 0;
+    document.getElementById('hero-luck').innerText = char.stats?.luck || '0%';
 
     const rarityEl = document.getElementById('hero-rarity');
     rarityEl.innerText = rarity.name;
     rarityEl.dataset.rarity = rarity.id;
 
-    const img = document.getElementById('hero-main-img');
-    img.src = `image/characters/${char.folder}/${skinFile}`;
+    document.getElementById('hero-main-img').src =
+        `image/characters/${char.folder}/${skinFile}`;
 
     const glow = document.querySelector('.hero-glow');
     if (glow) {
@@ -5134,6 +5132,7 @@ function selectHero(key, skinIndex = 0) {
 
     renderHeroSkins();
 }
+
 function renderHeroSkins() {
     const list = document.getElementById('hero-skins-list');
     if (!list || !selectedHeroKey) return;
@@ -5144,7 +5143,7 @@ function renderHeroSkins() {
     list.innerHTML = '';
 
     char.styles.forEach((skinFile, index) => {
-        const rarity = heroSkinRarities[index];
+        const rarity = heroSkinRarities[index] || heroSkinRarities[0];
 
         const btn = document.createElement('button');
         btn.className = 'hero-skin-btn';
@@ -5154,15 +5153,14 @@ function renderHeroSkins() {
             btn.classList.add('active');
         }
 
-        btn.innerHTML = `
-            <span>${rarity.name}</span>
-        `;
-
+        btn.innerHTML = `<span>${rarity.name}</span>`;
         btn.onclick = () => selectHero(selectedHeroKey, index);
 
         list.appendChild(btn);
     });
 }
+
+
 const heroSkinRarities = [
     { id: "default", name: "ДЕФОЛТ", color: "#b8b8b8" },
     { id: "rare", name: "РЕДКИЙ", color: "#3aa0ff" },
