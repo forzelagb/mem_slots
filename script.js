@@ -4476,6 +4476,7 @@ function selectCharacter(key) {
   playerData.activeCharacter = key;
   renderCharacter();
 }
+/*
 function renderCharacter() {
   const char = playerData.characters[playerData.activeCharacter];
 
@@ -4486,7 +4487,7 @@ function renderCharacter() {
     document.getElementById("active-pet").src =
       `image/pets/${char.pet}.png`;
   }
-}
+}*/
 const charactersConfig = {
     helin: {
         name: "HELIN",
@@ -4683,7 +4684,7 @@ function updateCharactersScroll() {
     const itemHeight = 90;
     list.style.transform = `translateY(-${charactersScrollIndex * itemHeight}px)`;
 }
-
+/*
 function selectCharacter(key) {
     ensureCharactersData();
 
@@ -4695,7 +4696,7 @@ function selectCharacter(key) {
 
     renderCharactersScreen();
 }
-
+*/
 function renderActiveCharacter() {
     const imgEl = document.getElementById('active-character');
     if (!imgEl) return;
@@ -4726,7 +4727,7 @@ function selectCharacter(characterKey) {
     renderCharactersList();
 
     renderActiveCharacter();
-}
+}/*
 function openCharactersScreen() {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('characters-screen').classList.add('active');
@@ -4753,7 +4754,7 @@ function switchCharacterStyle(direction) {
     }
 
     renderActiveCharacter();
-}
+}*/
 function getCharacterImagePath(characterKey, styleIndex = 0) {
     const config = charactersConfig[characterKey];
     if (!config) return "";
