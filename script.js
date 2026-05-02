@@ -5101,10 +5101,12 @@ function renderNewHeroesScreen() {
         card.className = 'hero-card';
         card.dataset.heroKey = key;
 
-        card.innerHTML = `
-            <img src="image/characters/${char.folder}/skin-1.png" />
-            <div>${char.name}</div>
-        `;
+const previewSrc = char.preview || `image/characters/${char.folder}/skin-1.png`;
+
+card.innerHTML = `
+    <img src="${previewSrc}" />
+    <div>${char.name}</div>
+`;
 
         card.onclick = () => selectHero(key, 0);
         list.appendChild(card);

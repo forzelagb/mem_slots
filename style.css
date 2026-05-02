@@ -10773,6 +10773,7 @@ body.modal-open {
     filter: blur(60px);
 }
 
+
 .hero-main-img {
     position: relative;
     z-index: 2;
@@ -10945,7 +10946,21 @@ body.modal-open {
     font-weight: bold;
     margin-top: 10px;
 }
+.hero-right-panel .side-btn {
+    width: 130px;
+    height: 110px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow: hidden;
+}
 
+.hero-right-panel .side-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }
