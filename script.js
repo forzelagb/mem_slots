@@ -4944,9 +4944,9 @@ function renderCharactersV2() {
     const carousel = document.getElementById("characters-v2-carousel");
 
     if (img) {
-        const selectedSkin = playerData.characterSkins?.[activeKey] || char.styles[0];
-img.src = `image/characters/${char.folder}/${selectedSkin}`;
-        img.alt = config.name;
+const selectedSkin = playerData.characterSkins?.[activeKey] || config.styles[0];
+img.src = `image/characters/${config.folder}/${selectedSkin}`;
+img.alt = config.name;
     }
 
     if (name) name.innerText = config.name;
