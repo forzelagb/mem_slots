@@ -10,50 +10,53 @@
     <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
-<div class="main-header">
+<div class="main-header-v2">
 
-    <!-- ЛЕВАЯ ЧАСТЬ -->
-    <div class="main-header__left">
-        <button class="main-header__logo" onclick="goHome()">🎰 MEME VEGAS</button> 
-    </div>
+    <div class="header-v2-profile">
+        <div class="header-v2-avatar">M</div>
 
-    <!-- ПРАВАЯ ЧАСТЬ -->
-    <div class="main-header__right">
+        <div class="header-v2-player">
+            <div class="header-v2-name">PLAYER</div>
 
-        <!-- ЭНЕРГИЯ -->
-        <div class="main-header__energy">
-            ⚡ <span id="global-energy-value">100</span>
+            <div class="header-v2-level-row">
+                <span class="header-v2-level">32</span>
+                <div class="header-v2-xp">
+                    <div class="header-v2-xp-fill" style="width: 55%;"></div>
+                </div>
+            </div>
         </div>
-<!-- ЗОЛОТО -->
-<div class="main-header__resource">
-    🪙 <span id="header-gold">0</span>
-</div>
-
-<!-- ОСКОЛКИ СИЛЫ -->
-<div class="main-header__resource">
-    🔮 <span id="header-power-shards">0</span>
-</div>
-
-<!-- ТКАНЬ ТЕКУЩЕГО ПЕРСОНАЖА -->
-<div class="main-header__resource">
-    🧵 <span id="header-cloth-fragments">0</span>
-</div>
-
-        <!-- ВОТ СЮДА ВСТАВЛЯЕТСЯ PROFILE -->
-        <div class="main-header__profile" onclick="openPlayerProfile()">
-    <div class="main-header__level">
-        <span>LVL</span>
-        <strong id="player-level-value">1</strong>
     </div>
 
-    <div class="main-header__avatar">M</div>
+    <nav class="header-v2-nav">
+        <button onclick="goHome()">🏠<span>Главная</span></button>
+        <button onclick="openNewCharactersScreen()">🧙<span>Персонажи</span></button>
+        <button>🎒<span>Инвентарь</span></button>
+        <button class="active" onclick="openShopScreen()">🛒<span>Магазин</span></button>
+        <button onclick="openTab('pass')">🎟️<span>Пропуск</span></button>
+    </nav>
 
-    <div class="main-header__profile-text">
-        <div class="main-header__nickname">Player</div>
-        <div class="main-header__vip">VIP FREE</div>
-    </div>
-</div>
+    <div class="header-v2-right">
+        <div class="header-v2-resource">
+            <img src="./image/ui/gold.png">
+            <span id="header-gold">0</span>
+            <b>+</b>
+        </div>
 
+        <div class="header-v2-resource">
+            <img src="./image/ui/gems.png">
+            <span id="header-premium-tokens">5000</span>
+            <b>+</b>
+        </div>
+
+        <div class="header-v2-resource">
+            <img src="./image/ui/energy.png">
+            <span id="global-energy-value">100</span>
+            <b>+</b>
+        </div>
+
+        <button class="header-v2-icon">✉️</button>
+        <button class="header-v2-icon">🔔</button>
+        <button class="header-v2-icon">⚙️</button>
     </div>
 
 </div>
@@ -738,16 +741,6 @@
                 <button class="shop-v3-back" onclick="goHome()">‹</button>
                 <h1>МАГАЗИН</h1>
             </div>
-
-<div class="shop-v3-tabs">
-    <button class="active" onclick="setShopCategory('recommend')">РЕКОМЕНДУЕМ</button>
-    <button onclick="setShopCategory('chests')">СУНДУКИ</button>
-    <button onclick="setShopCategory('currency')">ВАЛЮТА</button>
-    <button onclick="setShopCategory('packs')">НАБОРЫ</button>
-    <button onclick="setShopCategory('energy')">ЭНЕРГИЯ</button>
-    <button onclick="setShopCategory('pass')">ПРОПУСК</button>
-</div>
-
             <section class="shop-v3-section">
                 <div class="shop-v3-row-title">РЕКОМЕНДУЕМ</div>
                 <div class="shop-v3-pack-grid" id="shop-v3-recommend"></div>
