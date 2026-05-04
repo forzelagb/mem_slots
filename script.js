@@ -5993,6 +5993,215 @@ function openShopTab(tab) {
         content.appendChild(div);
     });
 }
+// === SHOP V2: магазин как на рефе ===
+
+window.shopV2Data = {
+    recommended: [
+        {
+            title: "Стартовый набор",
+            img: "./image/ui/chest-epic.png",
+            rewards: "💎 500   🪙 10 000   📦 x2",
+            price: "149 ₽",
+            badge: "ВЫГОДНО"
+        },
+        {
+            title: "Набор силы",
+            img: "./image/ui/power-shards.png",
+            rewards: "💎 1200   🔮 600   🪙 20 000",
+            price: "299 ₽",
+            badge: "ХИТ"
+        },
+        {
+            title: "Эпический набор",
+            img: "./image/ui/chest-epic.png",
+            rewards: "💎 2500   🔮 1500   📦 x5",
+            price: "599 ₽",
+            badge: "ЛУЧШИЙ"
+        },
+        {
+            title: "Легендарный набор",
+            img: "./image/ui/chest-legendary.png",
+            rewards: "💎 5000   🔮 3000   📦 x10",
+            price: "1199 ₽",
+            badge: "МАКСИМУМ"
+        }
+    ],
+
+    chests: [
+        {
+            id: "common",
+            title: "Обычный сундук",
+            img: "./image/ui/chest-common.png",
+            desc: "Содержит обычные награды",
+            price: "50"
+        },
+        {
+            id: "rare",
+            title: "Редкий сундук",
+            img: "./image/ui/chest-rare.png",
+            desc: "Больше редких наград",
+            price: "120"
+        },
+        {
+            id: "epic",
+            title: "Эпический сундук",
+            img: "./image/ui/chest-epic.png",
+            desc: "Высокий шанс эпических наград",
+            price: "300"
+        },
+        {
+            id: "legendary",
+            title: "Легендарный сундук",
+            img: "./image/ui/chest-legendary.png",
+            desc: "Лучшие награды",
+            price: "800"
+        }
+    ],
+
+    currency: [
+        {
+            title: "Золото",
+            img: "./image/ui/gold.png",
+            amount: "10 000",
+            price: "50"
+        },
+        {
+            title: "Гемы",
+            img: "./image/ui/gems.png",
+            amount: "500",
+            price: "100"
+        },
+        {
+            title: "Осколки силы",
+            img: "./image/ui/power-shards.png",
+            amount: "500",
+            price: "100"
+        },
+        {
+            title: "Осколки силы",
+            img: "./image/ui/power-shards.png",
+            amount: "2500",
+            price: "400"
+        },
+        {
+            title: "Энергия",
+            img: "./image/ui/energy.png",
+            amount: "50",
+            price: "30"
+        },
+        {
+            title: "Энергия",
+            img: "./image/ui/energy.png",
+            amount: "120",
+            price: "60"
+        }
+    ]
+};
+
+function openShopScreen() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    let shopScreen = document.getElementById("shop-screen");
+
+    if (!shopScreen) {
+        shopScreen = document.createElement("div");
+        shopScreen.id = "shop-screen";
+        shopScreen.className = "screen active";
+
+        shopScreen.innerHTML = `
+            <div class="shop-v2">
+
+                <aside class="shop-v2-sidebar">
+                    <div class="shop-v2-side-item active">🛒 <span>Магазин</span></div>
+                    <div class="shop-v2-side-item">📦 <span>Сундуки</span></div>
+                    <div class="shop-v2-side-item">💎 <span>Валюта</span></div>
+                    <div class="shop-v2-side-item">🎁 <span>Наборы</span></div>
+                    <div class="shop-v2-side-item">⚡ <span>Энергия</span></div>
+                </aside>
+
+                <main class="shop-v2-main">
+                    <div class="shop-v2-top">
+                        <h1>МАГАЗИН</h1>
+                    </div>
+
+                    <div class="shop-v2-tabs">
+                        <button class="active">Рекомендуем</button>
+                        <button>Сундуки</button>
+                        <button>Валюта</button>
+                        <button>Наборы</button>
+                        <button>Энергия</button>
+                    </div>
+
+                    <section>
+                        <div class="shop-v2-section-title">РЕКОМЕНДУЕМ</div>
+                        <div class="shop-v2-recommend-grid" id="shop-v2-recommended"></div>
+                    </section>
+
+                    <section>
+                        <div class="shop-v2-section-row">
+                            <div class="shop-v2-section-title">СУНДУКИ</div>
+                            <div class="shop-v2-see-all">СМОТРЕТЬ ВСЕ ›</div>
+                        </div>
+                        <div class="shop-v2-chest-grid" id="shop-v2-chests"></div>
+                    </section>
+
+                    <section>
+                        <div class="shop-v2-section-row">
+                            <div class="shop-v2-section-title">ВАЛЮТА</div>
+                            <div class="shop-v2-see-all">СМОТРЕТЬ ВСЕ ›</div>
+                        </div>
+                        <div class="shop-v2-currency-grid" id="shop-v2-currency"></div>
+                    </section>
+                </main>
+
+            </div>
+        `;
+
+        document.body.appendChild(shopScreen);
+    } else {
+        shopScreen.classList.add("active");
+    }
+
+    renderShopV2();
+}
+
+function renderShopV2() {
+    const rec = document.getElementById("shop-v2-recommended");
+    const chests = document.getElementById("shop-v2-chests");
+    const currency = document.getElementById("shop-v2-currency");
+
+    if (!rec || !chests || !currency) return;
+
+    rec.innerHTML = window.shopV2Data.recommended.map(item => `
+        <div class="shop-v2-pack-card">
+            <div class="shop-v2-badge">${item.badge}</div>
+            <h3>${item.title}</h3>
+            <img src="${item.img}" alt="${item.title}">
+            <div class="shop-v2-rewards">${item.rewards}</div>
+            <button>${item.price}</button>
+        </div>
+    `).join("");
+
+    chests.innerHTML = window.shopV2Data.chests.map(item => `
+        <div class="shop-v2-chest-card" onclick="openChest('${item.id}')">
+            <img src="${item.img}" alt="${item.title}">
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <button>💎 ${item.price}</button>
+        </div>
+    `).join("");
+
+    currency.innerHTML = window.shopV2Data.currency.map(item => `
+        <div class="shop-v2-small-card">
+            <img src="${item.img}" alt="${item.title}">
+            <h3>${item.title}</h3>
+            <strong>${item.amount}</strong>
+            <button>💎 ${item.price}</button>
+        </div>
+    `).join("");
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
