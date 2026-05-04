@@ -743,6 +743,105 @@
         <button onclick="closeChestReward()">ЗАБРАТЬ</button>
     </div>
 </div>
+<div id="tab-shop" class="tab-content">
+
+<h2 class="section-title">МАГАЗИН</h2>
+
+<!-- ТАБЫ -->
+<div class="shop-tabs">
+    <button class="shop-tab active" onclick="switchShopTab('currency')">Валюта</button>
+    <button class="shop-tab" onclick="switchShopTab('chests')">Сундуки</button>
+    <button class="shop-tab" onclick="switchShopTab('cloth')">Ткань</button>
+</div>
+
+<!-- ВАЛЮТА -->
+<div id="shop-currency" class="shop-grid active">
+
+    <div class="shop-card">
+        <img src="image/ui/gold.png">
+        <h3>Золото</h3>
+        <p>+10 000</p>
+        <button>Купить</button>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/gems.png">
+        <h3>Гемы</h3>
+        <p>+500</p>
+        <button>Купить</button>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/power-shards.png">
+        <h3>Осколки силы</h3>
+        <p>+500</p>
+        <button>Купить</button>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/energy.png">
+        <h3>Энергия</h3>
+        <p>+50</p>
+        <button>Купить</button>
+    </div>
+
+</div>
+
+<!-- СУНДУКИ -->
+<div id="shop-chests" class="shop-grid">
+
+    <div class="shop-card">
+        <img src="image/ui/chest-common.png">
+        <h3>Обычный сундук</h3>
+        <button onclick="openChest('common')">Открыть</button>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/chest-rare.png">
+        <h3>Редкий сундук</h3>
+        <button onclick="openChest('rare')">Открыть</button>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/chest-epic.png">
+        <h3>Эпический сундук</h3>
+        <button onclick="openChest('epic')">Открыть</button>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/chest-legendary.png">
+        <h3>Легендарный сундук</h3>
+        <button onclick="openChest('legendary')">Открыть</button>
+    </div>
+
+</div>
+
+<!-- ТКАНЬ -->
+<div id="shop-cloth" class="shop-grid">
+
+    <div class="shop-card">
+        <img src="image/ui/cloth-common.png">
+        <h3>Обычная ткань</h3>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/cloth-rare.png">
+        <h3>Редкая ткань</h3>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/cloth-epic.png">
+        <h3>Эпическая ткань</h3>
+    </div>
+
+    <div class="shop-card">
+        <img src="image/ui/cloth-legendary.png">
+        <h3>Легендарная ткань</h3>
+    </div>
+
+</div>
+
+</div>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>
     <script src="script.js"></script>
