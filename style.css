@@ -11731,6 +11731,99 @@ body.modal-open {
     cursor: pointer;
     box-shadow: 0 0 18px rgba(143, 53, 255, 0.35);
 }
+/* === SHOP === */
+
+.shop-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.shop-tab {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    cursor: pointer;
+}
+
+.shop-tab.active {
+    background: linear-gradient(45deg, #ff00cc, #7b00ff);
+}
+
+.shop-grid {
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.shop-grid.active {
+    display: grid;
+}
+
+.shop-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.3s;
+}
+
+.shop-card:hover {
+    transform: translateY(-5px);
+    border-color: #ff00cc;
+}
+
+.shop-card img {
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+.shop-card h3 {
+    margin-bottom: 10px;
+}
+
+.shop-card button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #a100ff, #ff00cc);
+    color: #fff;
+    cursor: pointer;
+}
+/* === FIX SHOP ICONS === */
+
+.shop-icon-wrap {
+    width: 120px;
+    height: 110px;
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-item-img {
+    max-width: 120px;
+    max-height: 110px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 18px rgba(165, 70, 255, 0.55));
+}
+
+.shop-item {
+    min-height: 270px;
+}
+
+.shop-title-main {
+    text-align: center;
+    color: #ffd36a;
+    font-size: 44px;
+    margin-bottom: 28px;
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

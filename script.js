@@ -5504,49 +5504,6 @@ function loadPlayer() {
         }
     }
 }
-const shopData = {
-    currency: [
-        { id: "gold_1", name: "Мешок золота", amount: 10000, price: 80, icon: "🪙" },
-        { id: "gold_2", name: "Сундук золота", amount: 50000, price: 300, icon: "🪙" },
-
-        { id: "shards_1", name: "Осколки силы", amount: 500, price: 120, icon: "🔮" },
-        { id: "shards_2", name: "Большие осколки", amount: 2500, price: 500, icon: "🔮" },
-
-        { id: "energy_1", name: "Энергия", amount: 50, price: 40, icon: "⚡" },
-        { id: "energy_2", name: "Большая энергия", amount: 150, price: 100, icon: "⚡" }
-    ],
-
-    chests: [
-        { id: "common", name: "Обычный сундук", price: 50, icon: "📦", desc: "Базовые награды" },
-        { id: "rare", name: "Редкий сундук", price: 120, icon: "🧰", desc: "Больше редких наград" },
-        { id: "epic", name: "Эпический сундук", price: 300, icon: "🎁", desc: "Высокий шанс ценных наград" },
-        { id: "legendary", name: "Легендарный сундук", price: 800, icon: "👑", desc: "Лучшие награды" }
-    ],
-
-    packs: [
-        {
-            id: "starter",
-            name: "Стартовый набор",
-            price: 150,
-            icon: "🎁",
-            reward: "10 000 золота, 300 осколков, 1 редкий сундук"
-        },
-        {
-            id: "power",
-            name: "Набор силы",
-            price: 400,
-            icon: "💜",
-            reward: "50 000 золота, 1500 осколков, 1 эпический сундук"
-        },
-        {
-            id: "legend",
-            name: "Легендарный набор",
-            price: 900,
-            icon: "👑",
-            reward: "100 000 золота, 3000 осколков, 1 легендарный сундук"
-        }
-    ]
-};
 function openShopTab(tab) {
     const content = document.getElementById("shop-content");
     content.innerHTML = "";
@@ -5852,6 +5809,189 @@ function showChestReward(reward) {
 
 function closeChestReward() {
     document.getElementById("chest-reward-modal").classList.remove("active");
+}
+function switchShopTab(tab) {
+    document.querySelectorAll('.shop-grid').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.shop-tab').forEach(el => el.classList.remove('active'));
+
+    document.getElementById('shop-' + tab).classList.add('active');
+
+    event.target.classList.add('active');
+}
+// === НОВЫЙ МАГАЗИН С КАРТИНКАМИ UI ===
+
+const shopData = {
+    currency: [
+        {
+            id: "gold-small",
+            name: "Мешок золота",
+            desc: "+10 000",
+            price: 80,
+            img: "image/ui/gold.png"
+        },
+        {
+            id: "gold-big",
+            name: "Сундук золота",
+            desc: "+50 000",
+            price: 300,
+            img: "image/ui/gold.png"
+        },
+        {
+            id: "shards-small",
+            name: "Осколки силы",
+            desc: "+500",
+            price: 120,
+            img: "image/ui/power-shards.png"
+        },
+        {
+            id: "shards-big",
+            name: "Большие осколки",
+            desc: "+2 500",
+            price: 500,
+            img: "image/ui/power-shards.png"
+        },
+        {
+            id: "energy-small",
+            name: "Энергия",
+            desc: "+50",
+            price: 40,
+            img: "image/ui/energy.png"
+        },
+        {
+            id: "energy-big",
+            name: "Большая энергия",
+            desc: "+120",
+            price: 80,
+            img: "image/ui/energy.png"
+        }
+    ],
+
+    chests: [
+        {
+            id: "common",
+            name: "Обычный сундук",
+            desc: "Базовые награды",
+            price: 50,
+            img: "image/ui/chest-common.png"
+        },
+        {
+            id: "rare",
+            name: "Редкий сундук",
+            desc: "Больше редких наград",
+            price: 120,
+            img: "image/ui/chest-rare.png"
+        },
+        {
+            id: "epic",
+            name: "Эпический сундук",
+            desc: "Высокий шанс ценных наград",
+            price: 300,
+            img: "image/ui/chest-epic.png"
+        },
+        {
+            id: "legendary",
+            name: "Легендарный сундук",
+            desc: "Лучшие награды",
+            price: 800,
+            img: "image/ui/chest-legendary.png"
+        }
+    ],
+
+    packs: [
+        {
+            id: "starter",
+            name: "Стартовый набор",
+            desc: "Золото + осколки + сундук",
+            price: 149,
+            img: "image/ui/chest-rare.png"
+        },
+        {
+            id: "power",
+            name: "Набор силы",
+            desc: "Много осколков силы",
+            price: 299,
+            img: "image/ui/power-shards.png"
+        },
+        {
+            id: "legend",
+            name: "Легендарный набор",
+            desc: "Топ награды",
+            price: 599,
+            img: "image/ui/chest-legendary.png"
+        }
+    ]
+};
+
+function openShopScreen() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    let shopScreen = document.getElementById("shop-screen");
+
+    if (!shopScreen) {
+        shopScreen = document.createElement("div");
+        shopScreen.id = "shop-screen";
+        shopScreen.className = "screen active";
+
+        shopScreen.innerHTML = `
+            <div class="shop-page">
+                <h1 class="shop-title-main">МАГАЗИН</h1>
+
+                <div class="shop-tabs">
+                    <button class="active" onclick="openShopTab('currency')">Валюта</button>
+                    <button onclick="openShopTab('chests')">Сундуки</button>
+                    <button onclick="openShopTab('packs')">Наборы</button>
+                </div>
+
+                <div id="shop-content" class="shop-content"></div>
+            </div>
+        `;
+
+        document.body.appendChild(shopScreen);
+    } else {
+        shopScreen.classList.add("active");
+    }
+
+    openShopTab("currency");
+}
+
+function openShopTab(tab) {
+    const content = document.getElementById("shop-content");
+    if (!content) return;
+
+    content.innerHTML = "";
+
+    document.querySelectorAll(".shop-tabs button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const activeBtn = Array.from(document.querySelectorAll(".shop-tabs button")).find(btn => {
+        return btn.getAttribute("onclick")?.includes(`'${tab}'`);
+    });
+
+    if (activeBtn) activeBtn.classList.add("active");
+
+    shopData[tab].forEach(item => {
+        const div = document.createElement("div");
+        div.className = `shop-item shop-item-${tab}`;
+
+        div.innerHTML = `
+            <div class="shop-icon-wrap">
+                <img class="shop-item-img" src="${item.img}" alt="${item.name}">
+            </div>
+
+            <div class="shop-title">${item.name}</div>
+
+            <div class="shop-desc">${item.desc}</div>
+
+            <button onclick="buyItem('${tab}', '${item.id}')">
+                Купить за ${item.price} 💎
+            </button>
+        `;
+
+        content.appendChild(div);
+    });
 }
 //  ЗАПУСК
 window.onload = () => {
