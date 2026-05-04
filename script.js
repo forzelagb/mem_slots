@@ -6272,7 +6272,21 @@ const shopV3 = {
         { title: "НАБОР СИЛЫ", img: "./image/ui/power-shards.png", rewards: "🔮 1500   🪙 20000   💎 500", price: "299 ₽", badge: "ХИТ" },
         { title: "ЭПИЧЕСКИЙ НАБОР", img: "./image/ui/chest-epic.png", rewards: "📦 x5   💎 1200   🔮 1500", price: "599 ₽", badge: "EPIC" },
         { title: "ЛЕГЕНДАРНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "📦 x10   💎 2500   🪙 50000", price: "999 ₽", badge: "LEGEND" },
-        { title: "МАКСИМАЛЬНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "📦 x20   💎 5500   🔮 5000", price: "1999 ₽", badge: "MAX" }
+        { title: "МАКСИМАЛЬНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "📦 x20   💎 5500   🔮 5000", price: "1999 ₽", badge: "MAX" },
+    {
+    title: "СУНДУК ГЕМОБОЯ",
+    img: "./image/ui/gems.png",
+    rewards: "💎 2500   📦 x4   ⚡ 300",
+    price: "899 ₽",
+    badge: "GEMS"
+},
+{
+    title: "СУНДУК ЛЕГЕНД",
+    img: "./image/ui/chest-legendary.png",
+    rewards: "📦 x25   💎 8000   🔮 8000",
+    price: "2999 ₽",
+    badge: "ULTRA"
+}
     ],
 
     energy: [
@@ -6283,12 +6297,43 @@ const shopV3 = {
     ],
 
     pass: [
-        { title: "ПРЕМИУМ ПРОПУСК", img: "./image/ui/upgrade.png", amount: "14 дней наград", price: "399 ₽" },
-        { title: "ПРЕМИУМ+ ПРОПУСК", img: "./image/ui/lore.png", amount: "+10 уровней и финальный бонус", price: "699 ₽" },
-        { title: "1 УРОВЕНЬ ПРОПУСКА", img: "./image/ui/styles.png", amount: "+1 уровень", price: "80 💎" },
-        { title: "5 УРОВНЕЙ ПРОПУСКА", img: "./image/ui/styles.png", amount: "+5 уровней", price: "350 💎" },
-        { title: "10 УРОВНЕЙ ПРОПУСКА", img: "./image/ui/styles.png", amount: "+10 уровней", price: "650 💎" }
-    ]
+    {
+        title: "ПРОПУСК СТИЛЕЙ",
+        img: "./image/ui/upgrade.png",
+        amount: "14 дней • стили и ткань",
+        price: "399 ₽"
+    },
+    {
+        title: "ПРОПУСК СТИЛЕЙ+",
+        img: "./image/ui/upgrade.png",
+        amount: "+10 уровней • финальный скин",
+        price: "699 ₽"
+    },
+    {
+        title: "ПРОПУСК СПУТНИКОВ",
+        img: "./image/ui/lore.png",
+        amount: "14 дней • питомцы и предметы",
+        price: "399 ₽"
+    },
+    {
+        title: "ПРОПУСК СПУТНИКОВ+",
+        img: "./image/ui/lore.png",
+        amount: "+10 уровней • финальный питомец",
+        price: "699 ₽"
+    },
+    {
+        title: "5 УРОВНЕЙ",
+        img: "./image/ui/styles.png",
+        amount: "Для активного пропуска",
+        price: "350 💎"
+    },
+    {
+        title: "10 УРОВНЕЙ",
+        img: "./image/ui/styles.png",
+        amount: "Для активного пропуска",
+        price: "650 💎"
+    }
+]
 };
 
 function openShopScreen() {

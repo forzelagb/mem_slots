@@ -12425,6 +12425,54 @@ body.modal-open {
 .shop-v3-header h1 {
     margin-right: 0 !important;
 }
+/* === SHOP V3 CARD SIZE TUNING === */
+
+.shop-v3-pack-card {
+    height: 310px !important;
+    padding: 18px !important;
+}
+
+.shop-v3-pack-card img {
+    width: 190px !important;
+    height: 145px !important;
+}
+
+.shop-v3-small-card {
+    height: 230px !important;
+    padding: 18px !important;
+}
+
+.shop-v3-small-card > img {
+    width: 120px !important;
+    height: 96px !important;
+}
+
+.shop-v3-small-card h3 {
+    font-size: 17px !important;
+}
+
+.shop-v3-small-card strong {
+    font-size: 18px !important;
+    min-height: 42px;
+}
+
+.shop-v3-small-card button {
+    min-width: 155px !important;
+    height: 40px !important;
+}
+
+#shop-v3-pass.shop-v3-currency-grid,
+#shop-v3-energy-grid.shop-v3-currency-grid {
+    grid-template-columns: repeat(3, minmax(240px, 1fr)) !important;
+}
+
+#shop-v3-currency.shop-v3-currency-grid {
+    grid-template-columns: repeat(3, minmax(240px, 1fr)) !important;
+}
+
+#shop-v3-packs.shop-v3-pack-grid {
+    grid-template-columns: repeat(4, minmax(240px, 1fr)) !important;
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }
