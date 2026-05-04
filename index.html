@@ -138,6 +138,7 @@
         <button class="tab-btn" onclick="openTab('collection')">🗂 Коллекция</button>
         <button class="tab-btn" onclick="openNewCharactersScreen()">🧙 Герои</button>
         <button class="tab-btn" onclick="openTab('pass')">🕯 Пропуск</button>
+        <button class="tab-btn" onclick="openShopScreen()">🛒 Магазин</button>
     </div>
 </div>
 </div>
@@ -717,6 +718,29 @@
             </div>
 
         </div>
+    </div>
+</div>
+
+<div id="shop-screen" class="screen">
+
+    <h2>МАГАЗИН</h2>
+
+    <div class="shop-tabs">
+        <button onclick="openShopTab('currency')">Валюта</button>
+        <button onclick="openShopTab('chests')">Сундуки</button>
+        <button onclick="openShopTab('packs')">Наборы</button>
+    </div>
+
+    <div id="shop-content"></div>
+
+</div>
+<div id="chest-reward-modal" class="modal">
+    <div class="modal-content">
+        <h2>🎁 НАГРАДА</h2>
+        <p id="reward-gold"></p>
+        <p id="reward-shards"></p>
+        <p id="reward-cloth"></p>
+        <button onclick="closeChestReward()">ЗАБРАТЬ</button>
     </div>
 </div>
     <!-- СКРИПТЫ -->

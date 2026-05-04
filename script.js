@@ -3910,6 +3910,10 @@ const playerData = {
     resources: {
     energy: 100,
     maxEnergy: 100,
+    
+    equippedStyles: {
+    sasavot: "default"
+},
 
     gold: 5000,
     powerShards: 500,
@@ -5304,7 +5308,11 @@ function renderStyles() {
 
     list.forEach(style => {
         const div = document.createElement('div');
-        div.className = 'style-card ' + (style.unlocked ? '' : 'locked');
+        const equippedId = playerData.equippedStyles?.[currentCharacter];
+
+div.className = 'style-card '
+    + (style.unlocked ? '' : 'locked ')
+    + (equippedId === style.id ? 'equipped' : '');
 
         div.innerHTML = `
             <img src="${style.img}" style="width:100%">
@@ -5344,8 +5352,11 @@ function selectStyle(style) {
     if (style.unlocked) {
         document.getElementById('style-action-btn').innerText = "ВЫБРАТЬ";
     } else {
-        document.getElementById('style-action-btn').innerText =
-            `ОТКРЫТЬ: 0/${style.required} ФРАГМЕНТОВ`;
+        const playerClothForOpen =
+    playerData.resources.clothFragments?.[currentCharacter]?.[style.rarity] ?? 0;
+
+document.getElementById('style-action-btn').innerText =
+    `ОТКРЫТЬ: ${playerClothForOpen}/${style.required} ФРАГМЕНТОВ`;
     }
 const level = style.level || 0;
 const upgradeCostLine = document.getElementById('upgrade-cost-line');
@@ -5422,18 +5433,14 @@ function upgradeSelectedStyle() {
         alert("Недостаточно ресурсов!");
         return;
     }
-
-    // списываем
     playerRes.gold -= cost.gold;
     playerRes.powerShards -= cost.powerShards;
     playerRes.clothFragments[char][rarity] -= cost.cloth;
 
-    // повышаем уровень
     selectedStyle.level = level + 1;
-
-    // обновляем UI
+    savePlayer();
     selectStyle(selectedStyle);
-
+    updateUI();
     alert("Стиль улучшен!");
 }
 const styleActionBtn = document.getElementById('style-action-btn');
@@ -5442,11 +5449,21 @@ if (styleActionBtn) {
     styleActionBtn.onclick = function () {
         if (!selectedStyle) return;
 
-        // если уже открыт — просто выбрать
-        if (selectedStyle.unlocked) {
-            alert("Стиль выбран!");
-            return;
-        }
+if (selectedStyle.unlocked) {
+    if (!playerData.equippedStyles) {
+        playerData.equippedStyles = {};
+    }
+
+    playerData.equippedStyles[currentCharacter] = selectedStyle.id;
+
+    savePlayer();
+    renderStyles();
+    selectStyle(selectedStyle);
+    updateUI();
+
+    alert("Стиль выбран!");
+    return;
+}
 
         const char = currentCharacter;
         const rarity = selectedStyle.rarity;
@@ -5461,26 +5478,387 @@ if (styleActionBtn) {
             return;
         }
 
-        // списываем ткань
         playerData.resources.clothFragments[char][rarity] -= required;
 
-        // открываем стиль
         selectedStyle.unlocked = true;
+        savePlayer();
 
-        // обновляем UI
         selectStyle(selectedStyle);
         updateUI();
 
         alert("Стиль открыт!");
     };
 }
-// === ЗАПУСК ===
+function savePlayer() {
+    localStorage.setItem('playerData', JSON.stringify(playerData));
+}
+
+function loadPlayer() {
+    const saved = localStorage.getItem('playerData');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            Object.assign(playerData, data);
+        } catch (e) {
+            console.error("Ошибка загрузки сохранения");
+        }
+    }
+}
+const shopData = {
+    currency: [
+        { id: "gold_1", name: "Мешок золота", amount: 10000, price: 80, icon: "🪙" },
+        { id: "gold_2", name: "Сундук золота", amount: 50000, price: 300, icon: "🪙" },
+
+        { id: "shards_1", name: "Осколки силы", amount: 500, price: 120, icon: "🔮" },
+        { id: "shards_2", name: "Большие осколки", amount: 2500, price: 500, icon: "🔮" },
+
+        { id: "energy_1", name: "Энергия", amount: 50, price: 40, icon: "⚡" },
+        { id: "energy_2", name: "Большая энергия", amount: 150, price: 100, icon: "⚡" }
+    ],
+
+    chests: [
+        { id: "common", name: "Обычный сундук", price: 50, icon: "📦", desc: "Базовые награды" },
+        { id: "rare", name: "Редкий сундук", price: 120, icon: "🧰", desc: "Больше редких наград" },
+        { id: "epic", name: "Эпический сундук", price: 300, icon: "🎁", desc: "Высокий шанс ценных наград" },
+        { id: "legendary", name: "Легендарный сундук", price: 800, icon: "👑", desc: "Лучшие награды" }
+    ],
+
+    packs: [
+        {
+            id: "starter",
+            name: "Стартовый набор",
+            price: 150,
+            icon: "🎁",
+            reward: "10 000 золота, 300 осколков, 1 редкий сундук"
+        },
+        {
+            id: "power",
+            name: "Набор силы",
+            price: 400,
+            icon: "💜",
+            reward: "50 000 золота, 1500 осколков, 1 эпический сундук"
+        },
+        {
+            id: "legend",
+            name: "Легендарный набор",
+            price: 900,
+            icon: "👑",
+            reward: "100 000 золота, 3000 осколков, 1 легендарный сундук"
+        }
+    ]
+};
+function openShopTab(tab) {
+    const content = document.getElementById("shop-content");
+    content.innerHTML = "";
+
+    shopData[tab].forEach(item => {
+        const div = document.createElement("div");
+        div.className = "shop-item";
+
+        div.innerHTML = `
+            <div class="shop-title">${item.name}</div>
+            <div class="shop-desc">
+                ${item.amount ? "+" + item.amount : item.reward || ""}
+            </div>
+            <button onclick="buyItem('${tab}', '${item.id}')">
+                Купить за ${item.price} 💎
+            </button>
+        `;
+
+        content.appendChild(div);
+    });
+}
+function buyItem(type, id) {
+    const item = shopData[type].find(i => i.id === id);
+
+    if (!item) return;
+
+    if (playerData.resources.premiumTokens < item.price) {
+        alert("Недостаточно гемов!");
+        return;
+    }
+
+    playerData.resources.premiumTokens -= item.price;
+
+    if (type === "currency") {
+        if (id.includes("gold")) playerData.resources.gold += item.amount;
+        if (id === "shards") playerData.resources.powerShards += item.amount;
+        if (id === "energy") playerData.resources.energy += item.amount;
+    }
+
+    if (type === "chests") {
+        openChest(item.id); // потом сделаем
+    }
+
+    if (type === "packs") {
+        alert("Пак куплен (потом сделаем награды)");
+    }
+
+    savePlayer();
+    updateUI();
+}
+
+
+
+function openShopScreen() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('shop-screen').classList.add('active');
+
+    openShopTab('chests');
+    updateUI();
+}
+
+function openShopTab(tab) {
+    const content = document.getElementById("shop-content");
+    if (!content) return;
+
+    content.innerHTML = "";
+
+    document.querySelectorAll('.shop-tabs button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    const activeBtn = Array.from(document.querySelectorAll('.shop-tabs button')).find(btn => {
+        return btn.getAttribute('onclick')?.includes(`'${tab}'`);
+    });
+
+    if (activeBtn) activeBtn.classList.add('active');
+
+    shopData[tab].forEach(item => {
+        const div = document.createElement("div");
+        div.className = `shop-item shop-item-${tab}`;
+
+        div.innerHTML = `
+            <div class="shop-icon">${item.icon}</div>
+
+            <div class="shop-title">${item.name}</div>
+
+            <div class="shop-desc">
+                ${item.amount ? "+" + item.amount.toLocaleString() : item.reward || item.desc || ""}
+            </div>
+
+            <button onclick="buyItem('${tab}', '${item.id}')">
+                Купить за ${item.price} 💎
+            </button>
+        `;
+
+        content.appendChild(div);
+    });
+}
+
+function buyItem(type, id) {
+    const item = shopData[type].find(i => i.id === id);
+    if (!item) return;
+
+    if (!playerData.resources.premiumTokens) {
+        playerData.resources.premiumTokens = 0;
+    }
+
+    if (playerData.resources.premiumTokens < item.price) {
+        alert("Недостаточно гемов!");
+        return;
+    }
+
+    playerData.resources.premiumTokens -= item.price;
+
+    if (type === "currency") {
+        if (id.includes("gold")) {
+            playerData.resources.gold += item.amount;
+        }
+
+        if (id.includes("shards")) {
+            playerData.resources.powerShards += item.amount;
+        }
+
+        if (id.includes("energy")) {
+            playerData.resources.energy += item.amount;
+        }
+    }
+
+    if (type === "chests") {
+        if (!playerData.chests) {
+            playerData.chests = {
+                common: 0,
+                rare: 0,
+                epic: 0,
+                legendary: 0
+            };
+        }
+
+        playerData.chests[item.id] += 1;
+        alert(`${item.name} добавлен в инвентарь!`);
+    }
+
+    if (type === "packs") {
+        givePackReward(item.id);
+    }
+
+    savePlayer();
+    updateUI();
+    openShopTab(type);
+}
+
+function givePackReward(packId) {
+    if (!playerData.chests) {
+        playerData.chests = {
+            common: 0,
+            rare: 0,
+            epic: 0,
+            legendary: 0
+        };
+    }
+
+    if (packId === "starter") {
+        playerData.resources.gold += 10000;
+        playerData.resources.powerShards += 300;
+        playerData.chests.rare += 1;
+    }
+
+    if (packId === "power") {
+        playerData.resources.gold += 50000;
+        playerData.resources.powerShards += 1500;
+        playerData.chests.epic += 1;
+    }
+
+    if (packId === "legend") {
+        playerData.resources.gold += 100000;
+        playerData.resources.powerShards += 3000;
+        playerData.chests.legendary += 1;
+    }
+
+    alert("Набор куплен!");
+}
+
+const chestsConfig = {
+    common: {
+        price: 50,
+        rewards: {
+            gold: [100, 200],
+            powerShards: [10, 20],
+            clothChance: {
+                common: 70,
+                rare: 25,
+                epic: 5,
+                legendary: 0
+            }
+        }
+    },
+    rare: {
+        price: 120,
+        rewards: {
+            gold: [200, 400],
+            powerShards: [20, 50],
+            clothChance: {
+                common: 40,
+                rare: 40,
+                epic: 15,
+                legendary: 5
+            }
+        }
+    },
+    epic: {
+        price: 300,
+        rewards: {
+            gold: [500, 1000],
+            powerShards: [50, 120],
+            clothChance: {
+                common: 20,
+                rare: 40,
+                epic: 30,
+                legendary: 10
+            }
+        }
+    },
+    legendary: {
+        price: 800,
+        rewards: {
+            gold: [1500, 3000],
+            powerShards: [150, 300],
+            clothChance: {
+                common: 0,
+                rare: 30,
+                epic: 50,
+                legendary: 20
+            }
+        }
+    }
+};function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomRarity(chances) {
+    const rand = Math.random() * 100;
+    let sum = 0;
+
+    for (let rarity in chances) {
+        sum += chances[rarity];
+        if (rand <= sum) return rarity;
+    }
+
+    return "common";
+}
+function openChest(type) {
+    const chest = chestsConfig[type];
+
+    // проверка валюты
+    if (playerData.resources.energy < 1) {
+        alert("Нет энергии");
+        return;
+    }
+
+    playerData.resources.energy -= 1;
+
+    const gold = getRandom(...chest.rewards.gold);
+    const shards = getRandom(...chest.rewards.powerShards);
+    const rarity = getRandomRarity(chest.rewards.clothChance);
+
+    const character = "sasavot"; // потом сделаем выбор
+
+    // начисляем
+    playerData.resources.gold += gold;
+    playerData.resources.powerShards += shards;
+
+    if (!playerData.resources.clothFragments[character]) {
+        playerData.resources.clothFragments[character] = {
+            common: 0,
+            rare: 0,
+            epic: 0,
+            legendary: 0
+        };
+    }
+
+    playerData.resources.clothFragments[character][rarity] += 1;
+
+    showChestReward({
+        gold,
+        shards,
+        rarity
+    });
+
+    updateUI();
+}
+function showChestReward(reward) {
+    document.getElementById("reward-gold").innerText =
+        `🪙 Золото: +${reward.gold}`;
+
+    document.getElementById("reward-shards").innerText =
+        `🔮 Осколки: +${reward.shards}`;
+
+    document.getElementById("reward-cloth").innerText =
+        `🧵 Ткань (${reward.rarity}): +1`;
+
+    document.getElementById("chest-reward-modal").classList.add("active");
+}
+
+function closeChestReward() {
+    document.getElementById("chest-reward-modal").classList.remove("active");
+}
+//  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
-
+    loadPlayer();
     createGrid();
     updateUI();
-    //updateMarketUI();
     updateLeaderboardUI();
     updateDailyRewardUI();
     updateBlackMarketUI();
