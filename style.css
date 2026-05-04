@@ -12412,6 +12412,19 @@ body.modal-open {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+/* Убираем ресурсы внутри магазина */
+.shop-v3-balances {
+    display: none !important;
+}
+
+/* Шапка магазина после удаления ресурсов */
+.shop-v3-header {
+    justify-content: flex-start;
+}
+
+.shop-v3-header h1 {
+    margin-right: 0 !important;
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }
