@@ -6206,24 +6206,88 @@ function renderShopV2() {
 
 const shopV3 = {
     recommend: [
-        { title: "СТАРТОВЫЙ НАБОР", img: "./image/ui/chest-epic.png", rewards: "💎 500   🪙 10 000   📦 x2", price: "149,00 ₽", badge: "ВЫГОДНО" },
-        { title: "НАБОР СИЛЫ", img: "./image/ui/power-shards.png", rewards: "💎 1200   🔮 600   🪙 20 000", price: "299,00 ₽", badge: "ХИТ" },
-        { title: "ЭПИЧЕСКИЙ НАБОР", img: "./image/ui/chest-epic.png", rewards: "💎 2500   🔮 1500   📦 x5", price: "599,00 ₽", badge: "ЛУЧШИЙ" },
-        { title: "ЛЕГЕНДАРНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "💎 5000   🔮 3000   📦 x10", price: "1199,00 ₽", badge: "МАКСИМУМ" }
+        {
+            title: "СТАРТОВЫЙ СУНДУК",
+            img: "./image/ui/chest-rare.png",
+            rewards: "💎 550   🪙 10 000   📦 x2",
+            price: "199 ₽",
+            badge: "ВЫГОДНО"
+        },
+        {
+            title: "СУНДУК СИЛЫ",
+            img: "./image/ui/power-shards.png",
+            rewards: "🔮 1200   🪙 20 000   💎 500",
+            price: "299 ₽",
+            badge: "ХИТ"
+        },
+        {
+            title: "ЭПИЧЕСКИЙ ЗАПАС",
+            img: "./image/ui/chest-epic.png",
+            rewards: "📦 x5   🔮 1500   💎 1200",
+            price: "599 ₽",
+            badge: "ЛУЧШИЙ"
+        },
+        {
+            title: "КОРОЛЕВСКИЙ СУНДУК",
+            img: "./image/ui/chest-legendary.png",
+            rewards: "📦 x10   💎 2500   🪙 50 000",
+            price: "999 ₽",
+            badge: "ТОП"
+        },
+        {
+            title: "ПРЕМИУМ ПРОПУСК",
+            img: "./image/ui/upgrade.png",
+            rewards: "14 дней   🎁 премиум награды",
+            price: "399 ₽",
+            badge: "PASS"
+        },
+        {
+            title: "ПРЕМИУМ+ ПРОПУСК",
+            img: "./image/ui/lore.png",
+            rewards: "+10 уровней   🐾 питомец   🎁 награды",
+            price: "699 ₽",
+            badge: "MAX"
+        }
     ],
+
     chests: [
-        { id: "common", title: "ОБЫЧНЫЙ СУНДУК", img: "./image/ui/chest-common.png", desc: "Содержит обычные награды", price: "50" },
+        { id: "common", title: "ОБЫЧНЫЙ СУНДУК", img: "./image/ui/chest-common.png", desc: "Базовые награды", price: "50" },
         { id: "rare", title: "РЕДКИЙ СУНДУК", img: "./image/ui/chest-rare.png", desc: "Больше редких наград", price: "120" },
-        { id: "epic", title: "ЭПИЧЕСКИЙ СУНДУК", img: "./image/ui/chest-epic.png", desc: "Высокий шанс эпических наград", price: "300" },
+        { id: "epic", title: "ЭПИЧЕСКИЙ СУНДУК", img: "./image/ui/chest-epic.png", desc: "Высокий шанс эпика", price: "300" },
         { id: "legendary", title: "ЛЕГЕНДАРНЫЙ СУНДУК", img: "./image/ui/chest-legendary.png", desc: "Лучшие награды", price: "800" }
     ],
+
     currency: [
-        { title: "ЗОЛОТО", img: "./image/ui/gold.png", amount: "10 000", price: "50" },
-        { title: "ЗОЛОТО", img: "./image/ui/gold.png", amount: "50 000", price: "200" },
-        { title: "ОСКОЛКИ СИЛЫ", img: "./image/ui/power-shards.png", amount: "500", price: "100" },
-        { title: "ОСКОЛКИ СИЛЫ", img: "./image/ui/power-shards.png", amount: "2500", price: "400" },
-        { title: "ЭНЕРГИЯ", img: "./image/ui/energy.png", amount: "50", price: "30" },
-        { title: "ЭНЕРГИЯ", img: "./image/ui/energy.png", amount: "120", price: "60" }
+        { title: "МАЛЕНЬКИЙ МЕШОК ГЕМОВ", img: "./image/ui/gems.png", amount: "100 💎", price: "49 ₽" },
+        { title: "МЕШОК ГЕМОВ", img: "./image/ui/gems.png", amount: "550 💎", price: "199 ₽" },
+        { title: "СУНДУК ГЕМОВ", img: "./image/ui/gems.png", amount: "1200 💎", price: "399 ₽" },
+        { title: "БОЛЬШОЙ СУНДУК ГЕМОВ", img: "./image/ui/gems.png", amount: "2500 💎", price: "799 ₽" },
+        { title: "КОРОЛЕВСКИЙ ЗАПАС ГЕМОВ", img: "./image/ui/gems.png", amount: "5500 💎", price: "1499 ₽" },
+        { title: "ЛЕГЕНДАРНЫЙ СЕЙФ ГЕМОВ", img: "./image/ui/gems.png", amount: "12000 💎", price: "2999 ₽" }
+    ],
+
+    packs: [
+        { title: "НАБОР НОВИЧКА", img: "./image/ui/chest-common.png", rewards: "💎 100   🪙 5000   📦 x1", price: "99 ₽", badge: "START" },
+        { title: "НАБОР ОХОТНИКА", img: "./image/ui/chest-rare.png", rewards: "💎 550   📦 x2   ⚡ 120", price: "199 ₽", badge: "NEW" },
+        { title: "НАБОР СИЛЫ", img: "./image/ui/power-shards.png", rewards: "🔮 1500   🪙 20000   💎 500", price: "299 ₽", badge: "ХИТ" },
+        { title: "ЭПИЧЕСКИЙ НАБОР", img: "./image/ui/chest-epic.png", rewards: "📦 x5   💎 1200   🔮 1500", price: "599 ₽", badge: "EPIC" },
+        { title: "ЛЕГЕНДАРНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "📦 x10   💎 2500   🪙 50000", price: "999 ₽", badge: "LEGEND" },
+        { title: "МАКСИМАЛЬНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "📦 x20   💎 5500   🔮 5000", price: "1999 ₽", badge: "MAX" }
+    ],
+
+    energy: [
+        { title: "ЭНЕРГИЯ", img: "./image/ui/energy.png", amount: "+50 ⚡", price: "30 💎" },
+        { title: "БОЛЬШАЯ ЭНЕРГИЯ", img: "./image/ui/energy.png", amount: "+120 ⚡", price: "60 💎" },
+        { title: "ЗАПАС ЭНЕРГИИ", img: "./image/ui/energy.png", amount: "+300 ⚡", price: "140 💎" },
+        { title: "БАТАРЕЯ ЭНЕРГИИ", img: "./image/ui/energy.png", amount: "+700 ⚡", price: "300 💎" }
+    ],
+
+    pass: [
+        { title: "ПРЕМИУМ ПРОПУСК", img: "./image/ui/upgrade.png", amount: "14 дней наград", price: "399 ₽" },
+        { title: "ПРЕМИУМ+ ПРОПУСК", img: "./image/ui/lore.png", amount: "+10 уровней и финальный бонус", price: "699 ₽" },
+        { title: "1 УРОВЕНЬ ПРОПУСКА", img: "./image/ui/styles.png", amount: "+1 уровень", price: "80 💎" },
+        { title: "5 УРОВНЕЙ ПРОПУСКА", img: "./image/ui/styles.png", amount: "+5 уровней", price: "350 💎" },
+        { title: "10 УРОВНЕЙ ПРОПУСКА", img: "./image/ui/styles.png", amount: "+10 уровней", price: "650 💎" }
     ]
 };
 
@@ -6235,6 +6299,7 @@ function openShopScreen() {
 
     shop.classList.add("active");
     renderShopV3();
+    setShopCategory("recommend");
 }
 
 function renderShopV3() {
@@ -6271,6 +6336,43 @@ function renderShopV3() {
             <button><img src="./image/ui/gems.png"> ${item.price}</button>
         </div>
     `).join("");
+    const packs = document.getElementById("shop-v3-packs");
+const energy = document.getElementById("shop-v3-energy-grid");
+const pass = document.getElementById("shop-v3-pass");
+
+if (packs) {
+    packs.innerHTML = shopV3.packs.map(item => `
+        <div class="shop-v3-pack-card">
+            <div class="shop-v3-badge">${item.badge}</div>
+            <h3>${item.title}</h3>
+            <img src="${item.img}" alt="${item.title}">
+            <div class="shop-v3-rewards">${item.rewards}</div>
+            <button>${item.price}</button>
+        </div>
+    `).join("");
+}
+
+if (energy) {
+    energy.innerHTML = shopV3.energy.map(item => `
+        <div class="shop-v3-small-card">
+            <img src="${item.img}" alt="${item.title}">
+            <h3>${item.title}</h3>
+            <strong>${item.amount}</strong>
+            <button>${item.price}</button>
+        </div>
+    `).join("");
+}
+
+if (pass) {
+    pass.innerHTML = shopV3.pass.map(item => `
+        <div class="shop-v3-small-card">
+            <img src="${item.img}" alt="${item.title}">
+            <h3>${item.title}</h3>
+            <strong>${item.amount}</strong>
+            <button>${item.price}</button>
+        </div>
+    `).join("");
+}
 
     if (typeof playerData !== "undefined") {
         document.getElementById("shop-v3-gold").innerText = playerData.resources?.gold ?? 0;
@@ -6278,6 +6380,85 @@ function renderShopV3() {
         document.getElementById("shop-v3-shards").innerText = playerData.resources?.powerShards ?? 0;
         document.getElementById("shop-v3-energy").innerText = `${playerData.resources?.energy ?? 0}/120`;
     }
+}
+function setShopCategory(category) {
+    document.querySelectorAll(".shop-v3-tabs button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    document.querySelectorAll(".shop-v3-side").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const map = {
+        recommended: 0,
+        chests: 1,
+        currency: 2,
+        packs: 3,
+        energy: 4,
+        pass: 5
+    };
+
+    const index = map[category];
+
+    const tabs = document.querySelectorAll(".shop-v3-tabs button");
+    const side = document.querySelectorAll(".shop-v3-side");
+
+    if (tabs[index]) tabs[index].classList.add("active");
+    if (side[index]) side[index].classList.add("active");
+
+    renderShopCategory(category);
+}
+// === SHOP V3 CATEGORY FILTER ===
+
+function setShopCategory(category) {
+    const sections = {
+        recommend: ["shop-v3-recommend"],
+        chests: ["shop-v3-chests"],
+        currency: ["shop-v3-currency"],
+        packs: ["shop-v3-packs"],
+        energy: ["shop-v3-energy-grid"],
+        pass: ["shop-v3-pass"]
+    };
+
+    document.querySelectorAll(".shop-v3-section").forEach(section => {
+        section.style.display = "none";
+    });
+
+    const targetIds = sections[category] || sections.recommend;
+
+    targetIds.forEach(id => {
+        const grid = document.getElementById(id);
+        if (grid) {
+            const section = grid.closest(".shop-v3-section");
+            if (section) section.style.display = "block";
+        }
+    });
+
+    document.querySelectorAll(".shop-v3-tabs button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    document.querySelectorAll(".shop-v3-side").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const indexMap = {
+        recommend: 0,
+        chests: 1,
+        currency: 2,
+        packs: 3,
+        energy: 4,
+        pass: 5
+    };
+
+    const index = indexMap[category] ?? 0;
+
+    const topTabs = document.querySelectorAll(".shop-v3-tabs button");
+    const sideTabs = document.querySelectorAll(".shop-v3-side");
+
+    if (topTabs[index]) topTabs[index].classList.add("active");
+    if (sideTabs[index]) sideTabs[index].classList.add("active");
 }
 //  ЗАПУСК
 window.onload = () => {

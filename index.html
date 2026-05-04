@@ -725,33 +725,28 @@
     <div class="shop-v3">
 
         <aside class="shop-v3-sidebar">
-            <button class="shop-v3-side active">🛒 <span>МАГАЗИН</span><small>Рекомендуемое</small></button>
-            <button class="shop-v3-side">📦 <span>СУНДУКИ</span></button>
-            <button class="shop-v3-side">💎 <span>ВАЛЮТА</span></button>
-            <button class="shop-v3-side">🎁 <span>НАБОРЫ</span></button>
-            <button class="shop-v3-side">⚡ <span>ЭНЕРГИЯ</span></button>
+<button class="shop-v3-side active" onclick="setShopCategory('recommend')">🛒 <span>МАГАЗИН</span><small>Рекомендуемое</small></button>
+<button class="shop-v3-side" onclick="setShopCategory('chests')">📦 <span>СУНДУКИ</span></button>
+<button class="shop-v3-side" onclick="setShopCategory('currency')">💎 <span>ВАЛЮТА</span></button>
+<button class="shop-v3-side" onclick="setShopCategory('packs')">🎁 <span>НАБОРЫ</span></button>
+<button class="shop-v3-side" onclick="setShopCategory('energy')">⚡ <span>ЭНЕРГИЯ</span></button>
+<button class="shop-v3-side" onclick="setShopCategory('pass')">🎟️ <span>ПРОПУСК</span></button>
         </aside>
 
         <main class="shop-v3-main">
             <div class="shop-v3-header">
                 <button class="shop-v3-back" onclick="goHome()">‹</button>
                 <h1>МАГАЗИН</h1>
-
-                <div class="shop-v3-balances">
-                    <div><img src="./image/ui/gold.png"> <span id="shop-v3-gold">0</span> <b>+</b></div>
-                    <div><img src="./image/ui/gems.png"> <span id="shop-v3-gems">0</span> <b>+</b></div>
-                    <div><img src="./image/ui/power-shards.png"> <span id="shop-v3-shards">0</span> <b>+</b></div>
-                    <div><img src="./image/ui/energy.png"> <span id="shop-v3-energy">0/120</span> <b>+</b></div>
-                </div>
             </div>
 
-            <div class="shop-v3-tabs">
-                <button class="active">РЕКОМЕНДУЕМ</button>
-                <button>СУНДУКИ</button>
-                <button>ВАЛЮТА</button>
-                <button>НАБОРЫ</button>
-                <button>ЭНЕРГИЯ</button>
-            </div>
+<div class="shop-v3-tabs">
+    <button class="active" onclick="setShopCategory('recommend')">РЕКОМЕНДУЕМ</button>
+    <button onclick="setShopCategory('chests')">СУНДУКИ</button>
+    <button onclick="setShopCategory('currency')">ВАЛЮТА</button>
+    <button onclick="setShopCategory('packs')">НАБОРЫ</button>
+    <button onclick="setShopCategory('energy')">ЭНЕРГИЯ</button>
+    <button onclick="setShopCategory('pass')">ПРОПУСК</button>
+</div>
 
             <section class="shop-v3-section">
                 <div class="shop-v3-row-title">РЕКОМЕНДУЕМ</div>
@@ -761,7 +756,7 @@
             <section class="shop-v3-section">
                 <div class="shop-v3-row-head">
                     <div class="shop-v3-row-title">СУНДУКИ</div>
-                    <div class="shop-v3-see">СМОТРЕТЬ ВСЕ ›</div>
+                    <button class="shop-v3-see" onclick="setShopCategory('chests')">СМОТРЕТЬ ВСЕ ›</button>
                 </div>
                 <div class="shop-v3-chest-grid" id="shop-v3-chests"></div>
             </section>
@@ -769,10 +764,33 @@
             <section class="shop-v3-section">
                 <div class="shop-v3-row-head">
                     <div class="shop-v3-row-title">ВАЛЮТА</div>
-                    <div class="shop-v3-see">СМОТРЕТЬ ВСЕ ›</div>
+                    <button class="shop-v3-see" onclick="setShopCategory('currency')">СМОТРЕТЬ ВСЕ ›</button>
                 </div>
                 <div class="shop-v3-currency-grid" id="shop-v3-currency"></div>
             </section>
+            <section class="shop-v3-section">
+    <div class="shop-v3-row-head">
+        <div class="shop-v3-row-title">НАБОРЫ</div>
+        <button class="shop-v3-see" onclick="setShopCategory('packs')">СМОТРЕТЬ ВСЕ ›</button>
+    </div>
+    <div class="shop-v3-pack-grid" id="shop-v3-packs"></div>
+</section>
+
+<section class="shop-v3-section">
+    <div class="shop-v3-row-head">
+        <div class="shop-v3-row-title">ЭНЕРГИЯ</div>
+        <button class="shop-v3-see" onclick="setShopCategory('energy')">СМОТРЕТЬ ВСЕ ›</button>
+    </div>
+    <div class="shop-v3-currency-grid" id="shop-v3-energy-grid"></div>
+</section>
+
+<section class="shop-v3-section">
+    <div class="shop-v3-row-head">
+        <div class="shop-v3-row-title">ПРОПУСК</div>
+        <button class="shop-v3-see" onclick="setShopCategory('pass')">СМОТРЕТЬ ВСЕ ›</button>
+    </div>
+    <div class="shop-v3-currency-grid" id="shop-v3-pass"></div>
+</section>
         </main>
 
     </div>
