@@ -721,18 +721,61 @@
     </div>
 </div>
 
-<div id="shop-screen" class="screen">
+<div id="shop-screen" class="screen shop-screen-v3">
+    <div class="shop-v3">
 
-    <h2>МАГАЗИН</h2>
+        <aside class="shop-v3-sidebar">
+            <button class="shop-v3-side active">🛒 <span>МАГАЗИН</span><small>Рекомендуемое</small></button>
+            <button class="shop-v3-side">📦 <span>СУНДУКИ</span></button>
+            <button class="shop-v3-side">💎 <span>ВАЛЮТА</span></button>
+            <button class="shop-v3-side">🎁 <span>НАБОРЫ</span></button>
+            <button class="shop-v3-side">⚡ <span>ЭНЕРГИЯ</span></button>
+        </aside>
 
-    <div class="shop-tabs">
-        <button onclick="openShopTab('currency')">Валюта</button>
-        <button onclick="openShopTab('chests')">Сундуки</button>
-        <button onclick="openShopTab('packs')">Наборы</button>
+        <main class="shop-v3-main">
+            <div class="shop-v3-header">
+                <button class="shop-v3-back" onclick="goHome()">‹</button>
+                <h1>МАГАЗИН</h1>
+
+                <div class="shop-v3-balances">
+                    <div><img src="./image/ui/gold.png"> <span id="shop-v3-gold">0</span> <b>+</b></div>
+                    <div><img src="./image/ui/gems.png"> <span id="shop-v3-gems">0</span> <b>+</b></div>
+                    <div><img src="./image/ui/power-shards.png"> <span id="shop-v3-shards">0</span> <b>+</b></div>
+                    <div><img src="./image/ui/energy.png"> <span id="shop-v3-energy">0/120</span> <b>+</b></div>
+                </div>
+            </div>
+
+            <div class="shop-v3-tabs">
+                <button class="active">РЕКОМЕНДУЕМ</button>
+                <button>СУНДУКИ</button>
+                <button>ВАЛЮТА</button>
+                <button>НАБОРЫ</button>
+                <button>ЭНЕРГИЯ</button>
+            </div>
+
+            <section class="shop-v3-section">
+                <div class="shop-v3-row-title">РЕКОМЕНДУЕМ</div>
+                <div class="shop-v3-pack-grid" id="shop-v3-recommend"></div>
+            </section>
+
+            <section class="shop-v3-section">
+                <div class="shop-v3-row-head">
+                    <div class="shop-v3-row-title">СУНДУКИ</div>
+                    <div class="shop-v3-see">СМОТРЕТЬ ВСЕ ›</div>
+                </div>
+                <div class="shop-v3-chest-grid" id="shop-v3-chests"></div>
+            </section>
+
+            <section class="shop-v3-section">
+                <div class="shop-v3-row-head">
+                    <div class="shop-v3-row-title">ВАЛЮТА</div>
+                    <div class="shop-v3-see">СМОТРЕТЬ ВСЕ ›</div>
+                </div>
+                <div class="shop-v3-currency-grid" id="shop-v3-currency"></div>
+            </section>
+        </main>
+
     </div>
-
-    <div id="shop-content"></div>
-
 </div>
 <div id="chest-reward-modal" class="modal">
     <div class="modal-content">

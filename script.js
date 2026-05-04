@@ -6202,6 +6202,83 @@ function renderShopV2() {
         </div>
     `).join("");
 }
+// === SHOP V3 FINAL ===
+
+const shopV3 = {
+    recommend: [
+        { title: "СТАРТОВЫЙ НАБОР", img: "./image/ui/chest-epic.png", rewards: "💎 500   🪙 10 000   📦 x2", price: "149,00 ₽", badge: "ВЫГОДНО" },
+        { title: "НАБОР СИЛЫ", img: "./image/ui/power-shards.png", rewards: "💎 1200   🔮 600   🪙 20 000", price: "299,00 ₽", badge: "ХИТ" },
+        { title: "ЭПИЧЕСКИЙ НАБОР", img: "./image/ui/chest-epic.png", rewards: "💎 2500   🔮 1500   📦 x5", price: "599,00 ₽", badge: "ЛУЧШИЙ" },
+        { title: "ЛЕГЕНДАРНЫЙ НАБОР", img: "./image/ui/chest-legendary.png", rewards: "💎 5000   🔮 3000   📦 x10", price: "1199,00 ₽", badge: "МАКСИМУМ" }
+    ],
+    chests: [
+        { id: "common", title: "ОБЫЧНЫЙ СУНДУК", img: "./image/ui/chest-common.png", desc: "Содержит обычные награды", price: "50" },
+        { id: "rare", title: "РЕДКИЙ СУНДУК", img: "./image/ui/chest-rare.png", desc: "Больше редких наград", price: "120" },
+        { id: "epic", title: "ЭПИЧЕСКИЙ СУНДУК", img: "./image/ui/chest-epic.png", desc: "Высокий шанс эпических наград", price: "300" },
+        { id: "legendary", title: "ЛЕГЕНДАРНЫЙ СУНДУК", img: "./image/ui/chest-legendary.png", desc: "Лучшие награды", price: "800" }
+    ],
+    currency: [
+        { title: "ЗОЛОТО", img: "./image/ui/gold.png", amount: "10 000", price: "50" },
+        { title: "ЗОЛОТО", img: "./image/ui/gold.png", amount: "50 000", price: "200" },
+        { title: "ОСКОЛКИ СИЛЫ", img: "./image/ui/power-shards.png", amount: "500", price: "100" },
+        { title: "ОСКОЛКИ СИЛЫ", img: "./image/ui/power-shards.png", amount: "2500", price: "400" },
+        { title: "ЭНЕРГИЯ", img: "./image/ui/energy.png", amount: "50", price: "30" },
+        { title: "ЭНЕРГИЯ", img: "./image/ui/energy.png", amount: "120", price: "60" }
+    ]
+};
+
+function openShopScreen() {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+
+    const shop = document.getElementById("shop-screen");
+    if (!shop) return;
+
+    shop.classList.add("active");
+    renderShopV3();
+}
+
+function renderShopV3() {
+    const rec = document.getElementById("shop-v3-recommend");
+    const chests = document.getElementById("shop-v3-chests");
+    const currency = document.getElementById("shop-v3-currency");
+
+    if (!rec || !chests || !currency) return;
+
+    rec.innerHTML = shopV3.recommend.map(item => `
+        <div class="shop-v3-pack-card">
+            <div class="shop-v3-badge">${item.badge}</div>
+            <h3>${item.title}</h3>
+            <img src="${item.img}" alt="${item.title}">
+            <div class="shop-v3-rewards">${item.rewards}</div>
+            <button>${item.price}</button>
+        </div>
+    `).join("");
+
+    chests.innerHTML = shopV3.chests.map(item => `
+        <div class="shop-v3-chest-card" onclick="openChest('${item.id}')">
+            <img src="${item.img}" alt="${item.title}">
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
+            <button><img src="./image/ui/gems.png"> ${item.price}</button>
+        </div>
+    `).join("");
+
+    currency.innerHTML = shopV3.currency.map(item => `
+        <div class="shop-v3-small-card">
+            <img src="${item.img}" alt="${item.title}">
+            <h3>${item.title}</h3>
+            <strong>${item.amount}</strong>
+            <button><img src="./image/ui/gems.png"> ${item.price}</button>
+        </div>
+    `).join("");
+
+    if (typeof playerData !== "undefined") {
+        document.getElementById("shop-v3-gold").innerText = playerData.resources?.gold ?? 0;
+        document.getElementById("shop-v3-gems").innerText = playerData.resources?.premiumTokens ?? 0;
+        document.getElementById("shop-v3-shards").innerText = playerData.resources?.powerShards ?? 0;
+        document.getElementById("shop-v3-energy").innerText = `${playerData.resources?.energy ?? 0}/120`;
+    }
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
