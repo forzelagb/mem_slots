@@ -6659,17 +6659,6 @@ function buyChest(type) {
 
     openChest(type);
 }
-function openChestsInventory() {
-    document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-    });
-
-    const screen = document.getElementById("chests-inventory-screen");
-    if (!screen) return;
-
-    screen.classList.add("active");
-    renderChestsInventory();
-}
 
 function renderChestsInventory() {
     const grid = document.getElementById("inventory-chests-grid");
@@ -6792,18 +6781,7 @@ function openChest(type) {
 
     screen.classList.add("active");
 }
-function openChestsInventory() {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
 
-    const inventoryScreen = document.getElementById('inventory-screen');
-    if (inventoryScreen) {
-        inventoryScreen.classList.add('active');
-    }
-
-    renderInventory();
-}
 function giveRandomReward(chestType) {
     const rewards = generateChestRewards(chestType);
     showChestOpeningModal(chestType, rewards);
@@ -7296,6 +7274,23 @@ function renderResourcesInventory() {
         </div>
     `).join("");
 }   
+function openChestsInventory() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    const inventoryScreen = document.getElementById("inventory-screen");
+
+    if (!inventoryScreen) {
+        console.error("Не найден #inventory-screen");
+        return;
+    }
+
+    inventoryScreen.classList.add("active");
+
+    openInventoryTab("chests");
+    renderInventory();
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
