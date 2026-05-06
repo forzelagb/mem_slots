@@ -13779,6 +13779,43 @@ body.modal-open {
         grid-template-columns: 1fr;
     }
 }
+
+.resources-inventory-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+}
+
+.resource-inventory-card {
+    padding: 24px;
+    border-radius: 24px;
+    text-align: center;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.14), transparent 45%),
+        linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.032));
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 18px 42px rgba(0,0,0,0.34);
+}
+
+.resource-inventory-card img {
+    width: 86px;
+    height: 86px;
+    object-fit: contain;
+    margin-bottom: 14px;
+}
+
+.resource-inventory-title {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 8px;
+}
+
+.resource-inventory-amount {
+    font-size: 30px;
+    color: var(--gold);
+    text-shadow: 0 0 14px rgba(255, 211, 106, 0.42);
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

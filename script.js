@@ -7060,20 +7060,65 @@ function openInventoryTab(tabName) {
     });
 
     const target = document.getElementById(`inventory-tab-${tabName}`);
-    if (target) target.classList.add("active");
+    if (target) {
+        target.classList.add("active");
+    }
 
     const activeBtn = Array.from(document.querySelectorAll(".inventory-tab-btn"))
         .find(btn => btn.getAttribute("onclick")?.includes(`'${tabName}'`));
 
-    if (activeBtn) activeBtn.classList.add("active");
-
-    if (tabName === "cloth") {
-        renderClothInventory();
+    if (activeBtn) {
+        activeBtn.classList.add("active");
     }
 
     if (tabName === "chests") {
         renderInventory();
     }
+
+    if (tabName === "cloth") {
+        renderClothInventory();
+    }
+
+    if (tabName === "resources") {
+        renderResourcesInventory();
+    }
+}
+function renderResourcesInventory() {
+    const grid = document.getElementById("resources-inventory-grid");
+    if (!grid) return;
+
+    const resources = playerData.resources || {};
+
+    const items = [
+        {
+            title: "Золото",
+            amount: resources.gold ?? 0,
+            icon: "image/ui/gold.png"
+        },
+        {
+            title: "Гемы",
+            amount: resources.premiumTokens ?? 0,
+            icon: "image/ui/gems.png"
+        },
+        {
+            title: "Энергия",
+            amount: resources.energy ?? 0,
+            icon: "image/ui/energy.png"
+        },
+        {
+            title: "Осколки силы",
+            amount: resources.powerShards ?? 0,
+            icon: "image/ui/power-shards.png"
+        }
+    ];
+
+    grid.innerHTML = items.map(item => `
+        <div class="resource-inventory-card">
+            <img src="${item.icon}" onerror="this.style.display='none'">
+            <div class="resource-inventory-title">${item.title}</div>
+            <div class="resource-inventory-amount">${item.amount}</div>
+        </div>
+    `).join("");
 }
 
 function renderClothInventory() {
@@ -7135,40 +7180,7 @@ const clothRarityList = [
     "legendary"
 ];
 
-function openInventoryTab(tabName) {
 
-    document.querySelectorAll(".inventory-tab-content")
-        .forEach(tab => {
-            tab.classList.remove("active");
-        });
-
-    document.querySelectorAll(".inventory-tab-btn")
-        .forEach(btn => {
-            btn.classList.remove("active");
-        });
-
-    const tab =
-        document.getElementById(`inventory-tab-${tabName}`);
-
-    if (tab) {
-        tab.classList.add("active");
-    }
-
-    const activeBtn =
-        Array.from(document.querySelectorAll(".inventory-tab-btn"))
-        .find(btn =>
-            btn.getAttribute("onclick")
-            ?.includes(`'${tabName}'`)
-        );
-
-    if (activeBtn) {
-        activeBtn.classList.add("active");
-    }
-
-    if (tabName === "cloth") {
-        renderClothInventory();
-    }
-}
 
 function renderClothInventory() {
 
@@ -7223,6 +7235,44 @@ function renderClothInventory() {
         grid.appendChild(card);
     });
 }
+
+function renderResourcesInventory() {
+    const grid = document.getElementById("resources-inventory-grid");
+    if (!grid) return;
+
+    const resources = playerData.resources || {};
+
+    const items = [
+        {
+            title: "Золото",
+            amount: resources.gold ?? 0,
+            icon: "image/ui/gold.png"
+        },
+        {
+            title: "Гемы",
+            amount: resources.premiumTokens ?? 0,
+            icon: "image/ui/gems.png"
+        },
+        {
+            title: "Энергия",
+            amount: resources.energy ?? 0,
+            icon: "image/ui/energy.png"
+        },
+        {
+            title: "Осколки силы",
+            amount: resources.powerShards ?? 0,
+            icon: "image/ui/power-shards.png"
+        }
+    ];
+
+    grid.innerHTML = items.map(item => `
+        <div class="resource-inventory-card">
+            <img src="${item.icon}" onerror="this.style.display='none'">
+            <div class="resource-inventory-title">${item.title}</div>
+            <div class="resource-inventory-amount">${item.amount}</div>
+        </div>
+    `).join("");
+}   
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
