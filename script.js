@@ -7050,38 +7050,61 @@ function applyPendingChestRewards() {
         }
     });
 }
+const inventoryTabMeta = {
+    chests: {
+        title: "СУНДУКИ",
+        subtitle: "Открывай сундуки и получай награды!",
+        info: "ⓘ Сундуки хранятся в инвентаре."
+    },
+    cloth: {
+        title: "ТКАНИ",
+        subtitle: "Собирай ткани по темам и редкостям.",
+        info: "ⓘ Ткани нужны для прокачки персонажей."
+    },
+    fragments: {
+        title: "ФРАГМЕНТЫ",
+        subtitle: "Фрагменты для улучшений и крафта.",
+        info: "ⓘ Этот раздел скоро будет расширен."
+    },
+    resources: {
+        title: "РЕСУРСЫ",
+        subtitle: "Все основные валюты и материалы игрока.",
+        info: "ⓘ Ресурсы используются в магазине и прокачке."
+    }
+};
+
 function openInventoryTab(tabName) {
     document.querySelectorAll(".inventory-tab-content").forEach(tab => {
         tab.classList.remove("active");
     });
 
-    document.querySelectorAll(".inventory-tab-btn").forEach(btn => {
+    document.querySelectorAll(".inventory-side-btn").forEach(btn => {
         btn.classList.remove("active");
     });
 
     const target = document.getElementById(`inventory-tab-${tabName}`);
-    if (target) {
-        target.classList.add("active");
-    }
+    if (target) target.classList.add("active");
 
-    const activeBtn = Array.from(document.querySelectorAll(".inventory-tab-btn"))
+    const activeBtn = Array.from(document.querySelectorAll(".inventory-side-btn"))
         .find(btn => btn.getAttribute("onclick")?.includes(`'${tabName}'`));
 
-    if (activeBtn) {
-        activeBtn.classList.add("active");
+    if (activeBtn) activeBtn.classList.add("active");
+
+    const meta = inventoryTabMeta[tabName];
+
+    if (meta) {
+        const title = document.getElementById("inventory-title");
+        const subtitle = document.getElementById("inventory-subtitle");
+        const info = document.querySelector(".inventory-info-box");
+
+        if (title) title.innerText = meta.title;
+        if (subtitle) subtitle.innerText = meta.subtitle;
+        if (info) info.innerText = meta.info;
     }
 
-    if (tabName === "chests") {
-        renderInventory();
-    }
-
-    if (tabName === "cloth") {
-        renderClothInventory();
-    }
-
-    if (tabName === "resources") {
-        renderResourcesInventory();
-    }
+    if (tabName === "chests") renderInventory();
+    if (tabName === "cloth") renderClothInventory();
+    if (tabName === "resources") renderResourcesInventory();
 }
 function renderResourcesInventory() {
     const grid = document.getElementById("resources-inventory-grid");
