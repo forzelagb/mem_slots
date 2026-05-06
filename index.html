@@ -31,7 +31,7 @@
         <button onclick="goHome()">🏠<span>Главная</span></button>
         <button onclick="openNewCharactersScreen()">🧙<span>Персонажи</span></button>
         <button onclick="openChestsInventory()">🎒<span>Инвентарь</span></button>
-        <button class="active" onclick="openShopScreen()">🛒<span>Магазин</span></button>
+        <button onclick="openShopScreen()">🛒<span>Магазин</span></button>
         <button onclick="openTab('pass')">🎟️<span>Пропуск</span></button>
     </nav>
 
@@ -1026,6 +1026,19 @@
     </button>
 </div>
 
+    </div>
+</div>
+<div id="chest-reward-modal" class="chest-reward-modal">
+    <div class="chest-reward-box">
+        <div id="chest-reward-title" class="chest-reward-title">НАГРАДА</div>
+
+        <img id="chest-reward-icon" class="chest-reward-icon" src="" alt="reward">
+
+        <div id="chest-reward-text" class="chest-reward-text"></div>
+
+        <button onclick="closeChestRewardModal()" class="chest-reward-btn">
+            Забрать
+        </button>
     </div>
 </div>
     <!-- СКРИПТЫ -->

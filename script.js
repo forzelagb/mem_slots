@@ -6852,7 +6852,29 @@ function giveRandomReward(type) {
     const pool = rewardsByChest[type];
     const reward = pool[Math.floor(Math.random() * pool.length)];
 
-    alert(`Награда: ${reward.type} x${reward.amount}`);
+    showChestRewardModal(reward);
+}
+function showChestRewardModal(reward) {
+    const modal = document.getElementById('chest-reward-modal');
+    const icon = document.getElementById('chest-reward-icon');
+    const text = document.getElementById('chest-reward-text');
+
+    const icons = {
+        gold: 'image/ui/gold.png',
+        gems: 'image/ui/gems.png',
+        energy: 'image/ui/energy.png',
+        cloth: 'image/ui/cloth-common.png'
+    };
+
+    icon.src = icons[reward.type] || 'image/ui/gems.png';
+    text.innerText = `${reward.type} x${reward.amount}`;
+
+    modal.classList.add('active');
+}
+
+function closeChestRewardModal() {
+    const modal = document.getElementById('chest-reward-modal');
+    modal.classList.remove('active');
 }
 //  ЗАПУСК
 window.onload = () => {
