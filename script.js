@@ -417,40 +417,41 @@ function animateBalanceChange(type) {
         }
     });
 }
-
 function updateUI() {
     const lobbyBal = document.getElementById('lobby-balance');
     const gameBal = document.getElementById('game-balance');
 
-    const energy = playerData.resources?.energy ?? 0;
     const goldEl = document.getElementById('header-gold');
-    if (premiumEl) premiumEl.innerText = playerData.resources.premiumTokens ?? 0;
     const premiumEl = document.getElementById('header-premium-tokens');
-const shardsEl = document.getElementById('header-power-shards');
-const clothEl = document.getElementById('header-cloth-fragments');
+    const shardsEl = document.getElementById('header-power-shards');
+    const clothEl = document.getElementById('header-cloth-fragments');
 
-if (goldEl) goldEl.innerText = playerData.resources.gold ?? 0;
-if (shardsEl) shardsEl.innerText = playerData.resources.powerShards ?? 0;
-
-if (clothEl) {
-    const char = currentCharacter || "sasavot";
-    const rarity = currentRarity || "common";
-
-    const cloth =
-        playerData.resources.clothFragments?.[char]?.[rarity] ?? 0;
-
-    clothEl.innerText = cloth;
-}
     const globalEnergy = document.getElementById('global-energy-value');
-const energyMiniFill = document.getElementById('energy-mini-fill');
+    const energyMiniFill = document.getElementById('energy-mini-fill');
 
-if (globalEnergy) globalEnergy.innerText = energy;
+    const energy = playerData.resources?.energy ?? 0;
 
-if (energyMiniFill) {
-    const maxEnergy = 100;
-    const percent = Math.max(0, Math.min(100, (energy / maxEnergy) * 100));
-    energyMiniFill.style.width = percent + '%';
-}
+    if (goldEl) goldEl.innerText = playerData.resources?.gold ?? 0;
+    if (premiumEl) premiumEl.innerText = playerData.resources?.premiumTokens ?? 0;
+    if (shardsEl) shardsEl.innerText = playerData.resources?.powerShards ?? 0;
+
+    if (clothEl) {
+        const char = currentCharacter || "sasavot";
+        const rarity = currentRarity || "common";
+
+        const cloth =
+            playerData.resources?.clothFragments?.[char]?.[rarity] ?? 0;
+
+        clothEl.innerText = cloth;
+    }
+
+    if (globalEnergy) globalEnergy.innerText = energy;
+
+    if (energyMiniFill) {
+        const maxEnergy = playerData.resources?.maxEnergy ?? 100;
+        const percent = Math.max(0, Math.min(100, (energy / maxEnergy) * 100));
+        energyMiniFill.style.width = percent + '%';
+    }
 
     if (lobbyBal) lobbyBal.innerText = energy;
     if (gameBal) gameBal.innerText = energy;
@@ -463,13 +464,14 @@ if (energyMiniFill) {
         spinBtn.innerHTML = `НЕТ ЭНЕРГИИ`;
     } else {
         spinBtn.disabled = false;
+
         if (!isSpinning) {
             spinBtn.classList.add('ready-pulse');
         }
+
         spinBtn.innerHTML = `PLAY`;
     }
 }
-
 function startGame(themeName) {
     applyVIPTheme(themeName);
 
@@ -6598,45 +6600,6 @@ function rollRarity(chances) {
     return "common";
 }
 
-function generateChestRewards(chestType) {
-    const config = chestDropConfig[chestType] || chestDropConfig.common;
-
-    const goldValue = randomBetween(config.gold[0], config.gold[1]);
-    const shardsValue = randomBetween(config.shards[0], config.shards[1]);
-
-    const rewards = [
-        {
-            type: "gold",
-            title: "ЗОЛОТО",
-            amount: `+${goldValue}`,
-            value: goldValue,
-            rarity: "common",
-            img: "./image/ui/gold.png"
-        },
-        {
-            type: "powerShards",
-            title: "ОСКОЛКИ СИЛЫ",
-            amount: `+${shardsValue}`,
-            value: shardsValue,
-            rarity: "rare",
-            img: "./image/ui/power-shards.png"
-        }
-    ];
-
-    for (let i = 0; i < config.clothSlots; i++) {
-        const clothRarity = rollRarity(config.clothChance);
-        const clothValue = randomBetween(config.clothAmount[0], config.clothAmount[1]);
-
-        const clothReward = getRandomClothReward(clothRarity);
-        clothReward.amount = `+${clothValue}`;
-        clothReward.value = clothValue;
-
-        rewards.push(clothReward);
-    }
-
-    return rewards;
-}
-let pendingChestRewards = [];
 
 function applyRewardsToPlayer(rewards) {
     rewards.forEach(reward => {
@@ -6845,71 +6808,7 @@ function giveRandomReward(chestType) {
     const rewards = generateChestRewards(chestType);
     showChestOpeningModal(chestType, rewards);
 }
-function showChestRewardModal(reward) {
-    const modal = document.getElementById('chest-reward-modal');
-    const icon = document.getElementById('chest-reward-icon');
-    const text = document.getElementById('chest-reward-text');
 
-    const icons = {
-        gold: 'image/ui/gold.png',
-        gems: 'image/ui/gems.png',
-        energy: 'image/ui/energy.png',
-        cloth: 'image/ui/cloth-common.png'
-    };
-
-    icon.src = icons[reward.type] || 'image/ui/gems.png';
-    text.innerText = `${reward.type} x${reward.amount}`;
-
-    modal.classList.add('active');
-}
-const chestRewardConfig = {
-    common: {
-        gold: [80, 150],
-        power: [3, 6],
-        clothSlots: 1,
-        clothRarities: ["common", "rare"]
-    },
-
-    rare: {
-        gold: [180, 350],
-        power: [6, 12],
-        clothSlots: 1,
-        clothRarities: ["common", "rare", "epic"]
-    },
-
-    epic: {
-        gold: [450, 800],
-        power: [14, 25],
-        clothSlots: 2,
-        clothRarities: ["rare", "epic", "legendary"]
-    },
-
-    legendary: {
-        gold: [1000, 1800],
-        power: [30, 55],
-        clothSlots: 3,
-        clothRarities: ["epic", "legendary"]
-    }
-};
-
-const inventoryThemes = [
-    "helin",
-    "lexapaws",
-    "litwin",
-    "melstroy",
-    "nikkifn",
-    "rejiboi",
-    "rostickfaceskid",
-    "sasavot"
-];
-
-function randomBetween(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function randomFrom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-}
 
 function generateChestRewards(chestType) {
     const config = chestRewardConfig[chestType];
@@ -6946,97 +6845,210 @@ function generateChestRewards(chestType) {
 
     return rewards;
 }
+function giveRandomReward(chestType) {
+    const rewards = generateChestRewards(chestType);
+    showChestOpeningModal(chestType, rewards);
+}
+
+const chestRewardConfig = {
+    common: {
+        gold: [80, 150],
+        power: [3, 6],
+        clothSlots: 1,
+        clothRarities: ["common", "rare"]
+    },
+    rare: {
+        gold: [180, 350],
+        power: [6, 12],
+        clothSlots: 1,
+        clothRarities: ["common", "rare", "epic"]
+    },
+    epic: {
+        gold: [450, 800],
+        power: [14, 25],
+        clothSlots: 2,
+        clothRarities: ["rare", "epic", "legendary"]
+    },
+    legendary: {
+        gold: [1000, 1800],
+        power: [30, 55],
+        clothSlots: 3,
+        clothRarities: ["epic", "legendary"]
+    }
+};
+
+const inventoryThemes = [
+    "helin",
+    "lexapaws",
+    "litwin",
+    "melstroy",
+    "nikkifn",
+    "rejiboi",
+    "rostickfaceskid",
+    "sasavot"
+];
+
+const rewardIcons = {
+    gold: "image/ui/gold.png",
+    power: "image/ui/power-shards.png"
+};
+
+const chestIcons = {
+    common: "image/ui/chest-common.png",
+    rare: "image/ui/chest-rare.png",
+    epic: "image/ui/chest-epic.png",
+    legendary: "image/ui/chest-legendary.png"
+};
+
+let pendingChestRewards = [];
+
+function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomFrom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getClothIcon(theme, rarity) {
+    return `image/ui/cloth/${theme}-${rarity}.png`;
+}
+
+function generateChestRewards(chestType) {
+    const config = chestRewardConfig[chestType] || chestRewardConfig.common;
+    const rewards = [];
+
+    rewards.push({
+        type: "gold",
+        title: "Золото",
+        amount: randomBetween(config.gold[0], config.gold[1]),
+        icon: rewardIcons.gold,
+        rarity: "gold"
+    });
+
+    rewards.push({
+        type: "power",
+        title: "Осколки силы",
+        amount: randomBetween(config.power[0], config.power[1]),
+        icon: rewardIcons.power,
+        rarity: "power"
+    });
+
+    for (let i = 0; i < config.clothSlots; i++) {
+        const theme = randomFrom(inventoryThemes);
+        const rarity = randomFrom(config.clothRarities);
+
+        rewards.push({
+            type: "cloth",
+            title: `${theme} ткань`,
+            theme,
+            rarity,
+            amount: randomBetween(2, 6),
+            icon: getClothIcon(theme, rarity)
+        });
+    }
+
+    return rewards;
+}
+
 function showChestOpeningModal(chestType, rewards) {
+    pendingChestRewards = rewards;
+
     const modal = document.getElementById("chest-reward-modal");
     const title = document.getElementById("chest-reward-title");
-    const icon = document.getElementById("chest-reward-icon");
-    const text = document.getElementById("chest-reward-text");
+    const chestImg = document.getElementById("chest-reward-icon");
+    const list = document.getElementById("chest-rewards-list");
 
-    const chestIcons = {
-        common: "image/ui/chest-common.png",
-        rare: "image/ui/chest-rare.png",
-        epic: "image/ui/chest-epic.png",
-        legendary: "image/ui/chest-legendary.png"
-    };
+    if (!modal || !title || !chestImg || !list) return;
 
     modal.classList.add("active");
 
     title.innerText = "ОТКРЫВАЕМ...";
-    icon.src = chestIcons[chestType];
-    icon.classList.add("chest-shake");
-    text.innerText = "";
+    list.innerHTML = "";
 
-setTimeout(() => {
-    icon.classList.remove("chest-shake");
-    showRewardsSequence(rewards);
-}, 900);
+    chestImg.style.display = "block";
+    chestImg.src = chestIcons[chestType] || chestIcons.common;
+    chestImg.classList.remove("reward-pop");
+    chestImg.classList.add("chest-shake");
+
+    setTimeout(() => {
+        chestImg.classList.remove("chest-shake");
+        chestImg.style.display = "none";
+        renderChestRewards(pendingChestRewards);
+    }, 900);
 }
 
-function showRewardsSequence(rewards) {
+function renderChestRewards(rewards) {
     const title = document.getElementById("chest-reward-title");
-    const icon = document.getElementById("chest-reward-icon");
     const list = document.getElementById("chest-rewards-list");
 
-    title.innerText = "ТВОИ НАГРАДЫ";
-    icon.style.display = "none";
+    if (!title || !list) return;
+
+    title.innerText = "НАГРАДЫ";
     list.innerHTML = "";
 
     rewards.forEach((reward, index) => {
-        applyRewardToPlayer(reward);
-
         const card = document.createElement("div");
-        card.className = "chest-reward-card";
-        card.style.animationDelay = `${index * 0.16}s`;
+        card.className = `chest-reward-card reward-${reward.rarity || reward.type}`;
+        card.style.animationDelay = `${index * 0.14}s`;
 
         card.innerHTML = `
-            <img src="${reward.icon}" alt="">
+            <img src="${reward.icon}" alt="${reward.title}" onerror="this.src='image/ui/gems.png'">
             <div class="chest-reward-card-title">${reward.title}</div>
-            <div class="chest-reward-card-amount">x${reward.amount}</div>
+            <div class="chest-reward-card-amount">${reward.amount}</div>
         `;
 
         list.appendChild(card);
     });
-
-    updateUI();
-    savePlayer();
-}
-
-function applyRewardToPlayer(reward) {
-    if (!playerData.resources) return;
-
-    if (reward.type === "gold") {
-        playerData.resources.gold = (playerData.resources.gold || 0) + reward.amount;
-    }
-
-    if (reward.type === "power") {
-        playerData.resources.powerShards = (playerData.resources.powerShards || 0) + reward.amount;
-    }
-
-    if (reward.type === "cloth") {
-        if (!playerData.resources.clothFragments) {
-            playerData.resources.clothFragments = {};
-        }
-
-        if (!playerData.resources.clothFragments[reward.theme]) {
-            playerData.resources.clothFragments[reward.theme] = {};
-        }
-
-        playerData.resources.clothFragments[reward.theme][reward.rarity] =
-            (playerData.resources.clothFragments[reward.theme][reward.rarity] || 0) + reward.amount;
-    }
-
-    updateUI();
-    savePlayer();
 }
 
 function closeChestRewardModal() {
+    applyPendingChestRewards();
+
     const modal = document.getElementById("chest-reward-modal");
-    const icon = document.getElementById("chest-reward-icon");
+    const chestImg = document.getElementById("chest-reward-icon");
     const list = document.getElementById("chest-rewards-list");
 
-    modal.classList.remove("active");
-    icon.style.display = "block";
-    list.innerHTML = "";
+    if (modal) modal.classList.remove("active");
+    if (chestImg) chestImg.style.display = "block";
+    if (list) list.innerHTML = "";
+
+    pendingChestRewards = [];
+
+    updateUI();
+    savePlayer();
+}
+
+function applyPendingChestRewards() {
+    if (!playerData.resources) playerData.resources = {};
+
+    if (!playerData.resources.clothFragments) {
+        playerData.resources.clothFragments = {};
+    }
+
+    pendingChestRewards.forEach(reward => {
+        if (reward.type === "gold") {
+            playerData.resources.gold = (playerData.resources.gold || 0) + reward.amount;
+        }
+
+        if (reward.type === "power") {
+            playerData.resources.powerShards = (playerData.resources.powerShards || 0) + reward.amount;
+        }
+
+        if (reward.type === "cloth") {
+            if (!playerData.resources.clothFragments[reward.theme]) {
+                playerData.resources.clothFragments[reward.theme] = {
+                    common: 0,
+                    rare: 0,
+                    epic: 0,
+                    legendary: 0
+                };
+            }
+
+            playerData.resources.clothFragments[reward.theme][reward.rarity] =
+                (playerData.resources.clothFragments[reward.theme][reward.rarity] || 0) + reward.amount;
+        }
+    });
 }
 //  ЗАПУСК
 window.onload = () => {
