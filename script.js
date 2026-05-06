@@ -6482,6 +6482,7 @@ openRewardScreen(rewards);
 // === REWARD REVEAL ===
 
 function openRewardScreen(rewards) {
+    pendingChestRewards = rewards;
     const screen = document.getElementById("reward-screen");
     const list = document.getElementById("reward-list");
 
@@ -6500,6 +6501,11 @@ function openRewardScreen(rewards) {
 
 function closeRewardScreen() {
     const screen = document.getElementById("reward-screen");
+
+    if (pendingChestRewards.length > 0) {
+        applyRewardsToPlayer(pendingChestRewards);
+        pendingChestRewards = [];
+    }
 
     if (screen) {
         screen.classList.remove("active");
@@ -6605,6 +6611,41 @@ function generateChestRewards(chestType) {
         },
         clothReward
     ];
+}
+let pendingChestRewards = [];
+
+function applyRewardsToPlayer(rewards) {
+    rewards.forEach(reward => {
+        if (reward.type === "gold") {
+            playerData.resources.gold += reward.value;
+        }
+
+        if (reward.type === "powerShards") {
+            playerData.resources.powerShards += reward.value;
+        }
+
+        if (reward.type === "cloth") {
+            const theme = reward.theme;
+            const rarity = reward.rarity;
+
+            if (!playerData.resources.clothFragments[theme]) {
+                playerData.resources.clothFragments[theme] = {
+                    common: 0,
+                    rare: 0,
+                    epic: 0,
+                    legendary: 0
+                };
+            }
+
+            playerData.resources.clothFragments[theme][rarity] += reward.value;
+        }
+    });
+
+    updateUI();
+
+    if (typeof saveGame === "function") {
+        saveGame();
+    }
 }
 //  ЗАПУСК
 window.onload = () => {
