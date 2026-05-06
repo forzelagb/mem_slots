@@ -424,6 +424,8 @@ function updateUI() {
 
     const energy = playerData.resources?.energy ?? 0;
     const goldEl = document.getElementById('header-gold');
+    if (premiumEl) premiumEl.innerText = playerData.resources.premiumTokens ?? 0;
+    const premiumEl = document.getElementById('header-premium-tokens');
 const shardsEl = document.getElementById('header-power-shards');
 const clothEl = document.getElementById('header-cloth-fragments');
 
@@ -6290,7 +6292,7 @@ function renderShopV3() {
     `).join("");
 
     chests.innerHTML = shopV3.chests.map(item => `
-        <div class="shop-v3-chest-card" onclick="openChest('${item.id}')">
+        <div class="shop-v3-chest-card" onclick="buyChest('${item.id}')">
             <img src="${item.img}" alt="${item.title}">
             <h3>${item.title}</h3>
             <p>${item.desc}</p>
@@ -6662,6 +6664,31 @@ function applyRewardsToPlayer(rewards) {
     if (typeof saveGame === "function") {
         saveGame();
     }
+}
+const chestPrices = {
+    common: 50,
+    rare: 120,
+    epic: 300,
+    legendary: 800
+};
+
+function buyChest(type) {
+    const price = chestPrices[type] || 0;
+
+    if ((playerData.resources.premiumTokens ?? 0) < price) {
+        alert("Недостаточно гемов");
+        return;
+    }
+
+    playerData.resources.premiumTokens -= price;
+
+    updateUI();
+
+    if (typeof saveGame === "function") {
+        saveGame();
+    }
+
+    openChest(type);
 }
 //  ЗАПУСК
 window.onload = () => {
