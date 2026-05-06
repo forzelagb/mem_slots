@@ -7050,6 +7050,179 @@ function applyPendingChestRewards() {
         }
     });
 }
+function openInventoryTab(tabName) {
+    document.querySelectorAll(".inventory-tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    document.querySelectorAll(".inventory-tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const target = document.getElementById(`inventory-tab-${tabName}`);
+    if (target) target.classList.add("active");
+
+    const activeBtn = Array.from(document.querySelectorAll(".inventory-tab-btn"))
+        .find(btn => btn.getAttribute("onclick")?.includes(`'${tabName}'`));
+
+    if (activeBtn) activeBtn.classList.add("active");
+
+    if (tabName === "cloth") {
+        renderClothInventory();
+    }
+
+    if (tabName === "chests") {
+        renderInventory();
+    }
+}
+
+function renderClothInventory() {
+    const grid = document.getElementById("cloth-inventory-grid");
+    if (!grid) return;
+
+    if (!playerData.resources) playerData.resources = {};
+    if (!playerData.resources.clothFragments) {
+        playerData.resources.clothFragments = {};
+    }
+
+    grid.innerHTML = "";
+
+    clothInventoryThemes.forEach(theme => {
+        const themeBox = document.createElement("div");
+        themeBox.className = "cloth-theme-card";
+
+        const title = theme.toUpperCase();
+
+        const rows = clothRarityList.map(rarity => {
+            const amount =
+                playerData.resources.clothFragments?.[theme]?.[rarity] ?? 0;
+
+            return `
+                <div class="cloth-rarity-row rarity-${rarity}">
+                    <img src="image/ui/cloth/${theme}-${rarity}.png"
+                         onerror="this.src='image/ui/cloth-common.png'">
+                    <span>${rarity}</span>
+                    <b>${amount}</b>
+                </div>
+            `;
+        }).join("");
+
+        themeBox.innerHTML = `
+            <div class="cloth-theme-title">${title}</div>
+            <div class="cloth-rarity-list">
+                ${rows}
+            </div>
+        `;
+
+        grid.appendChild(themeBox);
+    });
+}
+const clothInventoryThemes = [
+    "helin",
+    "lexapaws",
+    "litwin",
+    "melstroy",
+    "nikkifn",
+    "rejiboi",
+    "rostickfaceskid",
+    "sasavot"
+];
+
+const clothRarityList = [
+    "common",
+    "rare",
+    "epic",
+    "legendary"
+];
+
+function openInventoryTab(tabName) {
+
+    document.querySelectorAll(".inventory-tab-content")
+        .forEach(tab => {
+            tab.classList.remove("active");
+        });
+
+    document.querySelectorAll(".inventory-tab-btn")
+        .forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+    const tab =
+        document.getElementById(`inventory-tab-${tabName}`);
+
+    if (tab) {
+        tab.classList.add("active");
+    }
+
+    const activeBtn =
+        Array.from(document.querySelectorAll(".inventory-tab-btn"))
+        .find(btn =>
+            btn.getAttribute("onclick")
+            ?.includes(`'${tabName}'`)
+        );
+
+    if (activeBtn) {
+        activeBtn.classList.add("active");
+    }
+
+    if (tabName === "cloth") {
+        renderClothInventory();
+    }
+}
+
+function renderClothInventory() {
+
+    const grid =
+        document.getElementById("cloth-inventory-grid");
+
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    clothInventoryThemes.forEach(theme => {
+
+        const card = document.createElement("div");
+
+        card.className = "cloth-theme-card";
+
+        const rows =
+            clothRarityList.map(rarity => {
+
+                const amount =
+                    playerData.resources
+                    ?.clothFragments
+                    ?.[theme]
+                    ?.[rarity] ?? 0;
+
+                return `
+                    <div class="cloth-rarity-row rarity-${rarity}">
+                        
+                        <img
+                            src="image/ui/cloth/${theme}-${rarity}.png"
+                            onerror="this.src='image/ui/cloth-common.png'"
+                        >
+
+                        <span>${rarity}</span>
+
+                        <b>${amount}</b>
+
+                    </div>
+                `;
+            }).join("");
+
+        card.innerHTML = `
+            <div class="cloth-theme-title">
+                ${theme.toUpperCase()}
+            </div>
+
+            <div class="cloth-rarity-list">
+                ${rows}
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

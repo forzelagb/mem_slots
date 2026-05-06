@@ -984,6 +984,39 @@
 <div id="inventory-screen" class="screen">
 
     <h2 class="section-title">🎒 ИНВЕНТАРЬ</h2>
+    <div class="inventory-tabs">
+    <button class="inventory-tab-btn active" onclick="openInventoryTab('chests')">
+        Сундуки
+    </button>
+    <button class="inventory-tab-btn" onclick="openInventoryTab('cloth')">
+        Ткани
+    </button>
+    <button class="inventory-tab-btn" onclick="openInventoryTab('resources')">
+        Ресурсы
+    </button>
+</div>
+<div id="inventory-tab-chests" class="inventory-tab-content active">
+    <div class="inventory-tabs">
+    <button class="inventory-tab-btn active"
+            onclick="openInventoryTab('chests')">
+        Сундуки
+    </button>
+
+    <button class="inventory-tab-btn"
+            onclick="openInventoryTab('cloth')">
+        Ткани
+    </button>
+
+    <button class="inventory-tab-btn"
+            onclick="openInventoryTab('resources')">
+        Ресурсы
+    </button>
+</div>
+
+<!-- ВКЛАДКА СУНДУКОВ -->
+
+<div id="inventory-tab-chests"
+     class="inventory-tab-content active">
 
     <div class="inventory-grid">
 
@@ -1006,24 +1039,50 @@
                 Открыть
             </button>
         </div>
-        <div class="inventory-card">
-    <img src="image/ui/chest-epic.png">
-    <h3>Эпический сундук</h3>
-    <div id="epic-count">0</div>
 
-    <button onclick="openChest('epic')">
-        Открыть
-    </button>
+        <div class="inventory-card">
+            <img src="image/ui/chest-epic.png">
+            <h3>Эпический сундук</h3>
+            <div id="epic-count">0</div>
+
+            <button onclick="openChest('epic')">
+                Открыть
+            </button>
+        </div>
+
+        <div class="inventory-card">
+            <img src="image/ui/chest-legendary.png">
+            <h3>Легендарный сундук</h3>
+            <div id="legendary-count">0</div>
+
+            <button onclick="openChest('legendary')">
+                Открыть
+            </button>
+        </div>
+
+    </div>
 </div>
 
-<div class="inventory-card">
-    <img src="image/ui/chest-legendary.png">
-    <h3>Легендарный сундук</h3>
-    <div id="legendary-count">0</div>
+<!-- ВКЛАДКА ТКАНИ -->
 
-    <button onclick="openChest('legendary')">
-        Открыть
-    </button>
+<div id="inventory-tab-cloth"
+     class="inventory-tab-content">
+
+    <div id="cloth-inventory-grid"
+         class="cloth-inventory-grid">
+    </div>
+
+</div>
+
+<!-- ВКЛАДКА РЕСУРСОВ -->
+
+<div id="inventory-tab-resources"
+     class="inventory-tab-content">
+
+    <div class="inventory-empty">
+        Ресурсы скоро появятся
+    </div>
+
 </div>
 
     </div>
