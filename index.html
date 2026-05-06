@@ -53,10 +53,6 @@
             <span id="global-energy-value">100</span>
             <b>+</b>
         </div>
-
-        <button class="header-v2-icon">✉️</button>
-        <button class="header-v2-icon">🔔</button>
-        <button class="header-v2-icon">⚙️</button>
     </div>
 
 </div>
@@ -723,17 +719,40 @@
         </div>
     </div>
 </div>
-
 <div id="shop-screen" class="screen shop-screen-v3">
     <div class="shop-v3">
 
         <aside class="shop-v3-sidebar">
-<button class="shop-v3-side active" onclick="setShopCategory('recommend')">🛒 <span>МАГАЗИН</span><small>Рекомендуемое</small></button>
-<button class="shop-v3-side" onclick="setShopCategory('chests')">📦 <span>СУНДУКИ</span></button>
-<button class="shop-v3-side" onclick="setShopCategory('currency')">💎 <span>ВАЛЮТА</span></button>
-<button class="shop-v3-side" onclick="setShopCategory('packs')">🎁 <span>НАБОРЫ</span></button>
-<button class="shop-v3-side" onclick="setShopCategory('energy')">⚡ <span>ЭНЕРГИЯ</span></button>
-<button class="shop-v3-side" onclick="setShopCategory('pass')">🎟️ <span>ПРОПУСК</span></button>
+            <button class="shop-v3-side active" onclick="setShopCategory('recommend')">
+                <img src="./image/ui/menu-shop.png">
+                <span>МАГАЗИН</span>
+                <small>Рекомендуемое</small>
+            </button>
+
+            <button class="shop-v3-side" onclick="setShopCategory('chests')">
+                <img src="./image/ui/menu-chests.png">
+                <span>СУНДУКИ</span>
+            </button>
+
+            <button class="shop-v3-side" onclick="setShopCategory('currency')">
+                <img src="./image/ui/menu-currency.png">
+                <span>ВАЛЮТА</span>
+            </button>
+
+            <button class="shop-v3-side" onclick="setShopCategory('packs')">
+                <img src="./image/ui/menu-packs.png">
+                <span>НАБОРЫ</span>
+            </button>
+
+            <button class="shop-v3-side" onclick="setShopCategory('energy')">
+                <img src="./image/ui/menu-energy.png">
+                <span>ЭНЕРГИЯ</span>
+            </button>
+
+            <button class="shop-v3-side" onclick="setShopCategory('pass')">
+                <img src="./image/ui/menu-pass.png">
+                <span>ПРОПУСК</span>
+            </button>
         </aside>
 
         <main class="shop-v3-main">
@@ -741,6 +760,7 @@
                 <button class="shop-v3-back" onclick="goHome()">‹</button>
                 <h1>МАГАЗИН</h1>
             </div>
+
             <section class="shop-v3-section">
                 <div class="shop-v3-row-title">РЕКОМЕНДУЕМ</div>
                 <div class="shop-v3-pack-grid" id="shop-v3-recommend"></div>
@@ -761,29 +781,30 @@
                 </div>
                 <div class="shop-v3-currency-grid" id="shop-v3-currency"></div>
             </section>
+
             <section class="shop-v3-section">
-    <div class="shop-v3-row-head">
-        <div class="shop-v3-row-title">НАБОРЫ</div>
-        <button class="shop-v3-see" onclick="setShopCategory('packs')">СМОТРЕТЬ ВСЕ ›</button>
-    </div>
-    <div class="shop-v3-pack-grid" id="shop-v3-packs"></div>
-</section>
+                <div class="shop-v3-row-head">
+                    <div class="shop-v3-row-title">НАБОРЫ</div>
+                    <button class="shop-v3-see" onclick="setShopCategory('packs')">СМОТРЕТЬ ВСЕ ›</button>
+                </div>
+                <div class="shop-v3-pack-grid" id="shop-v3-packs"></div>
+            </section>
 
-<section class="shop-v3-section">
-    <div class="shop-v3-row-head">
-        <div class="shop-v3-row-title">ЭНЕРГИЯ</div>
-        <button class="shop-v3-see" onclick="setShopCategory('energy')">СМОТРЕТЬ ВСЕ ›</button>
-    </div>
-    <div class="shop-v3-currency-grid" id="shop-v3-energy-grid"></div>
-</section>
+            <section class="shop-v3-section">
+                <div class="shop-v3-row-head">
+                    <div class="shop-v3-row-title">ЭНЕРГИЯ</div>
+                    <button class="shop-v3-see" onclick="setShopCategory('energy')">СМОТРЕТЬ ВСЕ ›</button>
+                </div>
+                <div class="shop-v3-currency-grid" id="shop-v3-energy-grid"></div>
+            </section>
 
-<section class="shop-v3-section">
-    <div class="shop-v3-row-head">
-        <div class="shop-v3-row-title">ПРОПУСК</div>
-        <button class="shop-v3-see" onclick="setShopCategory('pass')">СМОТРЕТЬ ВСЕ ›</button>
-    </div>
-    <div class="shop-v3-currency-grid" id="shop-v3-pass"></div>
-</section>
+            <section class="shop-v3-section">
+                <div class="shop-v3-row-head">
+                    <div class="shop-v3-row-title">ПРОПУСК</div>
+                    <button class="shop-v3-see" onclick="setShopCategory('pass')">СМОТРЕТЬ ВСЕ ›</button>
+                </div>
+                <div class="shop-v3-currency-grid" id="shop-v3-pass"></div>
+            </section>
         </main>
 
     </div>
@@ -894,6 +915,44 @@
     </div>
 
 </div>
+
+</div>
+<div id="chest-opening-screen" class="chest-opening-screen">
+    <div class="chest-opening-bg"></div>
+
+    <div class="chest-opening-content">
+        <button class="chest-close-btn" onclick="closeChestOpening()">×</button>
+
+        <h1 id="chest-opening-title">ОТКРЫТИЕ СУНДУКА</h1>
+
+        <div class="chest-stage">
+            <div class="chest-glow"></div>
+            <img id="opening-chest-img" src="./image/ui/chest-common.png" alt="Сундук">
+            <div class="chest-flash"></div>
+        </div>
+
+        <div id="chest-opening-status">Нажми открыть</div>
+
+        <button id="chest-open-action" onclick="startChestOpenAnimation()">
+            ОТКРЫТЬ
+        </button>
+    </div>
+</div>
+<div id="reward-screen" class="reward-screen">
+
+    <div class="reward-bg"></div>
+
+    <div class="reward-content">
+
+        <h1>НАГРАДЫ</h1>
+
+        <div id="reward-list" class="reward-list"></div>
+
+        <button onclick="closeRewardScreen()">
+            ЗАБРАТЬ
+        </button>
+
+    </div>
 
 </div>
     <!-- СКРИПТЫ -->
