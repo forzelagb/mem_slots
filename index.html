@@ -30,7 +30,7 @@
     <nav class="header-v2-nav">
         <button onclick="goHome()">🏠<span>Главная</span></button>
         <button onclick="openNewCharactersScreen()">🧙<span>Персонажи</span></button>
-        <button>🎒<span>Инвентарь</span></button>
+        <button onclick="openChestsInventory()">🎒<span>Инвентарь</span></button>
         <button class="active" onclick="openShopScreen()">🛒<span>Магазин</span></button>
         <button onclick="openTab('pass')">🎟️<span>Пропуск</span></button>
     </nav>
@@ -954,6 +954,79 @@
 
     </div>
 
+</div>
+<div id="chests-inventory-screen" class="screen chests-inventory-screen">
+    <div class="chests-inventory-page">
+
+        <aside class="inventory-sidebar">
+            <button class="inventory-side active">📦 <span>СУНДУКИ</span></button>
+            <button class="inventory-side">🧵 <span>ТКАНИ</span></button>
+            <button class="inventory-side">🎴 <span>КАРТОЧКИ</span></button>
+            <button class="inventory-side">⚡ <span>ЭНЕРГИЯ</span></button>
+        </aside>
+
+        <main class="chests-inventory-main">
+            <div class="chests-inventory-header">
+                <button class="shop-v3-back" onclick="goHome()">‹</button>
+                <div>
+                    <h1>СУНДУКИ</h1>
+                    <p>Открывай сундуки и получай награды</p>
+                </div>
+            </div>
+
+            <div class="chests-title-line">ТВОИ СУНДУКИ</div>
+
+            <div id="inventory-chests-grid" class="inventory-chests-grid"></div>
+        </main>
+
+    </div>
+</div>
+<div id="inventory-screen" class="screen">
+
+    <h2 class="section-title">🎒 ИНВЕНТАРЬ</h2>
+
+    <div class="inventory-grid">
+
+        <div class="inventory-card">
+            <img src="image/ui/chest-common.png">
+            <h3>Обычный сундук</h3>
+            <div id="common-count">0</div>
+
+            <button onclick="openChest('common')">
+                Открыть
+            </button>
+        </div>
+
+        <div class="inventory-card">
+            <img src="image/ui/chest-rare.png">
+            <h3>Редкий сундук</h3>
+            <div id="rare-count">0</div>
+
+            <button onclick="openChest('rare')">
+                Открыть
+            </button>
+        </div>
+        <div class="inventory-card">
+    <img src="image/ui/chest-epic.png">
+    <h3>Эпический сундук</h3>
+    <div id="epic-count">0</div>
+
+    <button onclick="openChest('epic')">
+        Открыть
+    </button>
+</div>
+
+<div class="inventory-card">
+    <img src="image/ui/chest-legendary.png">
+    <h3>Легендарный сундук</h3>
+    <div id="legendary-count">0</div>
+
+    <button onclick="openChest('legendary')">
+        Открыть
+    </button>
+</div>
+
+    </div>
 </div>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>

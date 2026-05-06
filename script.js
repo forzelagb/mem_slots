@@ -3916,6 +3916,12 @@ const playerData = {
     equippedStyles: {
     sasavot: "default"
 },
+chests: {
+    common: 3,
+    rare: 1,
+    epic: 0,
+    legendary: 0
+},
 
     gold: 5000,
     powerShards: 500,
@@ -6689,6 +6695,164 @@ function buyChest(type) {
     }
 
     openChest(type);
+}
+function openChestsInventory() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    const screen = document.getElementById("chests-inventory-screen");
+    if (!screen) return;
+
+    screen.classList.add("active");
+    renderChestsInventory();
+}
+
+function renderChestsInventory() {
+    const grid = document.getElementById("inventory-chests-grid");
+    if (!grid) return;
+
+    const chestList = [
+        {
+            id: "common",
+            title: "ОБЫЧНЫЙ СУНДУК",
+            img: "./image/ui/chest-common.png"
+        },
+        {
+            id: "rare",
+            title: "РЕДКИЙ СУНДУК",
+            img: "./image/ui/chest-rare.png"
+        },
+        {
+            id: "epic",
+            title: "ЭПИЧЕСКИЙ СУНДУК",
+            img: "./image/ui/chest-epic.png"
+        },
+        {
+            id: "legendary",
+            title: "ЛЕГЕНДАРНЫЙ СУНДУК",
+            img: "./image/ui/chest-legendary.png"
+        }
+    ];
+
+    grid.innerHTML = chestList.map(chest => {
+        const count = playerData.chests?.[chest.id] ?? 0;
+        const disabled = count <= 0;
+
+        return `
+            <div class="inventory-chest-card ${chest.id}">
+                <h3>${chest.title}</h3>
+                <img src="${chest.img}" alt="${chest.title}">
+                <div class="inventory-chest-count">x ${count}</div>
+                <button ${disabled ? "disabled" : ""} onclick="openInventoryChest('${chest.id}')">
+                    ${disabled ? "НЕТ СУНДУКОВ" : "ОТКРЫТЬ"}
+                </button>
+            </div>
+        `;
+    }).join("");
+}
+
+function openInventoryChest(type) {
+    if (!playerData.chests) return;
+
+    if ((playerData.chests[type] ?? 0) <= 0) {
+        alert("Нет сундуков");
+        return;
+    }
+
+    playerData.chests[type] -= 1;
+
+    if (typeof saveGame === "function") {
+        saveGame();
+    }
+
+    renderChestsInventory();
+    openChest(type);
+}
+let inventoryData = {
+    chests: {
+        common: 7,
+        rare: 3,
+        epic: 1,
+        legendary: 0
+    },
+
+    fragments: {
+        common: 120,
+        rare: 45,
+        epic: 12,
+        legendary: 2
+    },
+
+    materials: {
+        energy: 50,
+        gems: 1200
+    }
+};
+function renderInventory() {
+    document.getElementById('common-count').innerText =
+        inventoryData.chests.common;
+
+    document.getElementById('rare-count').innerText =
+        inventoryData.chests.rare;
+
+    document.getElementById('epic-count').innerText =
+        inventoryData.chests.epic;
+
+    document.getElementById('legendary-count').innerText =
+        inventoryData.chests.legendary;
+}
+function openChest(type) {
+
+    if (inventoryData.chests[type] <= 0) {
+        alert("Нет сундуков");
+        return;
+    }
+
+    inventoryData.chests[type]--;
+
+    giveRandomReward(type);
+
+    renderInventory();
+}
+function openChestsInventory() {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+
+    const inventoryScreen = document.getElementById('inventory-screen');
+    if (inventoryScreen) {
+        inventoryScreen.classList.add('active');
+    }
+
+    renderInventory();
+}
+function giveRandomReward(type) {
+    const rewardsByChest = {
+        common: [
+            { type: 'gold', amount: 100 },
+            { type: 'energy', amount: 25 },
+            { type: 'cloth', rarity: 'common', amount: 5 }
+        ],
+        rare: [
+            { type: 'gold', amount: 300 },
+            { type: 'gems', amount: 50 },
+            { type: 'cloth', rarity: 'rare', amount: 5 }
+        ],
+        epic: [
+            { type: 'gems', amount: 150 },
+            { type: 'cloth', rarity: 'epic', amount: 4 }
+        ],
+        legendary: [
+            { type: 'gems', amount: 500 },
+            { type: 'cloth', rarity: 'legendary', amount: 2 }
+        ]
+    };
+
+    const pool = rewardsByChest[type];
+    const reward = pool[Math.floor(Math.random() * pool.length)];
+
+    alert(`Награда: ${reward.type} x${reward.amount}`);
 }
 //  ЗАПУСК
 window.onload = () => {
