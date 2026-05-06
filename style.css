@@ -13416,6 +13416,79 @@ body.modal-open {
     background: linear-gradient(180deg, #ffe08a, #ffb800);
     box-shadow: 0 5px 0 #9b6500;
 }
+.chest-shake {
+    animation: chestShake 0.16s infinite;
+}
+
+@keyframes chestShake {
+    0% { transform: rotate(-3deg) scale(1); }
+    50% { transform: rotate(3deg) scale(1.05); }
+    100% { transform: rotate(-3deg) scale(1); }
+}
+
+.reward-pop {
+    animation: rewardItemPop 0.32s ease;
+}
+
+@keyframes rewardItemPop {
+    from {
+        transform: scale(0.4);
+        opacity: 0;
+        filter: blur(6px);
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+.chest-opening-box {
+    width: min(720px, 94vw);
+}
+
+.chest-rewards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.chest-reward-card {
+    opacity: 0;
+    transform: translateY(18px) scale(0.8);
+    padding: 16px 10px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.16);
+    animation: rewardCardIn 0.32s ease forwards;
+}
+
+.chest-reward-card img {
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 14px rgba(255, 211, 106, 0.35));
+}
+
+.chest-reward-card-title {
+    font-size: 13px;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 6px;
+}
+
+.chest-reward-card-amount {
+    font-size: 22px;
+    color: var(--gold);
+    text-shadow: 0 0 12px rgba(255, 211, 106, 0.42);
+}
+
+@keyframes rewardCardIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

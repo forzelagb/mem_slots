@@ -6827,32 +6827,9 @@ function openChestsInventory() {
 
     renderInventory();
 }
-function giveRandomReward(type) {
-    const rewardsByChest = {
-        common: [
-            { type: 'gold', amount: 100 },
-            { type: 'energy', amount: 25 },
-            { type: 'cloth', rarity: 'common', amount: 5 }
-        ],
-        rare: [
-            { type: 'gold', amount: 300 },
-            { type: 'gems', amount: 50 },
-            { type: 'cloth', rarity: 'rare', amount: 5 }
-        ],
-        epic: [
-            { type: 'gems', amount: 150 },
-            { type: 'cloth', rarity: 'epic', amount: 4 }
-        ],
-        legendary: [
-            { type: 'gems', amount: 500 },
-            { type: 'cloth', rarity: 'legendary', amount: 2 }
-        ]
-    };
-
-    const pool = rewardsByChest[type];
-    const reward = pool[Math.floor(Math.random() * pool.length)];
-
-    showChestRewardModal(reward);
+function giveRandomReward(chestType) {
+    const rewards = generateChestRewards(chestType);
+    showChestOpeningModal(chestType, rewards);
 }
 function showChestRewardModal(reward) {
     const modal = document.getElementById('chest-reward-modal');
@@ -6871,10 +6848,181 @@ function showChestRewardModal(reward) {
 
     modal.classList.add('active');
 }
+const chestRewardConfig = {
+    common: {
+        gold: [80, 150],
+        power: [3, 6],
+        clothSlots: 1,
+        clothRarities: ["common", "rare"]
+    },
+
+    rare: {
+        gold: [180, 350],
+        power: [6, 12],
+        clothSlots: 1,
+        clothRarities: ["common", "rare", "epic"]
+    },
+
+    epic: {
+        gold: [450, 800],
+        power: [14, 25],
+        clothSlots: 2,
+        clothRarities: ["rare", "epic", "legendary"]
+    },
+
+    legendary: {
+        gold: [1000, 1800],
+        power: [30, 55],
+        clothSlots: 3,
+        clothRarities: ["epic", "legendary"]
+    }
+};
+
+const inventoryThemes = [
+    "helin",
+    "lexapaws",
+    "litwin",
+    "melstroy",
+    "nikkifn",
+    "rejiboi",
+    "rostickfaceskid",
+    "sasavot"
+];
+
+function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomFrom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateChestRewards(chestType) {
+    const config = chestRewardConfig[chestType];
+
+    const rewards = [];
+
+    rewards.push({
+        type: "gold",
+        amount: randomBetween(config.gold[0], config.gold[1]),
+        icon: "image/ui/gold.png",
+        title: "Золото"
+    });
+
+    rewards.push({
+        type: "power",
+        amount: randomBetween(config.power[0], config.power[1]),
+        icon: "image/ui/power-shards.png",
+        title: "Осколки силы"
+    });
+
+    for (let i = 0; i < config.clothSlots; i++) {
+        const theme = randomFrom(inventoryThemes);
+        const rarity = randomFrom(config.clothRarities);
+
+        rewards.push({
+            type: "cloth",
+            theme,
+            rarity,
+            amount: randomBetween(2, 6),
+            icon: `image/ui/cloth/${theme}-${rarity}.png`,
+            title: `${theme} ткань`
+        });
+    }
+
+    return rewards;
+}
+function showChestOpeningModal(chestType, rewards) {
+    const modal = document.getElementById("chest-reward-modal");
+    const title = document.getElementById("chest-reward-title");
+    const icon = document.getElementById("chest-reward-icon");
+    const text = document.getElementById("chest-reward-text");
+
+    const chestIcons = {
+        common: "image/ui/chest-common.png",
+        rare: "image/ui/chest-rare.png",
+        epic: "image/ui/chest-epic.png",
+        legendary: "image/ui/chest-legendary.png"
+    };
+
+    modal.classList.add("active");
+
+    title.innerText = "ОТКРЫВАЕМ...";
+    icon.src = chestIcons[chestType];
+    icon.classList.add("chest-shake");
+    text.innerText = "";
+
+setTimeout(() => {
+    icon.classList.remove("chest-shake");
+    showRewardsSequence(rewards);
+}, 900);
+}
+
+function showRewardsSequence(rewards) {
+    const title = document.getElementById("chest-reward-title");
+    const icon = document.getElementById("chest-reward-icon");
+    const list = document.getElementById("chest-rewards-list");
+
+    title.innerText = "ТВОИ НАГРАДЫ";
+    icon.style.display = "none";
+    list.innerHTML = "";
+
+    rewards.forEach((reward, index) => {
+        applyRewardToPlayer(reward);
+
+        const card = document.createElement("div");
+        card.className = "chest-reward-card";
+        card.style.animationDelay = `${index * 0.16}s`;
+
+        card.innerHTML = `
+            <img src="${reward.icon}" alt="">
+            <div class="chest-reward-card-title">${reward.title}</div>
+            <div class="chest-reward-card-amount">x${reward.amount}</div>
+        `;
+
+        list.appendChild(card);
+    });
+
+    updateUI();
+    savePlayer();
+}
+
+function applyRewardToPlayer(reward) {
+    if (!playerData.resources) return;
+
+    if (reward.type === "gold") {
+        playerData.resources.gold = (playerData.resources.gold || 0) + reward.amount;
+    }
+
+    if (reward.type === "power") {
+        playerData.resources.powerShards = (playerData.resources.powerShards || 0) + reward.amount;
+    }
+
+    if (reward.type === "cloth") {
+        if (!playerData.resources.clothFragments) {
+            playerData.resources.clothFragments = {};
+        }
+
+        if (!playerData.resources.clothFragments[reward.theme]) {
+            playerData.resources.clothFragments[reward.theme] = {};
+        }
+
+        playerData.resources.clothFragments[reward.theme][reward.rarity] =
+            (playerData.resources.clothFragments[reward.theme][reward.rarity] || 0) + reward.amount;
+    }
+
+    updateUI();
+    savePlayer();
+}
 
 function closeChestRewardModal() {
-    const modal = document.getElementById('chest-reward-modal');
-    modal.classList.remove('active');
+    const modal = document.getElementById("chest-reward-modal");
+    const icon = document.getElementById("chest-reward-icon");
+    const list = document.getElementById("chest-rewards-list");
+
+    modal.classList.remove("active");
+    icon.style.display = "block";
+    list.innerHTML = "";
 }
 //  ЗАПУСК
 window.onload = () => {
