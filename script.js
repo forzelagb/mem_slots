@@ -6544,26 +6544,33 @@ const chestDropConfig = {
     common: {
         gold: [1000, 3000],
         shards: [50, 120],
+        clothSlots: 1,
         clothAmount: [10, 25],
-        clothChance: { common: 75, rare: 22, epic: 3, legendary: 0 }
+        clothChance: { common: 80, rare: 20, epic: 0, legendary: 0 }
     },
+
     rare: {
         gold: [3000, 7000],
         shards: [100, 250],
+        clothSlots: 1,
         clothAmount: [20, 45],
-        clothChance: { common: 45, rare: 40, epic: 13, legendary: 2 }
+        clothChance: { common: 35, rare: 50, epic: 15, legendary: 0 }
     },
+
     epic: {
         gold: [7000, 15000],
         shards: [250, 600],
-        clothAmount: [40, 90],
-        clothChance: { common: 20, rare: 40, epic: 32, legendary: 8 }
+        clothSlots: 2,
+        clothAmount: [35, 80],
+        clothChance: { common: 0, rare: 55, epic: 40, legendary: 5 }
     },
+
     legendary: {
         gold: [15000, 35000],
         shards: [600, 1500],
-        clothAmount: [80, 180],
-        clothChance: { common: 0, rare: 25, epic: 50, legendary: 25 }
+        clothSlots: 3,
+        clothAmount: [70, 160],
+        clothChance: { common: 0, rare: 0, epic: 70, legendary: 30 }
     }
 };
 
@@ -6586,31 +6593,40 @@ function rollRarity(chances) {
 function generateChestRewards(chestType) {
     const config = chestDropConfig[chestType] || chestDropConfig.common;
 
-    const clothRarity = rollRarity(config.clothChance);
-    const clothAmount = randomBetween(config.clothAmount[0], config.clothAmount[1]);
-    const clothReward = getRandomClothReward(clothRarity);
-    clothReward.amount = `+${clothAmount}`;
-    clothReward.value = clothAmount;
+    const goldValue = randomBetween(config.gold[0], config.gold[1]);
+    const shardsValue = randomBetween(config.shards[0], config.shards[1]);
 
-    return [
+    const rewards = [
         {
             type: "gold",
             title: "ЗОЛОТО",
-            amount: `+${randomBetween(config.gold[0], config.gold[1])}`,
-            value: randomBetween(config.gold[0], config.gold[1]),
+            amount: `+${goldValue}`,
+            value: goldValue,
             rarity: "common",
             img: "./image/ui/gold.png"
         },
         {
             type: "powerShards",
             title: "ОСКОЛКИ СИЛЫ",
-            amount: `+${randomBetween(config.shards[0], config.shards[1])}`,
-            value: randomBetween(config.shards[0], config.shards[1]),
+            amount: `+${shardsValue}`,
+            value: shardsValue,
             rarity: "rare",
             img: "./image/ui/power-shards.png"
-        },
-        clothReward
+        }
     ];
+
+    for (let i = 0; i < config.clothSlots; i++) {
+        const clothRarity = rollRarity(config.clothChance);
+        const clothValue = randomBetween(config.clothAmount[0], config.clothAmount[1]);
+
+        const clothReward = getRandomClothReward(clothRarity);
+        clothReward.amount = `+${clothValue}`;
+        clothReward.value = clothValue;
+
+        rewards.push(clothReward);
+    }
+
+    return rewards;
 }
 let pendingChestRewards = [];
 
