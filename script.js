@@ -6803,17 +6803,31 @@ function renderInventory() {
         inventoryData.chests.legendary;
 }
 function openChest(type) {
-
     if (inventoryData.chests[type] <= 0) {
         alert("Нет сундуков");
         return;
     }
 
     inventoryData.chests[type]--;
-
-    giveRandomReward(type);
-
     renderInventory();
+
+    selectedChestType = type || "common";
+
+    const screen = document.getElementById("chest-opening-screen");
+    const img = document.getElementById("opening-chest-img");
+    const status = document.getElementById("chest-opening-status");
+    const btn = document.getElementById("chest-open-action");
+
+    if (!screen || !img || !status || !btn) return;
+
+    img.src = openingChestImages[selectedChestType] || openingChestImages.common;
+    img.classList.remove("shake");
+
+    status.innerText = "Нажми открыть";
+    btn.style.display = "block";
+    btn.disabled = false;
+
+    screen.classList.add("active");
 }
 function openChestsInventory() {
     document.querySelectorAll('.screen').forEach(screen => {
