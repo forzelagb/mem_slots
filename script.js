@@ -3921,14 +3921,18 @@ const playerData = {
     styleCoins: 0,
     premiumTokens: 0,
 
-    clothFragments: {
-        sasavot: {
-            common: 120,
-            rare: 80,
-            epic: 30,
-            legendary: 10
-        }
-    }
+clothFragments: {
+    helin: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    lexapaws: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    litwin: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    melstroy: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    nikkifn: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    rejiboi: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    rostick: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    sasich: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    skibiditoilet: { common: 0, rare: 0, epic: 0, legendary: 0 },
+    slovopatsana: { common: 0, rare: 0, epic: 0, legendary: 0 }
+}
 },
 
     timers: {
@@ -6471,29 +6475,8 @@ function startChestOpenAnimation() {
     setTimeout(() => {
         flash.classList.remove("active");
         closeChestOpening();
-
-        openRewardScreen([
-    {
-        title: "ЗОЛОТО",
-        amount: "+5000",
-        rarity: "common",
-        img: "./image/ui/gold.png"
-    },
-
-    {
-        title: "ОСКОЛКИ",
-        amount: "+250",
-        rarity: "rare",
-        img: "./image/ui/power-shards.png"
-    },
-
-    {
-        title: "ТКАНЬ",
-        amount: "+40",
-        rarity: "epic",
-        img: "./image/ui/styles.png"
-    }
-]);
+const rewards = generateChestRewards(selectedChestType);
+openRewardScreen(rewards);
     }, 2300);
 }
 // === REWARD REVEAL ===
@@ -6521,6 +6504,107 @@ function closeRewardScreen() {
     if (screen) {
         screen.classList.remove("active");
     }
+}
+const clothThemes = [
+    "helin",
+    "lexapaws",
+    "litwin",
+    "melstroy",
+    "nikkifn",
+    "rejiboi",
+    "rostickfaceskid",
+    "sasavot"
+];
+
+const clothRarities = ["common", "rare", "epic", "legendary"];
+
+function getClothImage(theme, rarity) {
+    return `./image/ui/cloth/${theme}-${rarity}.png`;
+}
+
+function getRandomClothReward(rarity = "common") {
+    const theme = clothThemes[Math.floor(Math.random() * clothThemes.length)];
+
+    return {
+        type: "cloth",
+        theme,
+        rarity,
+        title: `ТКАНЬ ${theme.toUpperCase()}`,
+        amount: "+40",
+        img: getClothImage(theme, rarity)
+    };
+}
+const chestDropConfig = {
+    common: {
+        gold: [1000, 3000],
+        shards: [50, 120],
+        clothAmount: [10, 25],
+        clothChance: { common: 75, rare: 22, epic: 3, legendary: 0 }
+    },
+    rare: {
+        gold: [3000, 7000],
+        shards: [100, 250],
+        clothAmount: [20, 45],
+        clothChance: { common: 45, rare: 40, epic: 13, legendary: 2 }
+    },
+    epic: {
+        gold: [7000, 15000],
+        shards: [250, 600],
+        clothAmount: [40, 90],
+        clothChance: { common: 20, rare: 40, epic: 32, legendary: 8 }
+    },
+    legendary: {
+        gold: [15000, 35000],
+        shards: [600, 1500],
+        clothAmount: [80, 180],
+        clothChance: { common: 0, rare: 25, epic: 50, legendary: 25 }
+    }
+};
+
+function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function rollRarity(chances) {
+    const roll = Math.random() * 100;
+    let total = 0;
+
+    for (const rarity in chances) {
+        total += chances[rarity];
+        if (roll <= total) return rarity;
+    }
+
+    return "common";
+}
+
+function generateChestRewards(chestType) {
+    const config = chestDropConfig[chestType] || chestDropConfig.common;
+
+    const clothRarity = rollRarity(config.clothChance);
+    const clothAmount = randomBetween(config.clothAmount[0], config.clothAmount[1]);
+    const clothReward = getRandomClothReward(clothRarity);
+    clothReward.amount = `+${clothAmount}`;
+    clothReward.value = clothAmount;
+
+    return [
+        {
+            type: "gold",
+            title: "ЗОЛОТО",
+            amount: `+${randomBetween(config.gold[0], config.gold[1])}`,
+            value: randomBetween(config.gold[0], config.gold[1]),
+            rarity: "common",
+            img: "./image/ui/gold.png"
+        },
+        {
+            type: "powerShards",
+            title: "ОСКОЛКИ СИЛЫ",
+            amount: `+${randomBetween(config.shards[0], config.shards[1])}`,
+            value: randomBetween(config.shards[0], config.shards[1]),
+            rarity: "rare",
+            img: "./image/ui/power-shards.png"
+        },
+        clothReward
+    ];
 }
 //  ЗАПУСК
 window.onload = () => {
