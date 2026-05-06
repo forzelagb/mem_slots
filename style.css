@@ -13166,6 +13166,108 @@ body.modal-open {
 .inventory-chest-card.legendary {
     box-shadow: 0 0 44px rgba(255,210,70,0.55);
 }
+/* === INVENTORY SCREEN === */
+
+#inventory-screen {
+    max-width: 1280px;
+    padding-top: 32px;
+}
+
+.inventory-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(190px, 1fr));
+    gap: 22px;
+    margin-top: 28px;
+}
+
+.inventory-card {
+    position: relative;
+    min-height: 330px;
+    padding: 22px 18px;
+    border-radius: 24px;
+    text-align: center;
+    background:
+        radial-gradient(circle at top, rgba(255, 211, 106, 0.14), transparent 38%),
+        linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.035));
+    border: 1px solid rgba(255, 211, 106, 0.24);
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.35),
+        0 0 24px rgba(179,0,255,0.16),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    overflow: hidden;
+    transition: 0.22s ease;
+}
+
+.inventory-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 211, 106, 0.65);
+    box-shadow:
+        0 24px 55px rgba(0,0,0,0.45),
+        0 0 32px rgba(255, 211, 106, 0.28);
+}
+
+.inventory-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 18px rgba(255, 211, 106, 0.25));
+}
+
+.inventory-card h3 {
+    font-size: 18px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.inventory-card div[id$="-count"] {
+    font-size: 34px;
+    color: var(--gold);
+    margin-bottom: 16px;
+    text-shadow: 0 0 14px rgba(255, 211, 106, 0.45);
+}
+
+.inventory-card button {
+    width: 100%;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    color: #1c0b00;
+    cursor: pointer;
+    background: linear-gradient(180deg, #ffe08a, #ffb800);
+    box-shadow: 0 5px 0 #9b6500, 0 0 20px rgba(255, 211, 106, 0.28);
+    transition: 0.18s ease;
+}
+
+.inventory-card button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+}
+
+.inventory-card button:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #9b6500;
+}
+
+@media (max-width: 900px) {
+    .inventory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .inventory-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .inventory-card {
+        min-height: auto;
+    }
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }
