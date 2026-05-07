@@ -14154,6 +14154,131 @@ body.modal-open {
         font-size: 34px;
     }
 }
+/* ===== INVENTORY ===== */
+
+.inventory-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.inventory-sidebar {
+    width: 240px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inventory-side-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: white;
+    padding: 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.inventory-side-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.inventory-side-btn.active {
+    background: linear-gradient(90deg,#7b2cff,#ff3bd4);
+    border-color: transparent;
+}
+
+.inventory-main {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.inventory-header {
+    margin-bottom: 20px;
+}
+
+.inventory-header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.inventory-header p {
+    color: rgba(255,255,255,0.7);
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+    gap: 20px;
+}
+
+.inventory-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.inventory-card h3 {
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.inventory-count {
+    font-size: 40px;
+    margin-bottom: 20px;
+    color: #ffd36a;
+}
+
+.inventory-card button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg,#7b2cff,#ff3bd4);
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.inventory-empty {
+    padding: 60px;
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    font-size: 20px;
+}
+
+.inventory-tab-content {
+    display: none;
+}
+
+.inventory-tab-content.active {
+    display: block;
+}
+
+@media (max-width: 900px) {
+
+    .inventory-layout {
+        flex-direction: column;
+    }
+
+    .inventory-sidebar {
+        width: 100%;
+    }
+
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

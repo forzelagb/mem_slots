@@ -7291,6 +7291,54 @@ function openChestsInventory() {
     openInventoryTab("chests");
     renderInventory();
 }
+function openChestsInventory() {
+
+    document.querySelectorAll('.screen')
+        .forEach(screen => {
+            screen.classList.remove('active');
+        });
+
+    const inventory =
+        document.getElementById('inventory-screen');
+
+    if (inventory) {
+        inventory.classList.add('active');
+    }
+}
+
+function openInventoryTab(tabName) {
+
+    document.querySelectorAll('.inventory-tab-content')
+        .forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+    document.querySelectorAll('.inventory-side-btn')
+        .forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+    const tab =
+        document.getElementById(
+            `inventory-tab-${tabName}`
+        );
+
+    if (tab) {
+        tab.classList.add('active');
+    }
+
+    const activeBtn =
+        Array.from(
+            document.querySelectorAll('.inventory-side-btn')
+        ).find(btn =>
+            btn.getAttribute('onclick')
+            ?.includes(tabName)
+        );
+
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

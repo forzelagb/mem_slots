@@ -183,6 +183,117 @@
         <div id="collection-detail-grid" class="collection-detail-grid"></div>
     </div>
 </div>
+
+<!-- ИНВЕНТАРЬ -->
+<div id="inventory-screen" class="screen">
+
+    <div class="inventory-layout">
+
+        <!-- ЛЕВАЯ ПАНЕЛЬ -->
+        <aside class="inventory-sidebar">
+
+            <button class="inventory-side-btn active"
+                    onclick="openInventoryTab('chests')">
+                🎁 Сундуки
+            </button>
+
+            <button class="inventory-side-btn"
+                    onclick="openInventoryTab('cloth')">
+                🧵 Ткани
+            </button>
+
+            <button class="inventory-side-btn"
+                    onclick="openInventoryTab('fragments')">
+                🧩 Фрагменты
+            </button>
+
+            <button class="inventory-side-btn"
+                    onclick="openInventoryTab('resources')">
+                ⚡ Ресурсы
+            </button>
+
+        </aside>
+
+        <!-- ПРАВАЯ ЧАСТЬ -->
+        <main class="inventory-main">
+
+            <div class="inventory-header">
+
+                <div>
+                    <h1 id="inventory-title">
+                        СУНДУКИ
+                    </h1>
+
+                    <p id="inventory-subtitle">
+                        Открывай сундуки и получай награды
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- СУНДУКИ -->
+            <div id="inventory-tab-chests"
+                 class="inventory-tab-content active">
+
+                <div class="inventory-grid">
+
+                    <div class="inventory-card">
+                        <h3>Обычный</h3>
+                        <div class="inventory-count">x7</div>
+                        <button>ОТКРЫТЬ</button>
+                    </div>
+
+                    <div class="inventory-card">
+                        <h3>Редкий</h3>
+                        <div class="inventory-count">x3</div>
+                        <button>ОТКРЫТЬ</button>
+                    </div>
+
+                    <div class="inventory-card">
+                        <h3>Эпический</h3>
+                        <div class="inventory-count">x1</div>
+                        <button>ОТКРЫТЬ</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ТКАНИ -->
+            <div id="inventory-tab-cloth"
+                 class="inventory-tab-content">
+
+                <div class="inventory-empty">
+                    Ткани скоро появятся
+                </div>
+
+            </div>
+
+            <!-- ФРАГМЕНТЫ -->
+            <div id="inventory-tab-fragments"
+                 class="inventory-tab-content">
+
+                <div class="inventory-empty">
+                    Фрагменты скоро появятся
+                </div>
+
+            </div>
+
+            <!-- РЕСУРСЫ -->
+            <div id="inventory-tab-resources"
+                 class="inventory-tab-content">
+
+                <div class="inventory-empty">
+                    Ресурсы скоро появятся
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
 <div id="characters-screen-v2" class="screen">
     <button class="characters-v2-back" onclick="goHome()">← НАЗАД</button>
 
@@ -981,307 +1092,7 @@
 
     </div>
 </div>
-<div id="inventory-screen" class="screen">
- <div id="inventory-screen" class="screen">
 
-    <div class="inventory-layout">
-
-        <aside class="inventory-sidebar">
-
-            <button class="inventory-side-btn active"
-                    onclick="openInventoryTab('chests')">
-                🎁 <span>Сундуки</span>
-            </button>
-
-            <button class="inventory-side-btn"
-                    onclick="openInventoryTab('cloth')">
-                🧵 <span>Ткани</span>
-            </button>
-
-            <button class="inventory-side-btn"
-                    onclick="openInventoryTab('fragments')">
-                🧩 <span>Фрагменты</span>
-            </button>
-
-            <button class="inventory-side-btn"
-                    onclick="openInventoryTab('resources')">
-                ⚡ <span>Ресурсы</span>
-            </button>
-
-        </aside>
-
-        <main class="inventory-main">
-
-            <div class="inventory-main-header">
-
-                <div>
-                    <h1 id="inventory-title">
-                        СУНДУКИ
-                    </h1>
-
-                    <p id="inventory-subtitle">
-                        Открывай сундуки и получай крутые награды!
-                    </p>
-                </div>
-
-                <div class="inventory-info-box">
-                    ⓘ Сундуки хранятся в инвентаре
-                </div>
-
-            </div>
-
-            <!-- СУНДУКИ -->
-
-            <div id="inventory-tab-chests"
-                 class="inventory-tab-content active">
-
-                <div class="inventory-section-title">
-                    ТВОИ СУНДУКИ
-                </div>
-
-                <div class="inventory-grid">
-
-                    <!-- COMMON -->
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-common.png">
-
-                        <h3>Обычный сундук</h3>
-
-                        <div id="common-count">0</div>
-
-                        <button onclick="openChest('common')">
-                            Открыть
-                        </button>
-                    </div>
-
-                    <!-- RARE -->
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-rare.png">
-
-                        <h3>Редкий сундук</h3>
-
-                        <div id="rare-count">0</div>
-
-                        <button onclick="openChest('rare')">
-                            Открыть
-                        </button>
-                    </div>
-
-                    <!-- EPIC -->
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-epic.png">
-
-                        <h3>Эпический сундук</h3>
-
-                        <div id="epic-count">0</div>
-
-                        <button onclick="openChest('epic')">
-                            Открыть
-                        </button>
-                    </div>
-
-                    <!-- LEGENDARY -->
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-legendary.png">
-
-                        <h3>Легендарный сундук</h3>
-
-                        <div id="legendary-count">0</div>
-
-                        <button onclick="openChest('legendary')">
-                            Открыть
-                        </button>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ТКАНИ -->
-
-            <div id="inventory-tab-cloth"
-                 class="inventory-tab-content">
-
-                <div class="inventory-section-title">
-                    ТВОИ ТКАНИ
-                </div>
-
-                <div id="cloth-inventory-grid"
-                     class="cloth-inventory-grid">
-                </div>
-
-            </div>
-
-            <!-- ФРАГМЕНТЫ -->
-
-            <div id="inventory-tab-fragments"
-                 class="inventory-tab-content">
-
-                <div class="inventory-section-title">
-                    ФРАГМЕНТЫ
-                </div>
-
-                <div class="inventory-empty">
-                    Фрагменты скоро появятся
-                </div>
-
-            </div>
-
-            <!-- РЕСУРСЫ -->
-
-            <div id="inventory-tab-resources"
-                 class="inventory-tab-content">
-
-                <div class="inventory-section-title">
-                    РЕСУРСЫ
-                </div>
-
-                <div id="resources-inventory-grid"
-                     class="resources-inventory-grid">
-                </div>
-
-            </div>
-
-        </main>
-
-    </div>
-
-</div>
-</div>
-
-<!--<div id="chest-reward-modal" class="chest-reward-modal">
-    <div class="chest-reward-box chest-opening-box">
-
-        <div id="chest-reward-title" class="chest-reward-title">
-            ОТКРЫТИЕ СУНДУКА
-        </div>
-
-        <img id="chest-reward-icon" class="chest-reward-icon" src="" alt="">
-
-        <div id="chest-rewards-list" class="chest-rewards-list"></div>
-
-        <button onclick="closeChestRewardModal()" class="chest-reward-btn">
-            ЗАБРАТЬ
-        </button>
-
-    </div>
-</div>-->
-<!-- === ИНВЕНТАРЬ === -->
-<div id="inventory-screen" class="screen">
-
-    <div class="inventory-layout">
-
-        <aside class="inventory-sidebar">
-
-            <button class="inventory-side-btn active" onclick="openInventoryTab('chests')">
-                🎁 <span>Сундуки</span>
-            </button>
-
-            <button class="inventory-side-btn" onclick="openInventoryTab('cloth')">
-                🧵 <span>Ткани</span>
-            </button>
-
-            <button class="inventory-side-btn" onclick="openInventoryTab('fragments')">
-                🧩 <span>Фрагменты</span>
-            </button>
-
-            <button class="inventory-side-btn" onclick="openInventoryTab('resources')">
-                ⚡ <span>Ресурсы</span>
-            </button>
-
-        </aside>
-
-        <main class="inventory-main">
-
-            <div class="inventory-main-header">
-                <div>
-                    <h1 id="inventory-title">СУНДУКИ</h1>
-                    <p id="inventory-subtitle">
-                        Открывай сундуки и получай крутые награды!
-                    </p>
-                </div>
-
-                <div class="inventory-info-box">
-                    ⓘ Сундуки хранятся в инвентаре
-                </div>
-            </div>
-
-            <!-- СУНДУКИ -->
-            <div id="inventory-tab-chests" class="inventory-tab-content active">
-
-                <div class="inventory-section-title">ТВОИ СУНДУКИ</div>
-
-                <div class="inventory-grid">
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-common.png">
-                        <h3>Обычный сундук</h3>
-                        <div id="common-count">0</div>
-                        <button onclick="openChest('common')">Открыть</button>
-                    </div>
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-rare.png">
-                        <h3>Редкий сундук</h3>
-                        <div id="rare-count">0</div>
-                        <button onclick="openChest('rare')">Открыть</button>
-                    </div>
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-epic.png">
-                        <h3>Эпический сундук</h3>
-                        <div id="epic-count">0</div>
-                        <button onclick="openChest('epic')">Открыть</button>
-                    </div>
-
-                    <div class="inventory-card">
-                        <img src="image/ui/chest-legendary.png">
-                        <h3>Легендарный сундук</h3>
-                        <div id="legendary-count">0</div>
-                        <button onclick="openChest('legendary')">Открыть</button>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- ТКАНИ -->
-            <div id="inventory-tab-cloth" class="inventory-tab-content">
-
-                <div class="inventory-section-title">ТВОИ ТКАНИ</div>
-
-                <div id="cloth-inventory-grid" class="cloth-inventory-grid"></div>
-
-            </div>
-
-            <!-- ФРАГМЕНТЫ -->
-            <div id="inventory-tab-fragments" class="inventory-tab-content">
-
-                <div class="inventory-section-title">ФРАГМЕНТЫ</div>
-
-                <div class="inventory-empty">
-                    Фрагменты скоро появятся
-                </div>
-
-            </div>
-
-            <!-- РЕСУРСЫ -->
-            <div id="inventory-tab-resources" class="inventory-tab-content">
-
-                <div class="inventory-section-title">РЕСУРСЫ</div>
-
-                <div id="resources-inventory-grid" class="resources-inventory-grid"></div>
-
-            </div>
-
-        </main>
-
-    </div>
-
-</div>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>
     <script src="script.js"></script>
