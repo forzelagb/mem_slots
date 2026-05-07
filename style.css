@@ -14784,6 +14784,75 @@ body.modal-open {
     font-weight: bold;
     color: #ffd36a;
 }
+/* Искры редкости */
+.inventory-v4-cloth-row.rarity-rare:hover {
+    box-shadow: 0 0 14px #4de3ff, 0 0 28px rgba(77,227,255,0.3);
+}
+
+.inventory-v4-cloth-row.rarity-epic:hover {
+    box-shadow: 0 0 14px #d15cff, 0 0 28px rgba(209,92,255,0.3);
+}
+
+.inventory-v4-cloth-row.rarity-legendary:hover {
+    box-shadow: 0 0 18px #ffd36a, 0 0 36px rgba(255,211,106,0.4);
+}
+.chest-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    z-index: 20;
+}
+/* Glow и sparkle для редких сундуков */
+.chest-rare-v4:hover {
+    box-shadow: 0 0 24px #4de3ff, 0 0 36px rgba(77,227,255,0.4);
+    transform: scale(1.03);
+}
+
+.chest-epic-v4:hover {
+    box-shadow: 0 0 28px #d15cff, 0 0 42px rgba(209,92,255,0.4);
+    transform: scale(1.04);
+}
+
+.chest-legendary-v4:hover {
+    box-shadow: 0 0 32px #ffd36a, 0 0 48px rgba(255,211,106,0.5);
+    transform: scale(1.05);
+}
+.inventory-v4-card.glow {
+    box-shadow: 0 0 40px #ffd36a, 0 0 80px rgba(255,211,106,0.35);
+    animation: chest-glow 1.2s ease-out forwards;
+}
+
+@keyframes chest-glow {
+    0% { box-shadow: 0 0 0px transparent; }
+    50% { box-shadow: 0 0 40px #ffd36a, 0 0 80px rgba(255,211,106,0.35); }
+    100% { box-shadow: 0 0 0px transparent; }
+}
+.resource-card-v4.pulse {
+    transform: scale(1.08);
+    box-shadow: 0 0 28px #ffd36a, 0 0 42px rgba(255,211,106,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.cloth-particle {
+    position: absolute;
+    right: 10px;
+    top: -10px;
+    font-weight: bold;
+    color: #ffd36a;
+    animation: cloth-pop 0.8s ease forwards;
+}
+
+@keyframes cloth-pop {
+    0% {opacity:0; transform: translateY(0) scale(0.5);}
+    50% {opacity:1; transform: translateY(-12px) scale(1.2);}
+    100% {opacity:0; transform: translateY(-24px) scale(1);}
+}
+@media(max-width:900px) {
+    .inventory-v4 { flex-direction: column; }
+    .inventory-v4-sidebar { flex-direction: row; width: 100%; overflow-x:auto; }
+    .inventory-v4-btn { flex:1; margin-right:8px; }
+    .inventory-v4-grid { grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); }
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

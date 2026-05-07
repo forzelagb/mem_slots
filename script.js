@@ -7568,6 +7568,229 @@ renderInventoryV3Chests = function () {
         }
     });
 };
+// === INVENTORY V4 ===
+
+function openInventoryV4Tab(tabName) {
+    document.querySelectorAll(".inventory-v4-tab").forEach(tab => tab.classList.remove("active"));
+    document.getElementById(tabName).classList.add("active");
+
+    document.querySelectorAll(".inventory-v4-btn").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(`.inventory-v4-btn[onclick*="${tabName}"]`)?.classList.add("active");
+
+    const titles = {
+        chests: ["СУНДУКИ", "Открывай сундуки и получай награды"],
+        cloth: ["ТКАНИ", "Ткани по темам и редкостям"],
+        resources: ["РЕСУРСЫ", "Все валюты и материалы игрока"],
+        fragments: ["ФРАГМЕНТЫ", "Фрагменты для крафта и прокачки"]
+    };
+
+    const titleEl = document.getElementById("inventory-v4-title");
+    const subtitleEl = document.getElementById("inventory-v4-subtitle");
+    if (titles[tabName]) {
+        titleEl.innerText = titles[tabName][0];
+        subtitleEl.innerText = titles[tabName][1];
+    }
+
+    // Рендерим контент
+    if(tabName === "chests") renderInventoryV4Chests();
+    if(tabName === "cloth") renderInventoryV4Cloth();
+    if(tabName === "resources") renderInventoryV4Resources();
+    if(tabName === "fragments") renderInventoryV4Fragments();
+}
+
+// Пример рендеринга сундуков с подсветкой редкости
+function renderInventoryV4Chests() {
+    const grid = document.querySelector("#chests .inventory-v4-grid");
+    grid.innerHTML = "";
+    const chests = [
+        {type: "common", count: 7, name:"Обычный", desc:"Золото, осколки силы, common/rare ткань"},
+        {type: "rare", count: 3, name:"Редкий", desc:"Золото, осколки силы, rare/epic ткань"},
+        {type: "epic", count: 1, name:"Эпический", desc:"Больше наград, rare/epic/legendary ткань"},
+        {type: "legendary", count: 0, name:"Легендарный", desc:"Максимальные награды, epic/legendary ткань"}
+    ];
+
+    chests.forEach(chest => {
+        const div = document.createElement("div");
+        div.className = `inventory-v4-card chest-${chest.type}-v4`;
+        div.innerHTML = `
+            <div class="chest-card-rarity">${chest.type.toUpperCase()}</div>
+            <img src="image/ui/chest-${chest.type}.png">
+            <h3>${chest.name}</h3>
+            <p>${chest.desc}</p>
+            <div class="chest-count">x${chest.count}</div>
+            <button ${chest.count===0?'disabled':''} onclick="openChestV4(this)">${chest.count===0?'НЕТ':'ОТКРЫТЬ'}</button>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+function openChestV4(btn) {
+    const card = btn.closest(".inventory-v4-card");
+    let count = parseInt(card.querySelector(".chest-count").innerText.slice(1));
+    if(count <= 0) return;
+
+    count--;
+    card.querySelector(".chest-count").innerText = "x" + count;
+    if(count===0) {
+        btn.disabled = true;
+        btn.innerText = "НЕТ";
+    }
+
+    // Анимация открытия сундука
+    card.classList.add("opening");
+    setTimeout(()=>card.classList.remove("opening"),1000);
+
+    // Всплывающая награда
+    const reward = document.createElement("div");
+    reward.className = "chest-reward";
+    reward.innerText = "💰 "+(Math.floor(Math.random()*500)+50)+" золота";
+    card.appendChild(reward);
+    setTimeout(()=>reward.remove(),1200);
+}
+// === Рендер тканей ===
+function renderInventoryV4Cloth() {
+    const grid = document.getElementById("inventory-v4-cloth-grid");
+    if (!grid) return;
+
+    grid.innerHTML = ""; // очищаем
+
+    const themes = [
+        "sasavot",
+        "helin",
+        "lexapaws",
+        "melstroy"
+    ];
+
+    const rarities = ["common", "rare", "epic", "legendary"];
+
+    // пример данных игрока
+    const clothData = {
+        sasavot: {common: 5, rare: 2, epic:1, legendary:0},
+        helin: {common:3, rare:0, epic:0, legendary:0},
+        lexapaws:{common:7, rare:1, epic:0, legendary:0},
+        melstroy:{common:4, rare:2, epic:1, legendary:0}
+    };
+
+    themes.forEach(theme => {
+        const card = document.createElement("div");
+        card.className = "inventory-v4-cloth-card";
+        card.innerHTML = `<h3>${theme.toUpperCase()}</h3>`;
+
+        rarities.forEach(rarity => {
+            const amount = clothData[theme][rarity] ?? 0;
+            const row = document.createElement("div");
+            row.className = `inventory-v4-cloth-row rarity-${rarity}`;
+            row.innerHTML = `
+                <img src="image/ui/cloth/${theme}-${rarity}.png" 
+                     onerror="this.src='image/ui/cloth-common.png'">
+                <span>${rarity.toUpperCase()}</span>
+                <b>${amount}</b>
+            `;
+            card.appendChild(row);
+        });
+
+        grid.appendChild(card);
+    });
+}
+
+// === Рендер ресурсов ===
+function renderInventoryV4Resources() {
+    const grid = document.getElementById("inventory-v4-resources-grid");
+    if (!grid) return;
+
+    grid.innerHTML = ""; // очищаем
+
+    const resources = [
+        {name: "Золото", amount: 5000, icon:"image/ui/coin.png"},
+        {name: "Гемы", amount: 50, icon:"image/ui/gem.png"},
+        {name: "Энергия", amount: 100, icon:"image/ui/battery.png"},
+        {name: "Осколки силы", amount: 250, icon:"image/ui/shard.png"}
+    ];
+
+    resources.forEach(res => {
+        const div = document.createElement("div");
+        div.className = "inventory-v4-card resource-card-v4";
+        div.innerHTML = `
+            <img src="${res.icon}" alt="${res.name}">
+            <h3>${res.name}</h3>
+            <div class="resource-count">x${res.amount}</div>
+        `;
+        grid.appendChild(div);
+    });
+}
+function spawnResourceParticles(chestType) {
+    const resourcesMap = {
+        common: ["coin", "battery"],
+        rare: ["coin","gem","battery"],
+        epic: ["coin","gem","battery","shard"],
+        legendary: ["coin","gem","shard"]
+    };
+
+    const chestCard = document.querySelector(`.chest-${chestType}-v4`);
+    const container = chestCard;
+
+    const resources = resourcesMap[chestType];
+
+    resources.forEach((res,i) => {
+        const particle = document.createElement("div");
+        particle.className = "chest-particle";
+        particle.innerHTML = `<img src="image/ui/${res}.png" width="32">`;
+        container.appendChild(particle);
+
+        const angle = (Math.random()*60-30); // немного влево-вправо
+        particle.style.transform = `translate(0,0) rotate(0deg)`;
+        particle.style.opacity = 1;
+
+        setTimeout(()=>{
+            particle.style.transition = "transform 1s ease-out, opacity 1s ease-out";
+            particle.style.transform = `translate(${Math.cos(angle)*80}px,-100px) rotate(${angle*3}deg)`;
+            particle.style.opacity = 0;
+        },50);
+
+        setTimeout(()=>particle.remove(),1100);
+    });
+}
+
+// Внутри openChestV4 добавляем:
+spawnResourceParticles(chest.dataset.type);
+// Внутри openChestV4 после spawnResourceParticles
+function spawnChestGlow(chestType) {
+    const card = document.querySelector(`.chest-${chestType}-v4`);
+    if(!card) return;
+
+    card.classList.add("glow");
+    setTimeout(()=>card.classList.remove("glow"),1200);
+}
+spawnChestGlow(chest.dataset.type);
+function pulseResource(resourceName, amount) {
+    const grid = document.getElementById("inventory-v4-resources-grid");
+    const card = Array.from(grid.children).find(c=>c.querySelector("h3").innerText===resourceName);
+    if(!card) return;
+
+    const countEl = card.querySelector(".resource-count");
+    countEl.innerText = "x"+amount;
+
+    card.classList.add("pulse");
+    setTimeout(()=>card.classList.remove("pulse"),400);
+}
+function addClothParticle(theme, rarity, amount=1) {
+    const grid = document.getElementById("inventory-v4-cloth-grid");
+    const card = Array.from(grid.children).find(c=>c.querySelector("h3").innerText.toLowerCase()===theme);
+    if(!card) return;
+
+    const row = card.querySelector(`.rarity-${rarity}`);
+    if(!row) return;
+
+    const particle = document.createElement("div");
+    particle.className="cloth-particle";
+    particle.innerText = `+${amount}`;
+    row.appendChild(particle);
+
+    setTimeout(()=>particle.remove(),800);
+}
+document.querySelectorAll(".inventory-v4-tab").forEach(tab=>{
+    tab.style.transition="opacity 0.25s ease";
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
