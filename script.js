@@ -7387,6 +7387,132 @@ window.openInventoryTab = function (tabName) {
         if (subtitle) subtitle.innerText = names[tabName][1];
     }
 };
+function openInventoryV3() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    const screen = document.getElementById("inventory-v3-screen");
+    if (!screen) return;
+
+    screen.classList.add("active");
+    openInventoryV3Tab("chests");
+}
+
+function openInventoryV3Tab(tabName) {
+    document.querySelectorAll(".inventory-v3-tab").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    document.querySelectorAll(".inventory-v3-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const tab = document.getElementById(`inventory-v3-${tabName}`);
+    if (tab) tab.classList.add("active");
+
+    const btn = Array.from(document.querySelectorAll(".inventory-v3-btn"))
+        .find(button => button.getAttribute("onclick")?.includes(tabName));
+
+    if (btn) btn.classList.add("active");
+
+    const meta = {
+        chests: ["СУНДУКИ", "Открывай сундуки и получай награды"],
+        cloth: ["ТКАНИ", "Ткани по темам и редкостям"],
+        resources: ["РЕСУРСЫ", "Все валюты и материалы игрока"]
+    };
+
+    const title = document.getElementById("inventory-v3-title");
+    const subtitle = document.getElementById("inventory-v3-subtitle");
+
+    if (meta[tabName]) {
+        if (title) title.innerText = meta[tabName][0];
+        if (subtitle) subtitle.innerText = meta[tabName][1];
+    }
+
+    if (tabName === "chests") renderInventoryV3Chests();
+    if (tabName === "cloth") renderInventoryV3Cloth();
+    if (tabName === "resources") renderInventoryV3Resources();
+}
+
+function renderInventoryV3Chests() {
+    const chests = inventoryData?.chests || {};
+
+    const ids = {
+        common: "common-count-v3",
+        rare: "rare-count-v3",
+        epic: "epic-count-v3",
+        legendary: "legendary-count-v3"
+    };
+
+    Object.keys(ids).forEach(type => {
+        const el = document.getElementById(ids[type]);
+        if (el) el.innerText = "x" + (chests[type] ?? 0);
+    });
+}
+
+function renderInventoryV3Cloth() {
+    const grid = document.getElementById("inventory-v3-cloth-grid");
+    if (!grid) return;
+
+    const themes = [
+        "helin",
+        "lexapaws",
+        "litwin",
+        "melstroy",
+        "nikkifn",
+        "rejiboi",
+        "rostickfaceskid",
+        "sasavot"
+    ];
+
+    const rarities = ["common", "rare", "epic", "legendary"];
+    const cloth = playerData.resources?.clothFragments || {};
+
+    grid.innerHTML = themes.map(theme => {
+        const rows = rarities.map(rarity => {
+            const amount = cloth?.[theme]?.[rarity] ?? 0;
+
+            return `
+                <div class="inventory-v3-cloth-row rarity-${rarity}">
+                    <img src="image/ui/cloth/${theme}-${rarity}.png"
+                         onerror="this.src='image/ui/cloth-common.png'">
+                    <span>${rarity}</span>
+                    <b>${amount}</b>
+                </div>
+            `;
+        }).join("");
+
+        return `
+            <div class="inventory-v3-cloth-card">
+                <h3>${theme.toUpperCase()}</h3>
+                ${rows}
+            </div>
+        `;
+    }).join("");
+}
+
+function renderInventoryV3Resources() {
+    const grid = document.getElementById("inventory-v3-resources-grid");
+    if (!grid) return;
+
+    const r = playerData.resources || {};
+
+    const items = [
+        ["Золото", r.gold ?? 0, "image/ui/gold.png"],
+        ["Гемы", r.premiumTokens ?? 0, "image/ui/gems.png"],
+        ["Энергия", r.energy ?? 0, "image/ui/energy.png"],
+        ["Осколки силы", r.powerShards ?? 0, "image/ui/power-shards.png"]
+    ];
+
+    grid.innerHTML = items.map(item => `
+        <div class="inventory-v3-card">
+            <img src="${item[2]}" onerror="this.style.display='none'">
+            <h3>${item[0]}</h3>
+            <div>x${item[1]}</div>
+        </div>
+    `).join("");
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
