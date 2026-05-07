@@ -7050,40 +7050,6 @@ const inventoryTabMeta = {
         info: "ⓘ Ресурсы используются в магазине и прокачке."
     }
 };
-
-function openInventoryTab(tabName) {
-    document.querySelectorAll(".inventory-tab-content").forEach(tab => {
-        tab.classList.remove("active");
-    });
-
-    document.querySelectorAll(".inventory-side-btn").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
-    const target = document.getElementById(`inventory-tab-${tabName}`);
-    if (target) target.classList.add("active");
-
-    const activeBtn = Array.from(document.querySelectorAll(".inventory-side-btn"))
-        .find(btn => btn.getAttribute("onclick")?.includes(`'${tabName}'`));
-
-    if (activeBtn) activeBtn.classList.add("active");
-
-    const meta = inventoryTabMeta[tabName];
-
-    if (meta) {
-        const title = document.getElementById("inventory-title");
-        const subtitle = document.getElementById("inventory-subtitle");
-        const info = document.querySelector(".inventory-info-box");
-
-        if (title) title.innerText = meta.title;
-        if (subtitle) subtitle.innerText = meta.subtitle;
-        if (info) info.innerText = meta.info;
-    }
-
-    if (tabName === "chests") renderInventory();
-    if (tabName === "cloth") renderClothInventory();
-    if (tabName === "resources") renderResourcesInventory();
-}
 function renderResourcesInventory() {
     const grid = document.getElementById("resources-inventory-grid");
     if (!grid) return;
@@ -7274,37 +7240,6 @@ function renderResourcesInventory() {
         </div>
     `).join("");
 }   
-function openChestsInventory() {
-    document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-    });
-
-    const inventoryScreen = document.getElementById("inventory-screen");
-
-    if (!inventoryScreen) {
-        console.error("Не найден #inventory-screen");
-        return;
-    }
-
-    inventoryScreen.classList.add("active");
-
-    openInventoryTab("chests");
-    renderInventory();
-}
-function openChestsInventory() {
-
-    document.querySelectorAll('.screen')
-        .forEach(screen => {
-            screen.classList.remove('active');
-        });
-
-    const inventory =
-        document.getElementById('inventory-screen');
-
-    if (inventory) {
-        inventory.classList.add('active');
-    }
-}
 
 function openInventoryTab(tabName) {
 
@@ -7339,54 +7274,6 @@ function openInventoryTab(tabName) {
         activeBtn.classList.add('active');
     }
 }
-window.openChestsInventory = function () {
-    document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-    });
-
-    const inventory = document.getElementById("inventory-screen");
-
-    if (!inventory) {
-        alert("inventory-screen не найден в HTML");
-        return;
-    }
-
-    inventory.classList.add("active");
-    openInventoryTab("chests");
-};
-
-window.openInventoryTab = function (tabName) {
-    document.querySelectorAll(".inventory-tab-content").forEach(tab => {
-        tab.classList.remove("active");
-    });
-
-    document.querySelectorAll(".inventory-side-btn").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
-    const tab = document.getElementById(`inventory-tab-${tabName}`);
-    if (tab) tab.classList.add("active");
-
-    const btn = Array.from(document.querySelectorAll(".inventory-side-btn"))
-        .find(button => button.getAttribute("onclick")?.includes(tabName));
-
-    if (btn) btn.classList.add("active");
-
-    const title = document.getElementById("inventory-title");
-    const subtitle = document.getElementById("inventory-subtitle");
-
-    const names = {
-        chests: ["СУНДУКИ", "Открывай сундуки и получай награды"],
-        cloth: ["ТКАНИ", "Ткани по темам и редкостям"],
-        fragments: ["ФРАГМЕНТЫ", "Фрагменты для прокачки"],
-        resources: ["РЕСУРСЫ", "Основные валюты игрока"]
-    };
-
-    if (names[tabName]) {
-        if (title) title.innerText = names[tabName][0];
-        if (subtitle) subtitle.innerText = names[tabName][1];
-    }
-};
 function openInventoryV3() {
     document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");

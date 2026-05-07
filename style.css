@@ -13168,10 +13168,6 @@ body.modal-open {
 }
 /* === INVENTORY SCREEN === */
 
-#inventory-screen {
-    max-width: 1280px;
-    padding-top: 32px;
-}
 
 .inventory-grid {
     width: 100%;
@@ -13801,10 +13797,6 @@ body.modal-open {
 }
 /* === INVENTORY REFERENCE LAYOUT === */
 
-#inventory-screen {
-    max-width: 1500px;
-    padding: 26px 22px;
-}
 
 .inventory-layout {
     width: 100%;
@@ -13821,24 +13813,6 @@ body.modal-open {
         linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025));
     border: 1px solid rgba(170, 70, 255, 0.28);
     box-shadow: 0 20px 55px rgba(0,0,0,0.35);
-}
-
-.inventory-side-btn {
-    width: 100%;
-    height: 82px;
-    margin-bottom: 12px;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.035);
-    color: rgba(255,255,255,0.55);
-    font-family: inherit;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 0 20px;
-    transition: 0.22s ease;
 }
 
 .inventory-side-btn span:first-child {
@@ -14146,18 +14120,6 @@ body.modal-open {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-
-.inventory-side-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: white;
-    padding: 14px;
-    border-radius: 14px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 15px;
-    transition: 0.2s;
 }
 
 .inventory-side-btn:hover {

@@ -957,68 +957,28 @@
     </div>
 
 </div>
-<div id="chests-inventory-screen" class="screen chests-inventory-screen">
-    <div class="chests-inventory-page">
-
-        <aside class="inventory-sidebar">
-            <button class="inventory-side active">📦 <span>СУНДУКИ</span></button>
-            <button class="inventory-side">🧵 <span>ТКАНИ</span></button>
-            <button class="inventory-side">🎴 <span>КАРТОЧКИ</span></button>
-            <button class="inventory-side">⚡ <span>ЭНЕРГИЯ</span></button>
-        </aside>
-
-        <main class="chests-inventory-main">
-            <div class="chests-inventory-header">
-                <button class="shop-v3-back" onclick="goHome()">‹</button>
-                <div>
-                    <h1>СУНДУКИ</h1>
-                    <p>Открывай сундуки и получай награды</p>
-                </div>
-            </div>
-
-            <div class="chests-title-line">ТВОИ СУНДУКИ</div>
-
-            <div id="inventory-chests-grid" class="inventory-chests-grid"></div>
-        </main>
-
-    </div>
-</div>
-<!-- === INVENTORY V4 === -->
+<!-- Новый инвентарь -->
 <div id="inventory-v4-screen" class="screen">
-
     <div class="inventory-v4">
-
         <aside class="inventory-v4-sidebar">
-            <button class="inventory-v4-btn active" onclick="openInventoryV4Tab('chests')">🎁 Сундуки</button>
-            <button class="inventory-v4-btn" onclick="openInventoryV4Tab('cloth')">🧵 Ткани</button>
-            <button class="inventory-v4-btn" onclick="openInventoryV4Tab('resources')">💎 Ресурсы</button>
-            <button class="inventory-v4-btn" onclick="openInventoryV4Tab('fragments')">🧩 Фрагменты</button>
+            <!-- Кнопки вкладок: Сундуки, Ткани, Ресурсы, Фрагменты -->
         </aside>
-
         <main class="inventory-v4-main">
-
             <h1 id="inventory-v4-title">СУНДУКИ</h1>
             <p id="inventory-v4-subtitle">Открывай сундуки и получай награды</p>
 
-            <!-- Вкладки -->
             <div id="chests" class="inventory-v4-tab active">
-                <div class="inventory-v4-grid">
-                    <!-- Карточки сундуков будут добавляться JS -->
-                </div>
+                <div class="inventory-v4-grid"></div>
             </div>
-
             <div id="cloth" class="inventory-v4-tab">
                 <div class="inventory-v4-grid" id="inventory-v4-cloth-grid"></div>
             </div>
-
             <div id="resources" class="inventory-v4-tab">
                 <div class="inventory-v4-grid" id="inventory-v4-resources-grid"></div>
             </div>
-
             <div id="fragments" class="inventory-v4-tab">
                 <div class="inventory-v4-grid" id="inventory-v4-fragments-grid"></div>
             </div>
-
         </main>
     </div>
 </div>
