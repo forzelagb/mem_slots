@@ -14448,6 +14448,13 @@ body.modal-open {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+.inventory-v3-card button.disabled,
+.inventory-v3-card button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: linear-gradient(180deg, #333, #1d1d1d);
+    box-shadow: none;
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

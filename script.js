@@ -7513,6 +7513,61 @@ function renderInventoryV3Resources() {
         </div>
     `).join("");
 }
+const oldRenderInventoryV3Chests = renderInventoryV3Chests;
+
+renderInventoryV3Chests = function () {
+    const chests = inventoryData?.chests || {};
+
+    const ids = {
+        common: "common-count-v3",
+        rare: "rare-count-v3",
+        epic: "epic-count-v3",
+        legendary: "legendary-count-v3"
+    };
+
+    Object.keys(ids).forEach(type => {
+        const el = document.getElementById(ids[type]);
+        if (el) el.innerText = "x" + (chests[type] ?? 0);
+    });
+};
+
+const oldOpenChest = openChest;
+
+openChest = function (type) {
+    oldOpenChest(type);
+
+    setTimeout(() => {
+        renderInventoryV3Chests();
+    }, 100);
+};
+renderInventoryV3Chests = function () {
+    const chests = inventoryData?.chests || {};
+
+    const data = {
+        common: "common-count-v3",
+        rare: "rare-count-v3",
+        epic: "epic-count-v3",
+        legendary: "legendary-count-v3"
+    };
+
+    Object.keys(data).forEach(type => {
+        const count = chests[type] ?? 0;
+        const countEl = document.getElementById(data[type]);
+
+        if (countEl) {
+            countEl.innerText = "x" + count;
+        }
+
+        const card = countEl?.closest(".inventory-v3-card");
+        const btn = card?.querySelector("button");
+
+        if (btn) {
+            btn.disabled = count <= 0;
+            btn.innerText = count <= 0 ? "НЕТ СУНДУКОВ" : "ОТКРЫТЬ";
+            btn.classList.toggle("disabled", count <= 0);
+        }
+    });
+};
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
