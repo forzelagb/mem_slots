@@ -13517,14 +13517,6 @@ body.modal-open {
     box-shadow: 0 0 22px rgba(255, 211, 106, 0.22);
 }
 
-.inventory-tab-content {
-    display: none;
-    width: 100%;
-}
-
-.inventory-tab-content.active {
-    display: block;
-}
 
 .cloth-inventory-grid {
     width: 100%;
@@ -13639,15 +13631,6 @@ body.modal-open {
         0 0 24px rgba(255, 211, 106, 0.22),
         inset 0 1px 0 rgba(255,255,255,0.12);
     transform: translateY(-2px);
-}
-
-.inventory-tab-content {
-    display: none;
-    width: 100%;
-}
-
-.inventory-tab-content.active {
-    display: block;
 }
 
 /* === CLOTH INVENTORY === */
@@ -13998,15 +13981,6 @@ body.modal-open {
     box-shadow: 0 2px 0 #3b006f;
 }
 
-.inventory-tab-content {
-    display: none;
-    width: 100%;
-}
-
-.inventory-tab-content.active {
-    display: block;
-}
-
 /* ткани */
 
 .cloth-inventory-grid {
@@ -14260,13 +14234,6 @@ body.modal-open {
     font-size: 20px;
 }
 
-.inventory-tab-content {
-    display: none;
-}
-
-.inventory-tab-content.active {
-    display: block;
-}
 
 @media (max-width: 900px) {
 
