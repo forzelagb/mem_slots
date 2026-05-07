@@ -1,0 +1,9 @@
+.screen { display: flex; justify-content: center; align-items: flex-start; background: #1c1c2e; min-height: 100vh; }
+.inventory-v4 { display: flex; width: 90%; margin-top: 50px; }
+.inventory-v4-sidebar { width: 200px; display: flex; flex-direction: column; gap: 10px; }
+.inventory-v4-btn { padding: 10px; background: #3b2f5b; color: #fff; border: none; cursor: pointer; font-size: 16px; text-align: left; }
+.inventory-v4-btn.active { background: #6b48d1; }
+.inventory-v4-main { flex: 1; margin-left: 20px; color: #fff; }
+.inventory-v4-tab { display: none; }
+.inventory-v4-tab.active { display: grid; grid-template-columns: repeat(auto-fill, 150px); gap: 20px; }
+.inventory-v4-grid { display: grid; gap: 15px; }
