@@ -7826,7 +7826,6 @@ function spawnResourceParticles(chestType) {
 }
 
 // Внутри openChestV4 добавляем:
-spawnResourceParticles(chest.dataset.type);
 // Внутри openChestV4 после spawnResourceParticles
 function spawnChestGlow(chestType) {
     const card = document.querySelector(`.chest-${chestType}-v4`);
@@ -7835,7 +7834,6 @@ function spawnChestGlow(chestType) {
     card.classList.add("glow");
     setTimeout(()=>card.classList.remove("glow"),1200);
 }
-spawnChestGlow(chest.dataset.type);
 function pulseResource(resourceName, amount) {
     const grid = document.getElementById("inventory-v4-resources-grid");
     const card = Array.from(grid.children).find(c=>c.querySelector("h3").innerText===resourceName);
@@ -8356,10 +8354,6 @@ function closePassRewardModal() {
     const modal = document.getElementById("pass-reward-modal");
     if (modal) modal.classList.remove("active");
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    renderBattlePass();
-});
 function activatePremiumPass() {
     fakePassState.premium = true;
     savePassState();
@@ -8500,10 +8494,6 @@ function claimQuestReward(index) {
     renderPassQuests();
     renderBattlePass();
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    renderPassQuests();
-});
 let activeQuestTab = "daily";
 
 const questsData = {
@@ -8646,9 +8636,6 @@ function claimQuestScreenReward(index) {
     renderQuestsScreen();
     renderBattlePass();
 }
-document.addEventListener("DOMContentLoaded", () => {
-    renderQuestsScreen();
-});
 function addQuestProgressByTitle(text, amount = 1) {
     Object.keys(questsData).forEach(tabName => {
         questsData[tabName].forEach(quest => {
@@ -8725,6 +8712,11 @@ function addPassXP(amount) {
     savePassState();
     renderBattlePass();
 }
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof loadPassState === "function") loadPassState();
+    if (typeof renderBattlePass === "function") renderBattlePass();
+    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
