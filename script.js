@@ -967,9 +967,18 @@ const finalGrid = [];
 for (let i = 0; i < 15; i++) {
     finalGrid.push(getRandomWeightedItem(items));
 }
+const bestCardInSpin = finalGrid.find(item => {
+    const rarity = getCardRarityBySrc(item.src);
+    return rarity === "rare" || rarity === "epic" || rarity === "legendary";
+});
+
+if (bestCardInSpin) {
+    addQuestProgressForCardRarity(getCardRarityBySrc(bestCardInSpin.src));
+}
 
     playerData.resources.energy -= currentEnergyCost;
     savePlayer();
+    addQuestProgressByTitle("прокрутов", 1);
 
     updateUI();
     animateBalanceChange('loss');
@@ -8018,6 +8027,704 @@ function claimThemeReward(themeName) {
     updateUI();
     openThemeDetail(themeName);
 }
+const battlePassData = {
+    heroes: {
+        title: "MEME HERO SEASON",
+        description: "Собирай ткани, сундуки и куски стилей для персонажей.",
+        premiumTitle: "Премиум персонажей",
+
+        free: [
+            ["🪙", "Золото", "x500"],
+            ["⚡", "Энергия", "x20"],
+            ["🧵", "Common ткань", "x15"],
+            ["💎", "Гемы", "x25"],
+            ["🎁", "Обычный сундук", "x1"],
+
+            ["🪙", "Золото", "x1000"],
+            ["🧵", "Rare ткань", "x8"],
+            ["⚡", "Энергия", "x30"],
+            ["💎", "Гемы", "x40"],
+            ["🎁", "Редкий сундук", "x1"],
+
+            ["🪙", "Золото", "x1500"],
+            ["🧵", "Common ткань", "x30"],
+            ["🧵", "Rare ткань", "x12"],
+            ["💎", "Гемы", "x60"],
+            ["🏆", "Эпик сундук", "x1"],
+
+            ["🪙", "Золото", "x2000"],
+            ["⚡", "Энергия", "x50"],
+            ["🧵", "Epic ткань", "x6"],
+            ["💎", "Гемы", "x80"],
+            ["🎁", "Редкий сундук", "x2"],
+
+            ["🪙", "Золото", "x3000"],
+            ["🧵", "Rare ткань", "x20"],
+            ["⚡", "Энергия", "x80"],
+            ["💎", "Гемы", "x100"],
+            ["🏆", "Эпик сундук", "x1"],
+
+            ["🪙", "Золото", "x5000"],
+            ["🧵", "Epic ткань", "x10"],
+            ["💎", "Гемы", "x150"],
+            ["🧵", "Legend ткань", "x3"],
+            ["👑", "Финальная награда", "x1"]
+        ],
+
+        premium: [
+            ["🧩", "Пазл стиля", "x1"],
+            ["🎁", "Редкий сундук", "x1"],
+            ["🧵", "Rare ткань", "x20"],
+            ["💎", "Гемы", "x80"],
+            ["🏆", "Эпик сундук", "x1"],
+
+            ["🧩", "Пазл стиля", "x1"],
+            ["🧵", "Epic ткань", "x12"],
+            ["🎫", "+5 уровней", "x1"],
+            ["💎", "Гемы", "x120"],
+            ["👑", "Кусок скина", "x1"],
+
+            ["🎁", "Эпик сундук", "x1"],
+            ["🧵", "Rare ткань", "x35"],
+            ["🧵", "Epic ткань", "x18"],
+            ["💎", "Гемы", "x160"],
+            ["👑", "Кусок скина", "x1"],
+
+            ["🏆", "Легенд. сундук", "x1"],
+            ["🧵", "Epic ткань", "x25"],
+            ["🧵", "Legend ткань", "x8"],
+            ["💎", "Гемы", "x220"],
+            ["🧩", "Пазл стиля", "x2"],
+
+            ["🎁", "Эпик сундук", "x2"],
+            ["🧵", "Legend ткань", "x12"],
+            ["🎫", "+10 уровней", "x1"],
+            ["💎", "Гемы", "x300"],
+            ["👑", "Кусок скина", "x2"],
+
+            ["🏆", "Легенд. сундук", "x2"],
+            ["🧵", "Legend ткань", "x20"],
+            ["💎", "Гемы", "x500"],
+            ["🧩", "Пазл стиля", "x3"],
+            ["👑", "Финальный стиль", "x1"]
+        ]
+    },
+
+    items: {
+        title: "PET & ITEM SEASON",
+        description: "Открывай материалы питомцев, предметы, аксессуары и редкие сундуки.",
+        premiumTitle: "Премиум питомцев",
+
+        free: [
+            ["🪙", "Золото", "x500"],
+            ["⚡", "Энергия", "x20"],
+            ["🐾", "Корм питомца", "x15"],
+            ["🔹", "Осколки предмета", "x10"],
+            ["🎁", "Обычный сундук", "x1"],
+
+            ["🪙", "Золото", "x1000"],
+            ["🐾", "Корм питомца", "x25"],
+            ["🔹", "Осколки предмета", "x15"],
+            ["💎", "Гемы", "x40"],
+            ["🎁", "Редкий сундук", "x1"],
+
+            ["🪙", "Золото", "x1500"],
+            ["🐾", "Корм питомца", "x35"],
+            ["🔮", "Материал предмета", "x12"],
+            ["💎", "Гемы", "x60"],
+            ["🏆", "Эпик сундук", "x1"],
+
+            ["🪙", "Золото", "x2000"],
+            ["⚡", "Энергия", "x50"],
+            ["🐾", "Редкий корм", "x8"],
+            ["💎", "Гемы", "x80"],
+            ["🎁", "Редкий сундук", "x2"],
+
+            ["🪙", "Золото", "x3000"],
+            ["🔮", "Материал предмета", "x20"],
+            ["⚡", "Энергия", "x80"],
+            ["💎", "Гемы", "x100"],
+            ["🏆", "Эпик сундук", "x1"],
+
+            ["🪙", "Золото", "x5000"],
+            ["🐾", "Редкий корм", "x15"],
+            ["💎", "Гемы", "x150"],
+            ["🔮", "Редкий материал", "x5"],
+            ["💠", "Финальная награда", "x1"]
+        ],
+
+        premium: [
+            ["🐾", "Пазл питомца", "x1"],
+            ["🎁", "Редкий сундук", "x1"],
+            ["🔮", "Материал предмета", "x20"],
+            ["💎", "Гемы", "x80"],
+            ["🏆", "Эпик сундук", "x1"],
+
+            ["🐾", "Пазл питомца", "x1"],
+            ["🎒", "Аксессуар", "x1"],
+            ["🎫", "+5 уровней", "x1"],
+            ["💎", "Гемы", "x120"],
+            ["🔮", "Редкий материал", "x10"],
+
+            ["🎁", "Эпик сундук", "x1"],
+            ["🐾", "Корм питомца", "x60"],
+            ["🔮", "Материал предмета", "x35"],
+            ["💎", "Гемы", "x160"],
+            ["🎒", "Редкий аксессуар", "x1"],
+
+            ["🏆", "Легенд. сундук", "x1"],
+            ["🐾", "Редкий корм", "x30"],
+            ["🔮", "Редкий материал", "x18"],
+            ["💎", "Гемы", "x220"],
+            ["🐾", "Пазл питомца", "x2"],
+
+            ["🎁", "Эпик сундук", "x2"],
+            ["🔮", "Редкий материал", "x25"],
+            ["🎫", "+10 уровней", "x1"],
+            ["💎", "Гемы", "x300"],
+            ["🐉", "Кусок питомца", "x2"],
+
+            ["🏆", "Легенд. сундук", "x2"],
+            ["🐾", "Редкий корм", "x50"],
+            ["💎", "Гемы", "x500"],
+            ["🐉", "Редкий питомец", "x1"],
+            ["💠", "Финальный предмет", "x1"]
+        ]
+    }
+};
+
+function switchPassTab(type) {
+    activePassType = type;
+
+    document.querySelectorAll(".pass-switch-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const activeButton = Array.from(document.querySelectorAll(".pass-switch-btn")).find(btn => {
+        return btn.getAttribute("onclick")?.includes(type);
+    });
+
+    if (activeButton) {
+        activeButton.classList.add("active");
+    }
+
+    renderBattlePass();
+}
+
+function renderBattlePass() {
+    const data = battlePassData[activePassType];
+    const road = document.getElementById("pass-road");
+
+    if (!data || !road) return;
+
+    const title = document.getElementById("pass-title");
+    const desc = document.getElementById("pass-description");
+    const premiumTitle = document.getElementById("premium-title");
+    const levelEl = document.getElementById("pass-current-level");
+
+    if (title) title.innerText = data.title;
+    if (desc) desc.innerText = data.description;
+    if (premiumTitle) premiumTitle.innerText = data.premiumTitle;
+    if (levelEl) levelEl.innerText = fakePassState.level;
+    const xpText = document.getElementById("pass-xp-text");
+const xpFill = document.querySelector(".pass-xp-fill");
+
+fakePassState.xp = fakePassState.xp || 0;
+fakePassState.xpNeed = fakePassState.xpNeed || getPassXpNeed(fakePassState.level);
+
+const xpPercent = Math.min(100, (fakePassState.xp / fakePassState.xpNeed) * 100);
+
+if (xpText) xpText.innerText = `${fakePassState.xp} / ${fakePassState.xpNeed} XP`;
+if (xpFill) xpFill.style.width = `${xpPercent}%`;
+    const levels = Array.from({ length: 30 }, (_, i) => i + 1);
+
+    road.innerHTML = `
+        <div class="pass-road-levels">
+            <div class="pass-line-title">Бесплатно</div>
+            ${levels.map(level => renderPassRewardCard(level, data.free[level - 1], "free")).join("")}
+        </div>
+
+        <div class="pass-level-row">
+            <div class="pass-line-title">Уровень</div>
+            ${levels.map(level => `
+                <div class="pass-level-node ${level === fakePassState.level ? "current" : ""}">
+                    ${level}
+                </div>
+            `).join("")}
+        </div>
+
+        <div class="pass-road-levels">
+            <div class="pass-line-title">Премиум</div>
+            ${levels.map(level => renderPassRewardCard(level, data.premium[level - 1], "premium")).join("")}
+        </div>
+    `;
+}
+
+function getRewardRarity(level) {
+    if (level >= 30) return "legendary";
+    if (level >= 20) return "epic";
+    if (level >= 10) return "rare";
+    return "common";
+}
+
+function renderPassRewardCard(level, reward, line) {
+    const [icon, name, amount] = reward;
+
+    const rarity = getRewardRarity(level);
+    const isFinalReward = level === 30;
+
+    const isUnlocked = level <= fakePassState.level;
+    const isPremiumLocked = line === "premium" && !fakePassState.premium;
+
+    const claimedList = line === "premium"
+        ? fakePassState.claimedPremium
+        : fakePassState.claimedFree;
+
+    const isClaimed = claimedList.includes(level);
+    const isClaimable = isUnlocked && !isClaimed && !isPremiumLocked;
+
+    let buttonText = "Закрыто";
+
+    if (isPremiumLocked) buttonText = "🔒 Premium";
+    else if (isClaimed) buttonText = "✅ Забрано";
+    else if (isClaimable) buttonText = "Забрать";
+
+    return `
+        <div class="pass-reward-card ${line} ${rarity} ${isFinalReward ? "final-reward" : ""} ${level === fakePassState.level ? "current" : ""} ${isClaimable ? "claimable" : ""} ${isPremiumLocked ? "locked-premium" : ""}">
+            <div class="pass-reward-icon">${icon}</div>
+
+            <div class="pass-reward-name">
+                ${name}
+            </div>
+
+            <div class="pass-reward-amount">
+                ${amount}
+            </div>
+
+            <button onclick="claimPassReward(${level}, '${line}')">
+                ${buttonText}
+            </button>
+        </div>
+    `;
+}
+
+function claimPassReward(level, line) {
+    const data = battlePassData[activePassType];
+    const reward = data[line][level - 1];
+
+    const claimedList = line === "premium"
+        ? fakePassState.claimedPremium
+        : fakePassState.claimedFree;
+
+    if (level > fakePassState.level) {
+        alert("Этот уровень ещё закрыт.");
+        return;
+    }
+
+    if (line === "premium" && !fakePassState.premium) {
+        alert("Нужен премиум пропуск.");
+        return;
+    }
+
+    if (claimedList.includes(level)) {
+        alert("Награда уже забрана.");
+        return;
+    }
+
+    claimedList.push(level);
+    renderBattlePass();
+
+    openPassRewardModal(reward);
+}
+
+function openPassRewardModal(reward) {
+    const modal = document.getElementById("pass-reward-modal");
+    const icon = document.getElementById("pass-modal-icon");
+    const title = document.getElementById("pass-modal-title");
+    const amount = document.getElementById("pass-modal-amount");
+
+    if (!modal || !reward) return;
+
+    icon.innerText = reward[0];
+    title.innerText = reward[1];
+    amount.innerText = reward[2];
+
+    modal.classList.add("active");
+}
+
+function closePassRewardModal() {
+    const modal = document.getElementById("pass-reward-modal");
+    if (modal) modal.classList.remove("active");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderBattlePass();
+});
+function activatePremiumPass() {
+    fakePassState.premium = true;
+    savePassState();
+    renderBattlePass();
+
+    openPassRewardModal([
+        "👑",
+        "Премиум пропуск активирован",
+        "Премиум награды открыты"
+    ]);
+}
+function claimAllPassRewards() {
+    const data = battlePassData[activePassType];
+
+    let claimedCount = 0;
+    let lastReward = null;
+
+    data.free.forEach((reward, index) => {
+        const level = index + 1;
+
+        if (
+            level <= fakePassState.level &&
+            !fakePassState.claimedFree.includes(level)
+        ) {
+            fakePassState.claimedFree.push(level);
+            claimedCount++;
+            lastReward = reward;
+        }
+    });
+
+    if (fakePassState.premium) {
+        data.premium.forEach((reward, index) => {
+            const level = index + 1;
+
+            if (
+                level <= fakePassState.level &&
+                !fakePassState.claimedPremium.includes(level)
+            ) {
+                fakePassState.claimedPremium.push(level);
+                claimedCount++;
+                lastReward = reward;
+            }
+        });
+    }
+
+    renderBattlePass();
+
+    if (claimedCount === 0) {
+        alert("Нет доступных наград.");
+        return;
+    }
+
+    openPassRewardModal([
+        "🎁",
+        `Получено наград: ${claimedCount}`,
+        lastReward ? "Награды добавлены" : ""
+    ]);
+}
+const passQuests = [
+    {
+        title: "Сделать 10 прокрутов",
+        progress: 7,
+        max: 10,
+        xp: 250
+    },
+
+    {
+        title: "Открыть 2 сундука",
+        progress: 1,
+        max: 2,
+        xp: 400
+    },
+
+    {
+        title: "Получить epic карточку",
+        progress: 0,
+        max: 1,
+        xp: 600
+    }
+];
+
+function renderPassQuests() {
+    const list = document.getElementById("pass-quests-list");
+
+    if (!list) return;
+
+    list.innerHTML = passQuests.map((quest, index) => {
+        const percent = Math.min(
+            100,
+            (quest.progress / quest.max) * 100
+        );
+
+        const completed = quest.progress >= quest.max;
+
+        return `
+            <div class="pass-quest">
+                <div class="pass-quest-left">
+                    <div class="pass-quest-title">
+                        ${quest.title}
+                    </div>
+
+                    <div class="pass-quest-progress">
+                        <div style="width:${percent}%"></div>
+                    </div>
+
+                    <div class="pass-quest-xp">
+                        ${quest.progress}/${quest.max} • ${quest.xp} XP
+                    </div>
+                </div>
+
+                ${
+                    completed
+                        ? `<button onclick="claimQuestReward(${index})">
+                            Забрать
+                           </button>`
+                        : `<button disabled>
+                            В процессе
+                           </button>`
+                }
+            </div>
+        `;
+    }).join("");
+}
+
+function claimQuestReward(index) {
+    const quest = passQuests[index];
+
+    fakePassState.level += 1;
+
+    openPassRewardModal([
+        "⭐",
+        "Получен уровень пропуска",
+        `+${quest.xp} XP`
+    ]);
+
+    passQuests.splice(index, 1);
+
+    renderPassQuests();
+    renderBattlePass();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderPassQuests();
+});
+let activeQuestTab = "daily";
+
+const questsData = {
+    daily: [
+        {
+            icon: "🎰",
+            title: "Сделать 10 прокрутов",
+            desc: "Играй в любые мем-темы и трать энергию.",
+            progress: 7,
+            max: 10,
+            xp: 250
+        },
+        {
+            icon: "🎁",
+            title: "Открыть 2 сундука",
+            desc: "Открой любые сундуки из инвентаря.",
+            progress: 1,
+            max: 2,
+            xp: 400
+        },
+        {
+            icon: "🃏",
+            title: "Получить rare карточку",
+            desc: "Выбей любую карточку редкости rare или выше.",
+            progress: 1,
+            max: 1,
+            xp: 350
+        }
+    ],
+
+    season: [
+        {
+            icon: "🏆",
+            title: "Сделать 300 прокрутов",
+            desc: "Длинное сезонное задание для активных игроков.",
+            progress: 84,
+            max: 300,
+            xp: 2500
+        },
+        {
+            icon: "🧵",
+            title: "Собрать 100 тканей",
+            desc: "Получай ткани из сундуков, пропуска и коллекций.",
+            progress: 36,
+            max: 100,
+            xp: 1800
+        },
+        {
+            icon: "👑",
+            title: "Забрать 20 наград пропуска",
+            desc: "Продвигайся по пропуску и забирай награды.",
+            progress: 8,
+            max: 20,
+            xp: 2200
+        }
+    ]
+};
+
+function switchQuestTab(type) {
+    activeQuestTab = type;
+
+    document.querySelectorAll(".quest-tab-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const activeButton = Array.from(document.querySelectorAll(".quest-tab-btn")).find(btn => {
+        return btn.getAttribute("onclick")?.includes(type);
+    });
+
+    if (activeButton) {
+        activeButton.classList.add("active");
+    }
+
+    renderQuestsScreen();
+}
+
+function renderQuestsScreen() {
+    const list = document.getElementById("quests-list");
+    const count = document.getElementById("quests-today-count");
+
+    if (!list) return;
+
+    const quests = questsData[activeQuestTab];
+
+    if (count) {
+        count.innerText = `${quests.length} задания`;
+    }
+
+    list.innerHTML = quests.map((quest, index) => {
+        const percent = Math.min(100, (quest.progress / quest.max) * 100);
+        const completed = quest.progress >= quest.max;
+
+        return `
+            <div class="quest-card ${completed ? "completed" : ""}">
+                <div class="quest-icon">${quest.icon}</div>
+
+                <div class="quest-info">
+                    <h3>${quest.title}</h3>
+                    <p>${quest.desc}</p>
+
+                    <div class="quest-progress-bar">
+                        <div class="quest-progress-fill" style="width:${percent}%"></div>
+                    </div>
+                </div>
+
+                <div class="quest-meta">
+                    <b>+${quest.xp} XP</b>
+                    <span>${quest.progress}/${quest.max}</span>
+
+                    <button onclick="claimQuestScreenReward(${index})" ${completed ? "" : "disabled"}>
+                        ${completed ? "Забрать" : "В процессе"}
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function claimQuestScreenReward(index) {
+    const quests = questsData[activeQuestTab];
+    const quest = quests[index];
+
+    if (!quest) return;
+
+    if (quest.progress < quest.max) {
+        alert("Квест ещё не выполнен.");
+        return;
+    }
+
+    addPassXP(quest.xp);
+
+    openPassRewardModal([
+        "⭐",
+        "XP пропуска получен",
+        `+${quest.xp} XP`
+    ]);
+
+    quests.splice(index, 1);
+
+    renderQuestsScreen();
+    renderBattlePass();
+}
+document.addEventListener("DOMContentLoaded", () => {
+    renderQuestsScreen();
+});
+function addQuestProgressByTitle(text, amount = 1) {
+    Object.keys(questsData).forEach(tabName => {
+        questsData[tabName].forEach(quest => {
+            if (quest.title.includes(text)) {
+                quest.progress = Math.min(quest.max, quest.progress + amount);
+            }
+        });
+    });
+
+    renderQuestsScreen();
+}
+function addQuestProgressForCardRarity(rarity) {
+    if (!rarity) return;
+
+    const goodRarities = ["rare", "epic", "legendary"];
+
+    if (goodRarities.includes(rarity)) {
+        addQuestProgressByTitle("rare карточку", 1);
+    }
+
+    if (rarity === "epic" || rarity === "legendary") {
+        addQuestProgressByTitle("epic карточку", 1);
+    }
+}
+function getPassStateKey() {
+    return "memeBattlePassStateV1";
+}
+
+function savePassState() {
+    localStorage.setItem(getPassStateKey(), JSON.stringify(fakePassState));
+}
+
+function loadPassState() {
+    const saved = localStorage.getItem(getPassStateKey());
+
+    if (!saved) {
+        fakePassState.xp = fakePassState.xp || 0;
+        fakePassState.xpNeed = fakePassState.xpNeed || 1000;
+        return;
+    }
+
+    const parsed = JSON.parse(saved);
+
+    fakePassState.level = parsed.level ?? fakePassState.level;
+    fakePassState.xp = parsed.xp ?? 0;
+    fakePassState.xpNeed = parsed.xpNeed ?? 1000;
+    fakePassState.premium = parsed.premium ?? false;
+    fakePassState.claimedFree = parsed.claimedFree || [];
+    fakePassState.claimedPremium = parsed.claimedPremium || [];
+}
+
+function getPassXpNeed(level) {
+    return 800 + level * 200;
+}
+
+function addPassXP(amount) {
+    fakePassState.xp = fakePassState.xp || 0;
+    fakePassState.xpNeed = fakePassState.xpNeed || getPassXpNeed(fakePassState.level);
+
+    fakePassState.xp += amount;
+
+    while (fakePassState.xp >= fakePassState.xpNeed && fakePassState.level < 30) {
+        fakePassState.xp -= fakePassState.xpNeed;
+        fakePassState.level += 1;
+        fakePassState.xpNeed = getPassXpNeed(fakePassState.level);
+    }
+
+    if (fakePassState.level >= 30) {
+        fakePassState.level = 30;
+        fakePassState.xp = 0;
+        fakePassState.xpNeed = getPassXpNeed(30);
+    }
+
+    savePassState();
+    renderBattlePass();
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
@@ -8031,6 +8738,9 @@ window.onload = () => {
     renderWheelTrack();
     updateVIPZoneUI();
     updatePlayerLevelUI();
+    loadPassState();
+    renderBattlePass();
+    renderQuestsScreen();
     marketInterval = setInterval(simulateMarket, 3000);
 };
 

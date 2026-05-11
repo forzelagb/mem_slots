@@ -10,6 +10,18 @@
     <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
+    <div class="pass-reward-modal" id="pass-reward-modal">
+    <div class="pass-reward-modal-card">
+        <div class="pass-reward-modal-label">НАГРАДА ПОЛУЧЕНА</div>
+        <div class="pass-reward-modal-icon" id="pass-modal-icon">🎁</div>
+        <h2 id="pass-modal-title">Награда</h2>
+        <p id="pass-modal-amount">x1</p>
+
+        <button onclick="closePassRewardModal()">
+            Отлично
+        </button>
+    </div>
+</div>
 <div class="main-header-v2">
 
     <div class="header-v2-profile">
@@ -35,6 +47,7 @@
         </a>
         <button onclick="openShopScreen()">🛒<span>Магазин</span></button>
         <button onclick="openTab('pass')">🎟️<span>Пропуск</span></button>
+        <button onclick="openTab('quests')">📋<span>Квесты</span></button>
     </nav>
 
     <div class="header-v2-right">
@@ -139,6 +152,7 @@
         <button class="tab-btn" onclick="openTab('collection')">🗂 Коллекция</button>
         <button class="tab-btn" onclick="openNewCharactersScreen()">🧙 Герои</button>
         <button class="tab-btn" onclick="openTab('pass')">🕯 Пропуск</button>
+        <button class="tab-btn" onclick="openTab('quests')">📋 Квесты</button>
         <button class="tab-btn" onclick="openShopScreen()">🛒 Магазин</button>
     </div>
 </div>
@@ -248,30 +262,168 @@
 </div>
 </div>
 <div id="tab-pass" class="tab-content">
-    <div class="pass-page">
-        <h2 class="section-title">🕯 СЕЗОННЫЙ ПРОПУСК</h2>
-        <div class="pass-subtitle">Проходи путь, открывай сундуки, пазлы и редкие награды.</div>
+    <section class="battle-pass-screen">
 
-        <div class="pass-tabs">
-            <button class="pass-tab-btn active" onclick="switchPassTab('heroes')">🧍 Герои</button>
-            <button class="pass-tab-btn" onclick="switchPassTab('items')">🎒 Предметы & Питомцы</button>
-        </div>
+        <div class="pass-hero">
+            <div class="pass-title-block">
+                <div class="pass-label">БОЕВОЙ ПРОПУСК</div>
+                <h1 id="pass-title">MEME SEASON</h1>
+                <p id="pass-description">
+                    Выполняй задания, получай XP и открывай награды сезона.
+                </p>
 
-        <div class="pass-track-shell">
-            <div class="pass-chain pass-chain-left"></div>
-            <div class="pass-chain pass-chain-right"></div>
-
-            <div class="pass-track-header">
-                <div>Платный путь</div>
-                <div>Уровень</div>
-                <div>Бесплатный путь</div>
+                <div class="pass-timer">
+                    ⏳ Сезон закончится через: <b>14 дн. 88 мин.</b>
+                </div>
             </div>
 
-            <div id="pass-track" class="pass-track"></div>
-        </div>
-    </div>
-</div>
+            <div class="pass-progress-card">
+                <div class="pass-level-badge" id="pass-current-level">32</div>
 
+                <div class="pass-xp-area">
+                    <div class="pass-xp-top">
+                        <span>Прогресс уровня</span>
+                        <b id="pass-xp-text">4580 / 7200 XP</b>
+                    </div>
+
+                    <div class="pass-xp-bar">
+                        <div class="pass-xp-fill" style="width:64%;"></div>
+                    </div>
+
+                    <small>До следующего уровня: 2620 XP</small>
+                </div>
+
+                <button class="pass-plus-btn">+</button>
+            </div>
+
+            <div class="pass-premium-card">
+                <div class="pass-premium-icon">👑</div>
+                <div>
+                    <h3 id="premium-title">Премиум пропуск</h3>
+                    <p>Открой премиальную линию наград.</p>
+                </div>
+                <button onclick="activatePremiumPass()">Активировать</button>
+            </div>
+        </div>
+
+        <div class="pass-switcher">
+            <button class="pass-switch-btn active" onclick="switchPassTab('heroes')">
+                🎭 Пропуск персонажей
+            </button>
+
+            <button class="pass-switch-btn" onclick="switchPassTab('items')">
+                🐾 Пропуск питомцев и предметов
+            </button>
+        </div>
+
+        <div class="pass-road-wrapper">
+
+            <div class="pass-road-header">
+                <div>Бесплатно</div>
+                <div>Уровни</div>
+                <div>Премиум</div>
+            </div>
+
+            <div class="pass-road" id="pass-road">
+                <!-- JS вставит награды сюда -->
+            </div>
+
+        </div>
+
+        <div class="pass-bottom-panel">
+            <div class="pass-bottom-card">
+                <div class="pass-bottom-icon">🎫</div>
+                <div>
+                    <h3>Уровни пропуска</h3>
+                    <p>Можно купить +5 или +10 уровней в магазине.</p>
+                </div>
+            </div>
+
+            <div class="pass-bottom-card">
+                <div class="pass-bottom-icon">📋</div>
+                <div>
+                    <h3>Задания пропуска</h3>
+                    <p>После пропуска сделаем квесты, которые будут давать XP.</p>
+                </div>
+            </div>
+            <div class="pass-quests-list" id="pass-quests-list"></div>
+
+            <button class="pass-claim-all-btn" onclick="claimAllPassRewards()">
+                Забрать всё
+            </button>
+        </div>
+
+    </section>
+</div>
+<div id="tab-quests" class="tab-content">
+    <section class="quests-screen">
+
+        <div class="quests-hero">
+            <div>
+                <div class="quests-label">ЗАДАНИЯ</div>
+                <h1>КВЕСТЫ СЕЗОНА</h1>
+                <p>
+                    Выполняй задания, получай XP пропуска и открывай новые награды.
+                </p>
+            </div>
+
+            <div class="quests-summary-card">
+                <div class="quests-summary-icon">⭐</div>
+                <div>
+                    <h3>Сегодня доступно</h3>
+                    <b id="quests-today-count">3 задания</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="quests-tabs">
+            <button class="quest-tab-btn active" onclick="switchQuestTab('daily')">
+                ☀️ Ежедневные
+            </button>
+
+            <button class="quest-tab-btn" onclick="switchQuestTab('season')">
+                👑 Сезонные
+            </button>
+        </div>
+
+        <div class="quests-layout">
+
+            <div class="quests-list" id="quests-list">
+                <!-- JS вставит квесты -->
+            </div>
+
+            <aside class="quests-side-panel">
+                <h2>Награды за квесты</h2>
+
+                <div class="quest-side-reward">
+                    <span>⭐</span>
+                    <div>
+                        <b>XP пропуска</b>
+                        <p>Основная награда за задания</p>
+                    </div>
+                </div>
+
+                <div class="quest-side-reward">
+                    <span>🪙</span>
+                    <div>
+                        <b>Золото</b>
+                        <p>Иногда за сезонные задания</p>
+                    </div>
+                </div>
+
+                <div class="quest-side-reward">
+                    <span>🎁</span>
+                    <div>
+                        <b>Сундуки</b>
+                        <p>За длинные цепочки заданий</p>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+
+    </section>
+</div>
 <!-- ЭКРАН ПЕРСОНАЖЕЙ -->
 <!-- ЭКРАН ПЕРСОНАЖЕЙ
 <div id="characters-screen" class="screen">
