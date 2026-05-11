@@ -35,10 +35,92 @@ const orderedThemes = [
 let vipLevel = 0;
 
 const progressPaths = {
- common: [50,150,400,900,1800,3500],
- rare: [30,100,250,600,1300,2600],
- epic: [15,50,140,350,800,1700],
- legendary: [8,20,60,150,350,900]
+    common: [
+        5, 10, 15, 20, 30,
+        40, 50, 65, 80, 100,
+        120, 145, 170, 200, 235,
+        270, 310, 350, 400, 450,
+        500, 560, 620, 690, 760,
+        840, 920, 1010, 1100, 1200,
+        1310, 1420, 1540, 1660, 1790,
+        1920, 2060, 2200, 2350, 2500,
+        2660, 2820, 2990, 3160, 3340,
+        3520, 3710, 3900, 4100, 4300
+    ],
+
+    rare: [
+        8, 16, 25, 35, 50,
+        70, 90, 115, 140, 170,
+        205, 240, 280, 320, 365,
+        410, 460, 510, 565, 620,
+        680, 740, 805, 870, 940,
+        1010, 1085, 1160, 1240, 1320,
+        1405, 1490, 1580, 1670, 1765,
+        1860, 1960, 2060, 2165, 2270,
+        2380, 2490, 2605, 2720, 2840,
+        2960, 3085, 3210, 3340, 3470,
+        3605, 3740, 3880, 4020, 4165,
+        4310, 4460, 4610, 4765, 4920,
+        5080, 5240, 5405, 5570, 5740,
+        5910, 6085, 6260, 6440, 6620,
+        6805, 6990, 7180, 7370, 7565
+    ],
+
+    epic: [
+        10, 20, 35, 50, 70,
+        95, 120, 150, 185, 220,
+        260, 305, 350, 400, 455,
+        510, 570, 635, 700, 770,
+        845, 920, 1000, 1085, 1170,
+        1260, 1355, 1450, 1550, 1655,
+        1760, 1870, 1985, 2100, 2220,
+        2345, 2470, 2600, 2735, 2870,
+        3010, 3155, 3300, 3450, 3605,
+        3760, 3920, 4085, 4250, 4420,
+        4595, 4770, 4950, 5135, 5320,
+        5510, 5705, 5900, 6100, 6305,
+        6510, 6720, 6935, 7150, 7370,
+        7595, 7820, 8050, 8285, 8520,
+        8760, 9005, 9250, 9500, 9755,
+        10010, 10270, 10535, 10800, 11070,
+        11345, 11620, 11900, 12185, 12470,
+        12760, 13055, 13350, 13650, 13955,
+        14260, 14570, 14885, 15200, 15520,
+        15845, 16170, 16500, 16835, 17170
+    ],
+
+    legendary: [
+        15, 35, 60, 90, 130,
+        175, 225, 280, 340, 410,
+        485, 565, 650, 745, 845,
+        950, 1065, 1185, 1310, 1445,
+        1585, 1735, 1890, 2055, 2225,
+        2405, 2590, 2785, 2990, 3200,
+        3420, 3645, 3880, 4125, 4375,
+        4635, 4905, 5180, 5465, 5760,
+        6065, 6380, 6705, 7040, 7385,
+        7740, 8105, 8480, 8865, 9260,
+        9665, 10080, 10505, 10940, 11385,
+        11840, 12305, 12780, 13265, 13760,
+        14265, 14780, 15305, 15840, 16385,
+        16940, 17505, 18080, 18665, 19260,
+        19865, 20480, 21105, 21740, 22385,
+        23040, 23705, 24380, 25065, 25760,
+        26465, 27180, 27905, 28640, 29385,
+        30140, 30905, 31680, 32465, 33260,
+        34065, 34880, 35705, 36540, 37385,
+        38240, 39105, 39980, 40865, 41760,
+        42665, 43580, 44505, 45440, 46385,
+        47340, 48305, 49280, 50265, 51260,
+        52265, 53280, 54305, 55340, 56385,
+        57440, 58505, 59580, 60665, 61760,
+        62865, 63980, 65105, 66240, 67385,
+        68540, 69705, 70880, 72065, 73260,
+        74465, 75680, 76905, 78140, 79385,
+        80640, 81905, 83180, 84465, 85760,
+        87065, 88380, 89705, 91040, 92385,
+        93740, 95105, 96480, 97865, 99260
+    ]
 };
 const coinsConfig = {
     defaultCoins: 0
@@ -173,29 +255,36 @@ function renderAllThemesCollection() {
         const data = getThemeCompletionData(themeName);
         const themeTitle = titles[themeName] || themeName;
 
-const card = document.createElement('div');
-card.className = `theme-showcase-card theme-${themeName} ${data.percent >= 100 ? 'theme-showcase-complete' : ''}`;
+        const card = document.createElement('div');
+        card.className = `collection-theme-card-v2 theme-${themeName}`;
         card.onclick = () => openThemeDetail(themeName);
 
         card.innerHTML = `
-            <div class="theme-showcase-cover-wrap">
-                <img class="theme-showcase-cover" src="${preview}" alt="${themeTitle}">
+            <div class="collection-theme-cover-v2">
+                <img src="${preview}" alt="${themeTitle}">
             </div>
 
-            <div class="theme-showcase-main">
-                <div class="theme-showcase-row">
-                    <div class="theme-showcase-title">${themeTitle}</div>
-                    <div class="theme-showcase-percent">${data.percent}%</div>
+            <div class="collection-theme-info-v2">
+                <div class="collection-theme-top-v2">
+                    <h3>${themeTitle}</h3>
+                    <span>${data.percent}%</span>
                 </div>
 
-                <div class="theme-showcase-subtitle">
-                    Собрано ${data.completed} из ${data.total} карточек
+                <p>Собрано ${data.completed} из ${data.total} карточек</p>
+
+                <div class="collection-theme-progress-v2">
+                    <div style="width:${data.percent}%"></div>
                 </div>
 
-                <div class="theme-showcase-progress">
-                    <div class="theme-showcase-progress-fill" style="width:${data.percent}%"></div>
+                <div class="collection-theme-reward-v2">
+                    <span>Награда за тему:</span>
+                    <b>золото • гемы • сундук</b>
                 </div>
             </div>
+
+            <button class="collection-theme-open-v2">
+                ОТКРЫТЬ
+            </button>
         `;
 
         listEl.appendChild(card);
@@ -236,87 +325,106 @@ function openThemeDetail(themeName) {
 
     homeView.style.display = 'none';
     detailView.style.display = 'block';
+
     heroEl.innerHTML = '';
     gridEl.innerHTML = '';
 
     const data = getThemeCompletionData(themeName);
     const themeTitle = titles[themeName] || themeName;
     const preview = getThemePreviewImage(themeName);
-    const completedTheme = isThemeCompleted(themeName);
 
-    heroEl.className = `collection-detail-hero theme-${themeName}`;
+    heroEl.className = `collection-theme-hero-v2 theme-${themeName}`;
     heroEl.innerHTML = `
-        <div class="collection-detail-hero-cover">
+        <button class="collection-back-btn-v2" onclick="closeThemeDetail()">
+            ← НАЗАД К ТЕМАМ
+        </button>
+
+        <div class="collection-theme-hero-cover-v2">
             <img src="${preview}" alt="${themeTitle}">
         </div>
 
-        <div class="collection-detail-hero-body">
-            <div class="collection-detail-hero-title">${themeTitle}</div>
-            <div class="collection-detail-hero-subtitle">
-                Собрано ${data.completed} из ${data.total} карточек
+        <div class="collection-theme-hero-info-v2">
+            <h2>${themeTitle}</h2>
+            <p>Собрано ${data.completed} из ${data.total} карточек</p>
+
+            <div class="collection-theme-hero-progress-v2">
+                <div style="width:${data.percent}%"></div>
             </div>
 
-            <div class="collection-detail-hero-progress">
-                <div class="collection-detail-hero-progress-fill" style="width:${data.percent}%"></div>
-            </div>
-
-            <div class="collection-detail-hero-percent">${data.percent}% завершено</div>
-            ${completedTheme ? `<div class="theme-complete-badge">ULTIMATE THEME REWARD UNLOCKED</div>` : ``}
+            <span>${data.percent}% завершено</span>
         </div>
+
+<div class="collection-theme-hero-reward-v2">
+    <div>Награда за закрытие темы</div>
+    <b>5000 золота • 150 гемов • 100 энергии</b>
+
+    <button 
+        class="theme-reward-btn-v2"
+        ${isThemeCompleted(themeName) && !isThemeRewardClaimed(themeName) ? "" : "disabled"}
+        onclick="claimThemeReward('${themeName}')"
+    >
+        ${
+            isThemeRewardClaimed(themeName)
+                ? "ПОЛУЧЕНО"
+                : isThemeCompleted(themeName)
+                    ? "ЗАБРАТЬ"
+                    : "ЗАКРЫТО"
+        }
+    </button>
+</div>
+        <div class="collection-rarity-filter-v2">
+    <button class="active" onclick="setCollectionRarityFilter('${themeName}', 'all')">ВСЕ</button>
+    <button onclick="setCollectionRarityFilter('${themeName}', 'common')">COMMON</button>
+    <button onclick="setCollectionRarityFilter('${themeName}', 'rare')">RARE</button>
+    <button onclick="setCollectionRarityFilter('${themeName}', 'epic')">EPIC</button>
+    <button onclick="setCollectionRarityFilter('${themeName}', 'legendary')">LEGENDARY</button>
+</div>
     `;
 
-    const items = themes[themeName] || [];
+const items = themes[themeName] || [];
 
-    items.forEach((item) => {
+items.forEach(item => {
         const fileName = getFileNameFromSrc(item.src);
         const cardKey = getCardKey(themeName, item.src);
-        const rarity = cardRarity[fileName];
+        const rarity = cardRarity[fileName] || "common";
         const progress = playerData.cards?.[cardKey] || 0;
         const nextValue = getNextMilestoneValue(cardKey);
         const percentToNext = Math.max(0, Math.min(100, (progress / nextValue) * 100));
         const status = getCardStatus(cardKey);
 
         const card = document.createElement('div');
-        card.className = `collection-card-detail rarity-${rarity} status-${status}`;
+        card.className = `collection-card-v2 rarity-${rarity} status-${status}`;
+        card.dataset.rarity = rarity;   
         card.onclick = () => openCardPath(themeName, item.src);
 
-        if (status === "completed") {
-            card.classList.add("completed");
-        }
-
         card.innerHTML = `
-            <div class="collection-card-detail-image-wrap">
+            <div class="collection-card-rarity-v2">${rarity}</div>
+
+            <div class="collection-card-img-v2">
                 <img src="${item.src}" alt="${fileName}">
             </div>
 
-            <div class="collection-card-detail-body">
-                <div class="collection-card-detail-topline">
-                    <div class="collection-card-detail-name">${cardDisplayNames[fileName] || fileName}</div>
-                    <div class="collection-card-detail-rarity">${rarity}</div>
-                </div>
+            <h3>${cardDisplayNames[fileName] || fileName}</h3>
 
-                <div class="collection-card-detail-status ${status}">
-                    ${status === 'completed' ? 'COMPLETED' : status === 'in-progress' ? 'IN PROGRESS' : 'LOCKED'}
-                </div>
-
-                <div class="collection-card-detail-progress-text">
-                    ${progress} / ${nextValue}
-                </div>
-
-                <div class="collection-card-detail-progress-bar">
-                    <div class="collection-card-detail-progress-fill" style="width:${percentToNext}%"></div>
-                </div>
-
-                <div class="collection-card-detail-open">
-                    Открыть путь карточки →
-                </div>
+            <div class="collection-card-status-v2">
+                ${status === 'completed' ? 'ЗАВЕРШЕНО' : status === 'in-progress' ? 'В ПРОЦЕССЕ' : 'ЗАКРЫТО'}
             </div>
+
+            <div class="collection-card-progress-text-v2">
+                ${progress} / ${nextValue}
+            </div>
+
+            <div class="collection-card-progress-v2">
+                <div style="width:${percentToNext}%"></div>
+            </div>
+
+            <button class="collection-card-path-btn-v2">
+                ПУТЬ КАРТОЧКИ
+            </button>
         `;
 
         gridEl.appendChild(card);
     });
-
-    animateThemeDetailEntrance();
 }
 // === ЛОГИКА ВКЛАДОК ===
 function openTab(tabName) {
@@ -4273,85 +4381,155 @@ function highlightWinningCells(winningIndexes) {
     }, 40);
 }
 function openCardPath(themeName, cardSrc) {
-    const modal = document.getElementById('card-path-modal');
-    const titleEl = document.getElementById('card-path-title');
-    const rarityEl = document.getElementById('card-path-rarity');
-    const imgEl = document.getElementById('card-path-image');
-    const progressEl = document.getElementById('card-path-progress-text');
-    const fillEl = document.getElementById('card-path-progress-fill');
-    const stagesEl = document.getElementById('card-path-stages');
+    const detailView = document.getElementById('collection-detail-view');
+    const heroEl = document.getElementById('collection-detail-hero');
+    const gridEl = document.getElementById('collection-detail-grid');
 
-    if (!modal || !titleEl || !rarityEl || !imgEl || !progressEl || !fillEl || !stagesEl) return;
+    if (!detailView || !heroEl || !gridEl) return;
 
     const fileName = getFileNameFromSrc(cardSrc);
     const cardKey = getCardKey(themeName, cardSrc);
-    const rarity = cardRarity[fileName];
+    const rarity = cardRarity[fileName] || "common";
     const progress = playerData.cards?.[cardKey] || 0;
-    const nextValue = getNextMilestoneValue(cardKey);
-    const stage = getCurrentStage(cardKey);
-    const milestones = getRewardMilestones(cardKey);
-    const percentToNext = Math.max(0, Math.min(100, (progress / nextValue) * 100));
+    if (!playerData.claimedCardRewards) {
+    playerData.claimedCardRewards = {};
+}
 
-    titleEl.textContent = cardDisplayNames[fileName] || fileName;
-    rarityEl.textContent = rarity.toUpperCase();
-    imgEl.src = cardSrc;
-    imgEl.alt = fileName;
-    progressEl.textContent = `${progress} / ${nextValue} · Уровень ${stage}`;
-    fillEl.style.width = `${percentToNext}%`;
+if (!playerData.claimedCardRewards[cardKey]) {
+    playerData.claimedCardRewards[cardKey] = [];
+}
+    const milestones = progressPaths[rarity] || [];
+    const cardName = cardDisplayNames[fileName] || fileName;
+    const themeTitle = titles[themeName] || themeName;
+    const currentLevel = milestones.filter(need => progress >= need).length;
+    const nextMilestone = milestones[currentLevel] || milestones[milestones.length - 1];
+    const needMore = Math.max(0, nextMilestone - progress);
+    const pathPercent = Math.min(100, (currentLevel / milestones.length) * 100);
 
-    stagesEl.innerHTML = '';
+    heroEl.innerHTML = `
+        <button class="collection-back-btn-v2" onclick="openThemeDetail('${themeName}')">
+            ← НАЗАД К ТЕМЕ
+        </button>
 
-    milestones.forEach((value, index) => {
-        const step = index + 1;
-        const reached = isMilestoneReached(cardKey, step);
-        const claimed = isMilestoneClaimed(cardKey, step);
-        const claimable = canClaimMilestone(cardKey, step);
-        const active = !reached && value === nextValue;
+        <div class="card-path-hero">
+            <div class="card-path-preview rarity-${rarity}">
+                <img src="${cardSrc}" alt="${cardName}">
+                <span>${rarity}</span>
+            </div>
 
-        const stageItem = document.createElement('div');
-        stageItem.className = `
-            card-path-stage 
-            ${claimed ? 'done' : ''} 
-            ${claimable ? 'claimable' : ''} 
-            ${active ? 'active' : ''}
-        `;
+            <div class="card-path-info">
+                <h2>${cardName}</h2>
+                <p>${themeTitle}</p>
 
-        stageItem.innerHTML = `
-            <div class="card-path-stage__top">
-                <div class="card-path-stage__step">Этап ${step}</div>
-                <div class="card-path-stage__reward-box">
-                    ${getMilestoneRewardLabel(step, rarity)}
+                <div class="card-path-progress-text">
+                    Прогресс: ${progress}
+                </div>
+                <div class="card-path-main-progress">
+    <div style="width:${pathPercent}%"></div>
+</div>
+
+<div class="card-path-stats">
+    <div>
+        <span>Уровень</span>
+        <b>${currentLevel} / ${milestones.length}</b>
+    </div>
+
+    <div>
+        <span>До следующей награды</span>
+        <b>${needMore}</b>
+    </div>
+
+    <div>
+        <span>Следующая цель</span>
+        <b>${nextMilestone}</b>
+    </div>
+</div>
+
+                <div class="card-path-help">
+                    Получай эту карточку в игре, из сундуков и будущих наград коллекции.
                 </div>
             </div>
+        </div>
+    `;
 
-            <div class="card-path-stage__value">
-                Нужно: ${value}
+    gridEl.innerHTML = '';
+    gridEl.className = 'card-path-grid-v2';
+
+    milestones.forEach((need, index) => {
+        const level = index + 1;
+        const isDone = progress >= need;
+        const isClaimed = playerData.claimedCardRewards[cardKey].includes(level);   
+
+        const reward = getCardPathReward(level, rarity);
+
+        const item = document.createElement('div');
+        item.className = `card-path-reward ${isDone ? 'done' : 'locked'} ${isDone && !isClaimed ? 'claimable' : ''} ${isClaimed ? 'claimed' : ''}`;
+
+        item.innerHTML = `
+            <div class="card-path-level">LVL ${level}</div>
+
+            <div class="card-path-need">
+                ${progress} / ${need}
             </div>
 
-            <div class="card-path-stage__state">
-                ${
-                    claimed 
-                    ? 'Получено' 
-                    : claimable 
-                    ? 'Можно забрать' 
-                    : active 
-                    ? 'Текущий этап' 
-                    : 'Заблокировано'
-                }
+            <div class="card-path-reward-img">
+                <img src="${reward.img}" alt="${reward.title}">
             </div>
 
-            ${
-                claimable
-                ? `<button class="card-path-claim-btn" onclick="claimCardMilestone('${cardKey}', ${step})">Забрать</button>`
-                : ''
-            }
+            <div class="card-path-reward-title">
+                ${reward.title}
+            </div>
+
+            <div class="card-path-reward-count">
+                x${reward.amount}
+            </div>
+
+<button 
+    ${isDone && !isClaimed ? "" : "disabled"}
+    onclick="claimCardPathReward('${cardKey}', ${level}, '${rarity}', '${themeName}', '${cardSrc}')"
+>
+    ${isDone ? (isClaimed ? "ПОЛУЧЕНО" : "ЗАБРАТЬ") : "ЗАКРЫТО"}
+</button>
         `;
 
-        stagesEl.appendChild(stageItem);
+        gridEl.appendChild(item);
     });
+}
 
-    modal.classList.add('active');
-    document.body.classList.add('modal-open');
+function getCardPathReward(level, rarity) {
+    if (level % 25 === 0) {
+        return {
+            title: "Сундук",
+            amount: 1,
+            img: rarity === "legendary"
+                ? "image/ui/chest-legendary.png"
+                : rarity === "epic"
+                    ? "image/ui/chest-epic.png"
+                    : "image/ui/chest-rare.png"
+        };
+    }
+
+    if (level % 10 === 0) {
+        return {
+            title: "Гемы",
+            amount: rarity === "legendary" ? 50 : rarity === "epic" ? 30 : 15,
+            img: "image/ui/gems.png"
+        };
+    }
+
+    if (level % 5 === 0) {
+        return {
+            title: "Энергия",
+            amount: 20,
+            img: "image/ui/energy.png"
+        };
+    }
+
+    return {
+        title: "Золото",
+        amount: rarity === "legendary" ? 500 : rarity === "epic" ? 300 : rarity === "rare" ? 200 : 100,
+        img: "image/ui/gold.png"
+    };
 }
 
 function closeCardPath() {
@@ -7678,6 +7856,171 @@ function addClothParticle(theme, rarity, amount=1) {
 document.querySelectorAll(".inventory-v4-tab").forEach(tab=>{
     tab.style.transition="opacity 0.25s ease";
 });
+
+// ====== Дополнительно добавляем остальные предметы ======
+
+// Ткани (из cloth)
+const clothItems = [
+  { name: "Helin", category: "cloth", rarity: "common", count: 48, img: "image/ui/cloth/helin-common.png", source: "Обычные сундуки" },
+  { name: "Helin", category: "cloth", rarity: "rare", count: 36, img: "image/ui/cloth/helin-rare.png", source: "Обычные сундуки" },
+  { name: "Helin", category: "cloth", rarity: "epic", count: 24, img: "image/ui/cloth/helin-epic.png", source: "Epic Chest" },
+  { name: "Helin", category: "cloth", rarity: "legendary", count: 12, img: "image/ui/cloth/helin-legendary.png", source: "Legendary Chest" },
+
+  { name: "Lexapaws", category: "cloth", rarity: "common", count: 52, img: "image/ui/cloth/lexapaws-common.png", source: "Обычные сундуки" },
+  { name: "Lexapaws", category: "cloth", rarity: "rare", count: 41, img: "image/ui/cloth/lexapaws-rare.png", source: "Обычные сундуки" },
+  { name: "Lexapaws", category: "cloth", rarity: "epic", count: 27, img: "image/ui/cloth/lexapaws-epic.png", source: "Epic Chest" },
+  { name: "Lexapaws", category: "cloth", rarity: "legendary", count: 9, img: "image/ui/cloth/lexapaws-legendary.png", source: "Legendary Chest" },
+
+  { name: "Litwin", category: "cloth", rarity: "common", count: 43, img: "image/ui/cloth/litwin-common.png", source: "Обычные сундуки" },
+  { name: "Litwin", category: "cloth", rarity: "rare", count: 38, img: "image/ui/cloth/litwin-rare.png", source: "Обычные сундуки" },
+  { name: "Litwin", category: "cloth", rarity: "epic", count: 21, img: "image/ui/cloth/litwin-epic.png", source: "Epic Chest" },
+  { name: "Litwin", category: "cloth", rarity: "legendary", count: 8, img: "image/ui/cloth/litwin-legendary.png", source: "Legendary Chest" },
+
+  { name: "Melstroy", category: "cloth", rarity: "common", count: 60, img: "image/ui/cloth/melstroy-common.png", source: "Обычные сундуки" },
+  { name: "Melstroy", category: "cloth", rarity: "rare", count: 45, img: "image/ui/cloth/melstroy-rare.png", source: "Rare Chest" },
+  { name: "Melstroy", category: "cloth", rarity: "epic", count: 29, img: "image/ui/cloth/melstroy-epic.png", source: "Epic Chest" },
+  { name: "Melstroy", category: "cloth", rarity: "legendary", count: 11, img: "image/ui/cloth/melstroy-legendary.png", source: "Legendary Chest" },
+
+  { name: "Nikkifn", category: "cloth", rarity: "common", count: 40, img: "image/ui/cloth/nikkifn-common.png", source: "Обычные сундуки" },
+  { name: "Nikkifn", category: "cloth", rarity: "rare", count: 35, img: "image/ui/cloth/nikkifn-rare.png", source: "Rare Chest" },
+  { name: "Nikkifn", category: "cloth", rarity: "epic", count: 20, img: "image/ui/cloth/nikkifn-epic.png", source: "Epic Chest" },
+  { name: "Nikkifn", category: "cloth", rarity: "legendary", count: 7, img: "image/ui/cloth/nikkifn-legendary.png", source: "Legendary Chest" },
+
+  { name: "Rejiboi", category: "cloth", rarity: "common", count: 39, img: "image/ui/cloth/rejiboi-common.png", source: "Обычные сундуки" },
+  { name: "Rejiboi", category: "cloth", rarity: "rare", count: 32, img: "image/ui/cloth/rejiboi-rare.png", source: "Rare Chest" },
+  { name: "Rejiboi", category: "cloth", rarity: "epic", count: 18, img: "image/ui/cloth/rejiboi-epic.png", source: "Epic Chest" },
+  { name: "Rejiboi", category: "cloth", rarity: "legendary", count: 6, img: "image/ui/cloth/rejiboi-legendary.png", source: "Legendary Chest" },
+
+  { name: "Rostick", category: "cloth", rarity: "common", count: 50, img: "image/ui/cloth/rostickfaceskid-common.png", source: "Обычные сундуки" },
+  { name: "Rostick", category: "cloth", rarity: "rare", count: 40, img: "image/ui/cloth/rostickfaceskid-rare.png", source: "Rare Chest" },
+  { name: "Rostick", category: "cloth", rarity: "epic", count: 26, img: "image/ui/cloth/rostickfaceskid-epic.png", source: "Epic Chest" },
+  { name: "Rostick", category: "cloth", rarity: "legendary", count: 9, img: "image/ui/cloth/rostickfaceskid-legendary.png", source: "Legendary Chest" },
+
+  { name: "Sasavot", category: "cloth", rarity: "common", count: 45, img: "image/ui/cloth/sasavot-common.png", source: "Обычные сундуки" },
+  { name: "Sasavot", category: "cloth", rarity: "rare", count: 34, img: "image/ui/cloth/sasavot-rare.png", source: "Rare Chest" },
+  { name: "Sasavot", category: "cloth", rarity: "epic", count: 20, img: "image/ui/cloth/sasavot-epic.png", source: "Epic Chest" },
+  { name: "Sasavot", category: "cloth", rarity: "legendary", count: 7, img: "image/ui/cloth/sasavot-legendary.png", source: "Legendary Chest" },
+];
+
+// Ресурсы
+const resourcesItems = [
+  { name: "Gems", category: "resources", rarity: "rare", count: 5430, img: "image/ui/gems.png", source: "Сундуки и квесты" },
+  { name: "Energy", category: "resources", rarity: "epic", count: 87, img: "image/ui/energy.png", source: "Сундуки и квесты" },
+  { name: "Gold", category: "resources", rarity: "epic", count: 128, img: "image/ui/gold.png", source: "Сундуки и квесты" }
+];
+
+// Сундуки
+const chestsItems = [
+  { name: "Common Chest", category: "chests", rarity: "common", count: 8, img: "image/ui/chest-common.png", source: "Магазин / Квесты" },
+  { name: "Epic Chest", category: "chests", rarity: "epic", count: 6, img: "image/ui/chest-epic.png", source: "Магазин / Квесты" },
+  { name: "Legendary Chest", category: "chests", rarity: "legendary", count: 3, img: "image/ui/chest-legendary.png", source: "Магазин / Квесты" }
+];
+
+// Пропуска
+const passesItems = [
+  { name: "Premium Pass", category: "passes", rarity: "epic", count: 2, img: "image/ui/menu-pass.png", source: "Магазин" },
+  { name: "Golden Pass", category: "passes", rarity: "legendary", count: 1, img: "image/ui/menu-pass.png", source: "Магазин" }
+];
+function claimCardPathReward(cardKey, level, rarity, themeName, cardSrc) {
+    if (!playerData.claimedCardRewards) {
+        playerData.claimedCardRewards = {};
+    }
+
+    if (!playerData.claimedCardRewards[cardKey]) {
+        playerData.claimedCardRewards[cardKey] = [];
+    }
+
+    if (playerData.claimedCardRewards[cardKey].includes(level)) {
+        return;
+    }
+
+    playerData.claimedCardRewards[cardKey].push(level);
+
+    const reward = getCardPathReward(level, rarity);
+
+    applyCardPathReward(reward);
+
+    savePlayerData();
+    updateUI();
+
+    openCardPath(themeName, cardSrc);
+}
+
+function applyCardPathReward(reward) {
+    if (!playerData.resources) {
+        playerData.resources = {};
+    }
+
+    if (reward.title === "Золото") {
+        playerData.resources.gold = (playerData.resources.gold || 0) + reward.amount;
+    }
+
+    if (reward.title === "Гемы") {
+        playerData.resources.premiumTokens = (playerData.resources.premiumTokens || 0) + reward.amount;
+    }
+
+    if (reward.title === "Энергия") {
+        playerData.resources.energy = (playerData.resources.energy || 0) + reward.amount;
+    }
+
+    if (reward.title === "Сундук") {
+        playerData.resources.chests = (playerData.resources.chests || 0) + reward.amount;
+    }
+}   
+function setCollectionRarityFilter(themeName, rarity) {
+    document.querySelectorAll(".collection-rarity-filter-v2 button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const clickedBtn = event.target;
+    clickedBtn.classList.add("active");
+
+    document.querySelectorAll(".collection-card-v2").forEach(card => {
+        if (rarity === "all" || card.dataset.rarity === rarity) {
+            card.style.display = "flex";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+function getThemeReward(themeName) {
+    return {
+        gold: 5000,
+        gems: 150,
+        energy: 100,
+        chest: "epic"
+    };
+}
+
+function isThemeRewardClaimed(themeName) {
+    if (!playerData.claimedThemeRewards) {
+        playerData.claimedThemeRewards = {};
+    }
+
+    return playerData.claimedThemeRewards[themeName] === true;
+}
+
+function claimThemeReward(themeName) {
+    if (!isThemeCompleted(themeName)) return;
+
+    if (!playerData.claimedThemeRewards) {
+        playerData.claimedThemeRewards = {};
+    }
+
+    if (playerData.claimedThemeRewards[themeName]) return;
+
+    const reward = getThemeReward(themeName);
+
+    playerData.resources.gold = (playerData.resources.gold || 0) + reward.gold;
+    playerData.resources.premiumTokens = (playerData.resources.premiumTokens || 0) + reward.gems;
+    playerData.resources.energy = (playerData.resources.energy || 0) + reward.energy;
+
+    playerData.claimedThemeRewards[themeName] = true;
+
+    savePlayerData();
+    updateUI();
+    openThemeDetail(themeName);
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

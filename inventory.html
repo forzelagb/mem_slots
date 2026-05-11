@@ -1,40 +1,214 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Инвентарь</title>
-  <link rel="stylesheet" href="inventory.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инвентарь</title>
+
+    <link rel="stylesheet" href="inventory.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="inventory-v4-screen" class="screen">
-    <div class="inventory-v4">
-      <aside class="inventory-v4-sidebar">
-        <button class="inventory-v4-btn active" onclick="openInventoryV4Tab('chests')">🎁 Сундуки</button>
-        <button class="inventory-v4-btn" onclick="openInventoryV4Tab('cloth')">🧵 Ткани</button>
-        <button class="inventory-v4-btn" onclick="openInventoryV4Tab('resources')">💎 Ресурсы</button>
-        <button class="inventory-v4-btn" onclick="openInventoryV4Tab('fragments')">🧩 Фрагменты</button>
-      </aside>
+<div class="main-header-v2">
 
-      <main class="inventory-v4-main">
-        <h1 id="inventory-v4-title">СУНДУКИ</h1>
-        <p id="inventory-v4-subtitle">Открывай сундуки и получай награды</p>
+    <div class="header-v2-profile">
+        <div class="header-v2-avatar">M</div>
 
-        <div id="chests" class="inventory-v4-tab active">
-          <div class="inventory-v4-grid"></div>
+        <div class="header-v2-player">
+            <div class="header-v2-name">PLAYER</div>
+
+            <div class="header-v2-level-row">
+                <span class="header-v2-level">32</span>
+
+                <div class="header-v2-xp">
+                    <div class="header-v2-xp-fill" style="width:55%;"></div>
+                </div>
+            </div>
         </div>
-        <div id="cloth" class="inventory-v4-tab">
-          <div class="inventory-v4-grid" id="inventory-v4-cloth-grid"></div>
-        </div>
-        <div id="resources" class="inventory-v4-tab">
-          <div class="inventory-v4-grid" id="inventory-v4-resources-grid"></div>
-        </div>
-        <div id="fragments" class="inventory-v4-tab">
-          <div class="inventory-v4-grid" id="inventory-v4-fragments-grid"></div>
-        </div>
-      </main>
     </div>
-  </div>
 
-  <script src="inventory.js"></script>
+<nav class="header-v2-nav">
+
+    <a href="index.html" class="header-link-btn">
+        🏠<span>Главная</span>
+    </a>
+
+    <a href="index.html#characters" class="header-link-btn">
+        🧙<span>Персонажи</span>
+    </a>
+
+    <a href="inventory.html" class="header-link-btn active-header-link">
+        🎒<span>Инвентарь</span>
+    </a>
+
+    <a href="index.html#shop" class="header-link-btn">
+        🛒<span>Магазин</span>
+    </a>
+
+    <a href="index.html#pass" class="header-link-btn">
+        🎟️<span>Пропуск</span>
+    </a>
+
+</nav>
+
+    <div class="header-v2-right">
+
+        <div class="header-v2-resource">
+            <img src="./image/ui/gold.png">
+            <span id="header-gold">12500</span>
+            <b>+</b>
+        </div>
+
+        <div class="header-v2-resource">
+            <img src="./image/ui/gems.png">
+            <span id="header-gems">5000</span>
+            <b>+</b>
+        </div>
+
+        <div class="header-v2-resource">
+            <img src="./image/ui/energy.png">
+            <span id="header-energy">100</span>
+            <b>+</b>
+        </div>
+
+    </div>
+
+</div>
+<div class="inventory-page">
+
+    <!-- ЛЕВАЯ ПАНЕЛЬ -->
+    <aside class="inventory-sidebar">
+
+        <button class="inventory-side-btn active">
+            🎁 Сундуки
+        </button>
+
+        <button class="inventory-side-btn">
+            🧵 Ткани
+        </button>
+
+        <button class="inventory-side-btn">
+            💎 Ресурсы
+        </button>
+
+        <button class="inventory-side-btn">
+            🎟 Пропуска
+        </button>
+
+    </aside>
+
+    <!-- ЦЕНТР -->
+    <main class="inventory-main">
+
+        <h1>СУНДУКИ</h1>
+
+        <p class="inventory-subtitle">
+            Открывай сундуки и получай награды
+        </p>
+
+        <div class="inventory-topbar">
+
+            <select>
+                <option>Сортировка: Новые</option>
+            </select>
+
+            <select>
+                <option>Редкость: Все</option>
+            </select>
+
+        </div>
+
+        <div class="inventory-content">
+
+            <!-- СЕТКА -->
+            <div class="inventory-grid">
+
+                <div class="inventory-card rare">
+                    <img src="image/ui/chest-rare.png">
+                    <h3>Редкий сундук</h3>
+                    <span>RARE</span>
+                    <p>8</p>
+                </div>
+
+                <div class="inventory-card epic">
+                    <img src="image/ui/chest-epic.png">
+                    <h3>Эпический сундук</h3>
+                    <span>EPIC</span>
+                    <p>6</p>
+                </div>
+
+                <div class="inventory-card legendary">
+                    <img src="image/ui/chest-legendary.png">
+                    <h3>Легендарный сундук</h3>
+                    <span>LEGENDARY</span>
+                    <p>3</p>
+                </div>
+
+                <div class="inventory-card rare">
+                    <img src="image/ui/chest-crystal.png">
+                    <h3>Сундук кристаллов</h3>
+                    <span>RARE</span>
+                    <p>2</p>
+                </div>
+
+            </div>
+
+            <!-- ПРАВАЯ ПАНЕЛЬ -->
+            <div class="inventory-details">
+
+                <img src="image/ui/chest-epic.png">
+
+                <div class="details-rarity">
+                    EPIC
+                </div>
+
+                <h2>
+                    ЭПИЧЕСКИЙ СУНДУК
+                </h2>
+
+                <div class="details-count">
+                    В наличии: 6
+                </div>
+
+                <button class="use-btn">
+                    ИСПОЛЬЗОВАТЬ
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+<div class="chest-modal" id="chest-modal">
+    <div class="legendary-flash" id="legendary-flash"></div>
+    <div class="chest-modal-box">
+
+        <button class="chest-modal-close" id="chest-modal-close">
+            ✕
+        </button>
+
+        <h2 class="chest-modal-title">
+            ОТКРЫТИЕ СУНДУКА
+        </h2>
+
+        <img class="chest-modal-img" id="chest-modal-img" src="image/ui/chest-common.png">
+
+        <div class="chest-modal-status" id="chest-modal-status">
+            Нажми открыть, чтобы получить награды
+        </div>
+        <div class="chest-rewards" id="chest-rewards"></div>
+
+        <button class="chest-open-btn" id="chest-open-btn">
+            ОТКРЫТЬ
+        </button>
+
+    </div>
+</div>
+
+<script src="inventory.js"></script>
+
 </body>
 </html>

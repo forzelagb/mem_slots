@@ -30,7 +30,9 @@
     <nav class="header-v2-nav">
         <button onclick="goHome()">🏠<span>Главная</span></button>
         <button onclick="openNewCharactersScreen()">🧙<span>Персонажи</span></button>
-        <button onclick="openInventoryV3()">🎒<span>Инвентарь</span></button>
+        <a href="inventory.html" class="header-link-btn">
+            🎒<span>Инвентарь</span>
+        </a>
         <button onclick="openShopScreen()">🛒<span>Магазин</span></button>
         <button onclick="openTab('pass')">🎟️<span>Пропуск</span></button>
     </nav>
@@ -182,70 +184,6 @@
 
         <div id="collection-detail-grid" class="collection-detail-grid"></div>
     </div>
-</div>
-
-<!-- ИНВЕНТАРЬ -->
-<div id="characters-screen-v2" class="screen">
-    <button class="characters-v2-back" onclick="goHome()">← НАЗАД</button>
-
-    <div class="characters-v2-title">ПЕРСОНАЖ</div>
-
-    <div class="characters-v2-layout">
-
-        <!-- ЛЕВАЯ ИНФА -->
-        <div class="characters-v2-info">
-            <h1 id="v2-character-name">Mellstroy</h1>
-            <div id="v2-character-rarity" class="v2-rarity epic">ЭПИЧЕСКИЙ</div>
-
-            <p id="v2-character-desc">
-                Персонаж готов к бою. Характеристики появятся позже.
-            </p>
-
-            <div class="v2-stats">
-                <div><span>❤️ Здоровье</span><b>850</b></div>
-                <div><span>⚔️ Атака</span><b>120</b></div>
-                <div><span>🛡 Защита</span><b>90</b></div>
-                <div><span>🍀 Удача</span><b>18%</b></div>
-            </div>
-        </div>
-
-        <!-- ЦЕНТР -->
-        <div class="characters-v2-stage">
-            <div id="v2-character-glow" class="v2-character-glow"></div>
-            <div class="v2-pedestal"></div>
-
-            <img id="v2-active-character" src="" alt="">
-
-            <div class="v2-pet">
-                <img src="image/pets/pony/default.png" alt="Pony">
-            </div>
-            <button class="characters-v2-select-btn" onclick="confirmCharacterV2()">
-    ВЫБРАТЬ ПЕРСОНАЖА
-</button>
-        </div>
-
-        <!-- ПРАВАЯ ПАНЕЛЬ -->
-        <div class="characters-v2-actions">
-            <button onclick="openCharacterStylesV2()">🎭<span>Стили</span></button>
-            <button>⬆️<span>Прокачка</span></button>
-            <button>📖<span>История</span></button>
-        </div>
-
-    </div>
-
-    <!-- НИЖНЯЯ КАРУСЕЛЬ -->
-    <div class="characters-v2-carousel" id="characters-v2-carousel"></div>
-
-<!-- МОДАЛКА СТИЛЕЙ -->
-<div id="character-styles-modal" class="character-styles-modal">
-    <div class="character-styles-box">
-        <button class="character-styles-close" onclick="closeCharacterStylesV2()">×</button>
-
-        <h2>СТИЛИ ПЕРСОНАЖА</h2>
-
-        <div id="character-styles-list" class="character-styles-list"></div>
-    </div>
-</div>
 </div>
 </div>
 <!-- НОВЫЙ ЭКРАН -->
@@ -957,31 +895,39 @@
     </div>
 
 </div>
-<!-- Новый инвентарь -->
-<div id="inventory-v4-screen" class="screen">
-    <div class="inventory-v4">
-        <aside class="inventory-v4-sidebar">
-            <!-- Кнопки вкладок: Сундуки, Ткани, Ресурсы, Фрагменты -->
-        </aside>
-        <main class="inventory-v4-main">
-            <h1 id="inventory-v4-title">СУНДУКИ</h1>
-            <p id="inventory-v4-subtitle">Открывай сундуки и получай награды</p>
+<!-- Inventory Section -->
+<section id="inventory" class="inventory-section">
+  <div class="inventory-sidebar">
+    <ul>
+      <li class="active" data-category="all">ВСЕ ПРЕДМЕТЫ <span class="item-count">152</span></li>
+      <li data-category="cloth">ТКАНИ <span class="item-count">48</span></li>
+      <li data-category="resources">РЕСУРСЫ <span class="item-count">36</span></li>
+      <li data-category="chests">СУНДУКИ <span class="item-count">12</span></li>
+      <li data-category="passes">ПРОПУСКА <span class="item-count">9</span></li>
+    </ul>
+  </div>
 
-            <div id="chests" class="inventory-v4-tab active">
-                <div class="inventory-v4-grid"></div>
-            </div>
-            <div id="cloth" class="inventory-v4-tab">
-                <div class="inventory-v4-grid" id="inventory-v4-cloth-grid"></div>
-            </div>
-            <div id="resources" class="inventory-v4-tab">
-                <div class="inventory-v4-grid" id="inventory-v4-resources-grid"></div>
-            </div>
-            <div id="fragments" class="inventory-v4-tab">
-                <div class="inventory-v4-grid" id="inventory-v4-fragments-grid"></div>
-            </div>
-        </main>
+  <div class="inventory-main">
+    <!-- Grid of items -->
+    <div class="inventory-grid" id="inventoryGrid">
+      <!-- JS будет подгружать сюда предметы -->
     </div>
-</div>
+
+    <!-- Preview panel -->
+    <div class="inventory-preview" id="inventoryPreview">
+      <div class="preview-image">
+        <img src="" alt="Preview" id="previewImg">
+      </div>
+      <div class="preview-details">
+        <h3 id="previewName">Название</h3>
+        <p>Редкость: <span id="previewRarity">common</span></p>
+        <p>В наличии: <span id="previewCount">0</span></p>
+        <p>Можно получить из: <span id="previewSource">Обычные сундуки</span></p>
+        <button id="useItemBtn">ИСПОЛЬЗОВАТЬ</button>
+      </div>
+    </div>
+  </div>
+</section>
     <!-- СКРИПТЫ -->
     <script type="module" src="firebase-init.js"></script>
     <script src="script.js"></script>
