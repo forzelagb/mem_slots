@@ -373,11 +373,11 @@ function openThemeDetail(themeName) {
     </button>
 </div>
         <div class="collection-rarity-filter-v2">
-    <button class="active" onclick="setCollectionRarityFilter('${themeName}', 'all')">ВСЕ</button>
-    <button onclick="setCollectionRarityFilter('${themeName}', 'common')">COMMON</button>
-    <button onclick="setCollectionRarityFilter('${themeName}', 'rare')">RARE</button>
-    <button onclick="setCollectionRarityFilter('${themeName}', 'epic')">EPIC</button>
-    <button onclick="setCollectionRarityFilter('${themeName}', 'legendary')">LEGENDARY</button>
+<button class="active" onclick="setCollectionRarityFilter('${themeName}', 'all', this)">ВСЕ</button>
+<button onclick="setCollectionRarityFilter('${themeName}', 'common', this)">COMMON</button>
+<button onclick="setCollectionRarityFilter('${themeName}', 'rare', this)">RARE</button>
+<button onclick="setCollectionRarityFilter('${themeName}', 'epic', this)">EPIC</button>
+<button onclick="setCollectionRarityFilter('${themeName}', 'legendary', this)">LEGENDARY</button>
 </div>
     `;
 
@@ -7967,20 +7967,17 @@ function applyCardPathReward(reward) {
         playerData.resources.chests = (playerData.resources.chests || 0) + reward.amount;
     }
 }   
-function setCollectionRarityFilter(themeName, rarity) {
+function setCollectionRarityFilter(themeName, rarity, clickedBtn) {
     document.querySelectorAll(".collection-rarity-filter-v2 button").forEach(btn => {
         btn.classList.remove("active");
     });
 
-    const clickedBtn = event.target;
     clickedBtn.classList.add("active");
 
     document.querySelectorAll(".collection-card-v2").forEach(card => {
-        if (rarity === "all" || card.dataset.rarity === rarity) {
-            card.style.display = "flex";
-        } else {
-            card.style.display = "none";
-        }
+        card.style.display = rarity === "all" || card.dataset.rarity === rarity
+            ? "flex"
+            : "none";
     });
 }
 function getThemeReward(themeName) {
