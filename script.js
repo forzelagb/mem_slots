@@ -3603,7 +3603,9 @@ window.addEventListener("DOMContentLoaded", () => {
         } else {
             leaderboard = [];
             updateLeaderboardUI();
-            updateGuestUI();
+            if (typeof updateGuestUI === "function") {
+    updateGuestUI();
+}
         }
     });
 });
