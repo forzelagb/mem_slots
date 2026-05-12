@@ -8712,28 +8712,29 @@ function addPassXP(amount) {
     savePassState();
     renderBattlePass();
 }
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof loadPassState === "function") loadPassState();
-    if (typeof renderBattlePass === "function") renderBattlePass();
-    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
-});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
-    loadPlayer();
-    createGrid();
-    updateUI();
-    updateLeaderboardUI();
-    updateDailyRewardUI();
-    updateBlackMarketUI();
-    updateWheelUI();
-    renderWheelTrack();
-    updateVIPZoneUI();
-    updatePlayerLevelUI();
-    loadPassState();
-    renderBattlePass();
-    renderQuestsScreen();
-    marketInterval = setInterval(simulateMarket, 3000);
+
+    if (typeof loadPlayer === "function") loadPlayer();
+    if (typeof createGrid === "function") createGrid();
+    if (typeof updateUI === "function") updateUI();
+
+    if (typeof updateLeaderboardUI === "function") updateLeaderboardUI();
+    if (typeof updateDailyRewardUI === "function") updateDailyRewardUI();
+    if (typeof updateBlackMarketUI === "function") updateBlackMarketUI();
+    if (typeof updateWheelUI === "function") updateWheelUI();
+    if (typeof renderWheelTrack === "function") renderWheelTrack();
+    if (typeof updateVIPZoneUI === "function") updateVIPZoneUI();
+    if (typeof updatePlayerLevelUI === "function") updatePlayerLevelUI();
+
+    if (typeof loadPassState === "function") loadPassState();
+    if (typeof renderBattlePass === "function") renderBattlePass();
+    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
+
+    if (typeof simulateMarket === "function") {
+        marketInterval = setInterval(simulateMarket, 3000);
+    }
 };
 
 function setBet(bet) {
