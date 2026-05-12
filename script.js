@@ -5083,7 +5083,14 @@ const passRewards = {
         };
     })
 };
-
+const fakePassState = {
+    level: 32,
+    xp: 4580,
+    xpNeed: 7200,
+    premium: false,
+    claimedFree: [],
+    claimedPremium: []
+};
 function switchPassTab(type) {
     activePassType = type;
 
