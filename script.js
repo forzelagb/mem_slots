@@ -8813,6 +8813,176 @@ function ensurePlayerStats() {
         playerData.stats.chestsOpened = 0;
     }
 }
+const simpleInventoryItems = [
+    {
+        category: "chests",
+        name: "Обычный сундук",
+        rarity: "common",
+        count: 12,
+        img: "image/ui/chest-common.png",
+        obtain: "Можно получить за квесты и пропуск."
+    },
+    {
+        category: "chests",
+        name: "Редкий сундук",
+        rarity: "rare",
+        count: 8,
+        img: "image/ui/chest-rare.png",
+        obtain: "Можно получить в пропуске и наградах."
+    },
+    {
+        category: "resources",
+        name: "Золото",
+        rarity: "common",
+        count: 5000,
+        img: "image/ui/gold.png",
+        obtain: "Получается за игру, квесты и сундуки."
+    },
+    {
+        category: "resources",
+        name: "Гемы",
+        rarity: "epic",
+        count: 0,
+        img: "image/ui/gems.png",
+        obtain: "Премиальная валюта."
+    },
+    {
+        category: "passes",
+        name: "Пропуск персонажей",
+        rarity: "legendary",
+        count: 1,
+        img: "image/ui/pass-style.png",
+        obtain: "Открывает премиум линию пропуска."
+    }
+];
+
+let activeInventoryCategory = "all";
+
+function renderInventoryItems() {
+    const grid = document.getElementById("inventory-items-grid");
+    if (!grid) return;
+
+    const items = activeInventoryCategory === "all"
+        ? simpleInventoryItems
+        : simpleInventoryItems.filter(item => item.category === activeInventoryCategory);
+
+    grid.innerHTML = items.map((item, index) => `
+        <div class="inventory-item-card" onclick="selectInventoryItem(${index})">
+            <img src="${item.img}" alt="">
+            <h3>${item.name}</h3>
+            <p>x${item.count}</p>
+        </div>
+    `).join("");
+}
+
+function selectInventoryItem(index) {
+    const item = simpleInventoryItems[index];
+    if (!item) return;
+
+    const panel = document.querySelector(".inventory-preview, .inventory-details, .inventory-right-panel");
+    if (!panel) return;
+
+    panel.innerHTML = `
+        <img src="${item.img}" alt="Preview">
+        <h2>${item.name}</h2>
+        <p>Редкость: ${item.rarity}</p>
+        <p>В наличии: ${item.count}</p>
+        <p>Можно получить из: ${item.obtain}</p>
+        <button>Использовать</button>
+    `;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderInventoryItems();
+});
+const inventoryItems = [
+    {
+        name: "Common ткань",
+        rarity: "common",
+        category: "cloth",
+        count: 15,
+        source: "Обычные сундуки",
+        image: "image/ui/cloth-common.png"
+    },
+
+    {
+        name: "Rare ткань",
+        rarity: "rare",
+        category: "cloth",
+        count: 7,
+        source: "Rare сундуки",
+        image: "image/ui/cloth-rare.png"
+    },
+
+    {
+        name: "Epic ткань",
+        rarity: "epic",
+        category: "cloth",
+        count: 3,
+        source: "Epic сундуки",
+        image: "image/ui/cloth-epic.png"
+    },
+
+    {
+        name: "Legendary ткань",
+        rarity: "legendary",
+        category: "cloth",
+        count: 1,
+        source: "Legendary сундуки",
+        image: "image/ui/cloth-legendary.png"
+    }
+];
+
+function renderInventoryItems(category = "all") {
+
+    const grid = document.getElementById("inventoryGrid");
+
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    let filtered = inventoryItems;
+
+    if (category !== "all") {
+        filtered = inventoryItems.filter(item => item.category === category);
+    }
+
+    filtered.forEach(item => {
+
+        const card = document.createElement("div");
+
+        card.className = `inventory-item rarity-${item.rarity}`;
+
+        card.innerHTML = `
+            <img src="${item.image}" alt="">
+            <h4>${item.name}</h4>
+            <p>x${item.count}</p>
+        `;
+
+        card.onclick = () => {
+            showInventoryPreview(item);
+        };
+
+        grid.appendChild(card);
+    });
+}
+
+function showInventoryPreview(item) {
+
+    document.getElementById("previewImg").src = item.image;
+
+    document.getElementById("previewName").innerText = item.name;
+
+    document.getElementById("previewRarity").innerText = item.rarity;
+
+    document.getElementById("previewCount").innerText = item.count;
+
+    document.getElementById("previewSource").innerText = item.source;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderInventoryItems();
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
