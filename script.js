@@ -8686,8 +8686,11 @@ function addQuestProgressByTitle(text, amount = 1) {
     renderQuestsScreen();
 }
 function addQuestProgressForCardRarity(rarity) {
-if (goodRarities.includes(rarity)) {
-    addQuestProgress("rareCards", 1);
+    const goodRarities = ["rare", "epic", "legendary"];
+
+    if (goodRarities.includes(rarity)) {
+        addQuestProgress("rareCards", 1);
+    }
 }
 
 if (rarity === "epic" || rarity === "legendary") {
