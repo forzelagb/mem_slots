@@ -8959,29 +8959,96 @@ function renderInventoryItems(category = "all") {
             <p>x${item.count}</p>
         `;
 
-        card.onclick = () => {
-            showInventoryPreview(item);
-        };
+card.onclick = () => {
+    document.querySelectorAll(".inventory-item").forEach(el => {
+        el.classList.remove("selected");
+    });
+
+    card.classList.add("selected");
+
+    showInventoryPreview(item);
+};
 
         grid.appendChild(card);
     });
 }
+let selectedInventoryItem = null;
 
 function showInventoryPreview(item) {
+    selectedInventoryItem = item;
 
-    document.getElementById("previewImg").src = item.image;
+    const img = document.getElementById("previewImg");
+    const name = document.getElementById("previewName");
+    const rarity = document.getElementById("previewRarity");
+    const count = document.getElementById("previewCount");
+    const source = document.getElementById("previewSource");
+    const btn = document.getElementById("useItemBtn");
 
-    document.getElementById("previewName").innerText = item.name;
+    if (img) img.src = item.image;
+    if (name) name.innerText = item.name;
+    if (rarity) rarity.innerText = item.rarity.toUpperCase();
+    if (count) count.innerText = item.count;
+    if (source) source.innerText = item.source;
 
-    document.getElementById("previewRarity").innerText = item.rarity;
-
-    document.getElementById("previewCount").innerText = item.count;
-
-    document.getElementById("previewSource").innerText = item.source;
+    if (btn) {
+        if (item.category === "chests") {
+            btn.innerText = "ОТКРЫТЬ";
+        } else if (item.category === "passes") {
+            btn.innerText = "ИСПОЛЬЗОВАТЬ";
+        } else {
+            btn.innerText = "ПОСМОТРЕТЬ";
+        }
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     renderInventoryItems();
+});
+function setupInventoryTabs() {
+    const buttons = document.querySelectorAll(".inventory-sidebar li");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            buttons.forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            const category = button.dataset.category || "all";
+
+            renderInventoryItems(category);
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    setupInventoryTabs();
+    renderInventoryItems("all");
+});
+function useSelectedInventoryItem() {
+    if (!selectedInventoryItem) {
+        alert("Сначала выберите предмет.");
+        return;
+    }
+
+    if (selectedInventoryItem.category === "chests") {
+        alert("Скоро здесь будет анимация открытия сундука.");
+        return;
+    }
+
+    if (selectedInventoryItem.category === "passes") {
+        alert("Предмет пропуска использован.");
+        return;
+    }
+
+    alert("Этот предмет пока нельзя использовать.");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("useItemBtn");
+
+    if (btn) {
+        btn.onclick = useSelectedInventoryItem;
+    }
 });
 //  ЗАПУСК
 window.onload = () => {
