@@ -9457,7 +9457,38 @@ function equipAchievement(id) {
 }
 
 function openAchievementsMedals() {
-    alert("Позже сделаем отдельное окно со всеми медалями.");
+    const modal = document.getElementById("medals-modal");
+    const grid = document.getElementById("medals-modal-grid");
+
+    if (!modal || !grid) return;
+
+    grid.innerHTML = achievements.map(ach => {
+        const state = achievementState[ach.id];
+        const completed = state?.completed;
+        const equipped = state?.equipped;
+        const rarity = getAchievementMedalRarity(ach.need);
+
+        return `
+            <div class="medal-item medal-${rarity} ${completed ? "unlocked" : "locked"} ${equipped ? "equipped" : ""}">
+                <div class="medal-item-icon">${completed ? ach.icon : "🔒"}</div>
+                <h3>${ach.title}</h3>
+                <p>${completed ? "Открыта" : "Не открыта"}</p>
+
+                ${
+                    completed
+                        ? `<button onclick="equipAchievement('${ach.id}')">${equipped ? "Стоит" : "Поставить"}</button>`
+                        : `<button disabled>Закрыто</button>`
+                }
+            </div>
+        `;
+    }).join("");
+
+    modal.classList.add("active");
+}
+
+function closeAchievementsMedals() {
+    const modal = document.getElementById("medals-modal");
+    if (modal) modal.classList.remove("active");
 }
 function getAchievementMedalRarity(need) {
     if (need >= 1000) return "legendary";
