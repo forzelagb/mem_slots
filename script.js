@@ -9249,60 +9249,46 @@ function loadQuestState() {
     saveQuestState();
 }
 const achievements = [
-    {
-        id: "first_spin",
-        title: "Первый запуск",
-        description: "Сделай первый прокрут.",
-        icon: "🎰",
-        type: "spins",
-        need: 1,
-        reward: "Значок: Новичок"
-    },
-    {
-        id: "spin_master_100",
-        title: "Любитель прокрутов",
-        description: "Сделай 100 прокрутов.",
-        icon: "🔥",
-        type: "spins",
-        need: 100,
-        reward: "Значок: Spin Master"
-    },
-    {
-        id: "rare_hunter",
-        title: "Охотник за редкостью",
-        description: "Получи 10 rare+ карточек.",
-        icon: "🃏",
-        type: "rareCards",
-        need: 10,
-        reward: "Значок: Rare Hunter"
-    },
-    {
-        id: "chest_opener",
-        title: "Охотник за сундуками",
-        description: "Открой 10 сундуков.",
-        icon: "🎁",
-        type: "chestsOpened",
-        need: 10,
-        reward: "Значок: Chest Hunter"
-    },
-    {
-        id: "cloth_collector",
-        title: "Собиратель тканей",
-        description: "Собери 100 тканей.",
-        icon: "🧵",
-        type: "clothCollected",
-        need: 100,
-        reward: "Значок: Tailor"
-    },
-    {
-        id: "pass_player",
-        title: "Игрок пропуска",
-        description: "Забери 20 наград пропуска.",
-        icon: "👑",
-        type: "passRewardsClaimed",
-        need: 20,
-        reward: "Значок: Pass Hero"
-    }
+    // === ПРОКРУТЫ ===
+    { id: "spin_1", title: "Первый запуск", description: "Сделай первый прокрут.", icon: "🎰", type: "spins", need: 1, category: "game" },
+    { id: "spin_10", title: "Новичок слота", description: "Сделай 10 прокрутов.", icon: "🎲", type: "spins", need: 10, category: "game" },
+    { id: "spin_100", title: "Любитель прокрутов", description: "Сделай 100 прокрутов.", icon: "🔥", type: "spins", need: 100, category: "game" },
+    { id: "spin_500", title: "Гриндер", description: "Сделай 500 прокрутов.", icon: "⚙️", type: "spins", need: 500, category: "game" },
+    { id: "spin_1000", title: "Бесконечный игрок", description: "Сделай 1000 прокрутов.", icon: "🌌", type: "spins", need: 1000, category: "game" },
+
+    // === ЭНЕРГИЯ ===
+    { id: "energy_100", title: "Энергичный старт", description: "Потрать 100 энергии.", icon: "⚡", type: "energySpent", need: 100, category: "progress" },
+    { id: "energy_1000", title: "Запас силы", description: "Потрать 1000 энергии.", icon: "🔋", type: "energySpent", need: 1000, category: "progress" },
+    { id: "energy_5000", title: "Генератор энергии", description: "Потрать 5000 энергии.", icon: "🌩️", type: "energySpent", need: 5000, category: "progress" },
+
+    // === КАРТОЧКИ ===
+    { id: "rare_1", title: "Редкая находка", description: "Получи 1 rare+ карточку.", icon: "🃏", type: "rareCards", need: 1, category: "collection" },
+    { id: "rare_10", title: "Охотник за редкостью", description: "Получи 10 rare+ карточек.", icon: "🎴", type: "rareCards", need: 10, category: "collection" },
+    { id: "rare_50", title: "Коллекционер редкостей", description: "Получи 50 rare+ карточек.", icon: "💠", type: "rareCards", need: 50, category: "collection" },
+
+    { id: "epic_1", title: "Эпический момент", description: "Получи 1 epic+ карточку.", icon: "💜", type: "epicCards", need: 1, category: "collection" },
+    { id: "epic_10", title: "Эпический охотник", description: "Получи 10 epic+ карточек.", icon: "🔮", type: "epicCards", need: 10, category: "collection" },
+
+    // === СУНДУКИ ===
+    { id: "chest_1", title: "Первый сундук", description: "Открой 1 сундук.", icon: "🎁", type: "chestsOpened", need: 1, category: "chests" },
+    { id: "chest_10", title: "Охотник за сундуками", description: "Открой 10 сундуков.", icon: "📦", type: "chestsOpened", need: 10, category: "chests" },
+    { id: "chest_50", title: "Сундуковый мастер", description: "Открой 50 сундуков.", icon: "🧰", type: "chestsOpened", need: 50, category: "chests" },
+    { id: "chest_100", title: "Король сундуков", description: "Открой 100 сундуков.", icon: "👑", type: "chestsOpened", need: 100, category: "chests" },
+
+    // === ТКАНИ ===
+    { id: "cloth_10", title: "Первые ткани", description: "Собери 10 тканей.", icon: "🧵", type: "clothCollected", need: 10, category: "chests" },
+    { id: "cloth_100", title: "Собиратель тканей", description: "Собери 100 тканей.", icon: "🪡", type: "clothCollected", need: 100, category: "chests" },
+    { id: "cloth_1000", title: "Мастер ткани", description: "Собери 1000 тканей.", icon: "🧶", type: "clothCollected", need: 1000, category: "chests" },
+
+    // === ПРОПУСК ===
+    { id: "pass_1", title: "Первая награда", description: "Забери 1 награду пропуска.", icon: "🎟️", type: "passRewardsClaimed", need: 1, category: "pass" },
+    { id: "pass_10", title: "Игрок пропуска", description: "Забери 10 наград пропуска.", icon: "👑", type: "passRewardsClaimed", need: 10, category: "pass" },
+    { id: "pass_30", title: "Герой сезона", description: "Забери 30 наград пропуска.", icon: "🏆", type: "passRewardsClaimed", need: 30, category: "pass" },
+
+    // === БУДУЩИЕ КОЛЛЕКЦИИ ===
+    { id: "collection_1", title: "Первая закрытая тема", description: "Закрой 1 коллекционную тему.", icon: "📚", type: "collectionsCompleted", need: 1, category: "collection" },
+    { id: "collection_5", title: "Коллекционер", description: "Закрой 5 коллекционных тем.", icon: "🏛️", type: "collectionsCompleted", need: 5, category: "collection" },
+    { id: "collection_all", title: "Собрал всё", description: "Закрой все темы.", icon: "🌟", type: "collectionsCompleted", need: 11, category: "collection" }
 ];
 
 let achievementState = {};
@@ -9311,7 +9297,11 @@ function loadAchievements() {
     const saved = localStorage.getItem("memeAchievementsV1");
 
     if (saved) {
-        achievementState = JSON.parse(saved);
+        try {
+            achievementState = JSON.parse(saved);
+        } catch {
+            achievementState = {};
+        }
     }
 
     achievements.forEach(ach => {
@@ -9322,11 +9312,14 @@ function loadAchievements() {
                 equipped: false
             };
         }
+
+        if (achievementState[ach.id].progress >= ach.need) {
+            achievementState[ach.id].completed = true;
+        }
     });
 
     saveAchievements();
 }
-
 function saveAchievements() {
     localStorage.setItem("memeAchievementsV1", JSON.stringify(achievementState));
 }
@@ -9409,7 +9402,7 @@ function renderAchievementsScreen() {
         const completed = ach.state.completed;
 
         return `
-            <div class="achievement-card ${completed ? "completed" : "locked"}">
+            <div class="achievement-card ${completed ? "completed" : "locked"} medal-${getAchievementMedalRarity(ach.need)}">
                 <div class="achievement-medal">
                     <div class="achievement-medal-icon">${completed ? ach.icon : "🔒"}</div>
                 </div>
@@ -9465,6 +9458,21 @@ function equipAchievement(id) {
 
 function openAchievementsMedals() {
     alert("Позже сделаем отдельное окно со всеми медалями.");
+}
+function getAchievementMedalRarity(need) {
+    if (need >= 1000) return "legendary";
+    if (need >= 500) return "epic";
+    if (need >= 100) return "gold";
+    if (need >= 10) return "silver";
+    return "bronze";
+}
+function resetAchievementsTest() {
+    if (!confirm("Сбросить достижения для теста?")) return;
+
+    localStorage.removeItem("memeAchievementsV1");
+    achievementState = {};
+    loadAchievements();
+    renderAchievementsScreen();
 }
 //  ЗАПУСК
 window.onload = () => {

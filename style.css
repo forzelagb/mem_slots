@@ -17608,7 +17608,7 @@ body.modal-open {
     padding: 18px 22px;
     border-radius: 20px;
     display: grid;
-    grid-template-columns: 220px 1fr 260px;
+    grid-template-columns: 220px 1fr 260px 150px;
     gap: 18px;
     align-items: center;
     background: rgba(255,255,255,0.055);
@@ -17692,6 +17692,42 @@ body.modal-open {
     .achievements-categories {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+.achievement-card.medal-bronze .achievement-medal {
+    border-color: #b87333;
+    box-shadow: 0 0 18px rgba(184, 115, 51, 0.35);
+}
+
+.achievement-card.medal-silver .achievement-medal {
+    border-color: #c0c0c0;
+    box-shadow: 0 0 18px rgba(192, 192, 192, 0.35);
+}
+
+.achievement-card.medal-gold .achievement-medal {
+    border-color: #ffd36a;
+    box-shadow: 0 0 22px rgba(255, 211, 106, 0.45);
+}
+
+.achievement-card.medal-epic .achievement-medal {
+    border-color: #b93dff;
+    box-shadow: 0 0 24px rgba(185, 61, 255, 0.5);
+}
+
+.achievement-card.medal-legendary .achievement-medal {
+    border-color: #ff9f1c;
+    box-shadow:
+        0 0 26px rgba(255, 159, 28, 0.55),
+        0 0 42px rgba(255, 59, 212, 0.28);
+}
+.achievements-reset-test {
+    background: transparent !important;
+    border: 1px dashed rgba(255,255,255,0.25) !important;
+    color: rgba(255,255,255,0.45) !important;
+}
+
+.achievements-reset-test:hover {
+    color: #ff4d6d !important;
+    border-color: rgba(255, 77, 109, 0.6) !important;
 }
 /* цвета редкости */
 .rarity-common { background: #555; }
