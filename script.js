@@ -8691,11 +8691,12 @@ function addQuestProgressForCardRarity(rarity) {
     if (goodRarities.includes(rarity)) {
         addQuestProgress("rareCards", 1);
     }
+
+    if (rarity === "epic" || rarity === "legendary") {
+        addQuestProgress("epicCards", 1);
+    }
 }
 
-if (rarity === "epic" || rarity === "legendary") {
-    addQuestProgress("epicCards", 1);
-}
 function getPassStateKey() {
     return "memeBattlePassStateV1";
 }
