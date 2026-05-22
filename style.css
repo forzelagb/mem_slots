@@ -17088,6 +17088,18 @@ body.modal-open {
     height: 110px;
     object-fit: contain;
 }
+.profile-change-hero-btn {
+    margin-top: 24px;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(180deg, #ff47d7, #7a2cff);
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 0 24px rgba(255, 71, 215, 0.28);
+}
 /* цвета редкости */
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }

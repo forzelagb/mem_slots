@@ -979,6 +979,9 @@ if (bestCardInSpin) {
     playerData.resources.energy -= currentEnergyCost;
     savePlayer();
     addQuestProgressByTitle("прокрутов", 1);
+ensurePlayerStats();
+playerData.stats.spins += 1;
+savePlayer();
 
     updateUI();
     animateBalanceChange('loss');
@@ -4022,6 +4025,10 @@ const playerData = {
    "6.jpg": 0,
    "7.jpg": 0,
    "8.jpg": 0
+},
+stats: {
+    spins: 0,
+    chestsOpened: 0
 },
     profile: {
         name: "Player",
@@ -8789,6 +8796,22 @@ function renderProfileScreen() {
     if (profileSpins) profileSpins.innerText = playerData.stats?.spins || 0;
     if (profileChests) profileChests.innerText = playerData.stats?.chestsOpened || 0;
     if (profileCards) profileCards.innerText = Object.keys(playerData.cards || {}).length;
+}
+function ensurePlayerStats() {
+    if (!playerData.stats) {
+        playerData.stats = {
+            spins: 0,
+            chestsOpened: 0
+        };
+    }
+
+    if (typeof playerData.stats.spins !== "number") {
+        playerData.stats.spins = 0;
+    }
+
+    if (typeof playerData.stats.chestsOpened !== "number") {
+        playerData.stats.chestsOpened = 0;
+    }
 }
 //  ЗАПУСК
 window.onload = () => {
