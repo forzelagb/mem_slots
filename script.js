@@ -978,7 +978,8 @@ if (bestCardInSpin) {
 
     playerData.resources.energy -= currentEnergyCost;
     savePlayer();
-    addQuestProgressByTitle("прокрутов", 1);
+addQuestProgress("spins", 1);
+addQuestProgress("energySpent", currentEnergyCost);
 ensurePlayerStats();
 playerData.stats.spins += 1;
 savePlayer();
@@ -6987,6 +6988,17 @@ function openChest(type) {
 
 function giveRandomReward(chestType) {
     const rewards = generateChestRewards(chestType);
+
+    addQuestProgress("chestsOpened", 1);
+
+    const clothAmount = rewards
+        .filter(reward => reward.type === "cloth")
+        .reduce((sum, reward) => sum + reward.amount, 0);
+
+    if (clothAmount > 0) {
+        addQuestProgress("clothCollected", clothAmount);
+    }
+
     showChestOpeningModal(chestType, rewards);
 }
 
@@ -7025,10 +7037,6 @@ function generateChestRewards(chestType) {
     }
 
     return rewards;
-}
-function giveRandomReward(chestType) {
-    const rewards = generateChestRewards(chestType);
-    showChestOpeningModal(chestType, rewards);
 }
 
 const chestRewardConfig = {
@@ -8346,6 +8354,11 @@ function claimPassReward(level, line) {
     }
 
     claimedList.push(level);
+
+    addQuestProgress("passRewardsClaimed", 1);
+
+    savePassState();
+
     renderBattlePass();
 
     openPassRewardModal(reward);
@@ -8592,23 +8605,24 @@ function renderQuestsScreen() {
 
     if (!list) return;
 
-    const quests = questsData[activeQuestTab];
+    const quests = activeQuestTab === "daily" ? dailyQuests : seasonQuests;
 
     if (count) {
         count.innerText = `${quests.length} задания`;
     }
 
     list.innerHTML = quests.map((quest, index) => {
-        const percent = Math.min(100, (quest.progress / quest.max) * 100);
-        const completed = quest.progress >= quest.max;
+        const percent = Math.min(100, (quest.progress / quest.need) * 100);
+        const completed = quest.progress >= quest.need;
+        const claimed = quest.claimed;
 
         return `
-            <div class="quest-card ${completed ? "completed" : ""}">
+            <div class="quest-card ${completed ? "completed" : ""} ${claimed ? "claimed" : ""}">
                 <div class="quest-icon">${quest.icon}</div>
 
                 <div class="quest-info">
                     <h3>${quest.title}</h3>
-                    <p>${quest.desc}</p>
+                    <p>${quest.description}</p>
 
                     <div class="quest-progress-bar">
                         <div class="quest-progress-fill" style="width:${percent}%"></div>
@@ -8616,11 +8630,14 @@ function renderQuestsScreen() {
                 </div>
 
                 <div class="quest-meta">
-                    <b>+${quest.xp} XP</b>
-                    <span>${quest.progress}/${quest.max}</span>
+                    <b>+${quest.rewardXP} XP</b>
+                    <span>${quest.progress}/${quest.need}</span>
 
-                    <button onclick="claimQuestScreenReward(${index})" ${completed ? "" : "disabled"}>
-                        ${completed ? "Забрать" : "В процессе"}
+                    <button 
+                        onclick="claimQuestScreenReward(${index})" 
+                        ${completed && !claimed ? "" : "disabled"}
+                    >
+                        ${claimed ? "Получено" : completed ? "Забрать" : "В процессе"}
                     </button>
                 </div>
             </div>
@@ -8629,28 +8646,33 @@ function renderQuestsScreen() {
 }
 
 function claimQuestScreenReward(index) {
-    const quests = questsData[activeQuestTab];
+    const quests = activeQuestTab === "daily"
+        ? dailyQuests
+        : seasonQuests;
+
     const quest = quests[index];
 
     if (!quest) return;
 
-    if (quest.progress < quest.max) {
-        alert("Квест ещё не выполнен.");
-        return;
+    if (quest.claimed) return;
+
+    if (quest.progress < quest.need) return;
+
+    let rewardXP = quest.rewardXP;
+
+    if (fakePassState?.premium) {
+        rewardXP = Math.floor(rewardXP * 1.2);
     }
 
-    addPassXP(quest.xp);
+    addPassXP(rewardXP);
 
-    openPassRewardModal([
-        "⭐",
-        "XP пропуска получен",
-        `+${quest.xp} XP`
-    ]);
+    quest.claimed = true;
 
-    quests.splice(index, 1);
+    saveQuestState();
 
     renderQuestsScreen();
-    renderBattlePass();
+
+    showFloatingReward?.(`+${rewardXP} XP`);
 }
 function addQuestProgressByTitle(text, amount = 1) {
     Object.keys(questsData).forEach(tabName => {
@@ -8664,17 +8686,13 @@ function addQuestProgressByTitle(text, amount = 1) {
     renderQuestsScreen();
 }
 function addQuestProgressForCardRarity(rarity) {
-    if (!rarity) return;
+if (goodRarities.includes(rarity)) {
+    addQuestProgress("rareCards", 1);
+}
 
-    const goodRarities = ["rare", "epic", "legendary"];
-
-    if (goodRarities.includes(rarity)) {
-        addQuestProgressByTitle("rare карточку", 1);
-    }
-
-    if (rarity === "epic" || rarity === "legendary") {
-        addQuestProgressByTitle("epic карточку", 1);
-    }
+if (rarity === "epic" || rarity === "legendary") {
+    addQuestProgress("epicCards", 1);
+}
 }
 function getPassStateKey() {
     return "memeBattlePassStateV1";
@@ -9050,6 +9068,181 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.onclick = useSelectedInventoryItem;
     }
 });
+const dailyQuests = [
+{
+    id: "daily_spins",
+    type: "spins",
+    title: "Сделать 10 прокрутов",
+    description: "Играй в любые мем-темы и трать энергию.",
+    icon: "🎰",
+    need: 10,
+    progress: 0,
+    rewardXP: 250,
+    claimed: false
+},
+
+{
+    id: "daily_energy",
+    type: "energySpent",
+    title: "Потратить 20 энергии",
+    description: "Трать энергию во время игры.",
+    icon: "⚡",
+    need: 20,
+    progress: 0,
+    rewardXP: 300,
+    claimed: false
+},
+
+{
+    id: "daily_chests",
+    type: "chestsOpened",
+    title: "Открыть 2 сундука",
+    description: "Открывай любые сундуки.",
+    icon: "🎁",
+    need: 2,
+    progress: 0,
+    rewardXP: 400,
+    claimed: false
+},
+
+{
+    id: "daily_rare",
+    type: "rareCards",
+    title: "Получить rare карточку",
+    description: "Выбей любую rare+ карточку.",
+    icon: "🃏",
+    need: 1,
+    progress: 0,
+    rewardXP: 350,
+    claimed: false
+}
+];
+const seasonQuests = [
+
+{
+    id: "season_spins",
+    type: "spins",
+    title: "Сделать 300 прокрутов",
+    description: "Длинное сезонное задание.",
+    icon: "🏆",
+    need: 300,
+    progress: 0,
+    rewardXP: 2500,
+    claimed: false
+},
+
+{
+    id: "season_cloth",
+    type: "clothCollected",
+    title: "Собрать 100 тканей",
+    description: "Получай ткани из сундуков и наград.",
+    icon: "🧵",
+    need: 100,
+    progress: 0,
+    rewardXP: 1800,
+    claimed: false
+},
+
+{
+    id: "season_pass",
+    type: "passRewardsClaimed",
+    title: "Забрать 20 наград пропуска",
+    description: "Продвигайся по пропуску.",
+    icon: "👑",
+    need: 20,
+    progress: 0,
+    rewardXP: 2200,
+    claimed: false
+}
+];
+function getAllQuests() {
+    return [...dailyQuests, ...seasonQuests];
+}
+function addQuestProgress(type, amount = 1) {
+    getAllQuests().forEach(quest => {
+        if (quest.type !== type) return;
+        if (quest.claimed) return;
+
+        quest.progress = Math.min(
+            quest.need,
+            quest.progress + amount
+        );
+    });
+
+    saveQuestState();
+    renderQuestsScreen();
+}
+function addQuestProgress(type, amount = 1) {
+    getAllQuests().forEach(quest => {
+        if (quest.type !== type) return;
+        if (quest.claimed) return;
+
+        quest.progress = Math.min(
+            quest.need,
+            quest.progress + amount
+        );
+    });
+
+    saveQuestState();
+    renderQuestsScreen();
+}
+
+function getTodayQuestDate() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+function resetDailyQuestsOnly() {
+    dailyQuests.forEach(quest => {
+        quest.progress = 0;
+        quest.claimed = false;
+    });
+}
+
+function saveQuestState() {
+    const state = {
+        dailyQuests,
+        seasonQuests,
+        savedDate: getTodayQuestDate()
+    };
+
+    localStorage.setItem("memeQuestStateV1", JSON.stringify(state));
+}
+
+function loadQuestState() {
+    const saved = localStorage.getItem("memeQuestStateV1");
+
+    if (!saved) {
+        saveQuestState();
+        return;
+    }
+
+    const state = JSON.parse(saved);
+    const today = getTodayQuestDate();
+
+    if (state.seasonQuests) {
+        state.seasonQuests.forEach(savedQuest => {
+            const quest = seasonQuests.find(q => q.id === savedQuest.id);
+            if (quest) {
+                quest.progress = savedQuest.progress || 0;
+                quest.claimed = savedQuest.claimed || false;
+            }
+        });
+    }
+
+    if (state.savedDate === today && state.dailyQuests) {
+        state.dailyQuests.forEach(savedQuest => {
+            const quest = dailyQuests.find(q => q.id === savedQuest.id);
+            if (quest) {
+                quest.progress = savedQuest.progress || 0;
+                quest.claimed = savedQuest.claimed || false;
+            }
+        });
+    } else {
+        resetDailyQuestsOnly();
+    }
+
+    saveQuestState();
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
@@ -9068,7 +9261,9 @@ window.onload = () => {
 
     if (typeof loadPassState === "function") loadPassState();
     if (typeof renderBattlePass === "function") renderBattlePass();
-    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
+if (typeof loadQuestState === "function") loadQuestState();
+if (typeof renderQuestsScreen === "function") renderQuestsScreen();
+
 
     if (typeof simulateMarket === "function") {
         marketInterval = setInterval(simulateMarket, 3000);
