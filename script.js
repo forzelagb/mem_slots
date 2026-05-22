@@ -9450,8 +9450,13 @@ function equipAchievement(id) {
     });
 
     achievementState[id].equipped = true;
-    saveAchievements();
-    renderAchievementsScreen();
+saveAchievements();
+
+updateEquippedAchievementBadge();
+
+renderAchievementsScreen();
+
+openAchievementsMedals();
 
     alert("🏅 Медаль выбрана для профиля!");
 }
@@ -9505,6 +9510,33 @@ function resetAchievementsTest() {
     loadAchievements();
     renderAchievementsScreen();
 }
+function updateEquippedAchievementBadge() {
+    const badge = document.getElementById("equipped-achievement-badge");
+
+    if (!badge) return;
+
+    const equippedAchievement = achievements.find(ach =>
+        achievementState[ach.id]?.equipped
+    );
+
+    if (!equippedAchievement) {
+        badge.innerHTML = "—";
+        badge.className = "equipped-achievement-badge";
+        return;
+    }
+
+    const rarity = getAchievementMedalRarity(equippedAchievement.need);
+
+    badge.innerHTML = `
+        <span>${equippedAchievement.icon}</span>
+        <b>${equippedAchievement.title}</b>
+    `;
+
+    badge.className = `
+        equipped-achievement-badge
+        medal-${rarity}
+    `;
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
@@ -9526,7 +9558,7 @@ window.onload = () => {
     if (typeof loadAchievements === "function") loadAchievements();
     if (typeof loadQuestState === "function") loadQuestState();
     if (typeof renderQuestsScreen === "function") renderQuestsScreen();
-
+updateEquippedAchievementBadge();
 
     if (typeof simulateMarket === "function") {
         marketInterval = setInterval(simulateMarket, 3000);
