@@ -8696,7 +8696,6 @@ function addQuestProgressForCardRarity(rarity) {
 if (rarity === "epic" || rarity === "legendary") {
     addQuestProgress("epicCards", 1);
 }
-}
 function getPassStateKey() {
     return "memeBattlePassStateV1";
 }
