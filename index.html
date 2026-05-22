@@ -180,6 +180,7 @@
     </div>
 
 </div>
+
 <div id="tab-collection" class="tab-content">
     <!-- ЭКРАН ПЕРСОНАЖЕЙ -->
     <div id="collection-home-view" class="collection-page">
@@ -425,6 +426,46 @@
             </button>
         </div>
 
+    </section>
+</div>
+<div id="tab-achievements" class="tab-content">
+    <section class="achievements-screen">
+        <div class="achievements-head">
+            <div>
+                <h2>ДОСТИЖЕНИЯ</h2>
+                <p>Выполняй цели, открывай медальки и ставь лучшие в профиль.</p>
+            </div>
+
+            <select id="achievements-sort" onchange="renderAchievementsScreen()">
+                <option value="unfinished">Сначала незавершённые</option>
+                <option value="completed">Сначала полученные</option>
+                <option value="all">Все достижения</option>
+            </select>
+        </div>
+
+        <div class="achievements-categories">
+            <button class="achievement-filter active" onclick="setAchievementFilter('all', this)">▦ Все</button>
+            <button class="achievement-filter" onclick="setAchievementFilter('progress', this)">📈 Прогресс</button>
+            <button class="achievement-filter" onclick="setAchievementFilter('collection', this)">🃏 Коллекция</button>
+            <button class="achievement-filter" onclick="setAchievementFilter('game', this)">🎮 Игра</button>
+            <button class="achievement-filter" onclick="setAchievementFilter('chests', this)">🎁 Сундуки</button>
+            <button class="achievement-filter" onclick="setAchievementFilter('pass', this)">👑 Пропуск</button>
+        </div>
+
+        <div id="achievements-grid" class="achievements-grid"></div>
+
+        <div class="achievements-footer">
+            <div>
+                <span>Получено достижений</span>
+                <b id="achievements-total-text">0 / 0</b>
+            </div>
+
+            <div class="achievements-footer-bar">
+                <div id="achievements-total-fill"></div>
+            </div>
+
+            <button onclick="openAchievementsMedals()">Посмотреть все медали</button>
+        </div>
     </section>
 </div>
 <div id="tab-quests" class="tab-content">

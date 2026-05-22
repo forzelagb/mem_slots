@@ -444,7 +444,9 @@ function openTab(tabName) {
     if (activeBtn) {
         activeBtn.classList.add('active');
     }
-
+    if (tabName === 'achievements') {
+    renderAchievementsScreen();
+    }
     if (tabName === 'collection') {
         renderAllThemesCollection();
     }
@@ -9171,7 +9173,7 @@ function addQuestProgress(type, amount = 1) {
             quest.progress + amount
         );
     });
-
+    addAchievementProgress(type, amount);
     saveQuestState();
     renderQuestsScreen();
 }
@@ -9246,6 +9248,224 @@ function loadQuestState() {
 
     saveQuestState();
 }
+const achievements = [
+    {
+        id: "first_spin",
+        title: "Первый запуск",
+        description: "Сделай первый прокрут.",
+        icon: "🎰",
+        type: "spins",
+        need: 1,
+        reward: "Значок: Новичок"
+    },
+    {
+        id: "spin_master_100",
+        title: "Любитель прокрутов",
+        description: "Сделай 100 прокрутов.",
+        icon: "🔥",
+        type: "spins",
+        need: 100,
+        reward: "Значок: Spin Master"
+    },
+    {
+        id: "rare_hunter",
+        title: "Охотник за редкостью",
+        description: "Получи 10 rare+ карточек.",
+        icon: "🃏",
+        type: "rareCards",
+        need: 10,
+        reward: "Значок: Rare Hunter"
+    },
+    {
+        id: "chest_opener",
+        title: "Охотник за сундуками",
+        description: "Открой 10 сундуков.",
+        icon: "🎁",
+        type: "chestsOpened",
+        need: 10,
+        reward: "Значок: Chest Hunter"
+    },
+    {
+        id: "cloth_collector",
+        title: "Собиратель тканей",
+        description: "Собери 100 тканей.",
+        icon: "🧵",
+        type: "clothCollected",
+        need: 100,
+        reward: "Значок: Tailor"
+    },
+    {
+        id: "pass_player",
+        title: "Игрок пропуска",
+        description: "Забери 20 наград пропуска.",
+        icon: "👑",
+        type: "passRewardsClaimed",
+        need: 20,
+        reward: "Значок: Pass Hero"
+    }
+];
+
+let achievementState = {};
+
+function loadAchievements() {
+    const saved = localStorage.getItem("memeAchievementsV1");
+
+    if (saved) {
+        achievementState = JSON.parse(saved);
+    }
+
+    achievements.forEach(ach => {
+        if (!achievementState[ach.id]) {
+            achievementState[ach.id] = {
+                progress: 0,
+                completed: false,
+                equipped: false
+            };
+        }
+    });
+
+    saveAchievements();
+}
+
+function saveAchievements() {
+    localStorage.setItem("memeAchievementsV1", JSON.stringify(achievementState));
+}
+
+function addAchievementProgress(type, amount = 1) {
+    achievements.forEach(ach => {
+        if (ach.type !== type) return;
+
+        const state = achievementState[ach.id];
+        if (!state || state.completed) return;
+
+        state.progress = Math.min(ach.need, state.progress + amount);
+
+        if (state.progress >= ach.need) {
+            state.completed = true;
+            alert(`🏆 Достижение получено: ${ach.title}`);
+        }
+    });
+
+    saveAchievements();
+}
+let activeAchievementFilter = "all";
+
+function setAchievementFilter(filter, btn) {
+    activeAchievementFilter = filter;
+
+    document.querySelectorAll(".achievement-filter").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    if (btn) btn.classList.add("active");
+
+    renderAchievementsScreen();
+}
+
+function getAchievementCategory(type) {
+    if (["spins", "energySpent"].includes(type)) return "game";
+    if (["rareCards", "epicCards", "collectionsCompleted"].includes(type)) return "collection";
+    if (["chestsOpened", "clothCollected"].includes(type)) return "chests";
+    if (["passRewardsClaimed"].includes(type)) return "pass";
+    return "progress";
+}
+
+function renderAchievementsScreen() {
+    const grid = document.getElementById("achievements-grid");
+    if (!grid) return;
+
+    const sortEl = document.getElementById("achievements-sort");
+    const sort = sortEl ? sortEl.value : "unfinished";
+
+    let list = achievements.map(ach => {
+        const state = achievementState[ach.id] || {
+            progress: 0,
+            completed: false,
+            equipped: false
+        };
+
+        return {
+            ...ach,
+            state,
+            category: ach.category || getAchievementCategory(ach.type)
+        };
+    });
+
+    if (activeAchievementFilter !== "all") {
+        list = list.filter(ach => ach.category === activeAchievementFilter);
+    }
+
+    if (sort === "unfinished") {
+        list.sort((a, b) => Number(a.state.completed) - Number(b.state.completed));
+    }
+
+    if (sort === "completed") {
+        list.sort((a, b) => Number(b.state.completed) - Number(a.state.completed));
+    }
+
+    grid.innerHTML = list.map(ach => {
+        const progress = ach.state.progress || 0;
+        const percent = Math.min(100, (progress / ach.need) * 100);
+        const completed = ach.state.completed;
+
+        return `
+            <div class="achievement-card ${completed ? "completed" : "locked"}">
+                <div class="achievement-medal">
+                    <div class="achievement-medal-icon">${completed ? ach.icon : "🔒"}</div>
+                </div>
+
+                <div class="achievement-info">
+                    <h3>${ach.title}</h3>
+                    <p>${ach.description}</p>
+
+                    <div class="achievement-progress">
+                        <div style="width:${percent}%"></div>
+                    </div>
+
+                    <span>${progress} / ${ach.need}</span>
+                </div>
+
+                <div class="achievement-status">
+                    ${
+                        completed
+                            ? `<button onclick="equipAchievement('${ach.id}')">${ach.state.equipped ? "Стоит" : "Поставить"}</button>`
+                            : `<b>${Math.floor(percent)}%</b>`
+                    }
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    updateAchievementsTotal();
+}
+
+function updateAchievementsTotal() {
+    const totalText = document.getElementById("achievements-total-text");
+    const totalFill = document.getElementById("achievements-total-fill");
+
+    const total = achievements.length;
+    const completed = achievements.filter(ach => achievementState[ach.id]?.completed).length;
+    const percent = total > 0 ? Math.floor((completed / total) * 100) : 0;
+
+    if (totalText) totalText.innerText = `${completed} / ${total}`;
+    if (totalFill) totalFill.style.width = percent + "%";
+}
+
+function equipAchievement(id) {
+    Object.keys(achievementState).forEach(key => {
+        achievementState[key].equipped = false;
+    });
+
+    achievementState[id].equipped = true;
+    saveAchievements();
+    renderAchievementsScreen();
+
+    alert("🏅 Медаль выбрана для профиля!");
+}
+
+function openAchievementsMedals() {
+    alert("Позже сделаем отдельное окно со всеми медалями.");
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
@@ -9264,8 +9484,9 @@ window.onload = () => {
 
     if (typeof loadPassState === "function") loadPassState();
     if (typeof renderBattlePass === "function") renderBattlePass();
-if (typeof loadQuestState === "function") loadQuestState();
-if (typeof renderQuestsScreen === "function") renderQuestsScreen();
+    if (typeof loadAchievements === "function") loadAchievements();
+    if (typeof loadQuestState === "function") loadQuestState();
+    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
 
 
     if (typeof simulateMarket === "function") {
