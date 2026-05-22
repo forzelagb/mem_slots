@@ -8721,6 +8721,75 @@ function addPassXP(amount) {
     savePassState();
     renderBattlePass();
 }
+function openProfileScreen() {
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    const profileScreen = document.getElementById("profile-screen");
+
+    if (profileScreen) {
+        profileScreen.classList.add("active");
+    }
+
+    renderProfileScreen();
+}
+function renderProfileScreen() {
+    const resources = playerData.resources || {};
+
+    const gold = resources.gold || 0;
+    const gems = resources.premiumTokens || resources.gems || 0;
+    const energy = resources.energy || 100;
+
+    const level = fakePassState?.level || 1;
+    const xp = fakePassState?.xp || 0;
+    const xpNeed = fakePassState?.xpNeed || 1000;
+
+    const xpPercent = Math.min(100, (xp / xpNeed) * 100);
+
+    const activeCharacter = playerData.activeCharacter || "helin";
+
+    const profileName = document.getElementById("profile-name");
+    const profileLevel = document.getElementById("profile-level");
+    const profileXpFill = document.getElementById("profile-xp-fill");
+    const profileXpText = document.getElementById("profile-xp-text");
+
+    const profileGold = document.getElementById("profile-gold");
+    const profileGems = document.getElementById("profile-gems");
+    const profileEnergy = document.getElementById("profile-energy");
+
+    const profileCharacterImg = document.getElementById("profile-character-img");
+    const profileCharacterName = document.getElementById("profile-character-name");
+
+    const profileSpins = document.getElementById("profile-spins");
+    const profileChests = document.getElementById("profile-chests");
+    const profileCards = document.getElementById("profile-cards");
+
+    if (profileName) profileName.innerText = playerData.nickname || "PLAYER";
+    if (profileLevel) profileLevel.innerText = level;
+    if (profileXpFill) profileXpFill.style.width = `${xpPercent}%`;
+    if (profileXpText) profileXpText.innerText = `${xp} / ${xpNeed} XP`;
+
+    if (profileGold) profileGold.innerText = gold;
+    if (profileGems) profileGems.innerText = gems;
+    if (profileEnergy) profileEnergy.innerText = energy;
+
+    if (profileCharacterImg) {
+        profileCharacterImg.src = `image/characters/${activeCharacter}/skin-1.png`;
+    }
+
+    if (profileCharacterName) {
+        profileCharacterName.innerText = activeCharacter.toUpperCase();
+    }
+
+    if (profileSpins) profileSpins.innerText = playerData.stats?.spins || 0;
+    if (profileChests) profileChests.innerText = playerData.stats?.chestsOpened || 0;
+    if (profileCards) profileCards.innerText = Object.keys(playerData.cards || {}).length;
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
