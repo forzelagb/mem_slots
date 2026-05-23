@@ -44,6 +44,7 @@
 
     <nav class="header-v2-nav">
         <button onclick="goHome()">🏠<span>Главная</span></button>
+        <button onclick="openProfileScreen()">👤<span>Профиль</span></button>
         <button onclick="openNewCharactersScreen()">🧙<span>Персонажи</span></button>
         <a href="inventory.html" class="header-link-btn">
             🎒<span>Инвентарь</span>
@@ -204,6 +205,135 @@
 
         <div id="collection-detail-grid" class="collection-detail-grid"></div>
     </div>
+</div>
+<div id="profile-screen" class="screen">
+
+    <button class="characters-v2-back" onclick="goHome()">
+        ← НАЗАД
+    </button>
+
+    <div class="profile-page-v2">
+
+        <div class="profile-hero-v2">
+
+            <div class="profile-avatar-v2">
+                M
+            </div>
+
+            <div class="profile-main-v2">
+
+                <div class="profile-top-v2">
+                    <h1 id="profile-player-name">
+                        PLAYER
+                    </h1>
+
+                    <div id="profile-equipped-medal"></div>
+                </div>
+
+                <div class="profile-level-v2">
+                    <span>УРОВЕНЬ 32</span>
+
+                    <div class="profile-level-bar-v2">
+                        <div class="profile-level-fill-v2"></div>
+                    </div>
+
+                    <p>2620 / 5000 XP</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="profile-showcase-v2">
+
+    <div class="profile-character-card-v2">
+
+        <div class="profile-showcase-label">
+            ВЫБРАННЫЙ ПЕРСОНАЖ
+        </div>
+
+        <div class="profile-character-preview-v2">
+
+            <img
+                id="profile-character-image"
+                src="./image/characters/helin/skin-1.png"
+            >
+
+        </div>
+
+        <div class="profile-character-info-v2">
+
+            <h3 id="profile-character-name">
+                HELIN
+            </h3>
+
+            <p>
+                Основной персонаж игрока
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="profile-pet-card-v2">
+
+        <div class="profile-showcase-label">
+            ПИТОМЕЦ
+        </div>
+
+        <div class="profile-pet-preview-v2">
+
+            <img
+                id="profile-pet-image"
+                src="./image/pets/pony/default.png"
+            >
+
+        </div>
+
+        <div class="profile-character-info-v2">
+
+            <h3>
+                PONY
+            </h3>
+
+            <p>
+                Будущая система питомцев
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <div class="profile-stats-grid-v2">
+
+            <div class="profile-stat-card-v2">
+                <span>🎰</span>
+                <h3 id="profile-total-spins">0</h3>
+                <p>Прокрутов</p>
+            </div>
+
+            <div class="profile-stat-card-v2">
+                <span>🎁</span>
+                <h3 id="profile-total-chests">0</h3>
+                <p>Сундуков</p>
+            </div>
+
+            <div class="profile-stat-card-v2">
+                <span>🃏</span>
+                <h3 id="profile-total-rare">0</h3>
+                <p>Rare+ карточек</p>
+            </div>
+
+            <div class="profile-stat-card-v2">
+                <span>🧵</span>
+                <h3 id="profile-total-cloth">0</h3>
+                <p>Тканей</p>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 </div>
 <!-- НОВЫЙ ЭКРАН -->
@@ -1213,6 +1343,13 @@
         </div>
 
         <div id="medals-modal-grid" class="medals-modal-grid"></div>
+    </div>
+</div>
+<div id="achievement-toast" class="achievement-toast">
+    <div class="achievement-toast-icon" id="achievement-toast-icon">🏆</div>
+    <div>
+        <div class="achievement-toast-label">Достижение получено</div>
+        <div class="achievement-toast-title" id="achievement-toast-title">Название</div>
     </div>
 </div>
     <!-- СКРИПТЫ -->

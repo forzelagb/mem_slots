@@ -982,9 +982,6 @@ if (bestCardInSpin) {
     savePlayer();
 addQuestProgress("spins", 1);
 addQuestProgress("energySpent", currentEnergyCost);
-ensurePlayerStats();
-playerData.stats.spins += 1;
-savePlayer();
 
     updateUI();
     animateBalanceChange('loss');
@@ -8768,73 +8765,27 @@ function openProfileScreen() {
 
     renderProfileScreen();
 }
-function renderProfileScreen() {
-    const resources = playerData.resources || {};
-
-    const gold = resources.gold || 0;
-    const gems = resources.premiumTokens || resources.gems || 0;
-    const energy = resources.energy || 100;
-
-    const level = fakePassState?.level || 1;
-    const xp = fakePassState?.xp || 0;
-    const xpNeed = fakePassState?.xpNeed || 1000;
-
-    const xpPercent = Math.min(100, (xp / xpNeed) * 100);
-
-    const activeCharacter = playerData.activeCharacter || "helin";
-
-    const profileName = document.getElementById("profile-name");
-    const profileLevel = document.getElementById("profile-level");
-    const profileXpFill = document.getElementById("profile-xp-fill");
-    const profileXpText = document.getElementById("profile-xp-text");
-
-    const profileGold = document.getElementById("profile-gold");
-    const profileGems = document.getElementById("profile-gems");
-    const profileEnergy = document.getElementById("profile-energy");
-
-    const profileCharacterImg = document.getElementById("profile-character-img");
-    const profileCharacterName = document.getElementById("profile-character-name");
-
-    const profileSpins = document.getElementById("profile-spins");
-    const profileChests = document.getElementById("profile-chests");
-    const profileCards = document.getElementById("profile-cards");
-
-    if (profileName) profileName.innerText = playerData.nickname || "PLAYER";
-    if (profileLevel) profileLevel.innerText = level;
-    if (profileXpFill) profileXpFill.style.width = `${xpPercent}%`;
-    if (profileXpText) profileXpText.innerText = `${xp} / ${xpNeed} XP`;
-
-    if (profileGold) profileGold.innerText = gold;
-    if (profileGems) profileGems.innerText = gems;
-    if (profileEnergy) profileEnergy.innerText = energy;
-
-    if (profileCharacterImg) {
-        profileCharacterImg.src = `image/characters/${activeCharacter}/skin-1.png`;
-    }
-
-    if (profileCharacterName) {
-        profileCharacterName.innerText = activeCharacter.toUpperCase();
-    }
-
-    if (profileSpins) profileSpins.innerText = playerData.stats?.spins || 0;
-    if (profileChests) profileChests.innerText = playerData.stats?.chestsOpened || 0;
-    if (profileCards) profileCards.innerText = Object.keys(playerData.cards || {}).length;
-}
 function ensurePlayerStats() {
     if (!playerData.stats) {
-        playerData.stats = {
-            spins: 0,
-            chestsOpened: 0
-        };
+        playerData.stats = {};
     }
 
-    if (typeof playerData.stats.spins !== "number") {
-        playerData.stats.spins = 0;
-    }
+    const defaults = {
+        spins: 0,
+        energySpent: 0,
+        chestsOpened: 0,
+        rareCards: 0,
+        epicCards: 0,
+        clothCollected: 0,
+        passRewardsClaimed: 0,
+        collectionsCompleted: 0
+    };
 
-    if (typeof playerData.stats.chestsOpened !== "number") {
-        playerData.stats.chestsOpened = 0;
-    }
+    Object.keys(defaults).forEach(key => {
+        if (typeof playerData.stats[key] !== "number") {
+            playerData.stats[key] = defaults[key];
+        }
+    });
 }
 const simpleInventoryItems = [
     {
@@ -9164,6 +9115,7 @@ function getAllQuests() {
     return [...dailyQuests, ...seasonQuests];
 }
 function addQuestProgress(type, amount = 1) {
+    addPlayerStat(type, amount);
     getAllQuests().forEach(quest => {
         if (quest.type !== type) return;
         if (quest.claimed) return;
@@ -9335,7 +9287,7 @@ function addAchievementProgress(type, amount = 1) {
 
         if (state.progress >= ach.need) {
             state.completed = true;
-            alert(`🏆 Достижение получено: ${ach.title}`);
+            showAchievementToast(ach);
         }
     });
 
@@ -9537,6 +9489,103 @@ function updateEquippedAchievementBadge() {
         medal-${rarity}
     `;
 }
+function showAchievementToast(ach) {
+    const toast = document.getElementById("achievement-toast");
+    const icon = document.getElementById("achievement-toast-icon");
+    const title = document.getElementById("achievement-toast-title");
+
+    if (!toast || !icon || !title) return;
+
+    icon.innerText = ach.icon;
+    title.innerText = ach.title;
+
+    toast.classList.remove("show");
+    void toast.offsetWidth;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3500);
+}
+function openProfileScreen() {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById("profile-screen").classList.add("active");
+
+    renderProfileScreen();
+}
+
+function renderProfileScreen() {
+    const nameEl = document.getElementById("profile-player-name");
+    const headerName = document.querySelector(".header-v2-name");
+
+    if (nameEl) {
+        nameEl.textContent = headerName?.textContent || "PLAYER";
+    }
+
+    const medalEl = document.getElementById("profile-equipped-medal");
+
+    const equippedAchievement = achievements.find(ach =>
+        achievementState[ach.id]?.equipped
+    );
+
+    if (medalEl) {
+        if (equippedAchievement) {
+            medalEl.innerHTML = `
+                <div class="profile-medal-v2">
+                    ${equippedAchievement.icon}
+                    <span>${equippedAchievement.title}</span>
+                </div>
+            `;
+        } else {
+            medalEl.innerHTML = `
+                <div class="profile-medal-v2 empty">
+                    Нет выбранной медали
+                </div>
+            `;
+        }
+    }
+
+    const stats = playerData.stats || {};
+
+    document.getElementById("profile-total-spins").textContent =
+        stats.spins || 0;
+
+    document.getElementById("profile-total-chests").textContent =
+        stats.chestsOpened || 0;
+
+    document.getElementById("profile-total-rare").textContent =
+        stats.rareCards || 0;
+
+    document.getElementById("profile-total-cloth").textContent =
+        stats.clothCollected || 0;
+
+    const characterName = currentCharacter || "helin";
+    const characterImg = document.getElementById("profile-character-image");
+    const characterTitle = document.getElementById("profile-character-name");
+
+    if (characterImg) {
+        characterImg.src = `./image/characters/${characterName}/skin-1.png`;
+    }
+
+    if (characterTitle) {
+        characterTitle.textContent = characterName.toUpperCase();
+    }
+}
+function addPlayerStat(type, amount = 1) {
+    ensurePlayerStats();
+
+    if (typeof playerData.stats[type] !== "number") {
+        playerData.stats[type] = 0;
+    }
+
+    playerData.stats[type] += amount;
+
+    savePlayer();
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
@@ -9558,7 +9607,10 @@ window.onload = () => {
     if (typeof loadAchievements === "function") loadAchievements();
     if (typeof loadQuestState === "function") loadQuestState();
     if (typeof renderQuestsScreen === "function") renderQuestsScreen();
-updateEquippedAchievementBadge();
+    if (typeof updateEquippedAchievementBadge === "function") {
+    updateEquippedAchievementBadge();
+    }
+
 
     if (typeof simulateMarket === "function") {
         marketInterval = setInterval(simulateMarket, 3000);
