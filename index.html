@@ -92,9 +92,9 @@
                 <span class="gem-icon">⚡</span>
                 <span id="lobby-balance">100</span>
             </div>
-            <button class="btn-profile" onclick="openAuthModal()">
-                Профиль
-            </button>
+<button class="btn-profile" onclick="openProfileScreen()">
+    Профиль
+</button>
         </div>
     </div>
 </div>
@@ -396,78 +396,6 @@
         <img src="image/ui/arrow-right.png" alt="">
     </button>
 </div>
-</div>
-<div id="profile-screen" class="screen">
-    <button class="profile-back-btn" onclick="goHome()">← НАЗАД</button>
-
-    <section class="profile-page">
-        <div class="profile-hero-card">
-            <div class="profile-avatar-big">M</div>
-
-            <div class="profile-main-info">
-                <div class="profile-label">ПРОФИЛЬ ИГРОКА</div>
-                <h1 id="profile-name">PLAYER</h1>
-
-                <div class="profile-level-row">
-                    <span id="profile-level">32</span>
-
-                    <div class="profile-xp-bar">
-                        <div id="profile-xp-fill"></div>
-                    </div>
-
-                    <b id="profile-xp-text">4580 / 7200 XP</b>
-                </div>
-            </div>
-        </div>
-
-        <div class="profile-grid">
-            <div class="profile-card">
-                <h3>💰 Ресурсы</h3>
-                <div class="profile-resource-row">
-                    <span>🪙 Золото</span>
-                    <b id="profile-gold">0</b>
-                </div>
-                <div class="profile-resource-row">
-                    <span>💎 Гемы</span>
-                    <b id="profile-gems">0</b>
-                </div>
-                <div class="profile-resource-row">
-                    <span>⚡ Энергия</span>
-                    <b id="profile-energy">100</b>
-                </div>
-            </div>
-
-            <div class="profile-card">
-                <h3>🧙 Персонаж</h3>
-                <div class="profile-character-preview">
-                    <img id="profile-character-img" src="image/characters/helin/skin-1.png" alt="">
-                    <div>
-                        <b id="profile-character-name">HELIN</b>
-                        <p>Выбранный герой</p>
-                    </div>
-                </div>
-                <button class="profile-change-hero-btn" onclick="openNewCharactersScreen()">
-    СМЕНИТЬ ГЕРОЯ
-</button>
-            </div>
-
-            <div class="profile-card">
-                <h3>📊 Статистика</h3>
-                <div class="profile-stat-row">
-                    <span>Прокруты</span>
-                    <b id="profile-spins">0</b>
-                </div>
-                <div class="profile-stat-row">
-                    <span>Сундуки</span>
-                    <b id="profile-chests">0</b>
-                </div>
-                <div class="profile-stat-row">
-                    <span>Карточки</span>
-                    <b id="profile-cards">0</b>
-                </div>
-            </div>
-        </div>
-    </section>
 </div>
 <div id="tab-pass" class="tab-content">
     <section class="battle-pass-screen">
