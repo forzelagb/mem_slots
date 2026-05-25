@@ -396,7 +396,7 @@ heroEl.innerHTML = `
     </div>
 
     <div class="collection-theme-hero-content-v3">
-        <div class="collection-theme-label-v3">💠 РАНГ ТЕМЫ: ${themeRank}</div>ы
+        <div class="collection-theme-label-v3">💠 РАНГ ТЕМЫ: ${themeRank}</div>
 
         <h2>${themeTitle}</h2>
 
@@ -9674,6 +9674,7 @@ function openCardPath(themeName, itemSrc) {
     const nextValue = getNextMilestoneValue(cardKey);
     const percent = Math.min(100, Math.round((progress / nextValue) * 100));
     const cardName = cardDisplayNames[fileName] || fileName;
+    const levelInfo = getCardLevelInfo(cardKey);
     const claimedRewards = getClaimedCardRewards(cardKey);
 const availableRewardsCount = milestones.filter(value => {
     return progress >= value && !claimedRewards.includes(value);
@@ -10085,6 +10086,9 @@ function highlightCollectionHits(rewards) {
             }, 800);
         }
     });
+}
+function showFloatingReward(text) {
+    showToastMessage(text);
 }
 //  ЗАПУСК
 window.onload = () => {
