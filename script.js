@@ -385,52 +385,60 @@ function openThemeDetail(themeName) {
     const preview = getThemePreviewImage(themeName);
 
     heroEl.className = `collection-theme-hero-v2 theme-${themeName}`;
-    heroEl.innerHTML = `
-        <button class="collection-back-btn-v2" onclick="closeThemeDetail()">
-            ← НАЗАД К ТЕМАМ
-        </button>
-
-        <div class="collection-theme-hero-cover-v2">
-            <img src="${preview}" alt="${themeTitle}">
-        </div>
-
-        <div class="collection-theme-hero-info-v2">
-            <h2>${themeTitle}</h2>
-            <p>Собрано ${data.completed} из ${data.total} карточек</p>
-
-            <div class="collection-theme-hero-progress-v2">
-                <div style="width:${data.percent}%"></div>
-            </div>
-
-            <span>${data.percent}% завершено</span>
-        </div>
-
-<div class="collection-theme-hero-reward-v2">
-    <div>Награда за закрытие темы</div>
-    <b>5000 золота • 150 гемов • 100 энергии</b>
-
-    <button 
-        class="theme-reward-btn-v2"
-        ${isThemeCompleted(themeName) && !isThemeRewardClaimed(themeName) ? "" : "disabled"}
-        onclick="claimThemeReward('${themeName}')"
-    >
-        ${
-            isThemeRewardClaimed(themeName)
-                ? "ПОЛУЧЕНО"
-                : isThemeCompleted(themeName)
-                    ? "ЗАБРАТЬ"
-                    : "ЗАКРЫТО"
-        }
+heroEl.innerHTML = `
+    <button class="collection-back-btn-v2" onclick="closeThemeDetail()">
+        ← НАЗАД
     </button>
-</div>
-        <div class="collection-rarity-filter-v2">
-<button class="active" onclick="setCollectionRarityFilter('${themeName}', 'all', this)">ВСЕ</button>
-<button onclick="setCollectionRarityFilter('${themeName}', 'common', this)">COMMON</button>
-<button onclick="setCollectionRarityFilter('${themeName}', 'rare', this)">RARE</button>
-<button onclick="setCollectionRarityFilter('${themeName}', 'epic', this)">EPIC</button>
-<button onclick="setCollectionRarityFilter('${themeName}', 'legendary', this)">LEGENDARY</button>
-</div>
-    `;
+
+    <div class="collection-theme-hero-bg-v3">
+        <img src="${preview}" alt="">
+    </div>
+
+    <div class="collection-theme-hero-content-v3">
+        <div class="collection-theme-label-v3">💠 ЭПИЧЕСКАЯ ТЕМА</div>
+
+        <h2>${themeTitle}</h2>
+
+        <div class="collection-theme-percent-v3">
+            ${data.percent}%
+            <span>завершено</span>
+        </div>
+
+        <p>${data.completed} / ${data.total} карточек собрано</p>
+
+        <div class="collection-theme-hero-progress-v3">
+            <div style="width:${data.percent}%"></div>
+        </div>
+    </div>
+
+    <div class="collection-theme-vault-v3">
+        <div class="vault-title-v3">НАГРАДА ЗА 100%</div>
+        <div class="vault-chest-v3">🎁</div>
+        <b>5000 золота • 150 гемов • 100 энергии</b>
+
+        <button 
+            class="theme-reward-btn-v3"
+            ${isThemeCompleted(themeName) && !isThemeRewardClaimed(themeName) ? "" : "disabled"}
+            onclick="claimThemeReward('${themeName}')"
+        >
+            ${
+                isThemeRewardClaimed(themeName)
+                    ? "ПОЛУЧЕНО"
+                    : isThemeCompleted(themeName)
+                        ? "ЗАБРАТЬ"
+                        : "ЗАКРЫТО"
+            }
+        </button>
+    </div>
+
+    <div class="collection-rarity-filter-v3">
+        <button class="active" onclick="setCollectionRarityFilter('${themeName}', 'all', this)">ВСЕ</button>
+        <button onclick="setCollectionRarityFilter('${themeName}', 'common', this)">COMMON</button>
+        <button onclick="setCollectionRarityFilter('${themeName}', 'rare', this)">RARE</button>
+        <button onclick="setCollectionRarityFilter('${themeName}', 'epic', this)">EPIC</button>
+        <button onclick="setCollectionRarityFilter('${themeName}', 'legendary', this)">LEGENDARY</button>
+    </div>
+`;
 
 const items = themes[themeName] || [];
 
@@ -449,30 +457,26 @@ items.forEach(item => {
         card.onclick = () => openCardPath(themeName, item.src);
 
         card.innerHTML = `
-            <div class="collection-card-rarity-v2">${rarity}</div>
+    <div class="collection-card-rarity-v3">${rarity}</div>
 
-            <div class="collection-card-img-v2">
-                <img src="${item.src}" alt="${fileName}">
-            </div>
+    <div class="collection-card-image-v3">
+        <img src="${item.src}" alt="">
+    </div>
 
-            <h3>${cardDisplayNames[fileName] || fileName}</h3>
+    <div class="collection-card-info-v3">
+        <h3>${cardDisplayNames[fileName] || fileName}</h3>
 
-            <div class="collection-card-status-v2">
-                ${status === 'completed' ? 'ЗАВЕРШЕНО' : status === 'in-progress' ? 'В ПРОЦЕССЕ' : 'ЗАКРЫТО'}
-            </div>
+        <div class="collection-card-progress-text-v3">
+            ${progress} / ${nextValue}
+        </div>
 
-            <div class="collection-card-progress-text-v2">
-                ${progress} / ${nextValue}
-            </div>
+        <div class="collection-card-progress-v3">
+            <div style="width:${percentToNext}%"></div>
+        </div>
 
-            <div class="collection-card-progress-v2">
-                <div style="width:${percentToNext}%"></div>
-            </div>
-
-            <button class="collection-card-path-btn-v2">
-                ПУТЬ КАРТОЧКИ
-            </button>
-        `;
+        <button>СМОТРЕТЬ ПУТЬ</button>
+    </div>
+`;
 
         gridEl.appendChild(card);
     });

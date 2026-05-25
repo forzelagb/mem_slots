@@ -18517,6 +18517,381 @@ body.modal-open {
         padding: 24px;
     }
 }
+/* === COLLECTION THEME DETAIL V3 === */
+
+.collection-detail-hero {
+    position: relative;
+    width: 100%;
+    min-height: 340px;
+    border-radius: 30px;
+    overflow: hidden;
+    margin-bottom: 22px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.06);
+    box-shadow:
+        0 24px 60px rgba(0,0,0,0.45),
+        0 0 35px rgba(255,59,212,0.18);
+}
+
+.collection-theme-hero-bg-v3 {
+    position: absolute;
+    inset: 0;
+}
+
+.collection-theme-hero-bg-v3 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.42;
+    filter: blur(1px) saturate(1.25);
+    transform: scale(1.06);
+}
+
+.collection-detail-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(5,0,12,0.97), rgba(5,0,12,0.65), rgba(5,0,12,0.25)),
+        radial-gradient(circle at 20% 20%, rgba(255,59,212,0.25), transparent 35%);
+}
+
+.collection-back-btn-v2 {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    z-index: 4;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(0,0,0,0.42);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.collection-theme-hero-content-v3 {
+    position: relative;
+    z-index: 3;
+    padding: 78px 34px 34px;
+    max-width: 560px;
+}
+
+.collection-theme-label-v3 {
+    display: inline-flex;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,59,212,0.18);
+    border: 1px solid rgba(255,59,212,0.35);
+    color: #ff71df;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.collection-theme-hero-content-v3 h2 {
+    font-size: 58px;
+    line-height: 0.95;
+    margin-bottom: 18px;
+    color: #ffd36a;
+    text-shadow: 0 0 24px rgba(255,211,106,0.28);
+}
+
+.collection-theme-percent-v3 {
+    font-size: 52px;
+    color: white;
+}
+
+.collection-theme-percent-v3 span {
+    font-size: 15px;
+    color: rgba(255,255,255,0.62);
+    margin-left: 8px;
+}
+
+.collection-theme-hero-content-v3 p {
+    color: rgba(255,255,255,0.72);
+    margin: 8px 0 14px;
+}
+
+.collection-theme-hero-progress-v3 {
+    width: 100%;
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.14);
+    overflow: hidden;
+}
+
+.collection-theme-hero-progress-v3 div {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff3bd4, #4de3ff, #ffd36a);
+    box-shadow: 0 0 18px rgba(255,59,212,0.55);
+}
+
+.collection-theme-vault-v3 {
+    position: absolute;
+    right: 28px;
+    top: 80px;
+    z-index: 3;
+    width: 230px;
+    padding: 18px;
+    border-radius: 24px;
+    text-align: center;
+    background: rgba(0,0,0,0.42);
+    border: 1px solid rgba(255,211,106,0.38);
+    box-shadow: 0 0 24px rgba(255,211,106,0.16);
+}
+
+.vault-title-v3 {
+    color: #ffd36a;
+    font-size: 12px;
+}
+
+.vault-chest-v3 {
+    font-size: 58px;
+    margin: 8px 0;
+    filter: drop-shadow(0 0 18px rgba(255,211,106,0.55));
+    animation: chestFloat 2s ease-in-out infinite;
+}
+
+@keyframes chestFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+.collection-theme-vault-v3 b {
+    display: block;
+    font-size: 12px;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.theme-reward-btn-v3 {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    background: linear-gradient(180deg, #ffd36a, #ffb800);
+    color: #1c1200;
+}
+
+.theme-reward-btn-v3:disabled {
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.42);
+    cursor: not-allowed;
+}
+
+.collection-rarity-filter-v3 {
+    position: absolute;
+    left: 34px;
+    right: 34px;
+    bottom: 22px;
+    z-index: 4;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.collection-rarity-filter-v3 button {
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(0,0,0,0.42);
+    color: rgba(255,255,255,0.72);
+    padding: 9px 12px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.collection-rarity-filter-v3 button.active,
+.collection-rarity-filter-v3 button:hover {
+    background: rgba(255,59,212,0.22);
+    color: white;
+    border-color: rgba(255,59,212,0.5);
+}
+
+/* Карточки внутри темы */
+
+.collection-detail-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.collection-card-v2 {
+    position: relative;
+    min-height: 330px;
+    border-radius: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 12px;
+    background:
+        radial-gradient(circle at top, rgba(255,255,255,0.12), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+    border: 1px solid rgba(255,255,255,0.13);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.34);
+    transition: 0.28s ease;
+}
+
+.collection-card-v2:hover {
+    transform: translateY(-7px) scale(1.015);
+    box-shadow:
+        0 24px 45px rgba(0,0,0,0.46),
+        0 0 28px rgba(255,59,212,0.22);
+}
+
+.collection-card-v2::before {
+    content: "";
+    position: absolute;
+    top: -70%;
+    left: -70%;
+    width: 40%;
+    height: 240%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.24),
+        transparent
+    );
+    transform: rotate(25deg);
+    transition: 0.75s ease;
+}
+
+.collection-card-v2:hover::before {
+    left: 125%;
+}
+
+.collection-card-rarity-v3 {
+    position: absolute;
+    z-index: 3;
+    top: 14px;
+    left: 14px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: rgba(0,0,0,0.68);
+    border: 1px solid rgba(255,255,255,0.16);
+}
+
+.collection-card-image-v3 {
+    height: 190px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.35);
+    margin-bottom: 14px;
+}
+
+.collection-card-image-v3 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.collection-card-info-v3 h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.collection-card-progress-text-v3 {
+    font-size: 13px;
+    color: rgba(255,255,255,0.68);
+    margin-bottom: 8px;
+}
+
+.collection-card-progress-v3 {
+    height: 9px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.13);
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.collection-card-progress-v3 div {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4de3ff, #ff3bd4);
+    box-shadow: 0 0 14px rgba(255,59,212,0.45);
+}
+
+.collection-card-info-v3 button {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.07);
+    color: white;
+    padding: 10px;
+    border-radius: 14px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.rarity-common {
+    border-color: rgba(255,255,255,0.16);
+}
+
+.rarity-rare {
+    border-color: rgba(77,227,255,0.45);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.34), 0 0 18px rgba(77,227,255,0.12);
+}
+
+.rarity-epic {
+    border-color: rgba(255,59,212,0.48);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.34), 0 0 22px rgba(255,59,212,0.16);
+}
+
+.rarity-legendary {
+    border-color: rgba(255,211,106,0.62);
+    box-shadow: 0 18px 34px rgba(0,0,0,0.34), 0 0 24px rgba(255,211,106,0.2);
+    animation: legendaryGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes legendaryGlow {
+    from {
+        box-shadow: 0 18px 34px rgba(0,0,0,0.34), 0 0 18px rgba(255,211,106,0.18);
+    }
+    to {
+        box-shadow: 0 18px 34px rgba(0,0,0,0.34), 0 0 34px rgba(255,211,106,0.42);
+    }
+}
+
+@media (max-width: 1050px) {
+    .collection-detail-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .collection-theme-vault-v3 {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: calc(100% - 68px);
+        margin: 0 34px 82px;
+    }
+
+    .collection-detail-hero {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .collection-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .collection-theme-hero-content-v3 h2 {
+        font-size: 40px;
+    }
+
+    .collection-theme-percent-v3 {
+        font-size: 38px;
+    }
+}
 
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
