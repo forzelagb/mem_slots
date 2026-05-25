@@ -250,45 +250,96 @@ function renderAllThemesCollection() {
     detailView.style.display = 'none';
     listEl.innerHTML = '';
 
-    orderedThemes.forEach(themeName => {
+    const sortedThemes = [...orderedThemes].sort((a, b) => {
+        return getThemeCompletionData(b).percent - getThemeCompletionData(a).percent;
+    });
+
+    const featuredTheme = sortedThemes[0];
+
+    if (featuredTheme) {
+        const featuredData = getThemeCompletionData(featuredTheme);
+        const featuredPreview = getThemePreviewImage(featuredTheme);
+        const featuredTitle = titles[featuredTheme] || featuredTheme;
+
+        const featured = document.createElement('div');
+        featured.className = `collection-featured-card theme-${featuredTheme}`;
+        featured.onclick = () => openThemeDetail(featuredTheme);
+
+        featured.innerHTML = `
+            <div class="collection-featured-bg">
+                <img src="${featuredPreview}" alt="">
+            </div>
+
+            <div class="collection-featured-content">
+                <div class="collection-featured-label">🔥 FEATURED THEME</div>
+                <h2>${featuredTitle}</h2>
+
+                <div class="collection-featured-percent">
+                    ${featuredData.percent}%
+                </div>
+
+                <p>Собрано ${featuredData.completed} из ${featuredData.total} карточек</p>
+
+                <div class="collection-featured-bar">
+                    <div style="width:${featuredData.percent}%"></div>
+                </div>
+
+                <button>ОТКРЫТЬ ТЕМУ</button>
+            </div>
+        `;
+
+        listEl.appendChild(featured);
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'collection-themes-showcase';
+
+    sortedThemes.forEach(themeName => {
         const preview = getThemePreviewImage(themeName);
         const data = getThemeCompletionData(themeName);
         const themeTitle = titles[themeName] || themeName;
 
+        const rank =
+            data.percent >= 100 ? "MASTER" :
+            data.percent >= 75 ? "ELITE" :
+            data.percent >= 50 ? "HUNTER" :
+            data.percent >= 25 ? "COLLECTOR" :
+            "ROOKIE";
+
         const card = document.createElement('div');
-        card.className = `collection-theme-card-v2 theme-${themeName}`;
+        card.className = `collection-theme-card-v3 theme-${themeName}`;
         card.onclick = () => openThemeDetail(themeName);
 
         card.innerHTML = `
-            <div class="collection-theme-cover-v2">
+            <div class="theme-card-img-v3">
                 <img src="${preview}" alt="${themeTitle}">
+                <div class="theme-card-rank-v3">${rank}</div>
             </div>
 
-            <div class="collection-theme-info-v2">
-                <div class="collection-theme-top-v2">
+            <div class="theme-card-body-v3">
+                <div class="theme-card-head-v3">
                     <h3>${themeTitle}</h3>
-                    <span>${data.percent}%</span>
+                    <b>${data.percent}%</b>
                 </div>
 
-                <p>Собрано ${data.completed} из ${data.total} карточек</p>
+                <div class="theme-card-meta-v3">
+                    ${data.completed} / ${data.total} карточек
+                </div>
 
-                <div class="collection-theme-progress-v2">
+                <div class="theme-card-progress-v3">
                     <div style="width:${data.percent}%"></div>
                 </div>
 
-                <div class="collection-theme-reward-v2">
-                    <span>Награда за тему:</span>
-                    <b>золото • гемы • сундук</b>
+                <div class="theme-card-reward-v3">
+                    🎁 золото • гемы • сундук
                 </div>
             </div>
-
-            <button class="collection-theme-open-v2">
-                ОТКРЫТЬ
-            </button>
         `;
 
-        listEl.appendChild(card);
+        grid.appendChild(card);
     });
+
+    listEl.appendChild(grid);
 }
 
 function closeThemeDetail() {
