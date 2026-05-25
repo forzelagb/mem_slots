@@ -18671,6 +18671,8 @@ body.modal-open {
 }
 
 .theme-reward-btn-v3 {
+    position: relative;
+overflow: hidden;
     width: 100%;
     border: none;
     border-radius: 14px;
@@ -18741,10 +18743,12 @@ body.modal-open {
 }
 
 .collection-card-v2:hover {
+    rotate: -1deg;
     transform: translateY(-7px) scale(1.015);
     box-shadow:
         0 24px 45px rgba(0,0,0,0.46),
         0 0 28px rgba(255,59,212,0.22);
+
 }
 
 .collection-card-v2::before {
@@ -18892,7 +18896,933 @@ body.modal-open {
         font-size: 38px;
     }
 }
+/* === CARD PATH VIEW === */
 
+.collection-card-path-view {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.card-path-panel {
+    position: relative;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 34px;
+    width: 100%;
+    padding: 34px;
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at top left, rgba(255,59,212,0.18), transparent 32%),
+        linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.48);
+    animation: cardPathAppear 0.35s ease both;
+}
+
+@keyframes cardPathAppear {
+    0% {
+        opacity: 0;
+        transform:
+            perspective(1200px)
+            rotateX(18deg)
+            scale(0.92)
+            translateY(30px);
+
+        filter: blur(10px);
+    }
+
+    50% {
+        opacity: 1;
+        transform:
+            perspective(1200px)
+            rotateX(-4deg)
+            scale(1.02)
+            translateY(-4px);
+
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            perspective(1200px)
+            rotateX(0deg)
+            scale(1)
+            translateY(0);
+
+        filter: blur(0);
+    }
+}
+
+.card-path-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.card-path-left {
+    padding-top: 42px;
+}
+
+.card-path-image {
+    height: 360px;
+    border-radius: 26px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 0 34px rgba(255,59,212,0.22);
+}
+
+.card-path-image img {
+    transition: transform 0.45s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.card-path-image:hover img {
+    transform: scale(1.06);
+}
+.card-path-rarity {
+    margin-top: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #ffd36a;
+}
+
+.card-path-right {
+    padding-top: 52px;
+}
+
+.card-path-level {
+    color: #ffd36a;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.card-path-right h2 {
+    font-size: 46px;
+    margin-bottom: 12px;
+}
+
+.card-path-right p {
+    color: rgba(255,255,255,0.68);
+    max-width: 580px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.card-path-progress {
+    height: 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.13);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.card-path-progress div {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff3bd4, #4de3ff, #ffd36a);
+    box-shadow: 0 0 18px rgba(255,59,212,0.55);
+}
+
+.card-path-milestones {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 18px;
+}
+
+.card-path-reward {
+    position: relative;
+    text-align: center;
+    opacity: 0.55;
+}
+
+.card-path-reward.done {
+    opacity: 1;
+}
+
+.reward-dot {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 12px;
+}
+
+.card-path-reward.done .reward-dot {
+    background: linear-gradient(180deg, #34ff9c, #0dbb68);
+    color: #001b0d;
+    box-shadow: 0 0 18px rgba(52,255,156,0.35);
+}
+
+.reward-box {
+    height: 76px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    background: rgba(0,0,0,0.32);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.card-path-panel.rarity-legendary {
+    border-color: rgba(255,211,106,0.6);
+}
+
+.card-path-panel.rarity-epic {
+    border-color: rgba(255,59,212,0.55);
+}
+
+.card-path-panel.rarity-rare {
+    border-color: rgba(77,227,255,0.55);
+}
+
+@media (max-width: 850px) {
+    .card-path-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .card-path-milestones {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card-path-image {
+        height: 300px;
+    }
+}
+.card-path-panel::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 32px;
+    padding: 2px;
+    background: linear-gradient(120deg, transparent, rgba(255,59,212,0.7), rgba(255,211,106,0.7), transparent);
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: pathBorderGlow 3s linear infinite;
+}
+
+@keyframes pathBorderGlow {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+.card-path-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 22%),
+        radial-gradient(circle at 80% 70%, rgba(255,211,106,0.08), transparent 24%);
+}
+.reward-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.reward-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.reward-amount {
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+}
+.card-path-claim-btn {
+    border: none;
+    margin-bottom: 28px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #34ff9c, #0dbb68);
+    color: #001b0d;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 8px 0 #05733d, 0 0 22px rgba(52,255,156,0.28);
+}
+
+.card-path-reward.claimed {
+    opacity: 0.35;
+}
+
+.card-path-reward.claimed .reward-dot {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.45);
+}
+
+.card-path-reward.claimed .reward-box::after {
+    content: "ПОЛУЧЕНО";
+    position: absolute;
+    font-size: 9px;
+    color: #34ff9c;
+    bottom: 6px;
+}
+
+.game-toast-message {
+    position: fixed;
+    left: 50%;
+    bottom: 34px;
+    transform: translateX(-50%) translateY(30px);
+    z-index: 9999;
+    padding: 14px 20px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.78);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.25s ease;
+}
+
+.game-toast-message.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+.card-path-claim-btn {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    margin-bottom: 28px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #34ff9c, #0dbb68);
+    color: #001b0d;
+    font-family: inherit;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 0 #05733d,
+        0 0 22px rgba(52,255,156,0.28);
+
+    transition: transform 0.2s ease;
+    animation: claimButtonPulse 2s ease-in-out infinite;
+}
+
+.card-path-claim-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.card-path-claim-btn:active {
+    transform: translateY(3px);
+    box-shadow:
+        0 3px 0 #05733d,
+        0 0 12px rgba(52,255,156,0.22);
+}
+
+/* Блик */
+.card-path-claim-btn::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    left: -80%;
+    width: 35%;
+    height: 240%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.45),
+        transparent
+    );
+
+    transform: rotate(25deg);
+    animation: claimButtonShine 3s linear infinite;
+}
+
+/* Пульсация */
+@keyframes claimButtonPulse {
+    0%, 100% {
+        box-shadow:
+            0 8px 0 #05733d,
+            0 0 18px rgba(52,255,156,0.22);
+    }
+
+    50% {
+        box-shadow:
+            0 8px 0 #05733d,
+            0 0 34px rgba(52,255,156,0.48);
+    }
+}
+
+/* Движение блика */
+@keyframes claimButtonShine {
+    0% {
+        left: -90%;
+    }
+
+    100% {
+        left: 140%;
+    }
+}
+.card-path-claim-btn.disabled {
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.42);
+    box-shadow: none;
+    cursor: not-allowed;
+    animation: none;
+}
+
+.card-path-claim-btn.disabled::before {
+    display: none;
+}
+
+.card-path-claim-btn.disabled:hover {
+    transform: none;
+}
+.reward-burst-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(8px);
+}
+
+.reward-burst-modal.active {
+    display: flex;
+}
+
+.reward-burst-card {
+    position: relative;
+    width: min(420px, 92vw);
+    padding: 34px;
+    text-align: center;
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at top, rgba(255,211,106,0.22), transparent 42%),
+        linear-gradient(135deg, #2a063d, #100018);
+    border: 1px solid rgba(255,211,106,0.55);
+    box-shadow:
+        0 0 50px rgba(255,211,106,0.25),
+        0 0 35px rgba(255,59,212,0.22);
+    animation: rewardBurstPop 0.35s ease both;
+    overflow: hidden;
+}
+
+.reward-burst-card::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent,
+            rgba(255,211,106,0.22),
+            transparent,
+            rgba(255,59,212,0.18),
+            transparent
+        );
+    animation: rewardBurstRotate 5s linear infinite;
+}
+
+.reward-burst-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+.reward-burst-label {
+    display: inline-flex;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,211,106,0.12);
+    border: 1px solid rgba(255,211,106,0.34);
+    color: #ffd36a;
+    font-size: 12px;
+    margin-bottom: 14px;
+}
+
+.reward-burst-icon {
+    font-size: 70px;
+    filter: drop-shadow(0 0 20px rgba(255,211,106,0.75));
+    animation: rewardIconFloat 1.8s ease-in-out infinite;
+}
+
+.reward-burst-card h2 {
+    font-size: 36px;
+    margin: 8px 0;
+}
+
+.reward-burst-card p {
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 22px;
+}
+
+.reward-burst-card button {
+    border: none;
+    padding: 13px 24px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffd36a, #ffb800);
+    color: #1c1200;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 7px 0 #9b6900;
+}
+
+@keyframes rewardBurstPop {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes rewardBurstRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rewardIconFloat {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-8px) scale(1.06);
+    }
+}
+.card-path-next-text {
+    margin-top: -18px;
+    margin-bottom: 24px;
+    color: rgba(255,255,255,0.62);
+    font-size: 13px;
+}
+
+.card-path-level {
+    display: inline-flex;
+    padding: 8px 13px;
+    border-radius: 999px;
+    background: rgba(255,211,106,0.12);
+    border: 1px solid rgba(255,211,106,0.35);
+    color: #ffd36a;
+    box-shadow: 0 0 18px rgba(255,211,106,0.16);
+}
+.card-path-reward.done:not(.claimed) {
+    opacity: 1;
+    animation: rewardAvailablePulse 1.7s ease-in-out infinite;
+}
+
+.card-path-reward.done:not(.claimed) .reward-dot {
+    background: linear-gradient(180deg, #ffd36a, #ffb800);
+    color: #1c1200;
+    box-shadow: 0 0 18px rgba(255,211,106,0.45);
+}
+
+.reward-status-text {
+    font-size: 8px;
+    color: rgba(255,255,255,0.5);
+}
+
+.card-path-reward.done:not(.claimed) .reward-status-text {
+    color: #ffd36a;
+}
+
+.card-path-reward.claimed .reward-status-text {
+    color: #34ff9c;
+}
+
+@keyframes rewardAvailablePulse {
+    0%, 100% {
+        transform: translateY(0);
+        filter: brightness(1);
+    }
+    50% {
+        transform: translateY(-3px);
+        filter: brightness(1.25);
+    }
+}
+.collection-card-v2 {
+    transform-style: preserve-3d;
+}
+
+.collection-card-v2:hover .collection-card-image-v3 img {
+    transform: scale(1.08);
+}
+
+.collection-card-image-v3 img {
+    transition: transform 0.4s ease;
+}
+
+/* Плавающее свечение */
+.collection-card-v2::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(255,59,212,0.10), transparent 26%);
+    animation: cardAmbientGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes cardAmbientGlow {
+    from {
+        opacity: 0.45;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.theme-rank-badge-v3 {
+    display: inline-flex;
+    margin: 8px 0 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    background: rgba(255,255,255,0.09);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.75);
+}
+
+.rank-rookie {
+    color: rgba(255,255,255,0.75);
+}
+
+.rank-collector {
+    color: #4de3ff;
+    box-shadow: 0 0 16px rgba(77,227,255,0.22);
+}
+
+.rank-hunter {
+    color: #ff3bd4;
+    box-shadow: 0 0 18px rgba(255,59,212,0.25);
+}
+
+.rank-elite {
+    color: #ffd36a;
+    box-shadow: 0 0 20px rgba(255,211,106,0.32);
+}
+
+.rank-master {
+    color: #34ff9c;
+    border-color: rgba(52,255,156,0.45);
+    box-shadow: 0 0 26px rgba(52,255,156,0.35);
+    animation: masterRankPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes masterRankPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+        filter: brightness(1.25);
+    }
+}
+.collection-theme-vault-v3:has(.theme-reward-btn-v3:not(:disabled)) {
+    animation: vaultReadyPulse 1.8s ease-in-out infinite;
+    border-color: rgba(52,255,156,0.65);
+}
+
+.collection-theme-vault-v3:has(.theme-reward-btn-v3:not(:disabled)) .vault-chest-v3 {
+    animation: chestFloat 1.4s ease-in-out infinite, chestReadyShake 2.4s ease-in-out infinite;
+}
+
+@keyframes vaultReadyPulse {
+    0%, 100% {
+        box-shadow: 0 0 24px rgba(52,255,156,0.18);
+    }
+    50% {
+        box-shadow: 0 0 42px rgba(52,255,156,0.42);
+    }
+}
+
+@keyframes chestReadyShake {
+    0%, 100% {
+        rotate: 0deg;
+    }
+    45% {
+        rotate: 0deg;
+    }
+    50% {
+        rotate: -4deg;
+    }
+    55% {
+        rotate: 4deg;
+    }
+    60% {
+        rotate: 0deg;
+    }
+}
+.theme-reward-btn-v3:not(:disabled)::before {
+    content: "";
+    position: absolute;
+    top: -70%;
+    left: -80%;
+    width: 36%;
+    height: 240%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.5),
+        transparent
+    );
+    transform: rotate(25deg);
+    animation: themeRewardShine 2.8s linear infinite;
+}
+
+@keyframes themeRewardShine {
+    from {
+        left: -90%;
+    }
+    to {
+        left: 140%;
+    }
+}
+/* === SLOT COLLECTION GAIN WIDGET === */
+
+.slot-collection-gain {
+    position: absolute;
+    right: -18px;
+    top: 42px;
+    z-index: 20;
+    width: 260px;
+    padding: 14px;
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.12), transparent 35%),
+        rgba(6, 0, 16, 0.82);
+    border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.45);
+    opacity: 0;
+    transform: translateX(22px) scale(0.96);
+    pointer-events: none;
+    transition: 0.28s ease;
+}
+
+.slot-collection-gain.show {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.slot-collection-gain.hit {
+    animation: collectionGainHit 0.45s ease;
+}
+
+.slot-collection-gain-label {
+    color: #ffd36a;
+    font-size: 12px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.slot-collection-gain-body {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.slot-collection-gain-body img {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    object-fit: cover;
+    box-shadow: 0 0 18px rgba(255,255,255,0.16);
+}
+
+#slot-gain-title {
+    font-size: 16px;
+    color: white;
+    line-height: 1.15;
+}
+
+#slot-gain-text {
+    margin-top: 5px;
+    font-size: 11px;
+    line-height: 1.3;
+    color: rgba(255,255,255,0.62);
+}
+
+.slot-collection-gain.rarity-rare {
+    border-color: rgba(77,227,255,0.55);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.45), 0 0 24px rgba(77,227,255,0.22);
+}
+
+.slot-collection-gain.rarity-epic {
+    border-color: rgba(255,59,212,0.6);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.45), 0 0 28px rgba(255,59,212,0.26);
+}
+
+.slot-collection-gain.rarity-legendary {
+    border-color: rgba(255,211,106,0.7);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.45), 0 0 34px rgba(255,211,106,0.34);
+    animation: legendaryGainGlow 1.7s ease-in-out infinite alternate;
+}
+
+.flying-collection-card {
+    position: fixed;
+    z-index: 99999;
+    object-fit: cover;
+    border-radius: 16px;
+    pointer-events: none;
+    transition:
+        left 0.72s cubic-bezier(.2,.9,.2,1),
+        top 0.72s cubic-bezier(.2,.9,.2,1),
+        width 0.72s cubic-bezier(.2,.9,.2,1),
+        height 0.72s cubic-bezier(.2,.9,.2,1),
+        opacity 0.72s ease,
+        transform 0.72s ease;
+    box-shadow: 0 0 24px rgba(255,211,106,0.42);
+}
+
+@keyframes collectionGainHit {
+    0% { transform: translateX(0) scale(1); }
+    45% { transform: translateX(0) scale(1.08); }
+    100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes legendaryGainGlow {
+    from {
+        filter: brightness(1);
+    }
+    to {
+        filter: brightness(1.25);
+    }
+}
+
+@media (max-width: 900px) {
+    .slot-collection-gain {
+        right: 50%;
+        top: auto;
+        bottom: 88px;
+        transform: translateX(50%) translateY(18px) scale(0.96);
+        width: min(320px, 88vw);
+    }
+
+    .slot-collection-gain.show {
+        transform: translateX(50%) translateY(0) scale(1);
+    }
+
+    .slot-collection-gain.hit {
+        animation: collectionGainHitMobile 0.45s ease;
+    }
+
+    @keyframes collectionGainHitMobile {
+        0% { transform: translateX(50%) translateY(0) scale(1); }
+        45% { transform: translateX(50%) translateY(0) scale(1.08); }
+        100% { transform: translateX(50%) translateY(0) scale(1); }
+    }
+}
+.slot-gain-list {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+}
+
+.slot-gain-list-item {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 8px;
+    align-items: center;
+    padding: 7px;
+    border-radius: 13px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.09);
+}
+
+.slot-gain-list-item img {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    object-fit: cover;
+}
+
+.slot-gain-list-item b {
+    display: block;
+    font-size: 11px;
+    color: white;
+    line-height: 1.15;
+}
+
+.slot-gain-list-item span {
+    display: block;
+    margin-top: 3px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.56);
+}
+
+.slot-gain-list-item.rarity-rare {
+    border-color: rgba(77,227,255,0.35);
+}
+
+.slot-gain-list-item.rarity-epic {
+    border-color: rgba(255,59,212,0.4);
+}
+
+.slot-gain-list-item.rarity-legendary {
+    border-color: rgba(255,211,106,0.5);
+}
+
+.slot-gain-more {
+    text-align: center;
+    padding: 7px;
+    border-radius: 999px;
+    background: rgba(255,211,106,0.12);
+    color: #ffd36a;
+    font-size: 11px;
+}
+.cell.collection-hit {
+    animation: slotCollectionHit 0.75s ease;
+    z-index: 3;
+}
+
+@keyframes slotCollectionHit {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255,211,106,0);
+    }
+
+    45% {
+        transform: scale(1.08);
+        box-shadow:
+            0 0 18px rgba(255,211,106,0.65),
+            0 0 34px rgba(255,59,212,0.35);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.16);
+    }
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

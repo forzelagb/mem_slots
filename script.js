@@ -383,6 +383,7 @@ function openThemeDetail(themeName) {
     const data = getThemeCompletionData(themeName);
     const themeTitle = titles[themeName] || themeName;
     const preview = getThemePreviewImage(themeName);
+    const themeRank = getThemeRank(data.percent);
 
     heroEl.className = `collection-theme-hero-v2 theme-${themeName}`;
 heroEl.innerHTML = `
@@ -395,7 +396,7 @@ heroEl.innerHTML = `
     </div>
 
     <div class="collection-theme-hero-content-v3">
-        <div class="collection-theme-label-v3">💠 ЭПИЧЕСКАЯ ТЕМА</div>
+        <div class="collection-theme-label-v3">💠 РАНГ ТЕМЫ: ${themeRank}</div>ы
 
         <h2>${themeTitle}</h2>
 
@@ -403,7 +404,9 @@ heroEl.innerHTML = `
             ${data.percent}%
             <span>завершено</span>
         </div>
-
+    <div class="theme-rank-badge-v3 rank-${themeRank.toLowerCase()}">
+    ${themeRank}
+</div>
         <p>${data.completed} / ${data.total} карточек собрано</p>
 
         <div class="collection-theme-hero-progress-v3">
@@ -1060,6 +1063,7 @@ if (resultText) {
 
     const cells = Array.from(document.querySelectorAll('.cell'));
     hideRewardPreview();
+    hideSlotCollectionGain();
     animateDrop(cells, finalGrid, () => {
         checkWins(finalGrid);
 
@@ -1194,6 +1198,8 @@ function checkWins(grid) {
                 streakBonus
             });
         }
+        showSlotCollectionGainList(rewardedCards, totalXpReward, streakBonus);
+        highlightCollectionHits(rewardedCards);
 
         if (resultText) {
             let text = `+${firstReward.amount} к прогрессу ${firstReward.fileName}`;
@@ -4473,6 +4479,7 @@ if (!playerData.claimedCardRewards[cardKey]) {
 }
     const milestones = progressPaths[rarity] || [];
     const cardName = cardDisplayNames[fileName] || fileName;
+    const levelInfo = getCardLevelInfo(cardKey);
     const themeTitle = titles[themeName] || themeName;
     const currentLevel = milestones.filter(need => progress >= need).length;
     const nextMilestone = milestones[currentLevel] || milestones[milestones.length - 1];
@@ -9652,6 +9659,432 @@ function addPlayerStat(type, amount = 1) {
     playerData.stats[type] += amount;
 
     savePlayer();
+}
+function openCardPath(themeName, itemSrc) {
+    const detailView = document.getElementById('collection-detail-view');
+    const pathView = document.getElementById('collection-card-path-view');
+
+    if (!detailView || !pathView) return;
+
+    const fileName = getFileNameFromSrc(itemSrc);
+    const cardKey = getCardKey(themeName, itemSrc);
+    const rarity = cardRarity[fileName] || "common";
+    const progress = playerData.cards?.[cardKey] || 0;
+    const milestones = getRewardMilestones(cardKey);
+    const nextValue = getNextMilestoneValue(cardKey);
+    const percent = Math.min(100, Math.round((progress / nextValue) * 100));
+    const cardName = cardDisplayNames[fileName] || fileName;
+    const claimedRewards = getClaimedCardRewards(cardKey);
+const availableRewardsCount = milestones.filter(value => {
+    return progress >= value && !claimedRewards.includes(value);
+}).length;
+    const hero = document.getElementById('collection-detail-hero');
+const grid = document.getElementById('collection-detail-grid');
+
+if (hero) hero.style.display = 'none';
+if (grid) grid.style.display = 'none';
+    pathView.style.display = 'block';
+    pathView.innerHTML = `
+        <div class="card-path-panel rarity-${rarity}">
+            <button class="card-path-back" onclick="closeCardPath()">
+                ← НАЗАД К ТЕМЕ
+            </button>
+
+            <div class="card-path-left">
+                <div class="card-path-image">
+                    <img src="${itemSrc}" alt="">
+                </div>
+
+                <div class="card-path-rarity">${rarity}</div>
+            </div>
+
+            <div class="card-path-right">
+                <div class="card-path-level">
+    LEVEL ${levelInfo.level}
+</div>
+                <h2>${cardName}</h2>
+
+                <p>
+                    Прокачивай эту карточку через совпадения в слоте.
+                    Чем выше прогресс, тем больше наград открывается.
+                </p>
+
+<div class="card-path-progress">
+    <div style="width:${levelInfo.progress}%"></div>
+</div>
+
+<div class="card-path-next-text">
+    До следующего уровня: ${progress} / ${levelInfo.next}
+</div>
+<button 
+    class="card-path-claim-btn ${availableRewardsCount <= 0 ? 'disabled' : ''}" 
+    onclick="claimAvailableCardRewards('${cardKey}')"
+    ${availableRewardsCount <= 0 ? "disabled" : ""}
+>
+    ${
+        availableRewardsCount > 0
+            ? `ЗАБРАТЬ НАГРАДЫ x${availableRewardsCount}`
+            : "НЕТ ДОСТУПНЫХ НАГРАД"
+    }
+</button>
+                <div class="card-path-milestones">
+                    ${milestones.slice(0, 12).map(value => {
+                        const isDone = progress >= value;
+                        const isClaimed = getClaimedCardRewards(cardKey).includes(value);
+
+                        return `
+                            <div class="card-path-reward ${isDone ? "done" : ""} ${isClaimed ? "claimed" : ""}">
+                                <div class="reward-dot">
+    ${isClaimed ? "✓" : isDone ? "!" : value}
+</div> 
+<div class="reward-box">
+    ${getMilestoneRewardIcon(rarity, value)}
+
+    <div class="reward-status-text">
+        ${isClaimed ? "ПОЛУЧЕНО" : isDone ? "ДОСТУПНО" : "ЗАКРЫТО"}
+    </div>
+</div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function closeCardPath() {
+    const pathView = document.getElementById('collection-card-path-view');
+    if (!pathView) return;
+
+    pathView.style.display = 'none';
+    pathView.innerHTML = '';
+    const hero = document.getElementById('collection-detail-hero');
+const grid = document.getElementById('collection-detail-grid');
+
+if (hero) hero.style.display = 'block';
+if (grid) grid.style.display = 'grid';
+}
+
+function getMilestoneRewardIcon(rarity, value) {
+    const reward = getCardPathReward(rarity, value);
+
+    return `
+        <div class="reward-icon">${reward.icon}</div>
+        <div class="reward-amount">${reward.amount}</div>
+    `;
+}
+
+function getCardPathReward(rarity, value) {
+    if (rarity === "legendary") {
+        if (value % 5 === 0) return { icon: "🎁", amount: "сундук" };
+        return { icon: "💎", amount: "x25" };
+    }
+
+    if (rarity === "epic") {
+        if (value % 4 === 0) return { icon: "💎", amount: "x10" };
+        return { icon: "🪙", amount: "x500" };
+    }
+
+    if (rarity === "rare") {
+        if (value % 3 === 0) return { icon: "⚡", amount: "x2" };
+        return { icon: "🪙", amount: "x250" };
+    }
+
+    if (value % 2 === 0) return { icon: "⚡", amount: "x1" };
+    return { icon: "🪙", amount: "x100" };
+}
+function ensureClaimedCardRewards() {
+    if (!playerData.claimedCardRewards) {
+        playerData.claimedCardRewards = {};
+    }
+}
+
+function getClaimedCardRewards(cardKey) {
+    ensureClaimedCardRewards();
+
+    if (!playerData.claimedCardRewards[cardKey]) {
+        playerData.claimedCardRewards[cardKey] = [];
+    }
+
+    return playerData.claimedCardRewards[cardKey];
+}
+
+function claimAvailableCardRewards(cardKey) {
+    ensureClaimedCardRewards();
+
+    const progress = playerData.cards?.[cardKey] || 0;
+    const milestones = getRewardMilestones(cardKey);
+    const claimed = getClaimedCardRewards(cardKey);
+
+    let claimedCount = 0;
+
+    milestones.forEach(value => {
+        if (progress >= value && !claimed.includes(value)) {
+            claimed.push(value);
+            giveCardPathReward(cardKey, value);
+            claimedCount++;
+        }
+    });
+
+    if (claimedCount <= 0) {
+        showToastMessage("Нет доступных наград");
+        return;
+    }
+
+    savePlayerData();
+    showRewardBurstModal(claimedCount);
+
+    const parts = cardKey.split(':');
+    const themeName = parts[0];
+    const fileName = parts[1];
+    openCardPath(themeName, `image/${themeName}/${fileName}`);
+}
+
+function giveCardPathReward(cardKey, value) {
+    const fileName = cardKey.split(':')[1];
+    const rarity = cardRarity[fileName] || "common";
+    const reward = getCardPathReward(rarity, value);
+
+    if (reward.icon === "🪙") {
+        playerData.gold = (playerData.gold || 0) + parseInt(reward.amount.replace("x", ""));
+    }
+
+    if (reward.icon === "💎") {
+        playerData.premiumTokens = (playerData.premiumTokens || 0) + parseInt(reward.amount.replace("x", ""));
+    }
+
+    if (reward.icon === "⚡") {
+        playerData.energy = (playerData.energy || 0) + parseInt(reward.amount.replace("x", ""));
+    }
+
+    if (reward.icon === "🎁") {
+        playerData.chests = playerData.chests || {};
+        playerData.chests.legendary = (playerData.chests.legendary || 0) + 1;
+    }
+
+    updateHeaderResources?.();
+}
+
+function showToastMessage(text) {
+    let toast = document.getElementById('game-toast-message');
+
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'game-toast-message';
+        toast.className = 'game-toast-message';
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = text;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 1800);
+}   
+function showRewardBurstModal(count) {
+    let modal = document.getElementById('reward-burst-modal');
+
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'reward-burst-modal';
+        modal.className = 'reward-burst-modal';
+
+        modal.innerHTML = `
+            <div class="reward-burst-card">
+                <div class="reward-burst-label">НАГРАДЫ ПОЛУЧЕНЫ</div>
+                <div class="reward-burst-icon">🎁</div>
+                <h2>Отлично!</h2>
+                <p id="reward-burst-text">Получено наград: ${count}</p>
+                <button onclick="closeRewardBurstModal()">Забрать</button>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+    }
+
+    document.getElementById('reward-burst-text').textContent = `Получено наград: ${count}`;
+    modal.classList.add('active');
+}
+
+function closeRewardBurstModal() {
+    const modal = document.getElementById('reward-burst-modal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+}
+function getCardLevelInfo(cardKey) {
+    const progress = playerData.cards?.[cardKey] || 0;
+    const milestones = getRewardMilestones(cardKey);
+
+    let level = 1;
+
+    milestones.forEach(value => {
+        if (progress >= value) level++;
+    });
+
+    const currentLevel = Math.min(level, milestones.length + 1);
+    const nextMilestone = milestones.find(value => progress < value) || milestones[milestones.length - 1];
+    const prevMilestone = milestones.slice().reverse().find(value => progress >= value) || 0;
+
+    const levelProgress = nextMilestone === prevMilestone
+        ? 100
+        : Math.round(((progress - prevMilestone) / (nextMilestone - prevMilestone)) * 100);
+
+    return {
+        level: currentLevel,
+        progress: Math.max(0, Math.min(100, levelProgress)),
+        next: nextMilestone
+    };
+}
+function getThemeRank(percent) {
+    if (percent >= 100) return "MASTER";
+    if (percent >= 75) return "ELITE";
+    if (percent >= 50) return "HUNTER";
+    if (percent >= 25) return "COLLECTOR";
+    return "ROOKIE";
+}
+function showSlotCollectionGain(reward, xp = 0, streakBonus = 0) {
+    const panel = document.getElementById('slot-collection-gain');
+    const img = document.getElementById('slot-gain-img');
+    const title = document.getElementById('slot-gain-title');
+    const text = document.getElementById('slot-gain-text');
+
+    if (!panel || !img || !title || !text || !reward) return;
+
+    const cleanName = cardDisplayNames?.[reward.fileName] || reward.fileName;
+    const rarity = cardRarity?.[reward.fileName] || "common";
+
+    img.src = reward.src;
+    title.innerText = `+${reward.amount} • ${cleanName}`;
+    text.innerText = `Комбо x${reward.matchCount} • +${xp} XP${streakBonus > 0 ? ` • серия +${streakBonus}⚡` : ""}`;
+
+    panel.classList.remove('show', 'rarity-common', 'rarity-rare', 'rarity-epic', 'rarity-legendary');
+    void panel.offsetWidth;
+
+    panel.classList.add('show', `rarity-${rarity}`);
+
+    animateCardFlyToCollection(reward.src, panel);
+
+    setTimeout(() => {
+        panel.classList.remove('show');
+    }, 3600);
+}
+
+function animateCardFlyToCollection(src, targetPanel) {
+    const grid = document.getElementById('grid');
+    if (!grid || !targetPanel) return;
+
+    const firstCellImg = grid.querySelector(`.cell img[src="${src}"]`) || grid.querySelector('.cell img');
+    if (!firstCellImg) return;
+
+    const start = firstCellImg.getBoundingClientRect();
+    const end = targetPanel.getBoundingClientRect();
+
+    const flying = document.createElement('img');
+    flying.src = src;
+    flying.className = 'flying-collection-card';
+
+    flying.style.left = `${start.left}px`;
+    flying.style.top = `${start.top}px`;
+    flying.style.width = `${start.width}px`;
+    flying.style.height = `${start.height}px`;
+
+    document.body.appendChild(flying);
+
+    requestAnimationFrame(() => {
+        flying.style.left = `${end.left + 22}px`;
+        flying.style.top = `${end.top + 48}px`;
+        flying.style.width = `54px`;
+        flying.style.height = `54px`;
+        flying.style.opacity = `0.15`;
+        flying.style.transform = `rotate(12deg) scale(0.65)`;
+    });
+
+    setTimeout(() => {
+        flying.remove();
+        targetPanel.classList.add('hit');
+
+        setTimeout(() => {
+            targetPanel.classList.remove('hit');
+        }, 450);
+    }, 720);
+}
+
+function hideSlotCollectionGain() {
+    const panel = document.getElementById('slot-collection-gain');
+    if (panel) {
+    panel.classList.remove('show');
+
+    const list = panel.querySelector('.slot-gain-list');
+    if (list) list.innerHTML = '';
+}
+}
+function showSlotCollectionGainList(rewards, xp = 0, streakBonus = 0) {
+    if (!rewards || rewards.length <= 0) return;
+
+    showSlotCollectionGain(rewards[0], xp, streakBonus);
+
+    const panel = document.getElementById('slot-collection-gain');
+    if (!panel) return;
+
+    let list = panel.querySelector('.slot-gain-list');
+
+    if (!list) {
+        list = document.createElement('div');
+        list.className = 'slot-gain-list';
+        panel.appendChild(list);
+    }
+
+    list.innerHTML = '';
+
+    rewards.slice(0, 4).forEach(reward => {
+        const cleanName = cardDisplayNames?.[reward.fileName] || reward.fileName;
+        const rarity = cardRarity?.[reward.fileName] || "common";
+
+        const item = document.createElement('div');
+        item.className = `slot-gain-list-item rarity-${rarity}`;
+
+        item.innerHTML = `
+            <img src="${reward.src}" alt="">
+            <div>
+                <b>+${reward.amount} ${cleanName}</b>
+                <span>Комбо x${reward.matchCount}</span>
+            </div>
+        `;
+
+        list.appendChild(item);
+    });
+
+    if (rewards.length > 4) {
+        const more = document.createElement('div');
+        more.className = 'slot-gain-more';
+        more.textContent = `+ ещё ${rewards.length - 4} совпад.`;
+        list.appendChild(more);
+    }
+}
+function highlightCollectionHits(rewards) {
+    if (!rewards || rewards.length <= 0) return;
+
+    const cells = document.querySelectorAll('#grid .cell');
+
+    cells.forEach(cell => {
+        const img = cell.querySelector('img');
+        if (!img) return;
+
+        const isHit = rewards.some(reward => img.src.includes(reward.fileName));
+
+        if (isHit) {
+            cell.classList.remove('collection-hit');
+            void cell.offsetWidth;
+            cell.classList.add('collection-hit');
+
+            setTimeout(() => {
+                cell.classList.remove('collection-hit');
+            }, 800);
+        }
+    });
 }
 //  ЗАПУСК
 window.onload = () => {
