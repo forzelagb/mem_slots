@@ -4717,16 +4717,33 @@ function updatePlayerProfileUI() {
     if (profileCollectionTokens) profileCollectionTokens.innerText = playerData.resources?.collectionTokens || 0;
 }
 function goHome() {
-    gameScreen.classList.remove('active');
-    lobbyScreen.classList.add('active');
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
 
-    openTab('games');
+    if (lobbyScreen) {
+        lobbyScreen.classList.add("active");
+    }
+
+    document.querySelectorAll(".tab-content").forEach(tab => {
+        tab.classList.remove("active");
+    });
+
+    const gamesTab = document.getElementById("tab-games");
+    if (gamesTab) {
+        gamesTab.classList.add("active");
+    }
+
+    const homeIntro = document.getElementById("home-intro");
+    if (homeIntro) {
+        homeIntro.style.display = "block";
+    }
 
     document.body.classList.remove(
-        'vip-theme-ronaldo',
-        'vip-theme-shrek',
-        'vip-theme-spongebob',
-        'vip-theme-speed'
+        "vip-theme-ronaldo",
+        "vip-theme-shrek",
+        "vip-theme-spongebob",
+        "vip-theme-speed"
     );
 }
 function selectCharacter(key) {
@@ -8753,12 +8770,7 @@ function openProfileScreen() {
         screen.classList.remove("active");
     });
 
-    document.querySelectorAll(".tab-content").forEach(tab => {
-        tab.classList.remove("active");
-    });
-
     const profileScreen = document.getElementById("profile-screen");
-
     if (profileScreen) {
         profileScreen.classList.add("active");
     }
