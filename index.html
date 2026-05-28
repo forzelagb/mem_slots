@@ -10,6 +10,25 @@
     <script data-goatcounter="https://forzelag.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
+    <aside class="gl-sidebar">
+    <div class="gl-logo">
+        <img src="./image/ui/gl/logo-main.png" alt="Meme Collection Club">
+    </div>
+
+    <button class="gl-nav-btn active" onclick="goHome()">🏠 <span>Главная</span></button>
+    <button class="gl-nav-btn" onclick="openProfileScreen()">👥 <span>Профиль</span></button>
+    <button class="gl-nav-btn" onclick="openTab('collection')">🃏 <span>Коллекции</span></button>
+    <button class="gl-nav-btn" onclick="openNewCharactersScreen()">🎮 <span>Персонажи</span></button>
+    <a class="gl-nav-btn" href="inventory.html">🎒 <span>Инвентарь</span></a>
+    <button class="gl-nav-btn" onclick="openShopScreen()">🛒 <span>Магазин</span></button>
+    <button class="gl-nav-btn" onclick="openTab('pass')">👑 <span>Пропуск</span></button>
+    <button class="gl-nav-btn" onclick="openTab('quests')">🛡 <span>Квесты</span></button>
+    <button class="gl-nav-btn" onclick="openTab('achievements')">🏆 <span>Достижения</span></button>
+
+    <div class="gl-pass-mini">
+        <img src="./image/ui/gl/pass-card.png" alt="">
+    </div>
+</aside>
     <div class="pass-reward-modal" id="pass-reward-modal">
     <div class="pass-reward-modal-card">
         <div class="pass-reward-modal-label">НАГРАДА ПОЛУЧЕНА</div>

@@ -19823,6 +19823,80 @@ overflow: hidden;
         box-shadow: 0 4px 10px rgba(0,0,0,0.16);
     }
 }
+/* === GL NEW LAYOUT === */
+
+.main-header-v2,
+.header-bar,
+.tabs-shell {
+    display: none !important;
+}
+
+body {
+    background: #05030b;
+}
+
+.screen {
+    max-width: none;
+    padding-left: 190px;
+    padding-right: 24px;
+}
+
+.gl-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 180px;
+    height: 100vh;
+    z-index: 999;
+    padding: 24px 18px;
+    background: linear-gradient(180deg, rgba(8, 4, 22, 0.98), rgba(4, 2, 10, 0.98));
+    border-right: 1px solid rgba(174, 56, 255, 0.25);
+    box-shadow: 10px 0 40px rgba(0,0,0,0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.gl-logo img {
+    width: 120px;
+    display: block;
+    margin: 0 auto 32px;
+}
+
+.gl-nav-btn {
+    width: 100%;
+    min-height: 54px;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+    font-family: inherit;
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.gl-nav-btn:hover,
+.gl-nav-btn.active {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(217, 38, 255, 0.28), rgba(88, 35, 255, 0.08));
+    box-shadow: 0 0 22px rgba(217, 38, 255, 0.22);
+}
+
+.gl-pass-mini {
+    margin-top: auto;
+}
+
+.gl-pass-mini img {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 0 24px rgba(211, 44, 255, 0.35);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
