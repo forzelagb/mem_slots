@@ -19837,8 +19837,9 @@ body {
 
 .screen {
     max-width: none;
-    padding-left: 190px;
-    padding-right: 24px;
+    padding-left: 210px;
+    padding-right: 34px;
+    padding-top: 120px;
 }
 
 .gl-sidebar {
@@ -19896,6 +19897,132 @@ body {
     width: 100%;
     border-radius: 14px;
     box-shadow: 0 0 24px rgba(211, 44, 255, 0.35);
+}
+
+/* === GL TOPBAR === */
+
+.gl-topbar {
+    position: fixed;
+    top: 0;
+    left: 180px;
+    right: 0;
+    height: 92px;
+    z-index: 998;
+    padding: 18px 34px;
+    background:
+        linear-gradient(180deg, rgba(6, 3, 18, 0.96), rgba(6, 3, 18, 0.78)),
+        radial-gradient(circle at 35% 0%, rgba(120, 50, 255, 0.18), transparent 35%);
+    border-bottom: 1px solid rgba(174, 56, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(14px);
+}
+
+.gl-player {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.gl-player-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid rgba(214, 67, 255, 0.65);
+    box-shadow: 0 0 24px rgba(214, 67, 255, 0.28);
+    background: #120824;
+}
+
+.gl-player-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gl-player-name {
+    font-size: 18px;
+    color: #fff;
+}
+
+.gl-player-role {
+    margin-top: 2px;
+    color: rgba(255,255,255,0.65);
+    font-size: 12px;
+}
+
+.gl-player-xp-row {
+    margin-top: 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gl-player-xp-row span {
+    padding: 3px 8px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #b827ff, #6d20ff);
+    font-size: 12px;
+}
+
+.gl-player-xp-row small {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+}
+
+.gl-player-xp {
+    width: 120px;
+    height: 8px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.gl-player-xp div {
+    height: 100%;
+    background: linear-gradient(90deg, #ff37df, #8a4dff);
+}
+
+.gl-resources {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.gl-resource {
+    min-width: 126px;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 14px;
+    background: rgba(10, 4, 25, 0.82);
+    border: 1px solid rgba(151, 65, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: #fff;
+    box-shadow: inset 0 0 18px rgba(255,255,255,0.03);
+}
+
+.gl-resource span {
+    font-size: 17px;
+}
+
+.gl-resource b {
+    color: #f44cff;
+    font-size: 22px;
+}
+
+.gl-bell {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    border: 1px solid rgba(151, 65, 255, 0.35);
+    background: rgba(10, 4, 25, 0.82);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
