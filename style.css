@@ -20024,6 +20024,54 @@ body {
     font-size: 18px;
     cursor: pointer;
 }
+body {
+    background: #030208 !important;
+}
+
+body::before,
+body::after {
+    opacity: 0.08 !important;
+}
+.gl-sidebar {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.gl-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.gl-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 65, 255, 0.35);
+    border-radius: 999px;
+}
+body.gl-compact .gl-sidebar {
+    width: 74px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+body.gl-compact .gl-logo img,
+body.gl-compact .gl-pass-mini {
+    display: none;
+}
+
+body.gl-compact .gl-nav-btn {
+    justify-content: center;
+    padding: 0;
+}
+
+body.gl-compact .gl-nav-btn span {
+    display: none;
+}
+
+body.gl-compact .gl-topbar {
+    left: 74px;
+}
+
+body.gl-compact .screen {
+    padding-left: 104px !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
