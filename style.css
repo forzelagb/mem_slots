@@ -20436,6 +20436,64 @@ body.gl-compact .screen {
     object-fit: cover;
     display: block;
 }
+/* === GL HOME TOP FIX === */
+
+.gl-home-top {
+    max-width: 1480px !important;
+    margin: 0 auto 28px !important;
+    padding: 0 22px !important;
+    grid-template-columns: minmax(780px, 1fr) 420px !important;
+    gap: 22px !important;
+    align-items: stretch !important;
+}
+
+.gl-home-top .gl-home-hero-v2 {
+    height: 455px !important;
+    border-radius: 24px !important;
+}
+
+.gl-home-widgets {
+    height: 455px !important;
+    display: grid !important;
+    grid-template-rows: repeat(3, 1fr) !important;
+    gap: 18px !important;
+}
+
+.gl-widget-row {
+    display: contents !important;
+}
+
+.gl-widget-card {
+    height: auto !important;
+    min-height: 0 !important;
+    border-radius: 18px !important;
+}
+
+.gl-widget-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.gl-home-hero-bg {
+    object-fit: cover !important;
+    object-position: center center !important;
+    opacity: 1 !important;
+}
+
+.gl-home-hero-v2::after {
+    background:
+        linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.28) 38%, rgba(0,0,0,0.08) 75%),
+        linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.28)) !important;
+}
+
+.gl-home-hero-content {
+    width: 360px !important;
+    padding-left: 42px !important;
+}
+.screen {
+    padding-top: 105px !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
