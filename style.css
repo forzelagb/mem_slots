@@ -20509,6 +20509,35 @@ body.gl-compact .screen {
 .gl-home-widgets {
     gap: 20px !important;
 }
+
+.gl-home-hero-content {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+}
+
+.gl-hero-bottom-text {
+    position: absolute;
+    left: 42px;
+    bottom: 100px;
+    z-index: 3;
+}
+
+.gl-home-hero-content .gl-hero-actions {
+    position: absolute;
+    right: 38px;
+    bottom: 34px;
+    z-index: 3;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px;
+}
+
+.gl-home-hero-content .gl-hero-text {
+    margin: 8px 0 0 !important;
+    font-size: 20px !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
