@@ -21033,6 +21033,38 @@ body.gl-compact .screen {
     color:white;
     font-weight:700;
 }
+/* === HARD LEFT OFFSET FOR HOME BLOCKS === */
+
+.gl-home-section-intro,
+.featured-themes,
+.gl-live-panels {
+    margin-left: 92px !important;
+    margin-right: 52px !important;
+    width: auto !important;
+    max-width: none !important;
+}
+.secret-card {
+    flex: 1.25 !important;
+}
+
+.gl-live-panels {
+    grid-template-columns: 0.9fr 1fr 1.35fr !important;
+}
+
+.secret-preview {
+    width: 120px !important;
+}
+
+.secret-content h3 {
+    font-size: 22px !important;
+}
+
+.secret-content p {
+    font-size: 14px !important;
+}
+.theme-card {
+    cursor: pointer !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
