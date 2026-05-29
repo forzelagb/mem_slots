@@ -20756,6 +20756,61 @@ body.gl-compact .screen {
     display:block;
     border-radius:18px;
 }
+/* === FIX FEATURED THEMES POSITION === */
+
+.featured-themes {
+    max-width: 1340px !important;
+    margin: 58px auto 0 !important;
+    padding: 0 22px !important;
+}
+
+.featured-header {
+    margin-bottom: 24px !important;
+}
+
+.featured-header h2 {
+    font-size: 34px !important;
+    text-shadow: 0 0 18px rgba(255, 211, 106, 0.25);
+}
+
+.themes-track {
+    padding: 4px 0 18px !important;
+    scroll-padding-left: 0;
+}
+
+.theme-card {
+    flex: 0 0 320px !important;
+}
+
+.theme-card img {
+    height: 210px !important;
+    object-fit: cover !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.38);
+}
+.gl-home-section-intro {
+    max-width: 1340px;
+    margin: 42px auto 0;
+    padding: 0 22px;
+}
+
+.gl-home-section-tag {
+    color: #ff47df;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.gl-home-section-intro h2 {
+    color: #fff;
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+
+.gl-home-section-intro p {
+    color: rgba(255,255,255,0.62);
+    font-size: 15px;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
