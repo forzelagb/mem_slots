@@ -20862,6 +20862,71 @@ body.gl-compact .screen {
     top: -72px !important;
     z-index: 5 !important;
 }
+/* === FINAL HOME CAROUSEL FIX === */
+
+#lobby-screen {
+    align-items: stretch !important;
+}
+
+#home-intro,
+.gl-home-section-intro,
+.featured-themes {
+    width: 100% !important;
+    max-width: 1340px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.gl-home-section-intro {
+    margin-top: 54px !important;
+    padding: 0 !important;
+}
+
+.gl-home-section-intro h2,
+.gl-home-section-intro p,
+.gl-home-section-tag {
+    transform: none !important;
+    margin-left: 0 !important;
+}
+
+.featured-themes {
+    margin-top: 24px !important;
+    padding: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.themes-track {
+    width: 100% !important;
+    display: flex !important;
+    gap: 22px !important;
+    overflow-x: auto !important;
+    padding: 8px 0 24px !important;
+    scroll-behavior: smooth;
+}
+
+.theme-card {
+    flex: 0 0 310px !important;
+}
+
+.theme-card img {
+    width: 310px !important;
+    height: 190px !important;
+    object-fit: cover !important;
+    border-radius: 18px !important;
+}
+
+.featured-controls {
+    position: absolute !important;
+    right: 0 !important;
+    top: 8px !important;
+    display: flex !important;
+    gap: 12px !important;
+    z-index: 20 !important;
+}
+.gl-home-section-intro {
+    position: relative !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
