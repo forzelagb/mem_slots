@@ -639,6 +639,7 @@ function updateUI() {
 
         spinBtn.innerHTML = `PLAY`;
     }
+    renderHomeActiveQuest();
 }
 function startGame(themeName) {
     applyVIPTheme(themeName);
@@ -9973,6 +9974,42 @@ function highlightCollectionHits(rewards) {
 }
 function showFloatingReward(text) {
     showToastMessage(text);
+}
+const homeQuestChain = [
+    { title: "Сделай 10 запусков", type: "spins", need: 10 },
+    { title: "Потрать 20 энергии", type: "energySpent", need: 20 },
+    { title: "Получи Rare карту", type: "rareCards", need: 1 },
+    { title: "Открой 3 награды", type: "rewardsClaimed", need: 3 }
+];
+
+function getQuestProgressValue(type) {
+    return playerData.questsProgress?.[type] || 0;
+}
+
+function renderHomeActiveQuest() {
+    const titleEl = document.getElementById("gl-active-quest-title");
+    const progressEl = document.getElementById("gl-active-quest-progress");
+    const fillEl = document.getElementById("gl-active-quest-fill");
+
+    if (!titleEl || !progressEl || !fillEl) return;
+
+    const activeQuest = homeQuestChain.find(quest => {
+        return getQuestProgressValue(quest.type) < quest.need;
+    });
+
+    if (!activeQuest) {
+        titleEl.innerText = "Все квесты выполнены";
+        progressEl.innerText = "MAX";
+        fillEl.style.width = "100%";
+        return;
+    }
+
+    const current = getQuestProgressValue(activeQuest.type);
+    const percent = Math.min(100, (current / activeQuest.need) * 100);
+
+    titleEl.innerText = activeQuest.title;
+    progressEl.innerText = `${current} / ${activeQuest.need}`;
+    fillEl.style.width = percent + "%";
 }
 //  ЗАПУСК
 window.onload = () => {
