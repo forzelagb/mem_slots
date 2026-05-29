@@ -642,6 +642,13 @@ function updateUI() {
     renderHomeActiveQuest();
 }
 function startGame(themeName) {
+    document.getElementById("lobby-screen")?.classList.remove("active");
+document.getElementById("game-screen")?.classList.add("active");
+
+window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+});
     applyVIPTheme(themeName);
 
     currentTheme = themeName;
