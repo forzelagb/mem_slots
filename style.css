@@ -21221,6 +21221,29 @@ body.gl-compact .screen {
   font-size: 13px;
   opacity: 0.85;
 }
+.collect-portal {
+  width: 420px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid rgba(205, 70, 255, 0.9);
+  background: radial-gradient(circle, rgba(200, 60, 255, 0.22), transparent 65%);
+  box-shadow:
+    0 0 25px rgba(200, 60, 255, 0.9),
+    0 0 70px rgba(160, 30, 255, 0.55),
+    inset 0 0 25px rgba(220, 90, 255, 0.7);
+  animation: portalPulse 2s infinite ease-in-out;
+}
+
+@keyframes portalPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .8;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
