@@ -10011,6 +10011,21 @@ function renderHomeActiveQuest() {
     progressEl.innerText = `${current} / ${activeQuest.need}`;
     fillEl.style.width = percent + "%";
 }
+const track = document.getElementById("themesTrack");
+
+document.getElementById("themesNext")?.addEventListener("click", () => {
+    track.scrollBy({
+        left: 320,
+        behavior: "smooth"
+    });
+});
+
+document.getElementById("themesPrev")?.addEventListener("click", () => {
+    track.scrollBy({
+        left: -320,
+        behavior: "smooth"
+    });
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

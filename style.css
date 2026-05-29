@@ -20692,6 +20692,70 @@ body.gl-compact .screen {
     color: rgba(255,255,255,0.8);
     white-space: nowrap;
 }
+.featured-themes{
+    margin-top:40px;
+    padding:0 30px;
+}
+
+.featured-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.featured-header h2{
+    color:#fff;
+    font-size:32px;
+}
+
+.featured-controls{
+    display:flex;
+    gap:10px;
+}
+
+.featured-controls button{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+
+    background:#111;
+    color:#fff;
+    font-size:20px;
+
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.themes-track{
+    display:flex;
+    gap:20px;
+
+    overflow-x:auto;
+    scroll-behavior:smooth;
+
+    scrollbar-width:none;
+}
+
+.themes-track::-webkit-scrollbar{
+    display:none;
+}
+
+.theme-card{
+    flex:0 0 280px;
+    transition:.25s;
+}
+
+.theme-card:hover{
+    transform:translateY(-5px);
+}
+
+.theme-card img{
+    width:100%;
+    display:block;
+    border-radius:18px;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
