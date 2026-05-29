@@ -21065,6 +21065,30 @@ body.gl-compact .screen {
 .theme-card {
     cursor: pointer !important;
 }
+/* === ABSOLUTE FINAL HOME LOWER FIX === */
+
+.gl-home-section-intro,
+.featured-themes,
+.gl-live-panels {
+    position: relative !important;
+    left: 180px !important;
+    width: calc(100% - 220px) !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.featured-themes {
+    overflow: hidden !important;
+}
+
+.themes-track {
+    padding-left: 0 !important;
+}
+
+.theme-card:first-child {
+    margin-left: 0 !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
