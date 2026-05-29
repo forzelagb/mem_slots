@@ -177,12 +177,42 @@
 </div>
 <div class="gl-home-widgets">
 
-    <div class="gl-widget-card">
-        <img src="./image/ui/gl/energy-panel.png" alt="">
+<div class="gl-widget-card gl-energy-widget">
+    <img src="./image/ui/gl/energy-panel.png" alt="">
+
+    <div class="gl-energy-ui">
+        <div class="gl-widget-label">ЭНЕРГИЯ</div>
+
+        <div class="gl-energy-count">
+            <span id="gl-energy-current">100</span><small>/100</small>
+        </div>
+
+        <div class="gl-energy-bar">
+            <div id="gl-energy-fill" style="width: 100%;"></div>
+        </div>
+
+        <div class="gl-energy-timer">+1 энергия каждые 5 минут</div>
     </div>
-    <div class="gl-widget-card">
-         <img src="./image/ui/gl/quest-panel.png" alt="">
+</div>
+<div class="gl-widget-card gl-quest-widget">
+    <img src="./image/ui/gl/quest-panel.png" alt="">
+
+    <div class="gl-quest-ui">
+        <div class="gl-widget-label">АКТИВНЫЙ КВЕСТ</div>
+
+        <div id="gl-active-quest-title" class="gl-quest-title">
+            Сделай 10 запусков
+        </div>
+
+        <div class="gl-quest-row">
+            <span id="gl-active-quest-progress">4 / 10</span>
+        </div>
+
+        <div class="gl-quest-bar">
+            <div id="gl-active-quest-fill" style="width: 40%;"></div>
+        </div>
     </div>
+</div>
 
     <div class="gl-widget-card">
         <img src="./image/ui/gl/event-panel.png" alt="">

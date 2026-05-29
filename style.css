@@ -20538,6 +20538,80 @@ body.gl-compact .screen {
     margin: 8px 0 0 !important;
     font-size: 20px !important;
 }
+.gl-hero-bottom-text {
+    bottom: 78px !important;
+}
+.gl-energy-widget,
+.gl-quest-widget {
+    position: relative;
+}
+
+.gl-energy-ui,
+.gl-quest-ui {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.gl-widget-label {
+    color: #fff;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.gl-energy-count {
+    color: #ff47ff;
+    font-size: 34px;
+    line-height: 1;
+}
+
+.gl-energy-count small {
+    color: rgba(255,255,255,0.75);
+    font-size: 20px;
+    margin-left: 4px;
+}
+
+.gl-energy-bar,
+.gl-quest-bar {
+    width: 58%;
+    height: 9px;
+    margin-top: 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.14);
+    overflow: hidden;
+}
+
+.gl-energy-bar div {
+    height: 100%;
+    background: linear-gradient(90deg, #ff37df, #8a4dff);
+}
+
+.gl-energy-timer {
+    margin-top: 9px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.68);
+}
+
+.gl-quest-title {
+    color: #39d8ff;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.gl-quest-row {
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+}
+
+.gl-quest-bar div {
+    height: 100%;
+    background: linear-gradient(90deg, #26b8ff, #9b4dff);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
