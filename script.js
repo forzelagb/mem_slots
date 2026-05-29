@@ -641,37 +641,8 @@ function updateUI() {
     }
     renderHomeActiveQuest();
 }
-function startGame(themeName) {
-    document.getElementById("lobby-screen")?.classList.remove("active");
-document.getElementById("game-screen")?.classList.add("active");
-
-window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-});
-    applyVIPTheme(themeName);
-
-    currentTheme = themeName;
-    gameScreen.classList.add('game-screen-themed');
-
-    if (slotTitle) {
-        slotTitle.innerText = titles[themeName];
-    }
-
-    const scene = document.querySelector('.slot-scene');
-    if (scene) {
-        scene.className = 'slot-scene theme-' + themeName;
-    }
-
-    lobbyScreen.classList.remove('active');
-    gameScreen.classList.add('active');
-
-    createGrid();
-    updateUI();
-
-    if (resultText) {
-        resultText.innerText = "Запусти игру!";
-    }
+function startGame(theme) {
+  window.location.href = `collect.html?theme=${theme}`;
 }
 
 function goBack() {
@@ -10032,6 +10003,35 @@ document.getElementById("themesPrev")?.addEventListener("click", () => {
         left: -320,
         behavior: "smooth"
     });
+});
+function goHome() {
+  window.location.href = "index.html";
+}
+
+function getCollectTheme() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("theme") || "sasavot";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const title = document.getElementById("collectThemeTitle");
+
+  if (title) {
+    const theme = getCollectTheme();
+
+    const names = {
+      sasavot: "SASAVOT PACK",
+      helin: "HELIN PACK",
+      lexapaws: "LEXA PAWS PACK",
+      litwin: "LITWIN PACK",
+      melstroy: "MELSTROY PACK",
+      nikkifn: "NIKKIFN PACK",
+      rejiboi: "REJIBOY PACK",
+      rostik: "ROSTIKFACEKID PACK"
+    };
+
+    title.textContent = names[theme] || "MEME COLLECTION CLUB";
+  }
 });
 //  ЗАПУСК
 window.onload = () => {

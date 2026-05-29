@@ -21113,6 +21113,114 @@ body.gl-compact .screen {
     position:relative;
     z-index:2;
 }
+.collect-page {
+  margin: 0;
+  min-height: 100vh;
+  background: #050008;
+  overflow: hidden;
+}
+
+.collect-room {
+  min-height: 100vh;
+  position: relative;
+  background-image: url("image/ui/collect/background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.collect-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(190, 50, 255, 0.18), transparent 42%),
+    rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+}
+
+.collect-top {
+  position: relative;
+  z-index: 2;
+  padding: 28px 42px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.collect-back {
+  border: 1px solid rgba(180, 80, 255, 0.6);
+  background: rgba(20, 0, 35, 0.75);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.collect-title h1 {
+  margin: 0;
+  color: white;
+  font-size: 34px;
+  text-shadow: 0 0 18px rgba(180, 60, 255, 0.9);
+}
+
+.collect-title p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.collect-center {
+  position: relative;
+  z-index: 2;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.collect-portal {
+  width: 360px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 57, 255, 0.65), rgba(92, 0, 155, 0.15) 45%, transparent 70%);
+  filter: blur(1px);
+  box-shadow:
+    0 0 35px rgba(190, 60, 255, 0.8),
+    0 0 90px rgba(190, 60, 255, 0.45);
+  animation: portalPulse 2s infinite ease-in-out;
+}
+
+@keyframes portalPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+.collect-roll-btn {
+  margin-top: 30px;
+  border: 1px solid rgba(255, 210, 80, 0.8);
+  background: linear-gradient(135deg, #421b00, #ffb300);
+  color: white;
+  padding: 18px 42px;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(255, 170, 0, 0.5);
+}
+
+.collect-roll-btn span {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  opacity: 0.85;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
