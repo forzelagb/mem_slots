@@ -21684,6 +21684,27 @@ body.gl-compact .screen {
 .collect-roll-button:hover img{
     filter:brightness(1.12);
 }
+.collect-controls{
+    position:absolute;
+    left:50%;
+    top:78%;
+    transform:translateX(-50%);
+    z-index:999;
+}
+
+.collect-roll-button{
+    display:block;
+    background:transparent;
+    border:none;
+    padding:0;
+    cursor:pointer;
+}
+
+.collect-roll-button img{
+    display:block;
+    width:340px;
+    height:auto;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

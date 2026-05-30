@@ -10032,7 +10032,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     title.textContent = names[theme] || "MEME COLLECTION CLUB";
   }
-});
+}); 
 const collectPacks = {
   1: "image/ui/collect/pack-common.png",
   2: "image/ui/collect/pack-common.png",
