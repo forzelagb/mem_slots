@@ -10095,6 +10095,8 @@ setTimeout(() => {
 
     pack.src = collectPacks[result];
 pack.style.display = "block";
+pack.style.opacity = "1";
+pack.style.zIndex = "80";
 pack.style.pointerEvents = "auto";
     setTimeout(() => {
         pack.classList.add("show");

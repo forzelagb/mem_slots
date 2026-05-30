@@ -21766,6 +21766,23 @@ body.gl-compact .screen {
     opacity: 1;
     pointer-events: auto;
 }
+.collect-pack {
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: 190px !important;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+    z-index: 80 !important;
+    pointer-events: none;
+}
+
+.collect-pack.show {
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    pointer-events: auto !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
