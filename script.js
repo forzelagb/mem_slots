@@ -10070,26 +10070,33 @@ if (resultBox) resultBox.classList.remove("show");
     dice.src = `image/ui/collect/dice-${randomSide}.png`;
   }, 90);
 
-  setTimeout(() => {
+setTimeout(() => {
     clearInterval(spinInterval);
 
     const result = Math.floor(Math.random() * 6) + 1;
     currentCollectResult = result;
-isPackOpened = false;
+    isPackOpened = false;
 
-const cardsBox = document.getElementById("rewardCards");
-const takeBtn = document.getElementById("collectTakeBtn");
+    const cardsBox = document.getElementById("rewardCards");
+    const takeBtn = document.getElementById("collectTakeBtn");
+    const rollBtn = document.querySelector(".collect-roll-button");
 
-if (cardsBox) cardsBox.innerHTML = "";
-if (takeBtn) takeBtn.classList.remove("show");
+    if (cardsBox) cardsBox.innerHTML = "";
+    if (takeBtn) takeBtn.classList.remove("show");
+
     dice.src = `image/ui/collect/dice-${result}.png`;
+
+    dice.style.display = "none";
+
+    if (rollBtn) rollBtn.style.display = "none";
 
     pack.src = collectPacks[result];
 
     setTimeout(() => {
-      pack.classList.add("show");
+        pack.classList.add("show");
     }, 150);
-  }, 900);
+
+}, 900);
 }
 function openCollectPack() {
   const pack = document.getElementById("collectPack");
@@ -10115,6 +10122,38 @@ function openCollectPack() {
       takeBtn.classList.add("show");
     }, 900);
   }, 450);
+}
+function openCollectPack() {
+    const pack = document.getElementById("collectPack");
+    const rewardCards = document.getElementById("rewardCards");
+    const takeBtn = document.getElementById("collectTakeBtn");
+
+    if (!pack || !rewardCards || !takeBtn) return;
+
+    pack.onclick = null;
+    pack.classList.add("pack-opening");
+
+    setTimeout(() => {
+        pack.src = "image/ui/collect/pack-open.png";
+
+        rewardCards.innerHTML = "";
+
+        const cards = [
+            "image/sasich/1.jpg",
+            "image/sasich/2.jpg",
+            "image/sasich/3.jpg"
+        ];
+
+        cards.forEach((src, index) => {
+            const card = document.createElement("img");
+            card.src = src;
+            card.className = "reward-card";
+            card.style.animationDelay = `${index * 0.18}s`;
+            rewardCards.appendChild(card);
+        });
+
+        takeBtn.classList.add("show");
+    }, 500);
 }
 //  ЗАПУСК
 window.onload = () => {

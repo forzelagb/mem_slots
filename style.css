@@ -21705,6 +21705,67 @@ body.gl-compact .screen {
     width:340px;
     height:auto;
 }
+.collect-pack {
+    display: none;
+    cursor: pointer;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.pack-appear {
+    animation: packAppear 0.45s ease forwards;
+}
+
+@keyframes packAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.7) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.pack-opening {
+    animation: packOpenShake 0.5s ease;
+}
+
+@keyframes packOpenShake {
+    0% { transform: scale(1) rotate(0); }
+    25% { transform: scale(1.08) rotate(-4deg); }
+    50% { transform: scale(1.1) rotate(4deg); }
+    75% { transform: scale(1.05) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0); }
+}
+
+.reward-card {
+    position: absolute;
+    width: 110px;
+    border-radius: 14px;
+    opacity: 0;
+    animation: cardFlyUp 0.7s ease forwards;
+}
+
+@keyframes cardFlyUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-180px) scale(1);
+    }
+}
+
+.collect-take-btn {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.collect-take-btn.show {
+    opacity: 1;
+    pointer-events: auto;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
