@@ -21516,6 +21516,29 @@ body.gl-compact .screen {
 .collect-result{
     top:76%;
 }
+.collect-dice-img{
+    filter:
+        drop-shadow(0 0 15px #ff66ff)
+        drop-shadow(0 0 30px #ff66ff);
+}
+.collect-portal::before{
+    content:"";
+    position:absolute;
+    inset:-15px;
+    border-radius:50%;
+    border:2px solid rgba(255,100,255,.3);
+    filter:blur(8px);
+}
+.collect-portal{
+    width:460px;
+    height:90px;
+}
+.collect-controls{
+    margin-top:140px;
+}
+.collect-dice-img{
+    width:120px;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
