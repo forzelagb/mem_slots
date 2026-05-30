@@ -519,6 +519,8 @@ if (homeIntro) {
 }
 
 function createGrid() {
+    if (!gridEl) return;
+
     gridEl.innerHTML = '';
 
     for (let i = 0; i < 15; i++) {
@@ -3636,6 +3638,8 @@ async function savePlayerData() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+    if (!window.fbFns || !window.firebaseAuth) return;
+
     const { onAuthStateChanged } = window.fbFns;
     const auth = window.firebaseAuth;
 
@@ -3643,12 +3647,6 @@ window.addEventListener("DOMContentLoaded", () => {
         if (user) {
             await loadPlayerData(user);
             await loadThemeLeaderboard('brain');
-        } else {
-            leaderboard = [];
-            updateLeaderboardUI();
-            if (typeof updateGuestUI === "function") {
-    updateGuestUI();
-}
         }
     });
 });
@@ -10054,12 +10052,12 @@ let currentCollectResult = null;
 let isPackOpened = false;
 function rollCollectDice() {
   const dice = document.getElementById("collectDice");
-  const resultBox = document.getElementById("collectResult");
   const pack = document.getElementById("collectPack");
+const resultBox = document.getElementById("collectResult");
 
-  if (!dice || !resultBox || !pack) return;
+if (!dice || !pack) return;
 
-  resultBox.classList.remove("show");
+if (resultBox) resultBox.classList.remove("show");
   pack.classList.remove("show");
   pack.src = "";
 
