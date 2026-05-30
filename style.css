@@ -21539,19 +21539,6 @@ body.gl-compact .screen {
 .collect-dice-img{
     width:120px;
 }
-.collect-pack{
-    position:absolute;
-    left:50%;
-    top:63%;
-    transform:translate(-50%, 40px) scale(0.3);
-    z-index:12;
-
-    width:160px;
-    opacity:0;
-    pointer-events:none;
-
-    filter:drop-shadow(0 0 28px rgba(255,255,255,.75));
-}
 
 .collect-pack.show{
     animation: packAppear 0.9s ease forwards;
@@ -21602,7 +21589,82 @@ body.gl-compact .screen {
     transform:
         translate(-50%, -50%)
         scale(1);
-}ы
+}
+.reward-cards {
+  position: absolute;
+  left: 50%;
+  top: 28%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.reward-card {
+  width: 120px;
+  opacity: 0;
+  transform: translateY(160px) scale(0.5) rotate(-8deg);
+  filter: drop-shadow(0 0 22px rgba(190, 60, 255, 0.9));
+  animation: cardFlyUp 0.7s ease forwards;
+}
+
+.reward-card:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.reward-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.reward-card:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+@keyframes cardFlyUp {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+.collect-pack {
+  cursor: pointer;
+}
+
+.collect-pack.opening {
+  animation: packShake 0.45s ease;
+}
+
+@keyframes packShake {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  25% { transform: translate(-52%, -50%) scale(1.08) rotate(-4deg); }
+  50% { transform: translate(-48%, -50%) scale(1.12) rotate(4deg); }
+  75% { transform: translate(-51%, -50%) scale(1.08) rotate(-2deg); }
+}
+
+.collect-take-btn {
+  position: absolute;
+  left: 50%;
+  top: 88%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: none;
+
+  padding: 14px 42px;
+  border: 1px solid rgba(200, 80, 255, 0.8);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #35104f, #9d2bff);
+  color: white;
+  font-family: inherit;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(180, 60, 255, 0.6);
+}
+
+.collect-take-btn.show {
+  display: block;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

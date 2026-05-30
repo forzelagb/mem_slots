@@ -10033,51 +10033,6 @@ document.addEventListener("DOMContentLoaded", () => {
     title.textContent = names[theme] || "MEME COLLECTION CLUB";
   }
 });
-function rollCollectDice() {
-  const dice = document.getElementById("collectDice");
-  if (!dice) return;
-
-  dice.classList.remove("rolling");
-  void dice.offsetWidth;
-  dice.classList.add("rolling");
-
-  setTimeout(() => {
-    const result = Math.floor(Math.random() * 6) + 1;
-    console.log("Выпало:", result);
-  }, 900);
-}
-function rollCollectDice() {
-  const dice = document.getElementById("collectDice");
-  const resultBox = document.getElementById("collectResult");
-
-  if (!dice || !resultBox) return;
-
-  dice.classList.remove("rolling");
-  resultBox.classList.remove("show");
-  resultBox.textContent = "";
-
-  void dice.offsetWidth;
-
-  dice.classList.add("rolling");
-
-  setTimeout(() => {
-    const result = Math.floor(Math.random() * 6) + 1;
-
-    resultBox.textContent = `Выпало: ${result}`;
-    resultBox.classList.add("show");
-    const pack = document.getElementById("collectPack");
-
-if (pack) {
-  pack.classList.remove("show");
-  void pack.offsetWidth;
-
-  setTimeout(() => {
-    pack.classList.add("show");
-  }, 250);
-}
-    console.log("Выпало число:", result);
-  }, 900);
-}
 const collectPacks = {
   1: "image/ui/collect/pack-common.png",
   2: "image/ui/collect/pack-common.png",
@@ -10086,7 +10041,17 @@ const collectPacks = {
   5: "image/ui/collect/pack-epic.png",
   6: "image/ui/collect/pack-legendary.png"
 };
+const collectPacksOpen = {
+  1: "image/ui/collect/pack-common-open.png",
+  2: "image/ui/collect/pack-common-open.png",
+  3: "image/ui/collect/pack-rare-open.png",
+  4: "image/ui/collect/pack-rare-open.png",
+  5: "image/ui/collect/pack-epic-open.png",
+  6: "image/ui/collect/pack-legendary-open.png"
+};
 
+let currentCollectResult = null;
+let isPackOpened = false;
 function rollCollectDice() {
   const dice = document.getElementById("collectDice");
   const resultBox = document.getElementById("collectResult");
@@ -10095,8 +10060,6 @@ function rollCollectDice() {
   if (!dice || !resultBox || !pack) return;
 
   resultBox.classList.remove("show");
-  resultBox.textContent = "";
-
   pack.classList.remove("show");
   pack.src = "";
 
@@ -10113,11 +10076,15 @@ function rollCollectDice() {
     clearInterval(spinInterval);
 
     const result = Math.floor(Math.random() * 6) + 1;
+    currentCollectResult = result;
+isPackOpened = false;
 
+const cardsBox = document.getElementById("rewardCards");
+const takeBtn = document.getElementById("collectTakeBtn");
+
+if (cardsBox) cardsBox.innerHTML = "";
+if (takeBtn) takeBtn.classList.remove("show");
     dice.src = `image/ui/collect/dice-${result}.png`;
-
-    resultBox.textContent = `Выпало: ${result}`;
-    resultBox.classList.add("show");
 
     pack.src = collectPacks[result];
 
@@ -10125,6 +10092,31 @@ function rollCollectDice() {
       pack.classList.add("show");
     }, 150);
   }, 900);
+}
+function openCollectPack() {
+  const pack = document.getElementById("collectPack");
+  const cardsBox = document.getElementById("rewardCards");
+  const takeBtn = document.getElementById("collectTakeBtn");
+
+  if (!pack || !cardsBox || !currentCollectResult || isPackOpened) return;
+
+  isPackOpened = true;
+
+  pack.classList.add("opening");
+
+  setTimeout(() => {
+    pack.src = collectPacksOpen[currentCollectResult];
+
+    cardsBox.innerHTML = `
+      <img class="reward-card" src="image/ui/collect/card-back.png">
+      <img class="reward-card" src="image/ui/collect/card-back.png">
+      <img class="reward-card" src="image/ui/collect/card-back.png">
+    `;
+
+    setTimeout(() => {
+      takeBtn.classList.add("show");
+    }, 900);
+  }, 450);
 }
 //  ЗАПУСК
 window.onload = () => {

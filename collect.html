@@ -10,22 +10,23 @@
 <section class="collect-room">
   <div class="collect-overlay"></div>
 <div class="collect-center">
-  <div class="collect-portal"></div>
+<div class="collect-portal"></div>
 
-  <img id="collectDice" class="collect-dice-img" src="image/ui/collect/dice-1.png" alt="Кубик">
-  <img
-    id="collectPack"
-    class="collect-pack"
-    src=""
-    alt=""
->
+<img id="collectPack" class="collect-pack" src="" alt="Пак" onclick="openCollectPack()">
 
-  <div class="collect-result" id="collectResult"></div>
+<img id="collectDice" class="collect-dice-img" src="image/ui/collect/dice-1.png" alt="Кубик">
+
+<div class="reward-cards" id="rewardCards"></div>
+
 <div class="collect-controls">
-    <button class="collect-roll-button" onclick="rollCollectDice()">
-        <img src="image/ui/collect/btn-roll (1).png" alt="">
-    </button>
+  <button class="collect-roll-button" onclick="rollCollectDice()">
+    <img src="image/ui/collect/btn-roll.png" alt="">
+  </button>
 </div>
+
+<button class="collect-take-btn" id="collectTakeBtn">
+  Собрать
+</button>
 </div>
 </section>
 
