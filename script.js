@@ -10033,6 +10033,74 @@ document.addEventListener("DOMContentLoaded", () => {
     title.textContent = names[theme] || "MEME COLLECTION CLUB";
   }
 });
+function rollCollectDice() {
+  const dice = document.getElementById("collectDice");
+  if (!dice) return;
+
+  dice.classList.remove("rolling");
+  void dice.offsetWidth;
+  dice.classList.add("rolling");
+
+  setTimeout(() => {
+    const result = Math.floor(Math.random() * 6) + 1;
+    console.log("Выпало:", result);
+  }, 900);
+}
+function rollCollectDice() {
+  const dice = document.getElementById("collectDice");
+  const resultBox = document.getElementById("collectResult");
+
+  if (!dice || !resultBox) return;
+
+  dice.classList.remove("rolling");
+  resultBox.classList.remove("show");
+  resultBox.textContent = "";
+
+  void dice.offsetWidth;
+
+  dice.classList.add("rolling");
+
+  setTimeout(() => {
+    const result = Math.floor(Math.random() * 6) + 1;
+
+    resultBox.textContent = `Выпало: ${result}`;
+    resultBox.classList.add("show");
+
+    console.log("Выпало число:", result);
+  }, 900);
+}
+function rollCollectDice() {
+  const dice = document.getElementById("collectDice");
+  const resultBox = document.getElementById("collectResult");
+
+  if (!dice || !resultBox) return;
+
+  resultBox.classList.remove("show");
+  resultBox.textContent = "";
+
+  dice.classList.remove("rolling");
+  void dice.offsetWidth;
+  dice.classList.add("rolling");
+
+  let frames = 0;
+  const spinInterval = setInterval(() => {
+    const randomSide = Math.floor(Math.random() * 6) + 1;
+    dice.src = `image/ui/collect/dice-${randomSide}.png`;
+    frames++;
+  }, 90);
+
+  setTimeout(() => {
+    clearInterval(spinInterval);
+
+    const result = Math.floor(Math.random() * 6) + 1;
+    dice.src = `image/ui/collect/dice-${result}.png`;
+
+    resultBox.textContent = `Выпало: ${result}`;
+    resultBox.classList.add("show");
+
+    console.log("Выпало число:", result);
+  }, 900);
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
