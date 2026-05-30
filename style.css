@@ -21202,25 +21202,7 @@ body.gl-compact .screen {
   }
 }
 
-.collect-roll-btn {
-  margin-top: 30px;
-  border: 1px solid rgba(255, 210, 80, 0.8);
-  background: linear-gradient(135deg, #421b00, #ffb300);
-  color: white;
-  padding: 18px 42px;
-  border-radius: 18px;
-  font-size: 22px;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 0 28px rgba(255, 170, 0, 0.5);
-}
 
-.collect-roll-btn span {
-  display: block;
-  margin-top: 5px;
-  font-size: 13px;
-  opacity: 0.85;
-}
 .collect-portal {
   width: 420px;
   height: 120px;
@@ -21277,13 +21259,7 @@ body.gl-compact .screen {
     filter: brightness(1.35);
   }
 }
-.collect-roll-btn {
-  position: absolute;
-  left: 50%;
-  top: 45%;
-  transform: translateX(-50%) scale(1.05);
-  z-index: 5;
-}
+
 .collect-dice {
   position: absolute;
   left: 50%;
@@ -21342,10 +21318,7 @@ body.gl-compact .screen {
     transform: translateX(-50%) rotate(720deg) scale(1);
   }
 }
-.collect-roll-btn:hover {
-  filter: brightness(1.12);
-  box-shadow: 0 0 35px rgba(255, 180, 0, 0.75);
-}
+
 .collect-result {
   position: absolute;
   left: 50%;
@@ -21396,31 +21369,9 @@ body.gl-compact .screen {
   opacity: 1;
   animation: resultPop 0.5s ease;
 }
-.collect-roll-btn:hover {
-  filter: brightness(1.12);
-  box-shadow: 0 0 35px rgba(255, 180, 0, 0.75);
-}
-.collect-roll-btn {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translateX(-50%);
-  z-index: 8;
 
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-}
 
-.collect-roll-btn:hover {
-  filter: brightness(1.15);
-}
 
-.collect-roll-btn img {
-  width: 320px;
-  display: block;
-}
 .collect-dice,
 .dice-face {
   display: none;
@@ -21462,26 +21413,108 @@ body.gl-compact .screen {
   100% { transform: translateX(-50%) translateY(0) rotate(0deg) scale(1); }
 }
 
-.collect-roll-btn {
+
+.collect-dice-img{
+    width:140px;
+    left:50%;
+    top:46%;
+    transform:translate(-50%,-50%);
+    z-index:10;
+}
+
+.collect-portal{
+    width:340px;
+    height:70px;
+    left:50%;
+    top:60%;
+    transform:translate(-50%,-50%);
+}
+
+
+.collect-dice-img {
   position: absolute;
   left: 50%;
-  top: 51%;
+  top: 54%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+
+  width: 140px;
+  height: auto;
+
+  filter: drop-shadow(0 0 25px rgba(190, 60, 255, 0.95));
+  animation: diceFloatImg 2.4s ease-in-out infinite;
+}
+
+.collect-portal {
+  width: 420px;
+  height: 90px;
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translate(-50%, -50%) perspective(500px) rotateX(68deg);
+
+  border-radius: 50%;
+  border: 3px solid rgba(210, 70, 255, 0.9);
+  background: radial-gradient(circle, rgba(210, 70, 255, 0.18), transparent 65%);
+
+  box-shadow:
+    0 0 20px rgba(210, 70, 255, 0.95),
+    0 0 65px rgba(180, 40, 255, 0.6),
+    inset 0 0 28px rgba(220, 100, 255, 0.75);
+
+  animation: collectPortalPulse 2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+
+
+.collect-result {
+  position: absolute;
+  left: 50%;
+  top: 69%;
   transform: translateX(-50%);
-  z-index: 9;
+  z-index: 11;
 
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 18px rgba(200, 60, 255, 1);
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+}
+.collect-controls{
+    position:absolute;
+    left:50%;
+    top:82%;
+    transform:translateX(-50%);
+    z-index:20;
 }
 
-.collect-roll-btn:hover {
-  filter: brightness(1.12);
+.collect-roll-button{
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
 }
 
-.collect-roll-btn img {
-  width: 320px;
-  display: block;
+.collect-roll-button img{
+    width:340px;
+    display:block;
+    transition:0.2s;
+}
+
+.collect-roll-button:hover img{
+    transform:scale(1.04);
+}
+.collect-dice-img{
+    top:60%;
+}
+.collect-portal{
+    top:69%;
+}
+.collect-result{
+    top:76%;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
