@@ -21783,6 +21783,105 @@ body.gl-compact .screen {
     transform: translate(-50%, -50%) scale(1) !important;
     pointer-events: auto !important;
 }
+.collect-pack {
+  position: absolute !important;
+  left: 50% !important;
+  top: 43% !important;
+  width: 260px !important;
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  z-index: 80 !important;
+  cursor: pointer;
+  transition: 0.35s ease;
+}
+
+.collect-pack.show {
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+}
+
+.collect-pack.opening {
+  animation: packShake 0.45s ease;
+}
+
+@keyframes packShake {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+  25% { transform: translate(-50%, -50%) scale(1.1) rotate(-4deg); }
+  50% { transform: translate(-50%, -50%) scale(1.12) rotate(4deg); }
+  100% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+}
+
+.reward-cards {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  width: 650px;
+  height: 260px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 120;
+}
+
+.collect-reward-card {
+  position: absolute;
+  width: 150px;
+  height: 220px;
+  opacity: 0;
+  perspective: 1000px;
+  pointer-events: auto;
+  animation: cardFly 0.65s ease forwards;
+}
+
+.collect-reward-card.pos-0 {
+  left: 40px;
+  animation-delay: 0.1s;
+}
+
+.collect-reward-card.pos-1 {
+  left: 250px;
+  animation-delay: 0.25s;
+}
+
+.collect-reward-card.pos-2 {
+  left: 460px;
+  animation-delay: 0.4s;
+}
+
+@keyframes cardFly {
+  from {
+    opacity: 0;
+    transform: translateY(170px) scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s ease;
+  transform-style: preserve-3d;
+}
+
+.collect-reward-card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  box-shadow: 0 0 25px rgba(170, 60, 255, 0.75);
+}
+
+.card-front-face {
+  transform: rotateY(180deg);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

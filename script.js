@@ -10039,6 +10039,7 @@ const collectPacks = {
   5: "image/ui/collect/pack-epic.png",
   6: "image/ui/collect/pack-legendary.png"
 };
+
 const collectPacksOpen = {
   1: "image/ui/collect/pack-common-open.png",
   2: "image/ui/collect/pack-common-open.png",
@@ -10050,19 +10051,34 @@ const collectPacksOpen = {
 
 let currentCollectResult = null;
 let isPackOpened = false;
+
+function getCollectThemeFolder() {
+  const params = new URLSearchParams(window.location.search);
+  const theme = params.get("theme") || "sasavot";
+
+  if (theme === "sasich") return "sasavot";
+
+  return theme;
+}
+
 function rollCollectDice() {
   const dice = document.getElementById("collectDice");
   const pack = document.getElementById("collectPack");
-  const resultBox = document.getElementById("collectResult");
+  const cardsBox = document.getElementById("rewardCards");
+  const takeBtn = document.getElementById("collectTakeBtn");
+  const rollBtn = document.querySelector(".collect-roll-button");
 
-if (!dice || !pack) return;
+  if (!dice || !pack) return;
 
-if (resultBox) resultBox.classList.remove("show");
-  pack.classList.remove("show");
+  if (cardsBox) cardsBox.innerHTML = "";
+  if (takeBtn) takeBtn.classList.remove("show");
+
+  pack.className = "collect-pack";
   pack.src = "";
   pack.style.display = "none";
-pack.style.pointerEvents = "none";
-dice.style.display = "block";
+
+  dice.style.display = "block";
+  if (rollBtn) rollBtn.style.display = "none";
 
   dice.classList.remove("rolling");
   void dice.offsetWidth;
@@ -10073,94 +10089,66 @@ dice.style.display = "block";
     dice.src = `image/ui/collect/dice-${randomSide}.png`;
   }, 90);
 
-setTimeout(() => {
+  setTimeout(() => {
     clearInterval(spinInterval);
 
     const result = Math.floor(Math.random() * 6) + 1;
     currentCollectResult = result;
     isPackOpened = false;
 
-    const cardsBox = document.getElementById("rewardCards");
-    const takeBtn = document.getElementById("collectTakeBtn");
-    const rollBtn = document.querySelector(".collect-roll-button");
-
-    if (cardsBox) cardsBox.innerHTML = "";
-    if (takeBtn) takeBtn.classList.remove("show");
-
     dice.src = `image/ui/collect/dice-${result}.png`;
-
     dice.style.display = "none";
 
-    if (rollBtn) rollBtn.style.display = "none";
-
     pack.src = collectPacks[result];
-pack.style.display = "block";
-pack.style.opacity = "1";
-pack.style.zIndex = "80";
-pack.style.pointerEvents = "auto";
-    setTimeout(() => {
-        pack.classList.add("show");
-    }, 150);
+    pack.style.display = "block";
 
-}, 900);
+    setTimeout(() => {
+      pack.classList.add("show");
+    }, 100);
+
+  }, 900);
 }
+
 function openCollectPack() {
   const pack = document.getElementById("collectPack");
   const cardsBox = document.getElementById("rewardCards");
   const takeBtn = document.getElementById("collectTakeBtn");
 
-  if (!pack || !cardsBox || !currentCollectResult || isPackOpened) return;
+  if (!pack || !cardsBox || !takeBtn || !currentCollectResult || isPackOpened) return;
 
   isPackOpened = true;
-
   pack.classList.add("opening");
 
   setTimeout(() => {
     pack.src = collectPacksOpen[currentCollectResult];
 
-    cardsBox.innerHTML = `
-      <img class="reward-card" src="image/ui/collect/card-back.png">
-      <img class="reward-card" src="image/ui/collect/card-back.png">
-      <img class="reward-card" src="image/ui/collect/card-back.png">
-    `;
+    const theme = getCollectThemeFolder();
+
+    const cards = [
+      `${theme}/common.png`,
+      `${theme}/rare.png`,
+      `${theme}/epic.png`
+    ];
+
+    cardsBox.innerHTML = cards.map((card, index) => `
+      <div class="collect-reward-card pos-${index}" onclick="this.classList.add('flipped')">
+        <div class="card-inner">
+          <img class="card-face card-back-face" src="image/ui/collect/card-back.png">
+          <img class="card-face card-front-face" src="image/ui/collect/${card}">
+        </div>
+      </div>
+    `).join("");
+
+    cardsBox.classList.add("show");
 
     setTimeout(() => {
       takeBtn.classList.add("show");
-    }, 900);
+    }, 700);
+
   }, 450);
 }
-function openCollectPack() {
-    const pack = document.getElementById("collectPack");
-    const rewardCards = document.getElementById("rewardCards");
-    const takeBtn = document.getElementById("collectTakeBtn");
 
-    if (!pack || !rewardCards || !takeBtn) return;
 
-    pack.onclick = null;
-    pack.classList.add("pack-opening");
-
-    setTimeout(() => {
-        pack.src = "image/ui/collect/pack-open.png";
-
-        rewardCards.innerHTML = "";
-
-        const cards = [
-            "image/sasich/1.jpg",
-            "image/sasich/2.jpg",
-            "image/sasich/3.jpg"
-        ];
-
-        cards.forEach((src, index) => {
-            const card = document.createElement("img");
-            card.src = src;
-            card.className = "reward-card";
-            card.style.animationDelay = `${index * 0.18}s`;
-            rewardCards.appendChild(card);
-        });
-
-        takeBtn.classList.add("show");
-    }, 500);
-}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
