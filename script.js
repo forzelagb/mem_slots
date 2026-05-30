@@ -10053,13 +10053,16 @@ let isPackOpened = false;
 function rollCollectDice() {
   const dice = document.getElementById("collectDice");
   const pack = document.getElementById("collectPack");
-const resultBox = document.getElementById("collectResult");
+  const resultBox = document.getElementById("collectResult");
 
 if (!dice || !pack) return;
 
 if (resultBox) resultBox.classList.remove("show");
   pack.classList.remove("show");
   pack.src = "";
+  pack.style.display = "none";
+pack.style.pointerEvents = "none";
+dice.style.display = "block";
 
   dice.classList.remove("rolling");
   void dice.offsetWidth;
@@ -10091,7 +10094,8 @@ setTimeout(() => {
     if (rollBtn) rollBtn.style.display = "none";
 
     pack.src = collectPacks[result];
-
+pack.style.display = "block";
+pack.style.pointerEvents = "auto";
     setTimeout(() => {
         pack.classList.add("show");
     }, 150);
