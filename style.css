@@ -21539,6 +21539,70 @@ body.gl-compact .screen {
 .collect-dice-img{
     width:120px;
 }
+.collect-pack{
+    position:absolute;
+    left:50%;
+    top:63%;
+    transform:translate(-50%, 40px) scale(0.3);
+    z-index:12;
+
+    width:160px;
+    opacity:0;
+    pointer-events:none;
+
+    filter:drop-shadow(0 0 28px rgba(255,255,255,.75));
+}
+
+.collect-pack.show{
+    animation: packAppear 0.9s ease forwards;
+}
+
+@keyframes packAppear{
+    0%{
+        opacity:0;
+        transform:translate(-50%, 60px) scale(0.25) rotate(-8deg);
+        filter:drop-shadow(0 0 5px rgba(255,255,255,.2));
+    }
+
+    55%{
+        opacity:1;
+        transform:translate(-50%, -30px) scale(1.12) rotate(5deg);
+        filter:drop-shadow(0 0 35px rgba(200,70,255,.95));
+    }
+
+    100%{
+        opacity:1;
+        transform:translate(-50%, 0) scale(1) rotate(0deg);
+        filter:drop-shadow(0 0 25px rgba(200,70,255,.8));
+    }
+}
+.collect-pack{
+    position:absolute;
+    left:50%;
+    top:50%;
+
+    width:180px;
+
+    transform:
+        translate(-50%, -50%)
+        scale(.2);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    z-index:15;
+
+    transition:
+        .5s ease;
+}
+.collect-pack.show{
+    opacity:1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+}ы
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

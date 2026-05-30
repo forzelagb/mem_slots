@@ -10065,40 +10065,65 @@ function rollCollectDice() {
 
     resultBox.textContent = `Выпало: ${result}`;
     resultBox.classList.add("show");
+    const pack = document.getElementById("collectPack");
 
+if (pack) {
+  pack.classList.remove("show");
+  void pack.offsetWidth;
+
+  setTimeout(() => {
+    pack.classList.add("show");
+  }, 250);
+}
     console.log("Выпало число:", result);
   }, 900);
 }
+const collectPacks = {
+  1: "image/ui/collect/pack-common.png",
+  2: "image/ui/collect/pack-common.png",
+  3: "image/ui/collect/pack-rare.png",
+  4: "image/ui/collect/pack-rare.png",
+  5: "image/ui/collect/pack-epic.png",
+  6: "image/ui/collect/pack-legendary.png"
+};
+
 function rollCollectDice() {
   const dice = document.getElementById("collectDice");
   const resultBox = document.getElementById("collectResult");
+  const pack = document.getElementById("collectPack");
 
-  if (!dice || !resultBox) return;
+  if (!dice || !resultBox || !pack) return;
 
   resultBox.classList.remove("show");
   resultBox.textContent = "";
+
+  pack.classList.remove("show");
+  pack.src = "";
 
   dice.classList.remove("rolling");
   void dice.offsetWidth;
   dice.classList.add("rolling");
 
-  let frames = 0;
   const spinInterval = setInterval(() => {
     const randomSide = Math.floor(Math.random() * 6) + 1;
     dice.src = `image/ui/collect/dice-${randomSide}.png`;
-    frames++;
   }, 90);
 
   setTimeout(() => {
     clearInterval(spinInterval);
 
     const result = Math.floor(Math.random() * 6) + 1;
+
     dice.src = `image/ui/collect/dice-${result}.png`;
 
     resultBox.textContent = `Выпало: ${result}`;
     resultBox.classList.add("show");
 
-    console.log("Выпало число:", result);
+    pack.src = collectPacks[result];
+
+    setTimeout(() => {
+      pack.classList.add("show");
+    }, 150);
   }, 900);
 }
 //  ЗАПУСК
