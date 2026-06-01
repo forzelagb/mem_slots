@@ -22490,14 +22490,14 @@ body.gl-compact .screen {
 }
 
 .collect-result-list {
-    top: 405px !important;
+    top: 440px !important;
     right: 135px !important;
     gap: 18px !important;
     font-size: 18px !important;
 }
 
 .collect-result-actions {
-    bottom: 22px !important;
+    bottom: 45px !important;
     gap: 16px !important;
 }
 
