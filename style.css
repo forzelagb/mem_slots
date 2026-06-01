@@ -21980,6 +21980,17 @@ body.gl-compact .screen {
 .collect-side-menu img:hover {
   transform: scale(1.05);
 }
+.collect-side-menu a {
+  width: 170px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  background: rgba(25, 0, 45, 0.85);
+  border: 1px solid rgba(190, 90, 255, 0.9);
+  box-shadow: 0 0 18px rgba(150, 50, 255, 0.45);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
