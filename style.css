@@ -21994,6 +21994,111 @@ body.gl-compact .screen {
 .collect-pack {
     width: 300px;
 }
+.collect-top-buttons {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    z-index: 500;
+}
+
+.collect-chances-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.collect-chances-btn img {
+    width: 140px;
+    display: block;
+}
+
+.collect-energy-box {
+    position: relative;
+}
+
+.collect-energy-box img {
+    width: 140px;
+    display: block;
+}
+
+.collect-energy-value {
+    position: absolute;
+
+    top: 50%;
+    right: 18px;
+
+    transform: translateY(-50%);
+
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,.8),
+        0 0 16px rgba(180,100,255,.7);
+}
+.collect-dice-img {
+    width: 155px !important;
+    height: 155px !important;
+    z-index: 120 !important;
+}
+
+.collect-dice-img.rolling {
+    animation: diceMegaRoll 1.4s ease-in-out;
+}
+
+.collect-dice-img.result {
+    animation: diceResultPop 0.8s ease forwards;
+}
+
+@keyframes diceMegaRoll {
+    0% {
+        transform: scale(1) rotate(0deg) translateY(0);
+        filter: drop-shadow(0 0 15px rgba(180, 80, 255, 0.7));
+    }
+
+    25% {
+        transform: scale(1.25) rotate(180deg) translateY(-35px);
+        filter: drop-shadow(0 0 35px rgba(180, 80, 255, 1));
+    }
+
+    50% {
+        transform: scale(1.45) rotate(420deg) translateY(-10px);
+        filter: drop-shadow(0 0 55px rgba(210, 120, 255, 1));
+    }
+
+    75% {
+        transform: scale(1.25) rotate(680deg) translateY(-28px);
+        filter: drop-shadow(0 0 40px rgba(180, 80, 255, 0.95));
+    }
+
+    100% {
+        transform: scale(1.7) rotate(720deg) translateY(0);
+        filter: drop-shadow(0 0 70px rgba(220, 130, 255, 1));
+    }
+}
+
+@keyframes diceResultPop {
+    0% {
+        transform: scale(1.7);
+    }
+
+    45% {
+        transform: scale(2.05);
+        filter: drop-shadow(0 0 80px rgba(220, 130, 255, 1));
+    }
+
+    100% {
+        transform: scale(1.75);
+        filter: drop-shadow(0 0 55px rgba(180, 80, 255, 0.9));
+    }
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

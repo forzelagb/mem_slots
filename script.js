@@ -10089,14 +10089,19 @@ function rollCollectDice() {
     dice.src = `image/ui/collect/dice-${randomSide}.png`;
   }, 90);
 
+setTimeout(() => {
+  clearInterval(spinInterval);
+
+  const result = Math.floor(Math.random() * 6) + 1;
+  currentCollectResult = result;
+  isPackOpened = false;
+
+  dice.classList.remove("rolling");
+  dice.src = `image/ui/collect/dice-${result}.png`;
+  dice.classList.add("result");
+
   setTimeout(() => {
-    clearInterval(spinInterval);
-
-    const result = Math.floor(Math.random() * 6) + 1;
-    currentCollectResult = result;
-    isPackOpened = false;
-
-    dice.src = `image/ui/collect/dice-${result}.png`;
+    dice.classList.remove("result");
     dice.style.display = "none";
 
     pack.src = collectPacks[result];
@@ -10106,7 +10111,9 @@ function rollCollectDice() {
       pack.classList.add("show");
     }, 100);
 
-  }, 900);
+  }, 1100);
+
+}, 1400);
 }
 
 function openCollectPack() {
