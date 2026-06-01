@@ -10249,7 +10249,7 @@ function rollCollectDice() {
   const energy = getCollectEnergy();
 
   if (energy < COLLECT_ENERGY_COST) {
-    alert("Недостаточно энергии!");
+    showEnergyWarning();
     return;
   }
 
@@ -10513,6 +10513,17 @@ document.addEventListener("DOMContentLoaded", () => {
     regenCollectEnergy();
   }, 30000);
 });
+function showEnergyWarning(){
+
+    const warning = document.getElementById("energyWarning");
+
+    warning.classList.add("show");
+
+    setTimeout(() => {
+        warning.classList.remove("show");
+    }, 2500);
+
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
