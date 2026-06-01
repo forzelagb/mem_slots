@@ -10111,7 +10111,7 @@ setTimeout(() => {
       pack.classList.add("show");
     }, 100);
 
-  }, 1100);
+  }, 1500);
 
 }, 1400);
 }
