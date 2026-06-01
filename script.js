@@ -10147,6 +10147,40 @@ function openCollectPack() {
 
   }, 450);
 }
+function flipCollectCard(card) {
+  if (!card || card.classList.contains("flipped")) return;
+
+  card.classList.add("flipped");
+  flippedCollectCards++;
+
+  if (flippedCollectCards >= 3) {
+    const takeBtn = document.getElementById("collectTakeBtn");
+    if (takeBtn) takeBtn.classList.add("show");
+  }
+}
+let flippedCollectCards = 0;
+function collectRewards() {
+  const pack = document.getElementById("collectPack");
+  const cardsBox = document.getElementById("rewardCards");
+  const takeBtn = document.getElementById("collectTakeBtn");
+  const dice = document.getElementById("collectDice");
+  const rollBtn = document.querySelector(".collect-roll-button");
+
+  if (cardsBox) cardsBox.innerHTML = "";
+  if (takeBtn) takeBtn.classList.remove("show");
+
+  if (pack) {
+    pack.className = "collect-pack";
+    pack.src = "";
+    pack.style.display = "none";
+  }
+
+  if (dice) dice.style.display = "block";
+  if (rollBtn) rollBtn.style.display = "block";
+
+  flippedCollectCards = 0;
+  isPackOpened = false;
+}
 
 
 //  ЗАПУСК
