@@ -22478,6 +22478,7 @@ body.gl-compact .screen {
     top: 135px !important;
     width: 430px !important;
     gap: 18px !important;
+    margin-top: 40px !important;
 }
 
 .collect-result-cards img {
@@ -22497,12 +22498,20 @@ body.gl-compact .screen {
 }
 
 .collect-result-actions {
-    bottom: 60px !important;
+    bottom: 25px !important;
     gap: 16px !important;
 }
 
 .collect-result-actions img {
     width: 170px !important;
+}
+.total-progress {
+    margin-top: 50px;
+}
+.reward-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
