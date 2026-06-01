@@ -22513,6 +22513,10 @@ body.gl-compact .screen {
     justify-content: space-between;
     align-items: center;
 }
+.collect-result-modal {
+    background: rgba(0, 0, 0, 0.35) !important;
+    backdrop-filter: none !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
