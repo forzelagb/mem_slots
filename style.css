@@ -21991,6 +21991,9 @@ body.gl-compact .screen {
   border: 1px solid rgba(190, 90, 255, 0.9);
   box-shadow: 0 0 18px rgba(150, 50, 255, 0.45);
 }
+.collect-pack {
+    width: 300px;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
