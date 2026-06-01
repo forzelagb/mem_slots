@@ -10030,7 +10030,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     title.textContent = names[theme] || "MEME COLLECTION CLUB";
   }
-}); 
+});
+const COLLECT_ENERGY_COST = 10;
+
 const collectPacks = {
   1: "image/ui/collect/pack-common.png",
   2: "image/ui/collect/pack-common.png",
@@ -10049,29 +10051,223 @@ const collectPacksOpen = {
   6: "image/ui/collect/pack-legendary-open.png"
 };
 
+const packRarityChances = {
+  1: [
+    { rarity: "common", chance: 75 },
+    { rarity: "rare", chance: 22 },
+    { rarity: "epic", chance: 3 }
+  ],
+  2: [
+    { rarity: "common", chance: 75 },
+    { rarity: "rare", chance: 22 },
+    { rarity: "epic", chance: 3 }
+  ],
+  3: [
+    { rarity: "common", chance: 45 },
+    { rarity: "rare", chance: 40 },
+    { rarity: "epic", chance: 13 },
+    { rarity: "legendary", chance: 2 }
+  ],
+  4: [
+    { rarity: "common", chance: 45 },
+    { rarity: "rare", chance: 40 },
+    { rarity: "epic", chance: 13 },
+    { rarity: "legendary", chance: 2 }
+  ],
+  5: [
+    { rarity: "rare", chance: 35 },
+    { rarity: "epic", chance: 50 },
+    { rarity: "legendary", chance: 15 }
+  ],
+  6: [
+    { rarity: "epic", chance: 60 },
+    { rarity: "legendary", chance: 40 }
+  ]
+};
+
+const diceProgressMultiplier = {
+  1: 1,
+  2: 1.2,
+  3: 1.5,
+  4: 2,
+  5: 3,
+  6: 5
+};
+
+const rarityProgressRange = {
+  common: [2, 5],
+  rare: [4, 9],
+  epic: [8, 18],
+  legendary: [15, 35]
+};
+
+const rarityToOldCard = {
+  common: "1.jpg",
+  rare: "3.jpg",
+  epic: "5.jpg",
+  legendary: "7.jpg"
+};
+
 let currentCollectResult = null;
 let isPackOpened = false;
+let flippedCollectCards = 0;
+let lastCollectRewards = [];
+let collectRewardSaved = false;
+
+function getCollectThemeFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("theme") || "sasich";
+}
 
 function getCollectThemeFolder() {
-  const params = new URLSearchParams(window.location.search);
-  const theme = params.get("theme") || "sasavot";
+  const theme = getCollectThemeFromUrl();
 
   if (theme === "sasich") return "sasavot";
 
   return theme;
 }
 
+function getCollectDataTheme() {
+  return getCollectThemeFromUrl();
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function rollRarityByDice(diceResult) {
+  const chances = packRarityChances[diceResult] || packRarityChances[1];
+  const roll = Math.random() * 100;
+
+  let current = 0;
+
+  for (const item of chances) {
+    current += item.chance;
+    if (roll <= current) return item.rarity;
+  }
+
+  return "common";
+}
+
+function getProgressByDiceAndRarity(diceResult, rarity) {
+  const range = rarityProgressRange[rarity] || rarityProgressRange.common;
+  const base = getRandomInt(range[0], range[1]);
+  const multiplier = diceProgressMultiplier[diceResult] || 1;
+
+  return Math.round(base * multiplier);
+}
+
+function getCollectEnergy() {
+  if (window.playerData?.resources) {
+    if (playerData.resources.energy === undefined) playerData.resources.energy = 100;
+    if (playerData.resources.maxEnergy === undefined) playerData.resources.maxEnergy = 100;
+    return playerData.resources.energy;
+  }
+
+  return Number(localStorage.getItem("collect_energy") || 100);
+}
+
+function setCollectEnergy(value) {
+  const max = getCollectMaxEnergy();
+  const finalValue = Math.max(0, Math.min(max, value));
+
+  if (window.playerData?.resources) {
+    playerData.resources.energy = finalValue;
+    if (typeof savePlayer === "function") savePlayer();
+  } else {
+    localStorage.setItem("collect_energy", String(finalValue));
+  }
+
+  updateCollectEnergyUI();
+}
+
+function getCollectMaxEnergy() {
+  if (window.playerData?.resources?.maxEnergy !== undefined) {
+    return playerData.resources.maxEnergy;
+  }
+
+  return 100;
+}
+
+function updateCollectEnergyUI() {
+  const current = document.getElementById("collectEnergyValue");
+  const max = document.getElementById("collectEnergyMax");
+
+  if (current) current.textContent = getCollectEnergy();
+  if (max) max.textContent = getCollectMaxEnergy();
+}
+
+function regenCollectEnergy() {
+  const max = getCollectMaxEnergy();
+  let energy = getCollectEnergy();
+
+  if (energy >= max) {
+    localStorage.setItem("collect_last_regen", String(Date.now()));
+    updateCollectEnergyUI();
+    return;
+  }
+
+  const last = Number(localStorage.getItem("collect_last_regen") || Date.now());
+  const now = Date.now();
+  const minutes = Math.floor((now - last) / 60000);
+  const gained = Math.floor(minutes / 5);
+
+  if (gained > 0) {
+    setCollectEnergy(energy + gained);
+    localStorage.setItem("collect_last_regen", String(now));
+  } else {
+    updateCollectEnergyUI();
+  }
+}
+
+function generateCollectRewards() {
+  const folder = getCollectThemeFolder();
+  const dataTheme = getCollectDataTheme();
+
+  lastCollectRewards = [];
+
+  for (let i = 0; i < 3; i++) {
+    const rarity = rollRarityByDice(currentCollectResult);
+    const progress = getProgressByDiceAndRarity(currentCollectResult, rarity);
+
+    lastCollectRewards.push({
+      theme: dataTheme,
+      folder,
+      rarity,
+      progress,
+      img: `image/ui/collect/${folder}/${rarity}.png`
+    });
+  }
+
+  collectRewardSaved = false;
+  return lastCollectRewards;
+}
+
 function rollCollectDice() {
+  regenCollectEnergy();
+
+  const energy = getCollectEnergy();
+
+  if (energy < COLLECT_ENERGY_COST) {
+    alert("Недостаточно энергии!");
+    return;
+  }
+
   const dice = document.getElementById("collectDice");
   const pack = document.getElementById("collectPack");
   const cardsBox = document.getElementById("rewardCards");
-  const takeBtn = document.getElementById("collectTakeBtn");
   const rollBtn = document.querySelector(".collect-roll-button");
+  const resultModal = document.getElementById("collectResultModal");
 
   if (!dice || !pack) return;
 
-  if (cardsBox) cardsBox.innerHTML = "";
-  if (takeBtn) takeBtn.classList.remove("show");
+  setCollectEnergy(energy - COLLECT_ENERGY_COST);
+
+  if (resultModal) resultModal.classList.remove("show");
+  if (cardsBox) {
+    cardsBox.innerHTML = "";
+    cardsBox.classList.remove("show");
+  }
 
   pack.className = "collect-pack";
   pack.src = "";
@@ -10080,7 +10276,13 @@ function rollCollectDice() {
   dice.style.display = "block";
   if (rollBtn) rollBtn.style.display = "none";
 
-  dice.classList.remove("rolling");
+  flippedCollectCards = 0;
+  isPackOpened = false;
+  currentCollectResult = null;
+  lastCollectRewards = [];
+  collectRewardSaved = false;
+
+  dice.classList.remove("rolling", "result");
   void dice.offsetWidth;
   dice.classList.add("rolling");
 
@@ -10089,90 +10291,61 @@ function rollCollectDice() {
     dice.src = `image/ui/collect/dice-${randomSide}.png`;
   }, 90);
 
-setTimeout(() => {
-  clearInterval(spinInterval);
-
-  const result = Math.floor(Math.random() * 6) + 1;
-  currentCollectResult = result;
-  isPackOpened = false;
-
-  dice.classList.remove("rolling");
-  dice.src = `image/ui/collect/dice-${result}.png`;
-  dice.classList.add("result");
-
   setTimeout(() => {
-    dice.classList.remove("result");
-    dice.style.display = "none";
+    clearInterval(spinInterval);
 
-    pack.src = collectPacks[result];
-    pack.style.display = "block";
+    const result = Math.floor(Math.random() * 6) + 1;
+    currentCollectResult = result;
+
+    dice.classList.remove("rolling");
+    dice.src = `image/ui/collect/dice-${result}.png`;
+    dice.classList.add("result");
 
     setTimeout(() => {
-      pack.classList.add("show");
-    }, 100);
+      dice.classList.remove("result");
+      dice.style.display = "none";
 
-  }, 1500);
+      pack.src = collectPacks[result];
+      pack.style.display = "block";
 
-}, 1400);
+      setTimeout(() => {
+        pack.classList.add("show");
+      }, 100);
+
+    }, 1500);
+
+  }, 1400);
 }
-let lastCollectRewards = [];
+
 function openCollectPack() {
   const pack = document.getElementById("collectPack");
   const cardsBox = document.getElementById("rewardCards");
-  const takeBtn = document.getElementById("collectTakeBtn");
 
-  if (!pack || !cardsBox || !takeBtn || !currentCollectResult || isPackOpened) return;
+  if (!pack || !cardsBox || !currentCollectResult || isPackOpened) return;
 
   isPackOpened = true;
+  flippedCollectCards = 0;
+
   pack.classList.add("opening");
 
   setTimeout(() => {
     pack.src = collectPacksOpen[currentCollectResult];
 
-    const theme = getCollectThemeFolder();
-lastCollectRewards = [
-  {
-    theme,
-    rarity: "common",
-    img: `image/ui/collect/${theme}/common.png`,
-    progress: 12
-  },
-  {
-    theme,
-    rarity: "rare",
-    img: `image/ui/collect/${theme}/rare.png`,
-    progress: 24
-  },
-  {
-    theme,
-    rarity: "epic",
-    img: `image/ui/collect/${theme}/epic.png`,
-    progress: 48
-  }
-];
-    const cards = [
-      `${theme}/common.png`,
-      `${theme}/rare.png`,
-      `${theme}/epic.png`
-    ];
+    const rewards = generateCollectRewards();
 
-    cardsBox.innerHTML = cards.map((card, index) => `
+    cardsBox.innerHTML = rewards.map((reward, index) => `
       <div class="collect-reward-card pos-${index}" onclick="flipCollectCard(this)">
         <div class="card-inner">
           <img class="card-face card-back-face" src="image/ui/collect/card-back.png">
-          <img class="card-face card-front-face" src="image/ui/collect/${card}">
+          <img class="card-face card-front-face" src="${reward.img}">
         </div>
       </div>
     `).join("");
 
     cardsBox.classList.add("show");
-
-    setTimeout(() => {
-      takeBtn.classList.add("show");
-    }, 700);
-
   }, 450);
 }
+
 function flipCollectCard(card) {
   if (!card || card.classList.contains("flipped")) return;
 
@@ -10182,31 +10355,57 @@ function flipCollectCard(card) {
   if (flippedCollectCards >= 3) {
     setTimeout(() => {
       showCollectResult();
-    }, 1200);
+    }, 900);
   }
 }
-let flippedCollectCards = 0;
-function collectRewards() {
-  const pack = document.getElementById("collectPack");
-  const cardsBox = document.getElementById("rewardCards");
-  const takeBtn = document.getElementById("collectTakeBtn");
-  const dice = document.getElementById("collectDice");
-  const rollBtn = document.querySelector(".collect-roll-button");
 
-  if (cardsBox) cardsBox.innerHTML = "";
-  if (takeBtn) takeBtn.classList.remove("show");
+function saveCollectRewards() {
+  if (collectRewardSaved) return;
 
-  if (pack) {
-    pack.className = "collect-pack";
-    pack.src = "";
-    pack.style.display = "none";
-  }
+  const progressSave = JSON.parse(localStorage.getItem("mcc_collect_progress") || "{}");
 
-  if (dice) dice.style.display = "block";
-  if (rollBtn) rollBtn.style.display = "block";
+  lastCollectRewards.forEach(reward => {
+    if (!progressSave[reward.theme]) {
+      progressSave[reward.theme] = {
+        common: 0,
+        rare: 0,
+        epic: 0,
+        legendary: 0
+      };
+    }
 
-  flippedCollectCards = 0;
-  isPackOpened = false;
+    progressSave[reward.theme][reward.rarity] += reward.progress;
+
+    if (window.playerData) {
+      if (!playerData.cards) playerData.cards = {};
+
+      const oldFile = rarityToOldCard[reward.rarity] || "1.jpg";
+      const oldSrc = `image/${reward.theme}/${oldFile}`;
+
+      let cardKey;
+
+      if (typeof getCardKey === "function") {
+        cardKey = getCardKey(reward.theme, oldSrc);
+      } else {
+        cardKey = `${reward.theme}:${oldFile}`;
+      }
+
+      if (!playerData.cards[cardKey]) playerData.cards[cardKey] = 0;
+      playerData.cards[cardKey] += reward.progress;
+
+      if (playerData.stats) {
+        playerData.stats.totalCardsCollected =
+          (playerData.stats.totalCardsCollected || 0) + 1;
+      }
+    }
+  });
+
+  localStorage.setItem("mcc_collect_progress", JSON.stringify(progressSave));
+
+  if (typeof savePlayer === "function") savePlayer();
+  if (typeof updateUI === "function") updateUI();
+
+  collectRewardSaved = true;
 }
 
 function showCollectResult() {
@@ -10216,7 +10415,8 @@ function showCollectResult() {
   if (!modal || !cardsBox) return;
 
   let total = 0;
-  let sums = {
+
+  const sums = {
     common: 0,
     rare: 0,
     epic: 0,
@@ -10240,21 +10440,55 @@ function showCollectResult() {
   document.getElementById("resultEpic").textContent = "+" + sums.epic;
   document.getElementById("resultLegendary").textContent = "+" + sums.legendary;
 
+  saveCollectRewards();
+
   modal.classList.add("show");
+}
+
+function resetCollectScene() {
+  const pack = document.getElementById("collectPack");
+  const cardsBox = document.getElementById("rewardCards");
+  const dice = document.getElementById("collectDice");
+  const rollBtn = document.querySelector(".collect-roll-button");
+
+  if (cardsBox) {
+    cardsBox.innerHTML = "";
+    cardsBox.classList.remove("show");
+  }
+
+  if (pack) {
+    pack.className = "collect-pack";
+    pack.src = "";
+    pack.style.display = "none";
+  }
+
+  if (dice) {
+    dice.style.display = "block";
+    dice.classList.remove("rolling", "result");
+    dice.src = "image/ui/collect/dice-1.png";
+  }
+
+  if (rollBtn) rollBtn.style.display = "block";
+
+  flippedCollectCards = 0;
+  isPackOpened = false;
+  currentCollectResult = null;
+  lastCollectRewards = [];
+  collectRewardSaved = false;
 }
 
 function closeCollectResult() {
   const modal = document.getElementById("collectResultModal");
   if (modal) modal.classList.remove("show");
 
-  collectRewards();
+  resetCollectScene();
 }
 
 function openAgainCollect() {
   const modal = document.getElementById("collectResultModal");
   if (modal) modal.classList.remove("show");
 
-  collectRewards();
+  resetCollectScene();
 
   setTimeout(() => {
     rollCollectDice();
@@ -10270,10 +10504,15 @@ function closeChancesModal() {
   const modal = document.getElementById("collectChancesModal");
   if (modal) modal.classList.remove("show");
 }
-function openChancesModal() {
-  const modal = document.getElementById("collectChancesModal");
-  if (modal) modal.classList.add("show");
-}
+
+document.addEventListener("DOMContentLoaded", () => {
+  regenCollectEnergy();
+  updateCollectEnergyUI();
+
+  setInterval(() => {
+    regenCollectEnergy();
+  }, 30000);
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
