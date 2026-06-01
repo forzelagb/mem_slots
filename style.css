@@ -22305,6 +22305,93 @@ body.gl-compact .screen {
         transform: translate(-50%, -50%) scale(1.55) rotate(0deg);
     }
 }
+.collect-result-modal,
+.collect-chances-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.collect-result-modal.show,
+.collect-chances-modal.show {
+    display: flex;
+}
+
+.collect-result-window {
+    position: relative;
+    width: 720px;
+}
+
+.collect-result-bg {
+    width: 100%;
+    display: block;
+}
+
+.collect-result-cards {
+    position: absolute;
+    top: 175px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 28px;
+}
+
+.collect-result-cards img {
+    width: 120px;
+    border-radius: 14px;
+}
+
+.collect-result-total {
+    position: absolute;
+    top: 410px;
+    left: 445px;
+    font-size: 34px;
+    color: #ffd84d;
+    text-shadow: 0 0 12px #ffb800;
+}
+
+.collect-result-list {
+    position: absolute;
+    top: 465px;
+    left: 170px;
+    width: 360px;
+    color: white;
+    font-size: 18px;
+    line-height: 32px;
+}
+
+.collect-result-list div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.collect-result-actions {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+}
+
+.collect-result-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.collect-result-actions img {
+    width: 210px;
+}
+
+.collect-chances-modal img {
+    width: 520px;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

@@ -10115,7 +10115,7 @@ setTimeout(() => {
 
 }, 1400);
 }
-
+let lastCollectRewards = [];
 function openCollectPack() {
   const pack = document.getElementById("collectPack");
   const cardsBox = document.getElementById("rewardCards");
@@ -10130,7 +10130,26 @@ function openCollectPack() {
     pack.src = collectPacksOpen[currentCollectResult];
 
     const theme = getCollectThemeFolder();
-
+lastCollectRewards = [
+  {
+    theme,
+    rarity: "common",
+    img: `image/ui/collect/${theme}/common.png`,
+    progress: 12
+  },
+  {
+    theme,
+    rarity: "rare",
+    img: `image/ui/collect/${theme}/rare.png`,
+    progress: 24
+  },
+  {
+    theme,
+    rarity: "epic",
+    img: `image/ui/collect/${theme}/epic.png`,
+    progress: 48
+  }
+];
     const cards = [
       `${theme}/common.png`,
       `${theme}/rare.png`,
@@ -10161,8 +10180,9 @@ function flipCollectCard(card) {
   flippedCollectCards++;
 
   if (flippedCollectCards >= 3) {
-    const takeBtn = document.getElementById("collectTakeBtn");
-    if (takeBtn) takeBtn.classList.add("show");
+    setTimeout(() => {
+      showCollectResult();
+    }, 1200);
   }
 }
 let flippedCollectCards = 0;
@@ -10189,7 +10209,67 @@ function collectRewards() {
   isPackOpened = false;
 }
 
+function showCollectResult() {
+  const modal = document.getElementById("collectResultModal");
+  const cardsBox = document.getElementById("collectResultCards");
 
+  if (!modal || !cardsBox) return;
+
+  let total = 0;
+  let sums = {
+    common: 0,
+    rare: 0,
+    epic: 0,
+    legendary: 0
+  };
+
+  cardsBox.innerHTML = "";
+
+  lastCollectRewards.forEach(item => {
+    total += item.progress;
+    sums[item.rarity] += item.progress;
+
+    const img = document.createElement("img");
+    img.src = item.img;
+    cardsBox.appendChild(img);
+  });
+
+  document.getElementById("collectResultTotal").textContent = total;
+  document.getElementById("resultCommon").textContent = "+" + sums.common;
+  document.getElementById("resultRare").textContent = "+" + sums.rare;
+  document.getElementById("resultEpic").textContent = "+" + sums.epic;
+  document.getElementById("resultLegendary").textContent = "+" + sums.legendary;
+
+  modal.classList.add("show");
+}
+
+function closeCollectResult() {
+  const modal = document.getElementById("collectResultModal");
+  if (modal) modal.classList.remove("show");
+
+  collectRewards();
+}
+
+function openAgainCollect() {
+  const modal = document.getElementById("collectResultModal");
+  if (modal) modal.classList.remove("show");
+
+  collectRewards();
+
+  setTimeout(() => {
+    rollCollectDice();
+  }, 300);
+}
+
+function openChancesModal() {
+  const modal = document.getElementById("collectChancesModal");
+  if (modal) modal.classList.add("show");
+}
+
+function closeChancesModal() {
+  const modal = document.getElementById("collectChancesModal");
+  if (modal) modal.classList.remove("show");
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
