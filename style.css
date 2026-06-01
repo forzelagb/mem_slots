@@ -22468,6 +22468,42 @@ body.gl-compact .screen {
 .collect-result-list span {
     display: block !important;
 }
+.collect-result-window {
+    width: 560px !important;
+    max-height: 90vh !important;
+    transform: scale(0.92);
+}
+
+.collect-result-cards {
+    top: 135px !important;
+    width: 430px !important;
+    gap: 18px !important;
+}
+
+.collect-result-cards img {
+    width: 92px !important;
+}
+
+.collect-result-total {
+    top: 300px !important;
+    font-size: 30px !important;
+}
+
+.collect-result-list {
+    top: 405px !important;
+    right: 135px !important;
+    gap: 18px !important;
+    font-size: 18px !important;
+}
+
+.collect-result-actions {
+    bottom: 22px !important;
+    gap: 16px !important;
+}
+
+.collect-result-actions img {
+    width: 170px !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
