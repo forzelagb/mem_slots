@@ -22421,6 +22421,53 @@ body.gl-compact .screen {
 .collect-chances-modal {
     pointer-events: auto !important;
 }
+.collect-result-cards {
+    position: absolute !important;
+    top: 205px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+
+    width: 620px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 22px !important;
+}
+
+.collect-result-cards img {
+    width: 120px !important;
+    height: auto !important;
+    border-radius: 14px;
+}
+
+.collect-result-total {
+    position: absolute !important;
+    top: 428px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+
+    font-size: 34px !important;
+    color: #ffd84d !important;
+    text-shadow: 0 0 12px #ffb800;
+}
+
+.collect-result-list {
+    position: absolute !important;
+    top: 520px !important;
+    right: 165px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 22px !important;
+
+    font-size: 20px !important;
+    color: white !important;
+    text-align: right !important;
+}
+
+.collect-result-list span {
+    display: block !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

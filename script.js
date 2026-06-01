@@ -10271,8 +10271,6 @@ function closeChancesModal() {
   if (modal) modal.classList.remove("show");
 }
 function openChancesModal() {
-  alert("Шансы открываются");
-
   const modal = document.getElementById("collectChancesModal");
   if (modal) modal.classList.add("show");
 }
