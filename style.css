@@ -22517,6 +22517,29 @@ body.gl-compact .screen {
     background: rgba(0, 0, 0, 0.35) !important;
     backdrop-filter: none !important;
 }
+.collect-result-list {
+    top: 420px !important;
+    right: 18px !important;
+
+    height: 150px !important;
+
+    display: grid !important;
+    grid-template-rows: repeat(4, 1fr) !important;
+    align-items: center !important;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+    text-align: right !important;
+
+    z-index: 20 !important;
+}
+
+.collect-result-list span {
+    display: block !important;
+    width: 70px !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255,255,255,.8);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

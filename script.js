@@ -10087,18 +10087,18 @@ const packRarityChances = {
 
 const diceProgressMultiplier = {
   1: 1,
-  2: 1.2,
-  3: 1.5,
-  4: 2,
-  5: 3,
-  6: 5
+  2: 1.1,
+  3: 1.25,
+  4: 1.5,
+  5: 2,
+  6: 2.5
 };
 
 const rarityProgressRange = {
-  common: [2, 5],
-  rare: [4, 9],
-  epic: [8, 18],
-  legendary: [15, 35]
+  common: [2, 4],
+  rare: [4, 7],
+  epic: [7, 13],
+  legendary: [12, 22]
 };
 
 const rarityToOldCard = {
