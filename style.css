@@ -22392,6 +22392,35 @@ body.gl-compact .screen {
 .collect-chances-modal img {
     width: 520px;
 }
+.collect-energy-box img {
+    width: 300px !important;
+}
+
+.collect-energy-value {
+    right: 28px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    font-size: 36px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px;
+
+    color: #ffffff !important;
+
+    text-shadow:
+        0 0 4px #ff4dff,
+        0 0 10px #ff4dff,
+        0 0 18px #9b4dff !important;
+}
+.collect-top-buttons,
+.collect-chances-btn,
+.collect-chances-btn img {
+    pointer-events: auto !important;
+}
+
+.collect-chances-modal {
+    pointer-events: auto !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

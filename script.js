@@ -10157,7 +10157,7 @@ lastCollectRewards = [
     ];
 
     cardsBox.innerHTML = cards.map((card, index) => `
-      <div class="collect-reward-card pos-${index}" onclick="this.classList.add('flipped')">
+      <div class="collect-reward-card pos-${index}" onclick="flipCollectCard(this)">
         <div class="card-inner">
           <img class="card-face card-back-face" src="image/ui/collect/card-back.png">
           <img class="card-face card-front-face" src="image/ui/collect/${card}">
@@ -10269,6 +10269,12 @@ function openChancesModal() {
 function closeChancesModal() {
   const modal = document.getElementById("collectChancesModal");
   if (modal) modal.classList.remove("show");
+}
+function openChancesModal() {
+  alert("Шансы открываются");
+
+  const modal = document.getElementById("collectChancesModal");
+  if (modal) modal.classList.add("show");
 }
 //  ЗАПУСК
 window.onload = () => {
