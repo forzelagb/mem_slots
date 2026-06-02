@@ -10728,6 +10728,80 @@ function addProfileXP(amount) {
 }
 
 document.addEventListener("DOMContentLoaded", loadProfileLevel);
+const profileCharacters = [
+    "helin",
+    "lexapaws",
+    "litwin",
+    "melstroy",
+    "nikkifn",
+    "rejiboi",
+    "rostickfaceskid",
+    "sasavot"
+];
+
+let currentCharacterIndex = 0;
+
+function openCharacterModal() {
+    const modal = document.getElementById("characterModal");
+
+    const savedCharacter = localStorage.getItem("profileCharacter") || "lexapaws";
+    const savedIndex = profileCharacters.indexOf(savedCharacter);
+
+    currentCharacterIndex = savedIndex >= 0 ? savedIndex : 0;
+
+    updateCharacterModalPreview();
+
+    if (modal) {
+        modal.classList.add("active");
+    }
+}
+
+function closeCharacterModal() {
+    const modal = document.getElementById("characterModal");
+
+    if (modal) {
+        modal.classList.remove("active");
+    }
+}
+
+function updateCharacterModalPreview() {
+    const preview = document.getElementById("characterModalPreview");
+
+    if (!preview) return;
+
+    const character = profileCharacters[currentCharacterIndex];
+
+    preview.src = `image/characters/${character}/preview.png`;
+}
+
+function prevCharacter() {
+    currentCharacterIndex--;
+
+    if (currentCharacterIndex < 0) {
+        currentCharacterIndex = profileCharacters.length - 1;
+    }
+
+    updateCharacterModalPreview();
+}
+
+function nextCharacter() {
+    currentCharacterIndex++;
+
+    if (currentCharacterIndex >= profileCharacters.length) {
+        currentCharacterIndex = 0;
+    }
+
+    updateCharacterModalPreview();
+}
+
+function selectCurrentCharacter() {
+    const character = profileCharacters[currentCharacterIndex];
+
+    localStorage.setItem("profileCharacter", character);
+
+    loadProfileCharacter();
+    closeCharacterModal();
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

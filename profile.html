@@ -42,6 +42,17 @@
     <button class="nickname-cancel" onclick="closeChangeNameModal()"></button>
     <button class="nickname-save" onclick="saveProfileNickname()"></button>
 </div>
+<div id="characterModal" class="character-modal">
+    <div class="character-modal-content">
+        <img class="character-modal-bg" src="image/ui/profile/take.png" alt="Выбор персонажа">
+
+        <img id="characterModalPreview" class="character-modal-preview" src="image/characters/helin/preview.png" alt="Персонаж">
+
+        <button class="character-arrow character-left" onclick="prevCharacter()"></button>
+        <button class="character-arrow character-right" onclick="nextCharacter()"></button>
+        <button class="character-select-btn" onclick="selectCurrentCharacter()"></button>
+    </div>
+</div>
 </section>
 
 <script src="script.js"></script>
