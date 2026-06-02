@@ -22739,6 +22739,43 @@ body.gl-compact .screen {
     transform: scale(1.03);
     filter: brightness(1.1);
 }
+.profile-page {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-main-image {
+    position: relative;
+    width: 100%;
+}
+
+.profile-main-image > img {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+}
+
+.profile-buttons-on-image {
+    position: absolute;
+    left: 50%;
+    bottom: 5.5%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 18px;
+}
+
+.profile-buttons-on-image img {
+    width: 250px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.profile-buttons-on-image img:hover {
+    transform: scale(1.04);
+    filter: brightness(1.12);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
