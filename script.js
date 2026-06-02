@@ -10608,7 +10608,26 @@ function changeProfileNickname() {
 
     loadProfileNickname();
 }
+function loadProfileStats() {
+    const rollsEl = document.getElementById("profileRolls");
+    const cardsEl = document.getElementById("profileCards");
+    const energyEl = document.getElementById("profileEnergy");
+    const packsEl = document.getElementById("profilePacks");
 
+    if (!rollsEl || !cardsEl || !energyEl || !packsEl) return;
+
+    const rolls = localStorage.getItem("profileRolls") || 0;
+    const cards = localStorage.getItem("profileCards") || 0;
+    const energy = localStorage.getItem("profileEnergySpent") || 0;
+    const packs = localStorage.getItem("profilePacksOpened") || 0;
+
+    rollsEl.textContent = rolls;
+    cardsEl.textContent = cards;
+    energyEl.textContent = energy;
+    packsEl.textContent = packs;
+}
+
+document.addEventListener("DOMContentLoaded", loadProfileStats);
 document.addEventListener("DOMContentLoaded", loadProfileNickname);
 //  ЗАПУСК
 window.onload = () => {

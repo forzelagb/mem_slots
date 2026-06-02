@@ -22827,7 +22827,36 @@ height: 150px;
     align-items: center;
     justify-content: center;
 }
+.profile-stat-number {
+    position: absolute;
+    font-size: 34px;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.7),
+        0 0 18px rgba(255,59,212,0.6);
+    z-index: 5;
+}
 
+.profile-rolls {
+    top: 34.5%;
+    left: 20.5%;
+}
+
+.profile-cards {
+    top: 34.5%;
+    left: 39.5%;
+}
+
+.profile-energy {
+    top: 34.5%;
+    left: 58.7%;
+}
+
+.profile-packs {
+    top: 34.5%;
+    left: 78.2%;
+}
 .change-name-modal.active {
     display: flex;
 }
