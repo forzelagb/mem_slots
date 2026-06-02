@@ -22776,6 +22776,26 @@ body.gl-compact .screen {
     transform: scale(1.04);
     filter: brightness(1.12);
 }
+.profile-main-image {
+    position: relative;
+}
+
+.profile-nickname {
+    position: absolute;
+    top: 6%;
+    left: 30%;
+
+    font-size: 34px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 10px rgba(255, 59, 212, 0.9),
+        0 0 20px rgba(255, 59, 212, 0.5);
+
+    z-index: 5;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

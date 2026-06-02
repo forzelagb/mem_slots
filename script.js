@@ -10524,6 +10524,41 @@ function showEnergyWarning(){
     }, 2500);
 
 }
+function loadProfileNickname() {
+    const nicknameEl = document.getElementById("profileNickname");
+
+    if (!nicknameEl) return;
+
+    const savedName = localStorage.getItem("playerNickname") || "PLAYER";
+
+    nicknameEl.textContent = savedName;
+}
+
+function changeProfileNickname() {
+    const currentName = localStorage.getItem("playerNickname") || "PLAYER";
+
+    let newName = prompt("Введите новый ник:", currentName);
+
+    if (!newName) return;
+
+    newName = newName.trim();
+
+    if (newName.length < 3) {
+        alert("Ник должен быть минимум 3 символа");
+        return;
+    }
+
+    if (newName.length > 14) {
+        alert("Ник должен быть максимум 14 символов");
+        return;
+    }
+
+    localStorage.setItem("playerNickname", newName);
+
+    loadProfileNickname();
+}
+
+document.addEventListener("DOMContentLoaded", loadProfileNickname);
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
