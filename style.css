@@ -22709,6 +22709,36 @@ body.gl-compact .screen {
     transform: scale(1.03);
     filter: brightness(1.12);
 }
+.profile-main-image {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.profile-main-image img {
+    width: 100%;
+    display: block;
+    border-radius: 24px;
+}
+
+.settings-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.settings-buttons img {
+    width: 360px;
+    max-width: 100%;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.settings-buttons img:hover {
+    transform: scale(1.03);
+    filter: brightness(1.1);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
