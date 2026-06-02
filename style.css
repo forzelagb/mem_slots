@@ -22917,23 +22917,12 @@ body.gl-compact .screen {
     top: 66%;
     transform: translateX(-50%);
 }
-.profile-character-img {
-    position: absolute;
-    left: 11.5%;
-    top: 58%;
 
-    width: 180px;
-    height: 220px;
-    object-fit: cover;
-
-    border-radius: 14px;
-    z-index: 5;
-}
 .profile-character-img {
     position: absolute !important;
 
-    left: 10.5% !important;
-    top: 55% !important;
+    left: 13.5% !important;
+    top: 60% !important;
 
     width: 170px !important;
     height: 210px !important;

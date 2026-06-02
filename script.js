@@ -10262,6 +10262,8 @@ function rollCollectDice() {
   if (!dice || !pack) return;
 
   setCollectEnergy(energy - COLLECT_ENERGY_COST);
+  addProfileStat("profileRolls", 1);
+  addProfileStat("profileEnergySpent", COLLECT_ENERGY_COST);
 
   if (resultModal) resultModal.classList.remove("show");
   if (cardsBox) {
@@ -10324,6 +10326,7 @@ function openCollectPack() {
   if (!pack || !cardsBox || !currentCollectResult || isPackOpened) return;
 
   isPackOpened = true;
+  addProfileStat("profilePacksOpened", 1);
   flippedCollectCards = 0;
 
   pack.classList.add("opening");
@@ -10363,7 +10366,7 @@ function saveCollectRewards() {
   if (collectRewardSaved) return;
 
   const progressSave = JSON.parse(localStorage.getItem("mcc_collect_progress") || "{}");
-
+addProfileStat("profileCards", lastCollectRewards.length);
   lastCollectRewards.forEach(reward => {
     if (!progressSave[reward.theme]) {
       progressSave[reward.theme] = {
@@ -10667,6 +10670,26 @@ function openCharacterModal() {
 document.addEventListener("DOMContentLoaded", loadProfileCharacter);
 document.addEventListener("DOMContentLoaded", loadProfileStats);
 document.addEventListener("DOMContentLoaded", loadProfileNickname);
+function addProfileStat(key, amount = 1) {
+    const current = Number(localStorage.getItem(key) || 0);
+    localStorage.setItem(key, current + amount);
+}
+
+function loadProfileStats() {
+    const stats = {
+        profileRolls: "profileRolls",
+        profileCards: "profileCards",
+        profileEnergy: "profileEnergySpent",
+        profilePacks: "profilePacksOpened"
+    };
+
+    for (const id in stats) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = localStorage.getItem(stats[id]) || 0;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadProfileStats);
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
