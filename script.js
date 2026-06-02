@@ -10626,7 +10626,45 @@ function loadProfileStats() {
     energyEl.textContent = energy;
     packsEl.textContent = packs;
 }
+function loadProfileCharacter() {
+    const img = document.getElementById("profileCharacterImg");
+    if (!img) return;
 
+    const character = localStorage.getItem("profileCharacter") || "lexapaws";
+
+    img.src = `image/characters/${character}/preview.png`;
+}
+
+function openCharacterModal() {
+    const character = prompt(
+        "Выбери персонажа: helin, lexapaws, litwin, melstroy, nikkifn, rejiboi, rostickfaceskid, sasavot"
+    );
+
+    if (!character) return;
+
+    const validCharacters = [
+        "helin",
+        "lexapaws",
+        "litwin",
+        "melstroy",
+        "nikkifn",
+        "rejiboi",
+        "rostickfaceskid",
+        "sasavot"
+    ];
+
+    const selected = character.trim().toLowerCase();
+
+    if (!validCharacters.includes(selected)) {
+        alert("Такого персонажа нет");
+        return;
+    }
+
+    localStorage.setItem("profileCharacter", selected);
+    loadProfileCharacter();
+}
+
+document.addEventListener("DOMContentLoaded", loadProfileCharacter);
 document.addEventListener("DOMContentLoaded", loadProfileStats);
 document.addEventListener("DOMContentLoaded", loadProfileNickname);
 //  ЗАПУСК
