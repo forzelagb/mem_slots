@@ -22759,17 +22759,18 @@ body.gl-compact .screen {
 
 .profile-buttons-on-image {
     position: absolute;
-    left: 50%;
-    bottom: 5.5%;
+    left: 42%;
+    bottom: 4.2%;
     transform: translateX(-50%);
     display: flex;
-    gap: 18px;
+    gap: 14px;
 }
 
 .profile-buttons-on-image img {
-    width: 250px;
+    width: 210px;
+    max-width: 100%;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
 .profile-buttons-on-image img:hover {
@@ -22795,6 +22796,95 @@ body.gl-compact .screen {
         0 0 20px rgba(255, 59, 212, 0.5);
 
     z-index: 5;
+}
+.profile-letter {
+    position: absolute;
+    top: 10%;
+    left: 14.5%;
+
+    font-size: 86px;
+    color: white;
+    font-weight: bold;
+
+    text-shadow:
+        0 0 12px rgba(255, 255, 255, 0.8),
+        0 0 25px rgba(255, 59, 212, 0.9);
+
+    z-index: 5;
+}
+.change-name-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.75);
+    align-items: center;
+    justify-content: center;
+}
+
+.change-name-modal.active {
+    display: flex;
+}
+
+.change-name-modal img {
+    width: 760px;
+    max-width: 92%;
+}
+
+.nickname-input {
+    position: absolute;
+    width: 390px;
+    height: 58px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: inherit;
+    font-size: 26px;
+    left: 50%;
+    top: 48%;
+    transform: translate(-50%, -50%);
+}
+
+.nickname-counter {
+    position: absolute;
+    color: #b9a5e8;
+    font-size: 24px;
+    left: 64%;
+    top: 48%;
+    transform: translateY(-50%);
+}
+
+.nickname-close,
+.nickname-cancel,
+.nickname-save {
+    position: absolute;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.nickname-close {
+    width: 55px;
+    height: 55px;
+    top: 25%;
+    right: 28%;
+}
+
+.nickname-cancel {
+    width: 220px;
+    height: 70px;
+    left: 39%;
+    top: 66%;
+    transform: translateX(-50%);
+}
+
+.nickname-save {
+    width: 250px;
+    height: 70px;
+    left: 58%;
+    top: 66%;
+    transform: translateX(-50%);
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }

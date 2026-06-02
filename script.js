@@ -10526,12 +10526,63 @@ function showEnergyWarning(){
 }
 function loadProfileNickname() {
     const nicknameEl = document.getElementById("profileNickname");
-
-    if (!nicknameEl) return;
+    const letterEl = document.getElementById("profileLetter");
 
     const savedName = localStorage.getItem("playerNickname") || "PLAYER";
 
-    nicknameEl.textContent = savedName;
+    if (nicknameEl) {
+        nicknameEl.textContent = savedName;
+    }
+
+    if (letterEl) {
+        letterEl.textContent = savedName.charAt(0).toUpperCase();
+    }
+}
+function openChangeNameModal() {
+    const modal = document.getElementById("changeNameModal");
+    const input = document.getElementById("nicknameInput");
+    const counter = document.getElementById("nicknameCounter");
+
+    if (!modal || !input || !counter) return;
+
+    const currentName = localStorage.getItem("playerNickname") || "";
+
+    input.value = currentName;
+    counter.textContent = `${currentName.length}/14`;
+
+    modal.classList.add("active");
+    input.focus();
+}
+
+function closeChangeNameModal() {
+    const modal = document.getElementById("changeNameModal");
+    if (modal) modal.classList.remove("active");
+}
+
+function saveProfileNickname() {
+    const input = document.getElementById("nicknameInput");
+    if (!input) return;
+
+    let newName = input.value.trim();
+
+    if (newName.length < 3) {
+        alert("Минимум 3 символа");
+        return;
+    }
+
+    localStorage.setItem("playerNickname", newName);
+
+    loadProfileNickname();
+    closeChangeNameModal();
+}
+
+const nicknameInput = document.getElementById("nicknameInput");
+
+if (nicknameInput) {
+    nicknameInput.addEventListener("input", function () {
+        const counter = document.getElementById("nicknameCounter");
+        if (counter) counter.textContent = `${this.value.length}/14`;
+    });
 }
 
 function changeProfileNickname() {
