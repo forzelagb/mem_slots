@@ -22760,7 +22760,7 @@ body.gl-compact .screen {
 .profile-buttons-on-image {
     position: absolute;
     left: 50%;
-    bottom: 2%;
+    bottom: 2.5%;
     transform: translateX(-50%);
     display: flex;
     gap: 14px;
@@ -22799,24 +22799,16 @@ body.gl-compact .screen {
 }
 .profile-letter {
     position: absolute;
-   left: 11.8%;
-top: 14%;
 
-   font-size: 92px;
+    left: 14.5%;
+    top: 7%;
+
+    font-size: 90px;
+
     color: white;
     font-weight: bold;
 
-    text-shadow:
-        0 0 12px rgba(255, 255, 255, 0.8),
-        0 0 25px rgba(255, 59, 212, 0.9);
-
     z-index: 5;
-    display: flex;
-align-items: center;
-justify-content: center;
-
-width: 150px;
-height: 150px;
 }
 .change-name-modal {
     display: none;
@@ -22839,23 +22831,23 @@ height: 150px;
 }
 
 .profile-rolls {
-    top: 34.5%;
-    left: 20.5%;
+    top: 41%;
+    left: 13%;
 }
 
 .profile-cards {
-    top: 34.5%;
-    left: 39.5%;
+    top: 41%;
+    left: 37%;
 }
 
 .profile-energy {
-    top: 34.5%;
-    left: 58.7%;
+    top: 41%;
+    left: 61%;
 }
 
 .profile-packs {
-    top: 34.5%;
-    left: 78.2%;
+    top: 41%;
+    left: 84%;
 }
 .change-name-modal.active {
     display: flex;
@@ -22924,6 +22916,33 @@ height: 150px;
     left: 58%;
     top: 66%;
     transform: translateX(-50%);
+}
+.profile-character-img {
+    position: absolute;
+    left: 11.5%;
+    top: 58%;
+
+    width: 180px;
+    height: 220px;
+    object-fit: cover;
+
+    border-radius: 14px;
+    z-index: 5;
+}
+.profile-character-img {
+    position: absolute !important;
+
+    left: 10.5% !important;
+    top: 55% !important;
+
+    width: 170px !important;
+    height: 210px !important;
+
+    object-fit: cover !important;
+    object-position: center top !important;
+
+    border-radius: 14px !important;
+    z-index: 6 !important;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
