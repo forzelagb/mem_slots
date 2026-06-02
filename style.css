@@ -22933,6 +22933,45 @@ body.gl-compact .screen {
     border-radius: 14px !important;
     z-index: 6 !important;
 }
+.profile-level {
+    position: absolute;
+    top: 14%;
+    left: 31%;
+    font-size: 34px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 15px #ff3bd4;
+    z-index: 5;
+}
+
+.profile-xp-bar {
+    position: absolute;
+    top: 22%;
+    left: 39%;
+    width: 250px;
+    height: 16px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.profile-xp-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff3bd4, #8b3dff);
+    border-radius: 20px;
+    box-shadow: 0 0 14px #ff3bd4;
+}
+
+.profile-xp-text {
+    position: absolute;
+    top: 21%;
+    left: 66%;
+    font-size: 18px;
+    color: white;
+    z-index: 5;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

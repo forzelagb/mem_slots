@@ -10690,6 +10690,44 @@ function loadProfileStats() {
 }
 
 document.addEventListener("DOMContentLoaded", loadProfileStats);
+function getProfileLevelData() {
+    const xp = Number(localStorage.getItem("profileXP") || 0);
+    const xpPerLevel = 500;
+
+    const level = Math.floor(xp / xpPerLevel) + 1;
+    const currentXp = xp % xpPerLevel;
+    const percent = (currentXp / xpPerLevel) * 100;
+
+    return {
+        xp,
+        level,
+        currentXp,
+        xpPerLevel,
+        percent
+    };
+}
+
+function loadProfileLevel() {
+    const levelEl = document.getElementById("profileLevel");
+    const fillEl = document.getElementById("profileXpFill");
+    const textEl = document.getElementById("profileXpText");
+
+    if (!levelEl || !fillEl || !textEl) return;
+
+    const data = getProfileLevelData();
+
+    levelEl.textContent = data.level;
+    fillEl.style.width = data.percent + "%";
+    textEl.textContent = `${data.currentXp} / ${data.xpPerLevel} XP`;
+}
+
+function addProfileXP(amount) {
+    const current = Number(localStorage.getItem("profileXP") || 0);
+    localStorage.setItem("profileXP", current + amount);
+    loadProfileLevel();
+}
+
+document.addEventListener("DOMContentLoaded", loadProfileLevel);
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
