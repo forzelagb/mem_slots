@@ -10967,6 +10967,17 @@ function showCollectionTab(tabName) {
         rewardsBtn.classList.add("active");
     }
 }
+function claimReward(button){
+
+    if(button.classList.contains("claimed")){
+        return;
+    }
+
+    button.textContent = "Получено";
+    button.classList.add("claimed");
+
+    button.disabled = true;
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

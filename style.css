@@ -23616,6 +23616,34 @@ body.gl-compact .screen {
     border-radius:999px;
     background:linear-gradient(90deg,#7b2fff,#ffb428);
 }
+.reward-point img{
+    width:70px;
+    height:70px;
+    object-fit:contain;
+}
+.reward-claim-btn{
+    border:none;
+    cursor:pointer;
+
+    margin-top:8px;
+
+    padding:8px 12px;
+
+    border-radius:10px;
+
+    background:#7b2fff;
+    color:white;
+
+    font-family:inherit;
+    font-size:13px;
+}
+
+.reward-claim-btn:hover{
+    opacity:.9;
+}
+.reward-claim-btn.claimed{
+    background:#2e8b57;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
