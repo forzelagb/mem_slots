@@ -83,13 +83,13 @@
 
             <div class="collection-modal-tabs">
 
-                <button class="collection-modal-tab active">
-                    Карточки
-                </button>
+<button id="collectionCardsBtn" class="collection-modal-tab active" onclick="showCollectionTab('cards')">
+    Карточки
+</button>
 
-                <button class="collection-modal-tab">
-                    Награды
-                </button>
+<button id="collectionRewardsBtn" class="collection-modal-tab" onclick="showCollectionTab('rewards')">
+    Награды
+</button>
 
             </div>
 
@@ -97,7 +97,7 @@
                 HELIN
             </h2>
 
-            <div class="collection-rarity-grid">
+<div id="collectionCardsTab" class="collection-rarity-grid">
 
                 <div class="rarity-card common">
                     <h3>COMMON</h3>
@@ -120,6 +120,91 @@
                 </div>
 
             </div>
+            <div id="collectionRewardsTab" class="collection-rewards-tab">
+
+    <div class="reward-track">
+        <div class="reward-track-info">
+            <h3>РЕСУРСЫ</h3>
+            <p>Золото, энергия, гемы</p>
+        </div>
+
+        <div class="reward-line">
+            <div class="reward-point active">
+                <span>🪙</span>
+                <b>10%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>⚡</span>
+                <b>25%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>🪙</span>
+                <b>50%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>💎</span>
+                <b>75%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>⚡</span>
+                <b>100%</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="reward-track">
+        <div class="reward-track-info">
+            <h3>КЕЙСЫ</h3>
+            <p>Дополнительные награды</p>
+        </div>
+
+        <div class="reward-line">
+            <div class="reward-point active">
+                <span>🎁</span>
+                <b>10%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>🎁</span>
+                <b>30%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>📦</span>
+                <b>50%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>📦</span>
+                <b>75%</b>
+            </div>
+
+            <div class="reward-point">
+                <span>💼</span>
+                <b>100%</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="mastery-track">
+        <div>
+            <h3>МАСТЕРСТВО</h3>
+            <p>После 100% коллекции каждые 100 очков дают случайную награду</p>
+        </div>
+
+        <div class="mastery-progress">
+            <span>27 / 100</span>
+            <div>
+                <i style="width:27%"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
 
         </div>
 

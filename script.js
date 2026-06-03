@@ -10942,6 +10942,31 @@ function closeCollectionModal() {
 
     modal.classList.remove("active");
 }
+function showCollectionTab(tabName) {
+    const cardsTab = document.getElementById("collectionCardsTab");
+    const rewardsTab = document.getElementById("collectionRewardsTab");
+
+    const cardsBtn = document.getElementById("collectionCardsBtn");
+    const rewardsBtn = document.getElementById("collectionRewardsBtn");
+
+    if (!cardsTab || !rewardsTab) return;
+
+    if (tabName === "cards") {
+        cardsTab.classList.remove("hidden");
+        rewardsTab.classList.remove("active");
+
+        cardsBtn.classList.add("active");
+        rewardsBtn.classList.remove("active");
+    }
+
+    if (tabName === "rewards") {
+        cardsTab.classList.add("hidden");
+        rewardsTab.classList.add("active");
+
+        cardsBtn.classList.remove("active");
+        rewardsBtn.classList.add("active");
+    }
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
