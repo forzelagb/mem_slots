@@ -10876,6 +10876,7 @@ function renderCollectionCards(sortType = "all") {
     characters.forEach(character => {
         const card = document.createElement("div");
         card.className = "collection-card";
+        card.onclick = () => openCollectionModal(character);
 const progress = getCollectionProgress(character.key);
         card.innerHTML = `
             <img src="${character.image}" alt="${character.name}">
@@ -10915,6 +10916,32 @@ const progress = getCollectionProgress(character.key);
 document.addEventListener("DOMContentLoaded", () => {
     renderCollectionCards("all");
 });
+function openCollectionModal(character) {
+    const modal = document.getElementById("collectionModal");
+    const image = document.getElementById("collectionModalImage");
+    const title = document.getElementById("collectionModalTitle");
+    const progressText = document.getElementById("collectionModalProgress");
+    const progressFill = document.getElementById("collectionModalProgressFill");
+
+    if (!modal) return;
+
+    const progress = getCollectionProgress(character.key);
+
+    image.src = character.image;
+    title.textContent = `КОЛЛЕКЦИЯ КАРТОЧЕК ${character.name}`;
+    progressText.textContent = `${progress}%`;
+    progressFill.style.width = `${progress}%`;
+
+    modal.classList.add("active");
+}
+
+function closeCollectionModal() {
+    const modal = document.getElementById("collectionModal");
+
+    if (!modal) return;
+
+    modal.classList.remove("active");
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

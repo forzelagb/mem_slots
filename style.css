@@ -23170,19 +23170,15 @@ body.gl-compact .screen {
 }
 
 .collection-card{
-    overflow:hidden;
-    height:360px;
+    height:420px;
     position:relative;
+    overflow:hidden;
 
     border-radius:20px;
-
-    background:rgba(255,255,255,0.04);
-
     border:1px solid rgba(255,255,255,0.08);
 
-    transition:.25s;
-
     cursor:pointer;
+    transition:.25s;
 }
 
 .collection-card:hover{
@@ -23191,14 +23187,14 @@ body.gl-compact .screen {
 }
 
 .collection-card img{
+    position:absolute;
+    inset:0;
+
     width:100%;
     height:100%;
+
     object-fit:cover;
     display:block;
-}
-
-.collection-card-body{
-    padding:18px;
 }
 
 .collection-card-name{
@@ -23271,14 +23267,259 @@ body.gl-compact .screen {
     right:0;
     bottom:0;
 
-    padding:22px;
+    padding:20px;
 
     background:linear-gradient(
         to top,
-        rgba(0,0,0,0.92),
-        rgba(0,0,0,0.55),
-        transparent
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.65) 40%,
+        rgba(0,0,0,0.15) 75%,
+        transparent 100%
     );
+}
+/* ========================================
+   COLLECTION MODAL
+======================================== */
+
+.collection-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:40px;
+
+    background:rgba(0,0,0,0.45);
+    backdrop-filter:blur(10px);
+}
+
+.collection-modal.active{
+    display:flex;
+}
+
+.collection-modal-window{
+    position:relative;
+
+    width:min(1050px, 95vw);
+    min-height:520px;
+
+    display:grid;
+    grid-template-columns:380px 1fr;
+
+    overflow:hidden;
+
+    border-radius:24px;
+
+    background:rgba(10,10,18,0.94);
+    border:1px solid rgba(160,80,255,0.45);
+
+    box-shadow:
+        0 0 40px rgba(123,47,255,0.35),
+        0 30px 80px rgba(0,0,0,0.65);
+}
+
+.collection-modal-close{
+    position:absolute;
+    top:20px;
+    right:24px;
+    z-index:5;
+
+    width:42px;
+    height:42px;
+
+    border:none;
+    cursor:pointer;
+
+    background:transparent;
+    color:#fff;
+
+    font-size:34px;
+    opacity:.7;
+}
+
+.collection-modal-close:hover{
+    opacity:1;
+}
+
+.collection-modal-left{
+    position:relative;
+    min-height:520px;
+
+    padding:28px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+}
+
+.collection-modal-left::after{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.55) 45%,
+        rgba(0,0,0,0.05) 100%
+    );
+
+    z-index:1;
+}
+
+.collection-modal-left img{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+}
+
+.collection-modal-progress,
+.collection-modal-left .collection-progress-bar{
+    position:relative;
+    z-index:2;
+}
+
+.collection-modal-progress{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:14px;
+
+    font-size:18px;
+}
+
+.collection-modal-progress b{
+    color:#b66cff;
+    font-size:28px;
+}
+
+.collection-modal-right{
+    padding:50px 44px;
+}
+
+.collection-modal-tabs{
+    display:flex;
+    width:360px;
+    padding:6px;
+
+    margin-bottom:36px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.05);
+}
+
+.collection-modal-tab{
+    flex:1;
+
+    padding:16px;
+
+    border:none;
+    border-radius:12px;
+
+    color:#fff;
+    background:transparent;
+
+    font-family:inherit;
+    font-size:16px;
+
+    cursor:pointer;
+}
+
+.collection-modal-tab.active{
+    background:linear-gradient(135deg,#7b2fff,#9d4dff);
+    box-shadow:0 0 20px rgba(123,47,255,0.45);
+}
+
+.collection-modal-right h2{
+    font-size:30px;
+    margin-bottom:28px;
+}
+
+.collection-rarity-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.rarity-card{
+    min-height:250px;
+
+    padding:18px 12px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.035);
+    border:1px solid rgba(255,255,255,0.12);
+}
+
+.rarity-card h3{
+    font-size:18px;
+}
+
+.rarity-card span{
+    font-size:34px;
+}
+
+.rarity-card::before{
+    content:"";
+    width:78px;
+    height:110px;
+
+    border-radius:12px;
+
+    background:
+        linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04));
+
+    border:1px solid rgba(255,255,255,0.25);
+
+    transform:rotate(8deg);
+}
+
+.rarity-card.common{
+    color:#d8d8d8;
+}
+
+.rarity-card.rare{
+    color:#41a6ff;
+    border-color:rgba(65,166,255,0.45);
+}
+
+.rarity-card.epic{
+    color:#b04cff;
+    border-color:rgba(176,76,255,0.45);
+}
+
+.rarity-card.legendary{
+    color:#ffb428;
+    border-color:rgba(255,180,40,0.5);
+}
+
+@media(max-width:900px){
+    .collection-modal-window{
+        grid-template-columns:1fr;
+    }
+
+    .collection-modal-left{
+        min-height:300px;
+    }
+
+    .collection-rarity-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }

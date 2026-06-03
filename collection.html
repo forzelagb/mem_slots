@@ -46,7 +46,86 @@
 
         <div id="collectionCardsGrid" class="collection-cards-grid"></div>
     </main>
+<div id="collectionModal" class="collection-modal">
 
+    <div class="collection-modal-window">
+
+        <button class="collection-modal-close"
+                onclick="closeCollectionModal()">
+            ✕
+        </button>
+
+        <div class="collection-modal-left">
+
+            <img id="collectionModalImage"
+                 src=""
+                 alt="">
+
+            <div class="collection-modal-progress">
+
+                <span>Общий прогресс</span>
+
+                <b id="collectionModalProgress">
+                    0%
+                </b>
+
+            </div>
+
+            <div class="collection-progress-bar">
+                <div id="collectionModalProgressFill"
+                     class="collection-progress-fill">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="collection-modal-right">
+
+            <div class="collection-modal-tabs">
+
+                <button class="collection-modal-tab active">
+                    Карточки
+                </button>
+
+                <button class="collection-modal-tab">
+                    Награды
+                </button>
+
+            </div>
+
+            <h2 id="collectionModalTitle">
+                HELIN
+            </h2>
+
+            <div class="collection-rarity-grid">
+
+                <div class="rarity-card common">
+                    <h3>COMMON</h3>
+                    <span>0%</span>
+                </div>
+
+                <div class="rarity-card rare">
+                    <h3>RARE</h3>
+                    <span>0%</span>
+                </div>
+
+                <div class="rarity-card epic">
+                    <h3>EPIC</h3>
+                    <span>0%</span>
+                </div>
+
+                <div class="rarity-card legendary">
+                    <h3>LEGENDARY</h3>
+                    <span>0%</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
     <script src="script.js"></script>
 </body>
 </html>
