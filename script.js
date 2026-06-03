@@ -10940,6 +10940,7 @@ function openCollectionModal(character) {
     progressFill.style.width = `${progress}%`;
 
     updateCollectionRarityProgress(character.key);
+    
     renderCollectionRewardRoad(character.key);
 
     showCollectionTab("cards");

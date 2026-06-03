@@ -23769,6 +23769,25 @@ grid-template-columns:340px 1fr;
     align-items:center;
     justify-content:center;
 }
+.collection-reward-road{
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding-bottom:22px;
+}
+
+.collection-reward-road::-webkit-scrollbar{
+    height:10px;
+}
+
+.collection-reward-road::-webkit-scrollbar-track{
+    background:rgba(255,255,255,0.08);
+    border-radius:999px;
+}
+
+.collection-reward-road::-webkit-scrollbar-thumb{
+    background:linear-gradient(90deg,#7b2fff,#ff3bd4);
+    border-radius:999px;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
