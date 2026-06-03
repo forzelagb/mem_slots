@@ -23040,6 +23040,229 @@ body.gl-compact .screen {
     width: 300px;
     height: 75px;
 }
+/* ========================================
+   COLLECTION PAGE
+======================================== */
+
+.collection-page{
+    font-family:'Russo One',sans-serif;
+    min-height:100vh;
+    color:#fff;
+}
+
+.collection-header{
+    width:100%;
+    max-width:1400px;
+    margin:20px auto 0;
+    padding:16px 24px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;
+
+    backdrop-filter:blur(10px);
+}
+
+.collection-logo img{
+    height:60px;
+}
+
+.collection-header-resources{
+    display:flex;
+    gap:12px;
+}
+
+.collection-resource{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.collection-resource b{
+    color:#ff3bd4;
+}
+
+.collection-home-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    width:max-content;
+
+    margin:20px auto 0;
+    padding:14px 22px;
+
+    text-decoration:none;
+    color:#fff;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:.25s;
+}
+
+.collection-home-btn:hover{
+    transform:translateY(-2px);
+}
+
+.collection-main{
+    max-width:1400px;
+    margin:40px auto;
+}
+
+.collection-title-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:40px;
+}
+
+.collection-title-row h1{
+    font-size:56px;
+    margin-bottom:12px;
+}
+
+.collection-title-row p{
+    color:rgba(255,255,255,0.65);
+}
+
+.collection-filters{
+    display:flex;
+    gap:12px;
+}
+
+.collection-filter-btn{
+    border:none;
+    cursor:pointer;
+
+    padding:14px 24px;
+
+    border-radius:14px;
+
+    color:#fff;
+
+    background:rgba(255,255,255,0.05);
+
+    font-family:inherit;
+}
+
+.collection-filter-btn.active{
+    background:#7b2fff;
+}
+
+.collection-cards-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+}
+
+.collection-card{
+    overflow:hidden;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    transition:.25s;
+
+    cursor:pointer;
+}
+
+.collection-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 25px rgba(123,47,255,.35);
+}
+
+.collection-card img{
+    width:100%;
+    height:250px;
+    object-fit:cover;
+    display:block;
+}
+
+.collection-card-body{
+    padding:18px;
+}
+
+.collection-card-name{
+    font-size:28px;
+    margin-bottom:14px;
+}
+
+.collection-progress-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+
+.collection-progress-bar{
+    height:12px;
+    border-radius:999px;
+
+    background:rgba(255,255,255,0.08);
+
+    overflow:hidden;
+}
+
+.collection-progress-fill{
+    height:100%;
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        #7b2fff,
+        #ff3bd4
+    );
+}
+
+@media(max-width:1200px){
+
+.collection-cards-grid{
+    grid-template-columns:repeat(3,1fr);
+}
+
+}
+
+@media(max-width:900px){
+
+.collection-cards-grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.collection-title-row{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+}
+
+}
+
+@media(max-width:600px){
+
+.collection-cards-grid{
+    grid-template-columns:1fr;
+}
+
+.collection-title-row h1{
+    font-size:40px;
+}
+
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

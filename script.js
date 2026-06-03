@@ -10802,6 +10802,119 @@ function selectCurrentCharacter() {
     loadProfileCharacter();
     closeCharacterModal();
 }
+/* ========================================
+   COLLECTION PAGE
+======================================== */
+
+const collectionCharacters = [
+    {
+        name: "HELIN",
+        image: "image/ui/gl/card-helin.png",
+        key: "helin"
+    },
+    {
+        name: "SASAVOT",
+        image: "image/ui/gl/card-sasavot.png",
+        key: "sasavot"
+    },
+    {
+        name: "LEXA PAWS",
+        image: "image/ui/gl/card-lexapaws.png",
+        key: "lexapaws"
+    },
+    {
+        name: "REJIBOY",
+        image: "image/ui/gl/card-rejiboy.png",
+        key: "rejiboy"
+    },
+    {
+        name: "ROSTIK",
+        image: "image/ui/gl/card-rostik.png",
+        key: "rostik"
+    },
+    {
+        name: "NIKKIFN",
+        image: "image/ui/gl/card-nikkifn.png",
+        key: "nikkifn"
+    },
+    {
+        name: "MELSTROY",
+        image: "image/ui/gl/card-melstroy.png",
+        key: "melstroy"
+    },
+    {
+        name: "LITVIN",
+        image: "image/ui/gl/card-litvin.png",
+        key: "litvin"
+    }
+];
+function getCollectionProgress(characterKey) {
+    const savedProgress = localStorage.getItem(`collection_progress_${characterKey}`);
+
+    if (savedProgress === null) {
+        return 0;
+    }
+
+    return Number(savedProgress);
+}
+
+function renderCollectionCards(sortType = "all") {
+    const grid = document.getElementById("collectionCardsGrid");
+
+    if (!grid) return;
+
+    let characters = [...collectionCharacters];
+
+    if (sortType === "progress") {
+        characters.sort((a, b) => {
+    return getCollectionProgress(b.key) - getCollectionProgress(a.key);
+});
+    }
+
+    grid.innerHTML = "";
+
+    characters.forEach(character => {
+        const card = document.createElement("div");
+        card.className = "collection-card";
+const progress = getCollectionProgress(character.key);
+        card.innerHTML = `
+            <img src="${character.image}" alt="${character.name}">
+
+            <div class="collection-card-body">
+                <div class="collection-card-name">${character.name}</div>
+
+                <div class="collection-progress-top">
+                    <span>Прогресс</span>
+                    <span>${progress}%</span>
+                </div>
+
+                <div class="collection-progress-bar">
+                    <div class="collection-progress-fill" style="width:${progress}%"></div>
+                </div>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+    const buttons = document.querySelectorAll(".collection-filter-btn");
+
+    buttons.forEach(button => {
+        button.classList.remove("active");
+    });
+
+    if (sortType === "all") {
+        buttons[0]?.classList.add("active");
+    }
+
+    if (sortType === "progress") {
+        buttons[1]?.classList.add("active");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderCollectionCards("all");
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
