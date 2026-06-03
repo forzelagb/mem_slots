@@ -10824,12 +10824,12 @@ const collectionCharacters = [
     },
     {
         name: "REJIBOY",
-        image: "image/ui/gl/card-rejiboy.png",
+        image: "image/ui/gl/card-rejiboi.png",
         key: "rejiboy"
     },
     {
         name: "ROSTIK",
-        image: "image/ui/gl/card-rostik.png",
+        image: "image/ui/gl/card-rostick.png",
         key: "rostik"
     },
     {
@@ -10844,7 +10844,7 @@ const collectionCharacters = [
     },
     {
         name: "LITVIN",
-        image: "image/ui/gl/card-litvin.png",
+        image: "image/ui/gl/card-litwin.png",
         key: "litvin"
     }
 ];
