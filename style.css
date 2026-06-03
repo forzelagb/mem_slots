@@ -23644,6 +23644,131 @@ grid-template-columns:340px 1fr;
 .reward-claim-btn.claimed{
     background:#2e8b57;
 }
+.collection-score-box{
+    padding:18px;
+    border-radius:18px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.collection-score-box h3{
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+.collection-score-box p{
+    color:rgba(255,255,255,0.6);
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.collection-score-value{
+    color:#b66cff;
+    font-size:22px;
+}
+
+.collection-reward-road{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding:8px 4px 16px;
+    scroll-behavior:smooth;
+}
+
+.road-reward{
+    min-width:130px;
+    min-height:190px;
+
+    padding:14px;
+
+    border-radius:18px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+
+    background:rgba(255,255,255,0.035);
+    border:1px solid rgba(255,255,255,0.1);
+
+    opacity:.45;
+}
+
+.road-reward.active{
+    opacity:1;
+    border-color:#7b2fff;
+    box-shadow:0 0 18px rgba(123,47,255,.35);
+}
+
+.road-reward.claimed{
+    border-color:#2e8b57;
+}
+
+.road-reward-need{
+    font-size:18px;
+    color:#fff;
+}
+
+.road-reward img{
+    width:70px;
+    height:70px;
+    object-fit:contain;
+}
+
+.road-reward-amount{
+    color:#fff;
+    font-size:15px;
+}
+
+.road-reward button{
+    border:none;
+    cursor:pointer;
+
+    padding:8px 10px;
+    border-radius:10px;
+
+    background:#7b2fff;
+    color:white;
+
+    font-family:inherit;
+    font-size:12px;
+}
+
+.road-reward button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.road-reward.claimed button{
+    background:#2e8b57;
+}
+.road-reward{
+    cursor:pointer;
+}
+
+.road-reward:not(.active){
+    cursor:not-allowed;
+}
+
+.road-reward.claimed{
+    opacity:.45;
+}
+
+.road-reward-status{
+    font-size:14px;
+    color:#b66cff;
+}
+
+.road-reward.claimed .road-reward-status{
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:#2e8b57;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

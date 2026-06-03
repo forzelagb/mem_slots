@@ -10130,7 +10130,7 @@ function getCollectThemeFolder() {
 }
 
 function getCollectDataTheme() {
-  return getCollectThemeFromUrl();
+  return normalizeCollectionKey(getCollectThemeFromUrl());
 }
 
 function getRandomInt(min, max) {
@@ -10365,52 +10365,35 @@ function flipCollectCard(card) {
 }
 
 function saveCollectRewards() {
-  if (collectRewardSaved) return;
+    if (collectRewardSaved) return;
+    if (!lastCollectRewards || lastCollectRewards.length === 0) return;
 
-  const progressSave = JSON.parse(localStorage.getItem("mcc_collect_progress") || "{}");
-addProfileStat("profileCards", lastCollectRewards.length);
-  lastCollectRewards.forEach(reward => {
-    if (!progressSave[reward.theme]) {
-      progressSave[reward.theme] = {
-        common: 0,
-        rare: 0,
-        epic: 0,
-        legendary: 0
-      };
-    }
+    addProfileStat("profileCards", lastCollectRewards.length);
 
-    progressSave[reward.theme][reward.rarity] += reward.progress;
+    lastCollectRewards.forEach(reward => {
+        const themeKey = normalizeCollectionKey(reward.theme);
 
-    if (window.playerData) {
-      if (!playerData.cards) playerData.cards = {};
+        const rarityKey = `collection_${themeKey}_${reward.rarity}`;
+        const currentRarityPoints = Number(localStorage.getItem(rarityKey)) || 0;
 
-      const oldFile = rarityToOldCard[reward.rarity] || "1.jpg";
-      const oldSrc = `image/${reward.theme}/${oldFile}`;
+        localStorage.setItem(
+            rarityKey,
+            currentRarityPoints + reward.progress
+        );
 
-      let cardKey;
+        const scoreKey = `collection_score_${themeKey}`;
+        const currentScore = Number(localStorage.getItem(scoreKey)) || 0;
 
-      if (typeof getCardKey === "function") {
-        cardKey = getCardKey(reward.theme, oldSrc);
-      } else {
-        cardKey = `${reward.theme}:${oldFile}`;
-      }
+        localStorage.setItem(
+            scoreKey,
+            currentScore + reward.progress
+        );
+    });
 
-      if (!playerData.cards[cardKey]) playerData.cards[cardKey] = 0;
-      playerData.cards[cardKey] += reward.progress;
+    if (typeof savePlayer === "function") savePlayer();
+    if (typeof updateUI === "function") updateUI();
 
-      if (playerData.stats) {
-        playerData.stats.totalCardsCollected =
-          (playerData.stats.totalCardsCollected || 0) + 1;
-      }
-    }
-  });
-
-  localStorage.setItem("mcc_collect_progress", JSON.stringify(progressSave));
-
-  if (typeof savePlayer === "function") savePlayer();
-  if (typeof updateUI === "function") updateUI();
-
-  collectRewardSaved = true;
+    collectRewardSaved = true;
 }
 
 function showCollectResult() {
@@ -10483,6 +10466,7 @@ function resetCollectScene() {
 }
 
 function closeCollectResult() {
+
   const modal = document.getElementById("collectResultModal");
   if (modal) modal.classList.remove("show");
 
@@ -10490,6 +10474,7 @@ function closeCollectResult() {
 }
 
 function openAgainCollect() {
+
   const modal = document.getElementById("collectResultModal");
   if (modal) modal.classList.remove("show");
 
@@ -10850,22 +10835,34 @@ const collectionCharacters = [
         key: "litvin"
     }
 ];
-function getRarityProgress(characterKey, rarity) {
+function getRarityPoints(characterKey, rarity) {
+    characterKey = normalizeCollectionKey(characterKey);
     return Number(localStorage.getItem(`collection_${characterKey}_${rarity}`)) || 0;
 }
 
-function getCollectionProgress(characterKey) {
-    const common = getRarityProgress(characterKey, "common");
-    const rare = getRarityProgress(characterKey, "rare");
-    const epic = getRarityProgress(characterKey, "epic");
-    const legendary = getRarityProgress(characterKey, "legendary");
+function getRarityPercent(characterKey, rarity) {
+    const points = getRarityPoints(characterKey, rarity);
+    const limit = COLLECTION_LIMITS[rarity] || 10000;
 
-    const total = common + rare + epic + legendary;
-    const percent = Math.floor(total / 4);
-
-    return Math.min(percent, 100);
+    return Math.min(100, Math.floor((points / limit) * 100));
 }
 
+function getCollectionProgress(characterKey) {
+    characterKey = normalizeCollectionKey(characterKey);
+
+    const rarities = ["common", "rare", "epic", "legendary"];
+
+    const totalPercent = rarities.reduce((sum, rarity) => {
+        return sum + getRarityPercent(characterKey, rarity);
+    }, 0);
+
+    return Math.floor(totalPercent / rarities.length);
+}
+
+function getCollectionScore(characterKey) {
+    characterKey = normalizeCollectionKey(characterKey);
+    return Number(localStorage.getItem(`collection_score_${characterKey}`)) || 0;
+}
 function renderCollectionCards(sortType = "all") {
     const grid = document.getElementById("collectionCardsGrid");
 
@@ -10943,24 +10940,30 @@ function openCollectionModal(character) {
     progressFill.style.width = `${progress}%`;
 
     updateCollectionRarityProgress(character.key);
-    updateCollectionRewardButtons(character.key);
+    renderCollectionRewardRoad(character.key);
 
     showCollectionTab("cards");
 
     modal.classList.add("active");
 }
 function updateCollectionRarityProgress(characterKey) {
+    characterKey = normalizeCollectionKey(characterKey);
+
     const rarities = ["common", "rare", "epic", "legendary"];
 
     rarities.forEach(rarity => {
         const card = document.querySelector(`.rarity-card.${rarity}`);
         if (!card) return;
 
-        const progress = getRarityProgress(characterKey, rarity);
+        const percent = getRarityPercent(characterKey, rarity);
+        const points = getRarityPoints(characterKey, rarity);
+        const limit = COLLECTION_LIMITS[rarity];
+
         const span = card.querySelector("span");
 
         if (span) {
-            span.textContent = `${Math.min(progress, 100)}%`;
+            span.textContent = `${percent}%`;
+            span.title = `${points} / ${limit}`;
         }
     });
 }
@@ -10997,23 +11000,51 @@ function showCollectionTab(tabName) {
         rewardsBtn.classList.add("active");
     }
 }
-function claimReward(button, rewardType, rewardAmount) {
-    if (!currentCollectionCharacter) return;
+function renderCollectionRewardRoad(characterKey) {
+    characterKey = normalizeCollectionKey(characterKey);
 
-    const characterKey = currentCollectionCharacter.key;
-    const percent = button.dataset.percent;
+    const road = document.getElementById("collectionRewardRoad");
+    const scoreValue = document.getElementById("collectionScoreValue");
 
-    const rewardKey = `reward_${characterKey}_${rewardType}_${percent}`;
+    if (!road) return;
 
-    if (localStorage.getItem(rewardKey) === "claimed") {
-        return;
+    const score = getCollectionScore(characterKey);
+
+    if (scoreValue) {
+        scoreValue.textContent = score;
     }
 
-    const collectionProgress = getCollectionProgress(characterKey);
+    road.innerHTML = COLLECTION_REWARD_MILESTONES.map(reward => {
+        const rewardKey = `reward_${characterKey}_${reward.need}_${reward.type}`;
+        const claimed = localStorage.getItem(rewardKey) === "claimed";
+        const available = score >= reward.need;
 
-    if (collectionProgress < Number(percent)) {
-        return;
-    }
+        return `
+            <div class="road-reward ${available ? "active" : ""} ${claimed ? "claimed" : ""}"
+                 onclick="claimRoadReward('${characterKey}', ${reward.need}, '${reward.type}', ${reward.amount})">
+
+                <div class="road-reward-need">${reward.need}</div>
+
+                <img src="${reward.image}" alt="">
+
+                <div class="road-reward-amount">x${reward.amount}</div>
+
+                <div class="road-reward-status">
+                    ${claimed ? "✓" : available ? "ЗАБРАТЬ" : "🔒"}
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function claimRoadReward(characterKey, need, rewardType, rewardAmount) {
+    characterKey = normalizeCollectionKey(characterKey);
+
+    const score = getCollectionScore(characterKey);
+    const rewardKey = `reward_${characterKey}_${need}_${rewardType}`;
+
+    if (score < need) return;
+    if (localStorage.getItem(rewardKey) === "claimed") return;
 
     if (rewardType === "gold") {
         addPlayerResource("gold", rewardAmount);
@@ -11033,48 +11064,7 @@ function claimReward(button, rewardType, rewardAmount) {
 
     localStorage.setItem(rewardKey, "claimed");
 
-    button.textContent = "Получено";
-    button.classList.add("claimed");
-    button.disabled = true;
-
-    updateCollectionRewardButtons(characterKey);
-}
-function updateCollectionRewardButtons(characterKey) {
-    const progress = getCollectionProgress(characterKey);
-    const buttons = document.querySelectorAll(".reward-claim-btn");
-
-    buttons.forEach(button => {
-        const percent = Number(button.dataset.percent);
-        const rewardType = button.getAttribute("onclick").split("'")[1];
-        const rewardKey = `reward_${characterKey}_${rewardType}_${percent}`;
-
-        const isAvailable = progress >= percent;
-        const isClaimed = localStorage.getItem(rewardKey) === "claimed";
-
-        const point = button.closest(".reward-point");
-
-        if (point) {
-            point.classList.toggle("active", isAvailable);
-        }
-
-        if (isClaimed) {
-            button.textContent = "Получено";
-            button.classList.add("claimed");
-            button.disabled = true;
-            return;
-        }
-
-        if (!isAvailable) {
-            button.textContent = "Закрыто";
-            button.disabled = true;
-            button.classList.remove("claimed");
-            return;
-        }
-
-        button.textContent = "Забрать";
-        button.disabled = false;
-        button.classList.remove("claimed");
-    });
+    renderCollectionRewardRoad(characterKey);
 }
 function addPlayerResource(resourceKey, amount){
     const currentValue = Number(localStorage.getItem(resourceKey)) || 0;
@@ -11107,6 +11097,62 @@ function updateCollectionHeaderResources(){
     if(gemsEl) gemsEl.textContent = gems;
     if(energyEl) energyEl.textContent = energy + "/100";
 }
+
+const COLLECTION_LIMITS = {
+    common: 12000,
+    rare: 7000,
+    epic: 3500,
+    legendary: 1200
+};
+
+const THEME_KEY_MAP = {
+    sasich: "sasavot",
+    sasavot: "sasavot",
+
+    rejiboi: "rejiboy",
+    rejiboy: "rejiboy",
+
+    rostick: "rostik",
+    rostik: "rostik",
+
+    litwin: "litvin",
+    litvin: "litvin",
+
+    helin: "helin",
+    lexapaws: "lexapaws",
+    melstroy: "melstroy",
+    nikkifn: "nikkifn"
+};
+
+function normalizeCollectionKey(theme) {
+    return THEME_KEY_MAP[theme] || theme;
+}
+
+const COLLECTION_REWARD_MILESTONES = [
+    { need: 50, type: "gold", amount: 100, image: "image/ui/gold.png" },
+    { need: 100, type: "energy", amount: 10, image: "image/ui/energy-50.png" },
+    { need: 200, type: "gold", amount: 200, image: "image/ui/gold.png" },
+    { need: 350, type: "gems", amount: 10, image: "image/ui/gems-100.png" },
+    { need: 500, type: "chest_common", amount: 1, image: "image/ui/chest-common.png" },
+
+    { need: 750, type: "energy", amount: 25, image: "image/ui/energy-50.png" },
+    { need: 1000, type: "gems", amount: 200, image: "image/ui/gems-550.png" },
+    { need: 1300, type: "gold", amount: 500, image: "image/ui/gold.png" },
+    { need: 1700, type: "chest_rare", amount: 1, image: "image/ui/chest-rare.png" },
+    { need: 2200, type: "energy", amount: 50, image: "image/ui/energy-120.png" },
+
+    { need: 3000, type: "gold", amount: 1000, image: "image/ui/gold.png" },
+    { need: 4000, type: "gems", amount: 100, image: "image/ui/gems-550.png" },
+    { need: 5500, type: "chest_epic", amount: 1, image: "image/ui/chest-epic.png" },
+    { need: 7000, type: "energy", amount: 100, image: "image/ui/energy-120.png" },
+    { need: 9000, type: "chest_legendary", amount: 1, image: "image/ui/chest-legendary.png" },
+
+    { need: 12000, type: "gems", amount: 250, image: "image/ui/gems-1200.png" },
+    { need: 15000, type: "gold", amount: 2500, image: "image/ui/gold.png" },
+    { need: 20000, type: "chest_epic", amount: 2, image: "image/ui/chest-epic.png" },
+    { need: 30000, type: "gems", amount: 500, image: "image/ui/gems-2500.png" },
+    { need: 50000, type: "chest_legendary", amount: 3, image: "image/ui/chest-legendary.png" }
+];
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
