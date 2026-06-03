@@ -8803,7 +8803,9 @@ function selectInventoryItem(index) {
 
 document.addEventListener("DOMContentLoaded", () => {
     renderInventoryItems();
+    updateCollectionHeaderResources();
 });
+let currentCollectionCharacter = null;
 const inventoryItems = [
     {
         name: "Common ткань",
@@ -10848,14 +10850,20 @@ const collectionCharacters = [
         key: "litvin"
     }
 ];
+function getRarityProgress(characterKey, rarity) {
+    return Number(localStorage.getItem(`collection_${characterKey}_${rarity}`)) || 0;
+}
+
 function getCollectionProgress(characterKey) {
-    const savedProgress = localStorage.getItem(`collection_progress_${characterKey}`);
+    const common = getRarityProgress(characterKey, "common");
+    const rare = getRarityProgress(characterKey, "rare");
+    const epic = getRarityProgress(characterKey, "epic");
+    const legendary = getRarityProgress(characterKey, "legendary");
 
-    if (savedProgress === null) {
-        return 0;
-    }
+    const total = common + rare + epic + legendary;
+    const percent = Math.floor(total / 4);
 
-    return Number(savedProgress);
+    return Math.min(percent, 100);
 }
 
 function renderCollectionCards(sortType = "all") {
@@ -10925,6 +10933,8 @@ function openCollectionModal(character) {
 
     if (!modal) return;
 
+    currentCollectionCharacter = character;
+
     const progress = getCollectionProgress(character.key);
 
     image.src = character.image;
@@ -10932,7 +10942,27 @@ function openCollectionModal(character) {
     progressText.textContent = `${progress}%`;
     progressFill.style.width = `${progress}%`;
 
+    updateCollectionRarityProgress(character.key);
+    updateCollectionRewardButtons(character.key);
+
+    showCollectionTab("cards");
+
     modal.classList.add("active");
+}
+function updateCollectionRarityProgress(characterKey) {
+    const rarities = ["common", "rare", "epic", "legendary"];
+
+    rarities.forEach(rarity => {
+        const card = document.querySelector(`.rarity-card.${rarity}`);
+        if (!card) return;
+
+        const progress = getRarityProgress(characterKey, rarity);
+        const span = card.querySelector("span");
+
+        if (span) {
+            span.textContent = `${Math.min(progress, 100)}%`;
+        }
+    });
 }
 
 function closeCollectionModal() {
@@ -10967,16 +10997,115 @@ function showCollectionTab(tabName) {
         rewardsBtn.classList.add("active");
     }
 }
-function claimReward(button){
+function claimReward(button, rewardType, rewardAmount) {
+    if (!currentCollectionCharacter) return;
 
-    if(button.classList.contains("claimed")){
+    const characterKey = currentCollectionCharacter.key;
+    const percent = button.dataset.percent;
+
+    const rewardKey = `reward_${characterKey}_${rewardType}_${percent}`;
+
+    if (localStorage.getItem(rewardKey) === "claimed") {
         return;
     }
 
+    const collectionProgress = getCollectionProgress(characterKey);
+
+    if (collectionProgress < Number(percent)) {
+        return;
+    }
+
+    if (rewardType === "gold") {
+        addPlayerResource("gold", rewardAmount);
+    }
+
+    if (rewardType === "gems") {
+        addPlayerResource("gems", rewardAmount);
+    }
+
+    if (rewardType === "energy") {
+        addPlayerEnergy(rewardAmount);
+    }
+
+    if (rewardType.includes("chest")) {
+        addPlayerResource(rewardType, rewardAmount);
+    }
+
+    localStorage.setItem(rewardKey, "claimed");
+
     button.textContent = "Получено";
     button.classList.add("claimed");
-
     button.disabled = true;
+
+    updateCollectionRewardButtons(characterKey);
+}
+function updateCollectionRewardButtons(characterKey) {
+    const progress = getCollectionProgress(characterKey);
+    const buttons = document.querySelectorAll(".reward-claim-btn");
+
+    buttons.forEach(button => {
+        const percent = Number(button.dataset.percent);
+        const rewardType = button.getAttribute("onclick").split("'")[1];
+        const rewardKey = `reward_${characterKey}_${rewardType}_${percent}`;
+
+        const isAvailable = progress >= percent;
+        const isClaimed = localStorage.getItem(rewardKey) === "claimed";
+
+        const point = button.closest(".reward-point");
+
+        if (point) {
+            point.classList.toggle("active", isAvailable);
+        }
+
+        if (isClaimed) {
+            button.textContent = "Получено";
+            button.classList.add("claimed");
+            button.disabled = true;
+            return;
+        }
+
+        if (!isAvailable) {
+            button.textContent = "Закрыто";
+            button.disabled = true;
+            button.classList.remove("claimed");
+            return;
+        }
+
+        button.textContent = "Забрать";
+        button.disabled = false;
+        button.classList.remove("claimed");
+    });
+}
+function addPlayerResource(resourceKey, amount){
+    const currentValue = Number(localStorage.getItem(resourceKey)) || 0;
+    const newValue = currentValue + amount;
+
+    localStorage.setItem(resourceKey, newValue);
+
+    updateCollectionHeaderResources();
+}
+
+function addPlayerEnergy(amount){
+    const currentEnergy = Number(localStorage.getItem("player_energy")) || 100;
+    const newEnergy = currentEnergy + amount;
+
+    localStorage.setItem("player_energy", newEnergy);
+
+    updateCollectionHeaderResources();
+}
+
+function updateCollectionHeaderResources(){
+    const gold = Number(localStorage.getItem("gold")) || 0;
+    const gems = Number(localStorage.getItem("gems")) || 0;
+    const energy = Number(localStorage.getItem("player_energy")) || 100;
+
+    const goldEl = document.querySelector(".collection-resource:nth-child(2) span");
+    const gemsEl = document.querySelector(".collection-resource:nth-child(3) span");
+    const energyEl = document.querySelector(".collection-resource:nth-child(1) span");
+
+    if(goldEl) goldEl.textContent = gold;
+    if(gemsEl) gemsEl.textContent = gems;
+    if(energyEl) energyEl.textContent = energy + "/100";
 }
 //  ЗАПУСК
 window.onload = () => {

@@ -23303,11 +23303,11 @@ body.gl-compact .screen {
 .collection-modal-window{
     position:relative;
 
-    width:min(1050px, 95vw);
-    min-height:520px;
+width:min(980px, 92vw);
+min-height:480px;
+grid-template-columns:340px 1fr;
 
     display:grid;
-    grid-template-columns:380px 1fr;
 
     overflow:hidden;
 
@@ -23402,7 +23402,7 @@ body.gl-compact .screen {
 }
 
 .collection-modal-right{
-    padding:50px 44px;
+    padding:34px 36px;
 }
 
 .collection-modal-tabs{
@@ -23522,7 +23522,7 @@ body.gl-compact .screen {
 }
 
 .reward-track{
-    padding:22px;
+    padding:16px;
     border-radius:18px;
     background:rgba(255,255,255,0.035);
     border:1px solid rgba(255,255,255,0.1);
