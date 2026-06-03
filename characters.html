@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Персонажи</title>
+  <link rel="stylesheet" href="characters.css">
+</head>
+<body>
+
+  <header class="top-header">
+    <div class="profile-box">
+      <img src="image/ui/profile/avatar.png" class="avatar" alt="">
+      <div>
+        <h2>PLAYER</h2>
+        <p>Коллекционер</p>
+      </div>
+    </div>
+
+    <div class="resources">
+      <div class="res">12500 +</div>
+      <div class="res">2150 +</div>
+      <div class="res">100 +</div>
+    </div>
+  </header>
+
+  <main class="characters-page">
+
+    <section class="info-panel">
+      <h1 id="charName">HELIN</h1>
+      <span class="rarity">ЭПИЧЕСКИЙ</span>
+
+      <p class="status">СТАТУС: <span id="charStatus">ОТКРЫТ</span></p>
+
+      <p class="desc" id="charDesc">
+        Харизматичный и уверенный в себе герой. Его удача помогает получать лучшие награды.
+      </p>
+
+      <h3>ХАРАКТЕРИСТИКИ</h3>
+
+      <div class="stat">❤️ Здоровье <b id="hp">820</b></div>
+      <div class="stat">⚔️ Атака <b id="attack">110</b></div>
+      <div class="stat">🛡️ Защита <b id="defense">85</b></div>
+
+      <h3>СПОСОБНОСТЬ</h3>
+
+      <div class="ability">
+        <b id="abilityName">УДАЧА</b>
+        <p id="abilityText">Повышает шанс редких наград на 8%.</p>
+      </div>
+    </section>
+
+    <section class="stage">
+      <img id="charImage" src="image/characters/helin/preview.png" alt="Персонаж">
+
+      <button id="mainBtn" class="main-btn">
+        ПРИМЕНИТЬ ПЕРСОНАЖА
+      </button>
+    </section>
+
+    <section class="right-buttons">
+      <img src="image/ui/person/style.png" alt="Стили">
+      <img src="image/ui/person/up.png" alt="Прокачка">
+      <img src="image/ui/person/dsf.png" alt="История">
+    </section>
+
+    <section class="bottom-carousel">
+      <button id="prevBtn" class="arrow">‹</button>
+
+      <div id="cards" class="cards"></div>
+
+      <button id="nextBtn" class="arrow">›</button>
+    </section>
+
+  </main>
+
+  <script src="characters.js"></script>
+</body>
+</html>
