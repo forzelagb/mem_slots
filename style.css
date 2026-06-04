@@ -23829,7 +23829,15 @@ grid-template-columns:340px 1fr;
         transform: scale(1);
     }
 }
+.secret-vote-btn {
+    width: 240px;
+    cursor: pointer;
+    transition: 0.25s;
+}
 
+.secret-vote-btn:hover {
+    transform: scale(1.05);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
