@@ -705,4 +705,36 @@ body {
 .up-btn,
 .history-btn {
   transition: none !important;
+}.story-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.82);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+}
+
+.story-modal.active {
+    display: flex;
+}
+
+.story-modal img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 18px;
+    animation: storyPop 0.25s ease;
+}
+
+@keyframes storyPop {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

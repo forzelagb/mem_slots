@@ -204,16 +204,7 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 
   renderCharacter();
 });
-function openStoryModal() {
-  const char = characters[currentIndex];
 
-  document.getElementById("storyCharName").textContent = char.name;
-  document.getElementById("storyModal").classList.add("active");
-}
-
-function closeStoryModal() {
-  document.getElementById("storyModal").classList.remove("active");
-}
 function openSoonModal() {
     document
         .getElementById("soonModal")
@@ -250,6 +241,19 @@ function saveCharactersState() {
   }));
 
   localStorage.setItem("mccCharactersState", JSON.stringify(state));
+}
+function openStoryModal() {
+    const modal = document.getElementById("storyModal");
+    if (!modal) return;
+
+    modal.classList.add("active");
+}
+
+function closeStoryModal() {
+    const modal = document.getElementById("storyModal");
+    if (!modal) return;
+
+    modal.classList.remove("active");
 }
 loadCharactersState();
 renderCharacter();
