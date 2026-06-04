@@ -738,3 +738,18 @@ body {
         transform: scale(1);
     }
 }
+.story-wrapper {
+    position: relative;
+}
+
+.story-submit-zone {
+    position: absolute;
+
+    left: 43%;
+    bottom: 4%;
+
+    width: 31%;
+    height: 8%;
+
+    cursor: pointer;
+}

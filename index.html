@@ -320,10 +320,10 @@ onclick="window.location.href='collection.html'">
             нового персонажа Meme Collection Club.
         </p>
 <img
-    src="image/ui/gl/voice.png"
-    class="secret-vote-btn"
-    onclick="openVoteModal()"
-    alt="Проголосовать">
+  src="image/ui/gl/voice.png"
+  class="secret-vote-btn"
+  onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSdHOhyDG9cxYN-eogRJaUIfdbzg-pr42Yh1M_BQx-4PnLh4TQ/viewform?usp=header', '_blank')"
+  alt="Проголосовать">
     </div>
 
 </div>
@@ -1422,7 +1422,16 @@ onclick="window.location.href='collection.html'">
     <img src="image/ui/gl/do_it.png" alt="Раздел в разработке">
 </div>
 <div id="donateModal" class="donate-modal" onclick="closeDonateModal()">
-    <img src="image/ui/gl/donate.png" alt="Магазин" onclick="event.stopPropagation()">
+    <div class="donate-box" onclick="event.stopPropagation()">
+        <img src="image/ui/gl/donate.png" alt="Магазин">
+
+        <a
+            class="donate-click-zone"
+            href="https://www.donationalerts.com/r/forzelagb"
+            target="_blank"
+            rel="noopener noreferrer">
+        </a>
+    </div>
 </div>
 
     <!-- СКРИПТЫ -->

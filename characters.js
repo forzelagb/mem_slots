@@ -129,20 +129,13 @@ function renderCharacter() {
   attack.textContent = char.attack;
   defense.textContent = char.defense;
 
-  charImage.src =
-charImage.src =
-`image/characters/${char.folder}/skin-${char.currentSkin}.png`;
+  charImage.src = `image/characters/${char.folder}/skin-${char.currentSkin}.png`;
 
-if (!char.unlocked) {
-  char.unlocked = true;
-  alert(`${char.name} куплен!`);
-} else {
-  characters.forEach(c => c.selected = false);
-  char.selected = true;
-}
+  mainBtn.textContent = char.unlocked
+    ? "ПРИМЕНИТЬ ПЕРСОНАЖА"
+    : `ОТКРЫТЬ ЗА ${char.price}`;
 
-saveCharactersState();
-renderCharacter();
+  renderCards();
 }
 
 function renderCards() {
