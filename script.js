@@ -10122,13 +10122,21 @@ function getCollectThemeFromUrl() {
 }
 
 function getCollectThemeFolder() {
-  const theme = getCollectThemeFromUrl();
+    const theme = normalizeCollectionKey(getCollectThemeFromUrl());
 
-  if (theme === "sasich") return "sasavot";
+    const folders = {
+        helin: "helin",
+        sasavot: "sasavot",
+        lexapaws: "lexapaws",
+        rejiboy: "rejiboi",
+        rostik: "rostick",
+        nikkifn: "nikkifn",
+        melstroy: "melstroy",
+        litvin: "litwin"
+    };
 
-  return theme;
+    return folders[theme] || theme;
 }
-
 function getCollectDataTheme() {
   return normalizeCollectionKey(getCollectThemeFromUrl());
 }
@@ -10956,15 +10964,19 @@ function updateCollectionRarityProgress(characterKey) {
         const card = document.querySelector(`.rarity-card.${rarity}`);
         if (!card) return;
 
-        const percent = getRarityPercent(characterKey, rarity);
         const points = getRarityPoints(characterKey, rarity);
         const limit = COLLECTION_LIMITS[rarity];
 
-        const span = card.querySelector("span");
+        card.innerHTML = `
+            <img class="collection-rarity-img"
+                 src="${getCollectionCardImage(characterKey, rarity)}"
+                 alt="${rarity}">
 
-        if (span) {
-span.textContent = `${points} / ${limit}`;
-        }
+            <div class="collection-rarity-info">
+                <h3>${rarity.toUpperCase()}</h3>
+                <span>${points} / ${limit}</span>
+            </div>
+        `;
     });
 }
 
@@ -11193,6 +11205,24 @@ function closeDonateModal() {
 
     modal.classList.remove("active");
     document.body.style.overflow = "";
+}
+const COLLECTION_CARD_FOLDERS = {
+    helin: "helin",
+    sasavot: "sasavot",
+    lexapaws: "lexapaws",
+    rejiboy: "rejiboi",
+    rostik: "rostick",
+    nikkifn: "nikkifn",
+    melstroy: "melstroy",
+    litvin: "litwin"
+};
+
+function getCollectionCardImage(characterKey, rarity) {
+    characterKey = normalizeCollectionKey(characterKey);
+
+    const folder = COLLECTION_CARD_FOLDERS[characterKey] || characterKey;
+
+    return `image/ui/collect/${folder}/${rarity}.png`;
 }
 //  ЗАПУСК
 window.onload = () => {
