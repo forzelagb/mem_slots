@@ -11179,6 +11179,21 @@ function closeDonateModal() {
         modal.classList.remove("active");
     }
 }
+function openDonateModal() {
+    const modal = document.getElementById("donateModal");
+    if (!modal) return;
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closeDonateModal() {
+    const modal = document.getElementById("donateModal");
+    if (!modal) return;
+
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

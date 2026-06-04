@@ -23838,6 +23838,28 @@ grid-template-columns:340px 1fr;
 .secret-vote-btn:hover {
     transform: scale(1.05);
 }
+.donate-modal {
+    display: none !important;
+    position: fixed !important;
+    inset: 0;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.88);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(7px);
+}
+
+.donate-modal.active {
+    display: flex !important;
+}
+
+.donate-modal img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 0 45px rgba(255, 40, 220, 0.35);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

@@ -319,10 +319,11 @@ onclick="window.location.href='collection.html'">
             Оставь свою догадку и попробуй первым угадать
             нового персонажа Meme Collection Club.
         </p>
-
-        <button class="secret-btn">
-            🎭 Моя догадка
-        </button>
+<img
+    src="image/ui/gl/voice.png"
+    class="secret-vote-btn"
+    onclick="openVoteModal()"
+    alt="Проголосовать">
     </div>
 
 </div>
@@ -1421,7 +1422,7 @@ onclick="window.location.href='collection.html'">
     <img src="image/ui/gl/do_it.png" alt="Раздел в разработке">
 </div>
 <div id="donateModal" class="donate-modal" onclick="closeDonateModal()">
-    <img src="image/ui/gl/donate.png" alt="Магазин">
+    <img src="image/ui/gl/donate.png" alt="Магазин" onclick="event.stopPropagation()">
 </div>
 
     <!-- СКРИПТЫ -->
