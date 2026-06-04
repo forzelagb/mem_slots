@@ -133,15 +133,16 @@ function renderCharacter() {
 charImage.src =
 `image/characters/${char.folder}/skin-${char.currentSkin}.png`;
 
-  if (!char.unlocked) {
-    mainBtn.textContent = `КУПИТЬ ЗА ${char.price}`;
-  } else if (char.selected) {
-    mainBtn.textContent = "ВЫБРАН";
-  } else {
-    mainBtn.textContent = "ПРИМЕНИТЬ ПЕРСОНАЖА";
-  }
+if (!char.unlocked) {
+  char.unlocked = true;
+  alert(`${char.name} куплен!`);
+} else {
+  characters.forEach(c => c.selected = false);
+  char.selected = true;
+}
 
-  renderCards();
+saveCharactersState();
+renderCharacter();
 }
 
 function renderCards() {
@@ -224,5 +225,31 @@ function closeSoonModal() {
         .getElementById("soonModal")
         .classList.remove("active");
 }
+function loadCharactersState() {
+  const saved = JSON.parse(localStorage.getItem("mccCharactersState"));
 
+  if (!saved) return;
+
+  characters.forEach(char => {
+    const savedChar = saved.find(item => item.name === char.name);
+
+    if (savedChar) {
+      char.unlocked = savedChar.unlocked;
+      char.selected = savedChar.selected;
+      char.currentSkin = savedChar.currentSkin || 1;
+    }
+  });
+}
+
+function saveCharactersState() {
+  const state = characters.map(char => ({
+    name: char.name,
+    unlocked: char.unlocked,
+    selected: char.selected,
+    currentSkin: char.currentSkin
+  }));
+
+  localStorage.setItem("mccCharactersState", JSON.stringify(state));
+}
+loadCharactersState();
 renderCharacter();
