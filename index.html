@@ -38,40 +38,22 @@ onclick="window.location.href='characters.html'">
     </div>
 </aside>
 
-<header class="gl-topbar">
-    <div class="gl-player">
-        <div class="gl-player-avatar">
-            <img src="./image/ui/gl/card-lexapaws.png" alt="">
-        </div>
+<header class="game-topbar">
+    <div class="game-user">
+        <div class="game-avatar js-player-letter">P</div>
 
-        <div class="gl-player-info">
-            <div class="gl-player-name">PLAYER</div>
-            <div class="gl-player-role">Коллекционер</div>
-
-            <div class="gl-player-xp-row">
-                <span>32</span>
-                <div class="gl-player-xp">
-                    <div style="width: 55%;"></div>
-                </div>
-                <small>2450 / 5000 XP</small>
+        <div>
+            <div class="game-name js-player-name">PLAYER</div>
+            <div class="game-role">
+                Коллекционер • Ур. <span class="js-level">1</span>
             </div>
         </div>
     </div>
 
-    <div class="gl-resources">
-        <div class="gl-resource">
-            🪙 <span id="gl-gold">12500</span> <b>+</b>
-        </div>
-
-        <div class="gl-resource">
-            💎 <span id="gl-gems">2150</span> <b>+</b>
-        </div>
-
-        <div class="gl-resource">
-            ⚡ <span id="gl-energy">100</span> <b>+</b>
-        </div>
-
-        <button class="gl-bell">🔔</button>
+    <div class="game-resources">
+        <div>🪙 <span class="js-gold">0</span></div>
+        <div>💎 <span class="js-gems">0</span></div>
+        <div>⚡ <span class="js-energy">0/100</span></div>
     </div>
 </header>
     <div class="pass-reward-modal" id="pass-reward-modal">

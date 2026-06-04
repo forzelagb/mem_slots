@@ -11224,6 +11224,51 @@ function getCollectionCardImage(characterKey, rarity) {
 
     return `image/ui/collect/${folder}/${rarity}.png`;
 }
+const DEFAULT_SAVE = {
+    nickname: "PLAYER",
+    gold: 12500,
+    gems: 2150,
+    energy: 100,
+    maxEnergy: 100,
+    level: 1
+};
+
+function getSave() {
+    return JSON.parse(localStorage.getItem("mccSave")) || DEFAULT_SAVE;
+}
+
+function saveGame(data) {
+    localStorage.setItem("mccSave", JSON.stringify(data));
+}
+function updateHeader() {
+    const save = getSave();
+
+    document.querySelectorAll(".js-player-name").forEach(el => {
+        el.textContent = save.nickname;
+    });
+
+    document.querySelectorAll(".js-player-letter").forEach(el => {
+        el.textContent = save.nickname.slice(0, 1).toUpperCase();
+    });
+
+    document.querySelectorAll(".js-gold").forEach(el => {
+        el.textContent = save.gold;
+    });
+
+    document.querySelectorAll(".js-gems").forEach(el => {
+        el.textContent = save.gems;
+    });
+
+    document.querySelectorAll(".js-energy").forEach(el => {
+        el.textContent = `${save.energy}/${save.maxEnergy}`;
+    });
+
+    document.querySelectorAll(".js-level").forEach(el => {
+        el.textContent = save.level;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", updateHeader);
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
