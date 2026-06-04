@@ -23797,6 +23797,39 @@ grid-template-columns:340px 1fr;
 .rarity-card{
     justify-content:space-between;
 }
+.coming-soon-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.78);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+}
+
+.coming-soon-modal.active {
+    display: flex;
+}
+
+.coming-soon-modal img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    animation: comingSoonPop 0.25s ease;
+}
+
+@keyframes comingSoonPop {
+    from {
+        opacity: 0;
+        transform: scale(0.88);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

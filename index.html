@@ -27,11 +27,11 @@ onclick="window.location.href='collection.html'">
 onclick="window.location.href='characters.html'">
     🎮 <span>Персонажи</span>
 </button>
-    <a class="gl-nav-btn" href="inventory.html">🎒 <span>Инвентарь</span></a>
-    <button class="gl-nav-btn" onclick="openShopScreen()">🛒 <span>Магазин</span></button>
-    <button class="gl-nav-btn" onclick="openTab('pass')">👑 <span>Пропуск</span></button>
-    <button class="gl-nav-btn" onclick="openTab('quests')">🛡 <span>Квесты</span></button>
-    <button class="gl-nav-btn" onclick="openTab('achievements')">🏆 <span>Достижения</span></button>
+<button class="gl-nav-btn" onclick="openDonateModal()">🛒 <span>Магазин</span></button>
+<button class="gl-nav-btn" onclick="openComingSoon()"> <span>Инвентарь</span></button>
+<button class="gl-nav-btn" onclick="openComingSoon()"> <span>Пропуск</span></button>
+<button class="gl-nav-btn" onclick="openComingSoon()"> <span>Квесты</span></button>
+<button class="gl-nav-btn" onclick="openComingSoon()">🏆 <span>Достижения</span></button>
 
     <div class="gl-pass-mini">
         <img src="./image/ui/gl/pass-card.png" alt="">
@@ -115,13 +115,12 @@ onclick="window.location.href='characters.html'">
 onclick="window.location.href='characters.html'">
     🎮 <span>Персонажи</span>
 </button>
-        <a href="inventory.html" class="header-link-btn">
-            🎒<span>Инвентарь</span>
-        </a>
-        <button onclick="openShopScreen()">🛒<span>Магазин</span></button>
-        <button onclick="openTab('pass')">🎟️<span>Пропуск</span></button>
-        <button onclick="openTab('quests')">📋<span>Квесты</span></button>
-        <button onclick="openTab('achievements')">🏆<span>Достижения</span></button>
+       <button class="gl-nav-btn" onclick="openDonateModal()">🛒 <span>Магазин</span></button>
+
+<button onclick="openComingSoon()">🎒<span>Инвентарь</span></button>
+<button onclick="openComingSoon()">🎟️<span>Пропуск</span></button>
+<button onclick="openComingSoon()">📋<span>Квесты</span></button>
+<button onclick="openComingSoon()">🏆<span>Достижения</span></button>
     </nav>
 
     <div class="header-v2-right">
@@ -1417,6 +1416,12 @@ onclick="window.location.href='collection.html'">
         <div class="achievement-toast-label">Достижение получено</div>
         <div class="achievement-toast-title" id="achievement-toast-title">Название</div>
     </div>
+</div>
+<div id="comingSoonModal" class="coming-soon-modal" onclick="closeComingSoon()">
+    <img src="image/ui/gl/do_it.png" alt="Раздел в разработке">
+</div>
+<div id="donateModal" class="donate-modal" onclick="closeDonateModal()">
+    <img src="image/ui/gl/donate.png" alt="Магазин">
 </div>
 
     <!-- СКРИПТЫ -->

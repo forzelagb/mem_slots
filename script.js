@@ -11153,6 +11153,32 @@ const COLLECTION_REWARD_MILESTONES = [
     { need: 30000, type: "gems", amount: 500, image: "image/ui/gems-2500.png" },
     { need: 50000, type: "chest_legendary", amount: 3, image: "image/ui/chest-legendary.png" }
 ];
+function openComingSoon() {
+    const modal = document.getElementById("comingSoonModal");
+    if (modal) {
+        modal.classList.add("active");
+    }
+}
+
+function closeComingSoon() {
+    const modal = document.getElementById("comingSoonModal");
+    if (modal) {
+        modal.classList.remove("active");
+    }
+}
+function openDonateModal() {
+    const modal = document.getElementById("donateModal");
+    if (modal) {
+        modal.classList.add("active");
+    }
+}
+
+function closeDonateModal() {
+    const modal = document.getElementById("donateModal");
+    if (modal) {
+        modal.classList.remove("active");
+    }
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
