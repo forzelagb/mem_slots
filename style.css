@@ -22347,8 +22347,8 @@ body.gl-compact .screen {
 
 .collect-result-total {
     position: absolute;
-    top: 410px;
-    left: 445px;
+    top: 450px;
+    left: 480px;
     font-size: 34px;
     color: #ffd84d;
     text-shadow: 0 0 12px #ffb800;
@@ -23787,6 +23787,15 @@ grid-template-columns:340px 1fr;
 .collection-reward-road::-webkit-scrollbar-thumb{
     background:linear-gradient(90deg,#7b2fff,#ff3bd4);
     border-radius:999px;
+}
+.rarity-card span{
+    font-size:24px;
+    text-align:center;
+    line-height:1.1;
+}
+
+.rarity-card{
+    justify-content:space-between;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }

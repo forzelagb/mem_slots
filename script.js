@@ -10963,8 +10963,7 @@ function updateCollectionRarityProgress(characterKey) {
         const span = card.querySelector("span");
 
         if (span) {
-            span.textContent = `${percent}%`;
-            span.title = `${points} / ${limit}`;
+span.textContent = `${points} / ${limit}`;
         }
     });
 }

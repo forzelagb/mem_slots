@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <title>Персонажи</title>
   <link rel="stylesheet" href="characters.css">
 </head>
 <body>
 
-  <header class="top-header">
-    <div class="profile-box">
-      <img src="image/ui/profile/avatar.png" class="avatar" alt="">
-      <div>
-        <h2>PLAYER</h2>
-        <p>Коллекционер</p>
-      </div>
+<header class="gl-topbar">
+
+    <div class="gl-player">
+
+        <div class="gl-player-avatar">
+            <img src="./image/ui/gl/card-lexapaws.png" alt="">
+        </div>
+
+        <div class="gl-player-info">
+
+            <div class="gl-player-name">PLAYER</div>
+
+            <div class="gl-player-role">
+                Коллекционер
+            </div>
+
+            <div class="gl-player-xp-row">
+
+                <span>32</span>
+
+                <div class="gl-player-xp">
+                    <div style="width:55%;"></div>
+                </div>
+
+                <small>2450 / 5000 XP</small>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="resources">
-      <div class="res">12500 +</div>
-      <div class="res">2150 +</div>
-      <div class="res">100 +</div>
+    <div class="gl-resources">
+
+        <div class="gl-resource">
+            🪙 <span>12500</span> <b>+</b>
+        </div>
+
+        <div class="gl-resource">
+            💎 <span>2150</span> <b>+</b>
+        </div>
+
+        <div class="gl-resource">
+            ⚡ <span>100</span> <b>+</b>
+        </div>
+
+        <button class="gl-bell">🔔</button>
+
     </div>
-  </header>
+
+</header>
 
   <main class="characters-page">
 
@@ -57,18 +94,18 @@
       </button>
     </section>
 
-    <section class="right-buttons">
-      <img src="image/ui/person/style.png" alt="Стили">
-      <img src="image/ui/person/up.png" alt="Прокачка">
-      <img src="image/ui/person/dsf.png" alt="История">
-    </section>
+<section class="right-buttons">
+  <img class="action-btn style-btn" src="image/ui/person/style.png" alt="Стили">
+  <img class="action-btn up-btn" src="image/ui/person/up.png" alt="Прокачка">
+  <img class="action-btn history-btn" src="image/ui/person/dsf.png" alt="История">
+</section>
 
     <section class="bottom-carousel">
-      <button id="prevBtn" class="arrow">‹</button>
+<button id="prevBtn" class="bg-arrow bg-arrow-left"></button>
 
-      <div id="cards" class="cards"></div>
+<div id="cards" class="cards"></div>
 
-      <button id="nextBtn" class="arrow">›</button>
+<button id="nextBtn" class="bg-arrow bg-arrow-right"></button>
     </section>
 
   </main>
