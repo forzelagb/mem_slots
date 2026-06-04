@@ -11269,6 +11269,69 @@ function updateHeader() {
 }
 
 document.addEventListener("DOMContentLoaded", updateHeader);
+const DEFAULT_PLAYER_SAVE = {
+    nickname: "PLAYER",
+    level: 1,
+    gold: 12500,
+    gems: 2150,
+    energy: 100,
+    maxEnergy: 100
+};
+
+function getPlayerSave() {
+    const saved = localStorage.getItem("mccSave");
+
+    if (!saved) {
+        localStorage.setItem("mccSave", JSON.stringify(DEFAULT_PLAYER_SAVE));
+        return { ...DEFAULT_PLAYER_SAVE };
+    }
+
+    return {
+        ...DEFAULT_PLAYER_SAVE,
+        ...JSON.parse(saved)
+    };
+}
+
+function setPlayerSave(newData) {
+    const current = getPlayerSave();
+    const updated = {
+        ...current,
+        ...newData
+    };
+
+    localStorage.setItem("mccSave", JSON.stringify(updated));
+    updateHeader();
+}
+
+function updateHeader() {
+    const save = getPlayerSave();
+
+    document.querySelectorAll(".js-player-name").forEach(el => {
+        el.textContent = save.nickname;
+    });
+
+    document.querySelectorAll(".js-player-letter").forEach(el => {
+        el.textContent = save.nickname.charAt(0).toUpperCase();
+    });
+
+    document.querySelectorAll(".js-level").forEach(el => {
+        el.textContent = save.level;
+    });
+
+    document.querySelectorAll(".js-gold").forEach(el => {
+        el.textContent = save.gold;
+    });
+
+    document.querySelectorAll(".js-gems").forEach(el => {
+        el.textContent = save.gems;
+    });
+
+    document.querySelectorAll(".js-energy").forEach(el => {
+        el.textContent = `${save.energy}/${save.maxEnergy}`;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", updateHeader);
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

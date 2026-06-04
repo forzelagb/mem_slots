@@ -23991,6 +23991,29 @@ grid-template-columns:340px 1fr;
 #lobby-screen {
     padding-top: 120px;
 }
+.game-resource-item {
+    min-width: 125px;
+    height: 54px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+    color: white;
+    font-size: 18px;
+}
+
+.game-resource-item img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(255, 59, 212, 0.45));
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
