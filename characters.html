@@ -77,13 +77,6 @@
       <div class="stat">❤️ Здоровье <b id="hp">820</b></div>
       <div class="stat">⚔️ Атака <b id="attack">110</b></div>
       <div class="stat">🛡️ Защита <b id="defense">85</b></div>
-
-      <h3>СПОСОБНОСТЬ</h3>
-
-      <div class="ability">
-        <b id="abilityName">УДАЧА</b>
-        <p id="abilityText">Повышает шанс редких наград на 8%.</p>
-      </div>
     </section>
 
     <section class="stage">
@@ -95,9 +88,16 @@
     </section>
 
 <section class="right-buttons">
-  <img class="action-btn style-btn" src="image/ui/person/style.png" alt="Стили">
-  <img class="action-btn up-btn" src="image/ui/person/up.png" alt="Прокачка">
-  <img class="action-btn history-btn" src="image/ui/person/dsf.png" alt="История">
+  <img class="style-btn"
+     src="image/ui/person/style.png"
+     onclick="openSoonModal()">
+  <img class="up-btn"
+     src="image/ui/person/up.png"
+     onclick="openSoonModal()">
+  <img class="action-btn history-btn"
+     src="image/ui/person/dsf.png"
+     alt="История"
+     onclick="openStoryModal()">
 </section>
 
     <section class="bottom-carousel">
@@ -109,7 +109,44 @@
     </section>
 
   </main>
+<div id="storyModal" class="story-modal">
+  <div class="story-window">
+    <button class="story-close" onclick="closeStoryModal()">×</button>
 
+    <h2>ИСТОРИЯ ПЕРСОНАЖА</h2>
+
+    <h3 id="storyCharName">HELIN</h3>
+
+    <p class="story-text">
+      Здесь появится история этого героя. Мы хотим сделать её вместе с игроками:
+      добавлять мемные моменты, легендарные ситуации и неожиданные повороты.
+    </p>
+
+    <div class="story-example">
+      <b>Пример:</b>
+      <p>
+        Однажды герой нашёл древний пак, который никто не решался открыть.
+        С этого момента началась его собственная легенда в Meme Collection Club.
+      </p>
+    </div>
+
+    <a class="story-idea-btn"
+       href="mailto:ppro10903@gmail.com?subject=Идея%20для%20истории%20Meme%20Collection%20Club&body=Персонаж:%0AИдея:%0A">
+      ПРЕДЛОЖИТЬ ИДЕЮ
+    </a>
+  </div>
+</div>
+<div id="soonModal" class="soon-modal">
+    <div class="soon-content">
+
+        <button class="soon-close" onclick="closeSoonModal()">
+            ✕
+        </button>
+
+        <img src="image/ui/gl/do_it.png" alt="Скоро" />
+
+    </div>
+</div>
   <script src="characters.js"></script>
 </body>
 </html>

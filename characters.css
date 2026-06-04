@@ -18,7 +18,7 @@ body {
   position: relative;
   height: calc(100vh - 105px);
   min-height: 820px;
-  background: url("../image/ui/person/background.png") center top / cover no-repeat;
+  background: url("image/ui/person/background.png") center top / cover no-repeat;
   background-size: 1500px;
   padding: 35px 70px 20px;
   display: grid;
@@ -295,10 +295,9 @@ body {
 
 /* общие настройки */
 .action-btn {
-      transition: none;
   display: block;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: none !important;
 }
 
 /* СТИЛИ */
@@ -560,4 +559,146 @@ body {
   color: white;
   font-family: 'Russo One', Arial, sans-serif;
   overflow-x: hidden;
+}
+.right-buttons img:hover,
+.action-btn:hover,
+.style-btn:hover,
+.up-btn:hover,
+.history-btn:hover {
+  transform: inherit !important;
+  transition: none !important;
+}
+.story-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.story-modal.active {
+  display: flex;
+}
+
+.story-window {
+  width: 720px;
+  min-height: 520px;
+  padding: 38px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top, rgba(185, 45, 255, 0.25), transparent 40%),
+    rgba(8, 2, 18, 0.96);
+  border: 1px solid rgba(210, 55, 255, 0.7);
+  box-shadow: 0 0 45px rgba(170, 35, 255, 0.4);
+  position: relative;
+}
+
+.story-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #b62cff;
+  background: rgba(20, 0, 35, 0.9);
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.story-window h2 {
+  color: #d936ff;
+  font-size: 34px;
+  margin-bottom: 14px;
+}
+
+.story-window h3 {
+  font-size: 42px;
+  margin-bottom: 24px;
+}
+
+.story-text {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #ddd;
+  margin-bottom: 24px;
+}
+
+.story-example {
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(92, 13, 140, 0.28);
+  border: 1px solid rgba(190, 40, 255, 0.45);
+  margin-bottom: 30px;
+}
+
+.story-example b {
+  color: #ffd86b;
+  font-size: 18px;
+}
+
+.story-example p {
+  margin-top: 10px;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+.story-idea-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 32px;
+  border-radius: 14px;
+  border: 2px solid #ffd86b;
+  background: rgba(30, 10, 45, 0.9);
+  color: #ffe27a;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 18px;
+}
+.soon-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+.soon-modal.active {
+    display: flex;
+}
+
+.soon-content {
+    position: relative;
+}
+
+.soon-content img {
+    width: 800px;
+    max-width: 90vw;
+    border-radius: 20px;
+}
+
+.soon-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #b62cff;
+    color: white;
+
+    cursor: pointer;
+    font-size: 20px;
 }

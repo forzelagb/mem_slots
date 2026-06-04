@@ -11,8 +11,6 @@ const characters = [
     hp: 820,
     attack: 110,
     defense: 85,
-    abilityName: "УДАЧА",
-    abilityText: "Повышает шанс редких наград на 8%."
   },
   {
     name: "SASAVOT",
@@ -21,13 +19,11 @@ const characters = [
     rarity: "РЕДКИЙ",
     unlocked: false,
     selected: false,
-    price: 2500,
+    price: 1790,
     desc: "Сильный персонаж для стабильного прогресса и уверенного старта.",
     hp: 760,
     attack: 95,
     defense: 90,
-    abilityName: "СТАБИЛЬНОСТЬ",
-    abilityText: "Повышает прогресс обычных карт на 10%."
   },
 {
   name: "LEXA PAWS",
@@ -36,13 +32,11 @@ const characters = [
     rarity: "ЭПИЧЕСКИЙ",
     unlocked: false,
     selected: false,
-    price: 2500,
+    price: 2250,
     desc: "Энергичный герой, который помогает быстрее возвращаться в игру.",
     hp: 700,
     attack: 125,
     defense: 70,
-    abilityName: "ЭНЕРГИЯ",
-    abilityText: "Ускоряет восстановление энергии на 5%."
   },
   {
     name: "ROSTIK",
@@ -51,13 +45,11 @@ const characters = [
     rarity: "ЭПИЧЕСКИЙ",
     unlocked: false,
     selected: false,
-    price: 2500,
+    price: 4000,
     desc: "Яркий герой с высоким потенциалом прокачки редких наград.",
     hp: 840,
     attack: 100,
     defense: 80,
-    abilityName: "РЫВОК",
-    abilityText: "Повышает прогресс эпических карт на 7%."
   },
   {
     name: "NIKKIFN",
@@ -66,13 +58,11 @@ const characters = [
     rarity: "РЕДКИЙ",
     unlocked: false,
     selected: false,
-    price: 2500,
+    price: 3000,
     desc: "Быстрый и техничный персонаж с дополнительными бонусами.",
     hp: 720,
     attack: 130,
     defense: 65,
-    abilityName: "БОНУС",
-    abilityText: "Даёт дополнительный бонус один раз в день."
   },
   {
     name: "MELSTROY",
@@ -81,32 +71,28 @@ const characters = [
     rarity: "ЛЕГЕНДАРНЫЙ",
     unlocked: false,
     selected: false,
-    price: 2500,
+    price: 5000,
     desc: "Мощный герой, который помогает быстрее копить монеты.",
     hp: 900,
     attack: 140,
     defense: 100,
-    abilityName: "БОГАТСТВО",
-    abilityText: "Увеличивает получение монет на 10%."
   },
   {
     name: "REJIBOY",
-    folder: "rejiboy",
+    folder: "rejiboi",
     currentSkin: 1,
     rarity: "РЕДКИЙ",
     unlocked: false,
     selected: false,
-    price: 2500,
+    price: 3500,
     desc: "Герой для уверенного развития профиля и получения опыта.",
     hp: 780,
     attack: 105,
     defense: 85,
-    abilityName: "ОПЫТ",
-    abilityText: "Увеличивает опыт профиля на 6%."
   },
   {
     name: "LITVIN",
-    folder: "litvin",
+    folder: "litwin",
     currentSkin: 1,
     rarity: "ЛЕГЕНДАРНЫЙ",
     unlocked: false,
@@ -116,8 +102,6 @@ const characters = [
     hp: 850,
     attack: 115,
     defense: 95,
-    abilityName: "ФАРТ",
-    abilityText: "Повышает все награды на 5%."
   }
 ];
 
@@ -223,5 +207,26 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 
   renderCharacter();
 });
+function openStoryModal() {
+  const char = characters[currentIndex];
+
+  document.getElementById("storyCharName").textContent = char.name;
+  document.getElementById("storyModal").classList.add("active");
+}
+
+function closeStoryModal() {
+  document.getElementById("storyModal").classList.remove("active");
+}
+function openSoonModal() {
+    document
+        .getElementById("soonModal")
+        .classList.add("active");
+}
+
+function closeSoonModal() {
+    document
+        .getElementById("soonModal")
+        .classList.remove("active");
+}
 
 renderCharacter();
