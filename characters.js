@@ -113,8 +113,6 @@ const charDesc = document.getElementById("charDesc");
 const hp = document.getElementById("hp");
 const attack = document.getElementById("attack");
 const defense = document.getElementById("defense");
-const abilityName = document.getElementById("abilityName");
-const abilityText = document.getElementById("abilityText");
 const charImage = document.getElementById("charImage");
 const mainBtn = document.getElementById("mainBtn");
 const cards = document.getElementById("cards");
@@ -130,8 +128,6 @@ function renderCharacter() {
   hp.textContent = char.hp;
   attack.textContent = char.attack;
   defense.textContent = char.defense;
-  abilityName.textContent = char.abilityName;
-  abilityText.textContent = char.abilityText;
 
   charImage.src =
 charImage.src =

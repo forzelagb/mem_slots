@@ -156,11 +156,6 @@ body {
   transition: 0.2s;
 }
 
-.right-buttons img:hover {
-      transform: none;
-  transform: scale(1.04);
-}
-
 /* BOTTOM */
 
 .bottom-carousel {
@@ -560,14 +555,6 @@ body {
   font-family: 'Russo One', Arial, sans-serif;
   overflow-x: hidden;
 }
-.right-buttons img:hover,
-.action-btn:hover,
-.style-btn:hover,
-.up-btn:hover,
-.history-btn:hover {
-  transform: inherit !important;
-  transition: none !important;
-}
 .story-modal {
   position: fixed;
   inset: 0;
@@ -701,4 +688,21 @@ body {
 
     cursor: pointer;
     font-size: 20px;
+}
+.style-btn:hover {
+  transform: translateX(0px) translateY(23px) scale(1) !important;
+}
+
+.up-btn:hover {
+  transform: translateX(-10px) translateY(-10px) scale(1) !important;
+}
+
+.history-btn:hover {
+  transform: translateX(-12px) translateY(-85px) scale(1) !important;
+}
+
+.style-btn,
+.up-btn,
+.history-btn {
+  transition: none !important;
 }
