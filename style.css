@@ -23860,6 +23860,26 @@ grid-template-columns:340px 1fr;
     border-radius: 18px;
     box-shadow: 0 0 45px rgba(255, 40, 220, 0.35);
 }
+.donate-box {
+    position: relative;
+    max-width: 92vw;
+    max-height: 92vh;
+}
+
+.donate-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.donate-click-zone {
+    position: absolute;
+    left: 55%;
+    bottom: 5%;
+    width: 38%;
+    height: 12%;
+    cursor: pointer;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
