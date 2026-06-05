@@ -11332,14 +11332,43 @@ function spendEnergy(amount) {
     return true;
 }
 document.addEventListener("DOMContentLoaded", () => {
-    const rewardRoad = document.getElementById("collectionRewardRoad");
+    const road = document.getElementById("collectionRewardRoad");
+    if (!road) return;
 
-    if (!rewardRoad) return;
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-    rewardRoad.addEventListener("wheel", (e) => {
-        e.preventDefault();
-        rewardRoad.scrollLeft += e.deltaY;
+    road.addEventListener("mousedown", (e) => {
+        isDown = true;
+        road.classList.add("dragging");
+        startX = e.pageX - road.offsetLeft;
+        scrollLeft = road.scrollLeft;
     });
+
+    road.addEventListener("mouseleave", () => {
+        isDown = false;
+        road.classList.remove("dragging");
+    });
+
+    road.addEventListener("mouseup", () => {
+        isDown = false;
+        road.classList.remove("dragging");
+    });
+
+    road.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+
+        const x = e.pageX - road.offsetLeft;
+        const walk = (x - startX) * 1.7;
+        road.scrollLeft = scrollLeft - walk;
+    });
+
+    road.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        road.scrollLeft += e.deltaY;
+    }, { passive: false });
 });
 //  ЗАПУСК
 window.onload = () => {

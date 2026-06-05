@@ -24186,6 +24186,17 @@ body {
 .collection-reward-road * {
     pointer-events: auto !important;
 }
+.collection-reward-road {
+    cursor: grab !important;
+}
+
+.collection-reward-road.dragging {
+    cursor: grabbing !important;
+}
+
+.collection-reward-road.dragging .road-reward {
+    pointer-events: none;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
