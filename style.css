@@ -23874,10 +23874,10 @@ grid-template-columns:340px 1fr;
 
 .donate-click-zone {
     position: absolute;
-    left: 55%;
+    left: 57%;
     bottom: 5%;
-    width: 38%;
-    height: 12%;
+    width: 45%;
+    height: 20%;
     cursor: pointer;
 }
 .collection-rarity-img {
@@ -24106,6 +24106,34 @@ body {
 .collect-room {
     margin-top: 0 !important;
     padding-top: 0 !important;
+}
+.road-reward {
+    min-width: 130px;
+    flex-shrink: 0;
+}
+.collection-reward-road {
+    display: flex;
+    gap: 14px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 8px 4px 16px;
+
+    scrollbar-width: thin;
+}
+.collection-reward-road::-webkit-scrollbar {
+    height: 10px;
+}
+
+.collection-reward-road::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+}
+
+.collection-reward-road::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #8d2cff, #ff3bd4);
+    border-radius: 20px;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
