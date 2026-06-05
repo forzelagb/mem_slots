@@ -8,56 +8,34 @@
 </head>
 <body>
 
-<header class="gl-topbar">
+<header class="game-topbar">
+    <div class="game-user">
+        <div class="game-avatar js-player-letter">P</div>
 
-    <div class="gl-player">
-
-        <div class="gl-player-avatar">
-            <img src="./image/ui/gl/card-lexapaws.png" alt="">
-        </div>
-
-        <div class="gl-player-info">
-
-            <div class="gl-player-name">PLAYER</div>
-
-            <div class="gl-player-role">
-                Коллекционер
+        <div>
+            <div class="game-name js-player-name">PLAYER</div>
+            <div class="game-role">
+                Коллекционер • Ур. <span class="js-level">1</span>
             </div>
-
-            <div class="gl-player-xp-row">
-
-                <span>32</span>
-
-                <div class="gl-player-xp">
-                    <div style="width:55%;"></div>
-                </div>
-
-                <small>2450 / 5000 XP</small>
-
-            </div>
-
         </div>
-
     </div>
 
-    <div class="gl-resources">
-
-        <div class="gl-resource">
-            🪙 <span>12500</span> <b>+</b>
+    <div class="game-resources">
+        <div class="game-resource-item">
+            <img src="image/ui/gold.png" alt="">
+            <span class="js-gold">0</span>
         </div>
 
-        <div class="gl-resource">
-            💎 <span>2150</span> <b>+</b>
+        <div class="game-resource-item">
+            <img src="image/ui/gems.png" alt="">
+            <span class="js-gems">0</span>
         </div>
 
-        <div class="gl-resource">
-            ⚡ <span>100</span> <b>+</b>
+        <div class="game-resource-item">
+            <img src="image/ui/energy.png" alt="">
+            <span class="js-energy">0/100</span>
         </div>
-
-        <button class="gl-bell">🔔</button>
-
     </div>
-
 </header>
 
   <main class="characters-page">
@@ -135,6 +113,7 @@
 
     </div>
 </div>
+<script src="script.js"></script>
   <script src="characters.js"></script>
 </body>
 </html>

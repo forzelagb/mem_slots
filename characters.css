@@ -753,3 +753,6 @@ body {
 
     cursor: pointer;
 }
+.characters-page {
+    padding-top: 125px;
+}

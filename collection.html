@@ -10,17 +10,35 @@
 </head>
 <body class="collection-page">
 
-    <header class="collection-header">
-        <div class="collection-logo">
-            <img src="image/ui/gl/logo-main.png" alt="Meme Collection Club">
+<header class="game-topbar">
+    <div class="game-user">
+        <div class="game-avatar js-player-letter">P</div>
+
+        <div>
+            <div class="game-name js-player-name">PLAYER</div>
+            <div class="game-role">
+                Коллекционер • Ур. <span class="js-level">1</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-resources">
+        <div class="game-resource-item">
+            <img src="image/ui/gold.png" alt="">
+            <span class="js-gold">0</span>
         </div>
 
-        <div class="collection-header-resources">
-            <div class="collection-resource">⚡ <span>100/100</span> <b>+</b></div>
-            <div class="collection-resource">🪙 <span>12500</span> <b>+</b></div>
-            <div class="collection-resource">💎 <span>2150</span> <b>+</b></div>
+        <div class="game-resource-item">
+            <img src="image/ui/gems.png" alt="">
+            <span class="js-gems">0</span>
         </div>
-    </header>
+
+        <div class="game-resource-item">
+            <img src="image/ui/energy.png" alt="">
+            <span class="js-energy">0/100</span>
+        </div>
+    </div>
+</header>
 
     <a href="index.html" class="collection-home-btn">
         🏠 <span>Главная</span>
@@ -144,6 +162,7 @@
     </div>
 
 </div>
+<script src="script.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
