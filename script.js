@@ -11305,11 +11305,6 @@ function spendEnergy(amount) {
 
     return true;
 }
-if (!spendEnergy(10)) {
-    showEnergyWarning();
-    return;
-}
-
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
