@@ -10526,7 +10526,8 @@ function loadProfileNickname() {
     const nicknameEl = document.getElementById("profileNickname");
     const letterEl = document.getElementById("profileLetter");
 
-    const savedName = localStorage.getItem("playerNickname") || "PLAYER";
+    const save = getPlayerSave();
+    const savedName = save.nickname || "PLAYER";
 
     if (nicknameEl) {
         nicknameEl.textContent = savedName;
@@ -10535,6 +10536,8 @@ function loadProfileNickname() {
     if (letterEl) {
         letterEl.textContent = savedName.charAt(0).toUpperCase();
     }
+
+    updateHeader();
 }
 function openChangeNameModal() {
     const modal = document.getElementById("changeNameModal");
@@ -10543,7 +10546,7 @@ function openChangeNameModal() {
 
     if (!modal || !input || !counter) return;
 
-    const currentName = localStorage.getItem("playerNickname") || "";
+    const currentName = getPlayerSave().nickname || "";
 
     input.value = currentName;
     counter.textContent = `${currentName.length}/14`;
@@ -10568,7 +10571,9 @@ function saveProfileNickname() {
         return;
     }
 
-    localStorage.setItem("playerNickname", newName);
+    setPlayerSave({
+        nickname: newName
+    });
 
     loadProfileNickname();
     closeChangeNameModal();
