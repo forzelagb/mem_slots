@@ -24230,6 +24230,25 @@ body {
 .reward-arrow:hover {
     box-shadow: 0 0 18px rgba(190, 60, 255, 0.8);
 }
+.reward-road-wrap{
+    position: relative;
+}
+
+.reward-left{
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+}
+
+.reward-right{
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
