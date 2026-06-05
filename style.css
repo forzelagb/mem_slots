@@ -24096,6 +24096,13 @@ grid-template-columns:340px 1fr;
 body {
     padding-top: 105px;
 }
+.game-topbar {
+    position: fixed;
+    top: 18px;
+    left: 220px;
+    right: 35px;
+    z-index: 99999;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

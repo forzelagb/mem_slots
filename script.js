@@ -11332,14 +11332,6 @@ function updateHeader() {
 }
 
 document.addEventListener("DOMContentLoaded", updateHeader);
-const DEFAULT_PLAYER_SAVE = {
-    nickname: "PLAYER",
-    level: 1,
-    gold: 12500,
-    gems: 2150,
-    energy: 100,
-    maxEnergy: 100
-};
 
 function getPlayerSave() {
     const saved = localStorage.getItem("mccSave");
