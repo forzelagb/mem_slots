@@ -24197,6 +24197,39 @@ body {
 .collection-reward-road.dragging .road-reward {
     pointer-events: none;
 }
+.reward-road-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%;
+}
+
+.collection-reward-road {
+    flex: 1;
+    overflow-x: hidden !important;
+    display: flex;
+    gap: 14px;
+}
+
+.road-reward {
+    flex: 0 0 130px !important;
+}
+
+.reward-arrow {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(190, 60, 255, 0.7);
+    background: rgba(25, 8, 40, 0.9);
+    color: white;
+    font-size: 34px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.reward-arrow:hover {
+    box-shadow: 0 0 18px rgba(190, 60, 255, 0.8);
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

@@ -11370,6 +11370,15 @@ document.addEventListener("DOMContentLoaded", () => {
         road.scrollLeft += e.deltaY;
     }, { passive: false });
 });
+function scrollRewardRoad(direction) {
+    const road = document.getElementById("collectionRewardRoad");
+    if (!road) return;
+
+    road.scrollBy({
+        left: direction * 450,
+        behavior: "smooth"
+    });
+}
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
