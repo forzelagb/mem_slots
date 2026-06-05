@@ -11224,114 +11224,15 @@ function getCollectionCardImage(characterKey, rarity) {
 
     return `image/ui/collect/${folder}/${rarity}.png`;
 }
-const DEFAULT_SAVE = {
-    nickname: "PLAYER",
-    gold: 12500,
-    gems: 2150,
-    energy: 100,
-    maxEnergy: 100,
-    level: 1
-};
-
-function getSave() {
-    return JSON.parse(localStorage.getItem("mccSave")) || DEFAULT_SAVE;
-}
-
-function saveGame(data) {
-    localStorage.setItem("mccSave", JSON.stringify(data));
-}
-function updateHeader() {
-    const save = getSave();
-
-    document.querySelectorAll(".js-player-name").forEach(el => {
-        el.textContent = save.nickname;
-    });
-
-    document.querySelectorAll(".js-player-letter").forEach(el => {
-        el.textContent = save.nickname.slice(0, 1).toUpperCase();
-    });
-
-    document.querySelectorAll(".js-gold").forEach(el => {
-        el.textContent = save.gold;
-    });
-
-    document.querySelectorAll(".js-gems").forEach(el => {
-        el.textContent = save.gems;
-    });
-
-    document.querySelectorAll(".js-energy").forEach(el => {
-        el.textContent = `${save.energy}/${save.maxEnergy}`;
-    });
-
-    document.querySelectorAll(".js-level").forEach(el => {
-        el.textContent = save.level;
-    });
-}
-
-document.addEventListener("DOMContentLoaded", updateHeader);
 const DEFAULT_PLAYER_SAVE = {
     nickname: "PLAYER",
     level: 1,
-    gold: 12500,
-    gems: 2150,
+    gold: 0,
+    gems: 0,
     energy: 100,
-    maxEnergy: 100
+    maxEnergy: 100,
+    selectedCharacter: "helin"
 };
-
-function getPlayerSave() {
-    const saved = localStorage.getItem("mccSave");
-
-    if (!saved) {
-        localStorage.setItem("mccSave", JSON.stringify(DEFAULT_PLAYER_SAVE));
-        return { ...DEFAULT_PLAYER_SAVE };
-    }
-
-    return {
-        ...DEFAULT_PLAYER_SAVE,
-        ...JSON.parse(saved)
-    };
-}
-
-function setPlayerSave(newData) {
-    const current = getPlayerSave();
-    const updated = {
-        ...current,
-        ...newData
-    };
-
-    localStorage.setItem("mccSave", JSON.stringify(updated));
-    updateHeader();
-}
-
-function updateHeader() {
-    const save = getPlayerSave();
-
-    document.querySelectorAll(".js-player-name").forEach(el => {
-        el.textContent = save.nickname;
-    });
-
-    document.querySelectorAll(".js-player-letter").forEach(el => {
-        el.textContent = save.nickname.charAt(0).toUpperCase();
-    });
-
-    document.querySelectorAll(".js-level").forEach(el => {
-        el.textContent = save.level;
-    });
-
-    document.querySelectorAll(".js-gold").forEach(el => {
-        el.textContent = save.gold;
-    });
-
-    document.querySelectorAll(".js-gems").forEach(el => {
-        el.textContent = save.gems;
-    });
-
-    document.querySelectorAll(".js-energy").forEach(el => {
-        el.textContent = `${save.energy}/${save.maxEnergy}`;
-    });
-}
-
-document.addEventListener("DOMContentLoaded", updateHeader);
 
 function getPlayerSave() {
     const saved = localStorage.getItem("mccSave");
@@ -11384,6 +11285,31 @@ function updateHeader() {
 }
 
 document.addEventListener("DOMContentLoaded", updateHeader);
+function addGold(amount) {
+    const save = getPlayerSave();
+
+    setPlayerSave({
+        gold: save.gold + amount
+    });
+}
+function spendEnergy(amount) {
+    const save = getPlayerSave();
+
+    if (save.energy < amount) {
+        return false;
+    }
+
+    setPlayerSave({
+        energy: save.energy - amount
+    });
+
+    return true;
+}
+if (!spendEnergy(10)) {
+    showEnergyWarning();
+    return;
+}
+
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
