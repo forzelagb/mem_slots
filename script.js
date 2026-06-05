@@ -11331,6 +11331,16 @@ function spendEnergy(amount) {
 
     return true;
 }
+document.addEventListener("DOMContentLoaded", () => {
+    const rewardRoad = document.getElementById("collectionRewardRoad");
+
+    if (!rewardRoad) return;
+
+    rewardRoad.addEventListener("wheel", (e) => {
+        e.preventDefault();
+        rewardRoad.scrollLeft += e.deltaY;
+    });
+});
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;

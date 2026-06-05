@@ -24174,6 +24174,18 @@ body {
     background: linear-gradient(90deg, #8d2cff, #ff3bd4);
     border-radius: 20px;
 }
+.collection-reward-road {
+    pointer-events: auto !important;
+    cursor: grab;
+}
+
+.collection-reward-road:active {
+    cursor: grabbing;
+}
+
+.collection-reward-road * {
+    pointer-events: auto !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
