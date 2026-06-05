@@ -11379,6 +11379,13 @@ function scrollRewardRoad(direction) {
         behavior: "smooth"
     });
 }
+function scrollRewardRoad(direction) {
+    const road = document.getElementById("collectionRewardRoad");
+    if (!road) return;
+
+    road.scrollLeft += direction * 450;
+}
+
 //  ЗАПУСК
 window.onload = () => {
     currentVIPLevel = vipLevel;
