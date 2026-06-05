@@ -24103,6 +24103,10 @@ body {
     right: 35px;
     z-index: 99999;
 }
+.collect-room {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

@@ -10272,6 +10272,9 @@ function rollCollectDice() {
   if (!dice || !pack) return;
 
   setCollectEnergy(energy - COLLECT_ENERGY_COST);
+  setPlayerSave({
+    energy: energy - COLLECT_ENERGY_COST
+});
   addProfileStat("profileRolls", 1);
   addProfileStat("profileEnergySpent", COLLECT_ENERGY_COST);
 
@@ -11261,6 +11264,7 @@ function setPlayerSave(data) {
     updateHeader();
 }
 
+
 function updateHeader() {
     const save = getPlayerSave();
 
@@ -11288,7 +11292,11 @@ function updateHeader() {
         el.textContent = `${save.energy}/${save.maxEnergy}`;
     });
 }
-
+window.addEventListener("storage", function (event) {
+    if (event.key === "mccSave") {
+        updateHeader();
+    }
+});
 document.addEventListener("DOMContentLoaded", updateHeader);
 function addGold(amount) {
     const save = getPlayerSave();
