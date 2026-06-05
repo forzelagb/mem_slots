@@ -10189,6 +10189,10 @@ function setCollectEnergy(value) {
   }
 
   updateCollectEnergyUI();
+  setPlayerSave({
+    energy: finalValue,
+    maxEnergy: getCollectMaxEnergy()
+});
 }
 
 function getCollectMaxEnergy() {
@@ -11244,16 +11248,25 @@ const DEFAULT_PLAYER_SAVE = {
 
 function getPlayerSave() {
     const saved = localStorage.getItem("mccSave");
+    const save = saved
+        ? { ...DEFAULT_PLAYER_SAVE, ...JSON.parse(saved) }
+        : { ...DEFAULT_PLAYER_SAVE };
 
-    if (!saved) {
-        localStorage.setItem("mccSave", JSON.stringify(DEFAULT_PLAYER_SAVE));
-        return { ...DEFAULT_PLAYER_SAVE };
+    const oldPlayerSave = localStorage.getItem("mcc_player");
+
+    if (oldPlayerSave) {
+        const player = JSON.parse(oldPlayerSave);
+
+        if (player.resources) {
+            save.energy = player.resources.energy ?? save.energy;
+            save.maxEnergy = player.resources.maxEnergy ?? save.maxEnergy;
+            save.gold = player.resources.gold ?? save.gold;
+            save.gems = player.resources.gems ?? save.gems;
+        }
     }
 
-    return {
-        ...DEFAULT_PLAYER_SAVE,
-        ...JSON.parse(saved)
-    };
+    localStorage.setItem("mccSave", JSON.stringify(save));
+    return save;
 }
 
 function setPlayerSave(data) {
