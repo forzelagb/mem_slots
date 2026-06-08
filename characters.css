@@ -840,3 +840,37 @@ body {
   opacity: 0.7;
   cursor: default;
 }
+.reward-road-wrap {
+    max-width: 720px !important;
+    margin-left: -10px !important;
+    padding: 12px 44px !important;
+    overflow: hidden !important;
+}
+
+.collection-reward-road {
+    overflow-x: auto !important;
+    scrollbar-width: thin !important;
+    padding-bottom: 14px !important;
+}
+
+.collection-reward-road::-webkit-scrollbar {
+    height: 8px !important;
+}
+
+.collection-reward-road::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.08) !important;
+    border-radius: 999px !important;
+}
+
+.collection-reward-road::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #7b2cff, #ff3bd4) !important;
+    border-radius: 999px !important;
+}
+
+.reward-float-left {
+    left: 6px !important;
+}
+
+.reward-float-right {
+    right: 6px !important;
+}

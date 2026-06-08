@@ -11188,19 +11188,19 @@ const COLLECTION_REWARD_MILESTONES = [
     { need: 100, type: "gems", amount: 10, image: "image/ui/gems.png" },
     { need: 200, type: "gold", amount: 200, image: "image/ui/gold.png" },
     { need: 350, type: "gems", amount: 25, image: "image/ui/gems.png" },
-    { need: 500, type: "chest_common", amount: 1, image: "image/ui/chest-common.png" },
+    { need: 500, type: "gold", amount: 350, image: "image/ui/gold.png" },
 
-    { need: 750, type: "gold", amount: 500, image: "image/ui/gold.png" },
-    { need: 1000, type: "gems", amount: 50, image: "image/ui/gems.png" },
-    { need: 1300, type: "gold", amount: 750, image: "image/ui/gold.png" },
-    { need: 1700, type: "chest_rare", amount: 1, image: "image/ui/chest-rare.png" },
+    { need: 750, type: "gems", amount: 50, image: "image/ui/gems.png" },
+    { need: 1000, type: "gold", amount: 600, image: "image/ui/gold.png" },
+    { need: 1300, type: "gems", amount: 75, image: "image/ui/gems.png" },
+    { need: 1700, type: "gold", amount: 1000, image: "image/ui/gold.png" },
     { need: 2200, type: "gems", amount: 100, image: "image/ui/gems.png" },
 
-    { need: 3000, type: "gold", amount: 1000, image: "image/ui/gold.png" },
+    { need: 3000, type: "gold", amount: 1500, image: "image/ui/gold.png" },
     { need: 4000, type: "gems", amount: 150, image: "image/ui/gems.png" },
-    { need: 5500, type: "chest_epic", amount: 1, image: "image/ui/chest-epic.png" },
-    { need: 7000, type: "gold", amount: 2000, image: "image/ui/gold.png" },
-    { need: 9000, type: "chest_legendary", amount: 1, image: "image/ui/chest-legendary.png" }
+    { need: 5500, type: "gold", amount: 2500, image: "image/ui/gold.png" },
+    { need: 7000, type: "gems", amount: 250, image: "image/ui/gems.png" },
+    { need: 9000, type: "gold", amount: 5000, image: "image/ui/gold.png" }
 ];
 function openComingSoon() {
     const modal = document.getElementById("comingSoonModal");
