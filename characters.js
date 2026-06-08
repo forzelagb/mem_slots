@@ -131,9 +131,14 @@ function renderCharacter() {
 
   charImage.src = `image/characters/${char.folder}/skin-${char.currentSkin}.png`;
 
-  mainBtn.textContent = char.unlocked
-    ? "ПРИМЕНИТЬ ПЕРСОНАЖА"
-    : `ОТКРЫТЬ ЗА ${char.price}`;
+if (!char.unlocked) {
+  mainBtn.textContent = `ОТКРЫТЬ ЗА ${char.price}`;
+} else if (char.selected) {
+  mainBtn.textContent = "✓ ВЫБРАН";
+} else {
+  mainBtn.textContent = "ПРИМЕНИТЬ ПЕРСОНАЖА";
+}
+mainBtn.disabled = char.selected;
 
   renderCards();
 }
