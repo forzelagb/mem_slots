@@ -300,4 +300,11 @@ function closeStoryModal() {
     modal.classList.remove("active");
 }
 loadCharactersState();
+
+const selectedIndex = characters.findIndex(c => c.selected);
+
+if (selectedIndex >= 0) {
+  currentIndex = selectedIndex;
+}
+
 renderCharacter();
