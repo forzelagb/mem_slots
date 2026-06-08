@@ -24294,6 +24294,23 @@ body {
 .reward-float-arrow:hover {
     box-shadow: 0 0 18px rgba(190, 60, 255, 0.9);
 }
+.collect-result-actions.single {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    justify-content: center !important;
+    width: 100% !important;
+    bottom: 38px !important;
+}
+
+.collect-result-actions.single img {
+    width: 240px !important;
+}
+
+.collect-result-list {
+    top: 455px !important;
+    gap: 18px !important;
+    line-height: 1.25 !important;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

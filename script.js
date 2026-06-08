@@ -10767,31 +10767,78 @@ function updateCharacterModalPreview() {
 
     preview.src = `image/characters/${character}/preview.png`;
 }
+function getUnlockedProfileCharacters() {
+    const state = JSON.parse(localStorage.getItem("mccCharactersState")) || [];
 
-function prevCharacter() {
-    currentCharacterIndex--;
+    const unlockedFolders = state
+        .filter(char => char.unlocked)
+        .map(char => {
+            const name = char.name.toLowerCase();
 
-    if (currentCharacterIndex < 0) {
-        currentCharacterIndex = profileCharacters.length - 1;
+            if (name === "lexa paws") return "lexapaws";
+            if (name === "rostik") return "rostickfaceskid";
+            if (name === "rejiboy") return "rejiboi";
+
+            return name;
+        });
+
+    if (!unlockedFolders.includes("helin")) {
+        unlockedFolders.unshift("helin");
     }
 
+    return profileCharacters.filter(char => unlockedFolders.includes(char));
+}
+
+function prevCharacter() {
+    const unlocked = getUnlockedProfileCharacters();
+
+    if (!unlocked.length) return;
+
+    const current = profileCharacters[currentCharacterIndex];
+    let unlockedIndex = unlocked.indexOf(current);
+
+    unlockedIndex--;
+
+    if (unlockedIndex < 0) {
+        unlockedIndex = unlocked.length - 1;
+    }
+
+    currentCharacterIndex = profileCharacters.indexOf(unlocked[unlockedIndex]);
     updateCharacterModalPreview();
 }
 
 function nextCharacter() {
-    currentCharacterIndex++;
+    const unlocked = getUnlockedProfileCharacters();
 
-    if (currentCharacterIndex >= profileCharacters.length) {
-        currentCharacterIndex = 0;
+    if (!unlocked.length) return;
+
+    const current = profileCharacters[currentCharacterIndex];
+    let unlockedIndex = unlocked.indexOf(current);
+
+    unlockedIndex++;
+
+    if (unlockedIndex >= unlocked.length) {
+        unlockedIndex = 0;
     }
 
+    currentCharacterIndex = profileCharacters.indexOf(unlocked[unlockedIndex]);
     updateCharacterModalPreview();
 }
 
 function selectCurrentCharacter() {
     const character = profileCharacters[currentCharacterIndex];
+    const unlocked = getUnlockedProfileCharacters();
+
+    if (!unlocked.includes(character)) {
+        alert("Сначала купи этого персонажа");
+        return;
+    }
 
     localStorage.setItem("profileCharacter", character);
+
+    const save = JSON.parse(localStorage.getItem("mccSave")) || {};
+    save.selectedCharacter = character;
+    localStorage.setItem("mccSave", JSON.stringify(save));
 
     loadProfileCharacter();
     closeCharacterModal();
