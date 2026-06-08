@@ -10258,14 +10258,6 @@ function generateCollectRewards() {
 }
 
 function rollCollectDice() {
-  regenCollectEnergy();
-
-  const energy = getCollectEnergy();
-
-  if (energy < COLLECT_ENERGY_COST) {
-    showEnergyWarning();
-    return;
-  }
 
   const dice = document.getElementById("collectDice");
   const pack = document.getElementById("collectPack");
@@ -10274,13 +10266,8 @@ function rollCollectDice() {
   const resultModal = document.getElementById("collectResultModal");
 
   if (!dice || !pack) return;
-
-  setCollectEnergy(energy - COLLECT_ENERGY_COST);
-  setPlayerSave({
-    energy: energy - COLLECT_ENERGY_COST
-});
   addProfileStat("profileRolls", 1);
-  addProfileStat("profileEnergySpent", COLLECT_ENERGY_COST);
+
 
   if (resultModal) resultModal.classList.remove("show");
   if (cardsBox) {
@@ -10510,14 +10497,14 @@ function closeChancesModal() {
   if (modal) modal.classList.remove("show");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  regenCollectEnergy();
-  updateCollectEnergyUI();
+//document.addEventListener("DOMContentLoaded", () => {
+ // regenCollectEnergy();
+  //updateCollectEnergyUI();
 
-  setInterval(() => {
-    regenCollectEnergy();
-  }, 30000);
-});
+ // setInterval(() => {
+   // regenCollectEnergy();
+ // }, 30000);
+//});
 function showEnergyWarning(){
 
     const warning = document.getElementById("energyWarning");
