@@ -202,7 +202,6 @@ function updateHeaderFromSave() {
     el.textContent = save.level || 1;
   });
 }
-
 mainBtn.addEventListener("click", () => {
   const char = characters[currentIndex];
   const save = getSave();
@@ -214,30 +213,18 @@ mainBtn.addEventListener("click", () => {
     }
 
     save.gold -= char.price;
-
     char.unlocked = true;
-    characters.forEach(c => c.selected = false);
-    char.selected = true;
-
-    save.selectedCharacter = char.folder;
-
-    setSave(save);
-    saveCharactersState();
-    updateHeaderFromSave();
-
-    alert(`${char.name} куплен!`);
-  } else {
-    characters.forEach(c => c.selected = false);
-    char.selected = true;
-
-    save.selectedCharacter = char.folder;
-
-    setSave(save);
-    saveCharactersState();
   }
 
-  renderCharacter();
+  characters.forEach(c => c.selected = false);
+  char.selected = true;
+
+  save.selectedCharacter = char.folder;
+
+  setSave(save);
+  saveCharactersState();
   updateHeaderFromSave();
+  renderCharacter();
 });
 
 updateHeaderFromSave();
