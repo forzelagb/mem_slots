@@ -11112,10 +11112,6 @@ function claimRoadReward(characterKey, need, rewardType, rewardAmount) {
         addPlayerResource("gems", rewardAmount);
     }
 
-    if (rewardType === "energy") {
-        addPlayerEnergy(rewardAmount);
-    }
-
     if (rewardType.includes("chest")) {
         addPlayerResource(rewardType, rewardAmount);
     }
@@ -11124,22 +11120,23 @@ function claimRoadReward(characterKey, need, rewardType, rewardAmount) {
 
     renderCollectionRewardRoad(characterKey);
 }
-function addPlayerResource(resourceKey, amount){
-    const currentValue = Number(localStorage.getItem(resourceKey)) || 0;
-    const newValue = currentValue + amount;
+function addPlayerResource(resourceKey, amount) {
+    const save = getPlayerSave();
 
-    localStorage.setItem(resourceKey, newValue);
+    if (resourceKey === "gold") {
+        setPlayerSave({ gold: save.gold + amount });
+    }
 
-    updateCollectionHeaderResources();
-}
+    if (resourceKey === "gems") {
+        setPlayerSave({ gems: save.gems + amount });
+    }
 
-function addPlayerEnergy(amount){
-    const currentEnergy = Number(localStorage.getItem("player_energy")) || 100;
-    const newEnergy = currentEnergy + amount;
+    if (resourceKey.includes("chest")) {
+        const currentValue = Number(localStorage.getItem(resourceKey)) || 0;
+        localStorage.setItem(resourceKey, currentValue + amount);
+    }
 
-    localStorage.setItem("player_energy", newEnergy);
-
-    updateCollectionHeaderResources();
+    updateHeader();
 }
 
 function updateCollectionHeaderResources(){
@@ -11188,28 +11185,22 @@ function normalizeCollectionKey(theme) {
 
 const COLLECTION_REWARD_MILESTONES = [
     { need: 50, type: "gold", amount: 100, image: "image/ui/gold.png" },
-    { need: 100, type: "energy", amount: 10, image: "image/ui/energy-50.png" },
+    { need: 100, type: "gems", amount: 10, image: "image/ui/gems.png" },
     { need: 200, type: "gold", amount: 200, image: "image/ui/gold.png" },
-    { need: 350, type: "gems", amount: 10, image: "image/ui/gems-100.png" },
+    { need: 350, type: "gems", amount: 25, image: "image/ui/gems.png" },
     { need: 500, type: "chest_common", amount: 1, image: "image/ui/chest-common.png" },
 
-    { need: 750, type: "energy", amount: 25, image: "image/ui/energy-50.png" },
-    { need: 1000, type: "gems", amount: 200, image: "image/ui/gems-550.png" },
-    { need: 1300, type: "gold", amount: 500, image: "image/ui/gold.png" },
+    { need: 750, type: "gold", amount: 500, image: "image/ui/gold.png" },
+    { need: 1000, type: "gems", amount: 50, image: "image/ui/gems.png" },
+    { need: 1300, type: "gold", amount: 750, image: "image/ui/gold.png" },
     { need: 1700, type: "chest_rare", amount: 1, image: "image/ui/chest-rare.png" },
-    { need: 2200, type: "energy", amount: 50, image: "image/ui/energy-120.png" },
+    { need: 2200, type: "gems", amount: 100, image: "image/ui/gems.png" },
 
     { need: 3000, type: "gold", amount: 1000, image: "image/ui/gold.png" },
-    { need: 4000, type: "gems", amount: 100, image: "image/ui/gems-550.png" },
+    { need: 4000, type: "gems", amount: 150, image: "image/ui/gems.png" },
     { need: 5500, type: "chest_epic", amount: 1, image: "image/ui/chest-epic.png" },
-    { need: 7000, type: "energy", amount: 100, image: "image/ui/energy-120.png" },
-    { need: 9000, type: "chest_legendary", amount: 1, image: "image/ui/chest-legendary.png" },
-
-    { need: 12000, type: "gems", amount: 250, image: "image/ui/gems-1200.png" },
-    { need: 15000, type: "gold", amount: 2500, image: "image/ui/gold.png" },
-    { need: 20000, type: "chest_epic", amount: 2, image: "image/ui/chest-epic.png" },
-    { need: 30000, type: "gems", amount: 500, image: "image/ui/gems-2500.png" },
-    { need: 50000, type: "chest_legendary", amount: 3, image: "image/ui/chest-legendary.png" }
+    { need: 7000, type: "gold", amount: 2000, image: "image/ui/gold.png" },
+    { need: 9000, type: "chest_legendary", amount: 1, image: "image/ui/chest-legendary.png" }
 ];
 function openComingSoon() {
     const modal = document.getElementById("comingSoonModal");
@@ -11409,15 +11400,9 @@ function scrollRewardRoad(direction) {
     if (!road) return;
 
     road.scrollBy({
-        left: direction * 450,
+        left: direction * 320,
         behavior: "smooth"
     });
-}
-function scrollRewardRoad(direction) {
-    const road = document.getElementById("collectionRewardRoad");
-    if (!road) return;
-
-    road.scrollLeft += direction * 450;
 }
 
 //  ЗАПУСК

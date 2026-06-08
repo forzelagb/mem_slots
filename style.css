@@ -24299,7 +24299,7 @@ body {
     transform: translateX(-50%) !important;
     justify-content: center !important;
     width: 100% !important;
-    bottom: 38px !important;
+    bottom: 25px !important;
 }
 
 .collect-result-actions.single img {
@@ -24310,6 +24310,129 @@ body {
     top: 455px !important;
     gap: 18px !important;
     line-height: 1.25 !important;
+}
+.collect-result-actions.single {
+    position: absolute;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 74px !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+.collect-result-actions.single button {
+    width: 260px !important;
+    height: auto !important;
+}
+
+.collect-result-actions.single img {
+    width: 260px !important;
+}
+
+.collect-result-list {
+    top: 438px !important;
+    row-gap: 20px !important;
+    line-height: 1.55 !important;
+}
+
+.collect-result-total {
+    top: 396px !important;
+}
+.collect-result-total {
+    top: 345px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 30px !important;
+}
+
+.collect-result-list {
+    top: 485px !important;
+    left: 10 !important;
+    width: 100% !important;
+    gap: 0 !important;
+    row-gap: 18px !important;
+    line-height: 1.7 !important;
+}
+
+.collect-result-list span {
+    display: block !important;
+    margin-bottom: -9px !important;
+}
+
+.collect-result-actions.single {
+    bottom: 100px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+.collect-result-actions.single img {
+    width: 260px !important;
+}
+.collect-result-actions.single {
+    position: absolute !important;
+    left: 50% !important;
+    top: 660px !important;
+    bottom: auto !important;
+    transform: translateX(-50%) !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    z-index: 20 !important;
+}
+
+.collect-result-actions.single button {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.collect-result-actions.single img {
+    width: 270px !important;
+    display: block !important;
+}
+.reward-road-wrap {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 650px !important;
+    overflow: hidden !important;
+    padding: 12px 54px !important;
+}
+
+.collection-reward-road {
+    display: flex !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth !important;
+    padding: 10px 4px 20px !important;
+}
+
+.road-reward {
+    flex: 0 0 135px !important;
+}
+
+.reward-float-arrow {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 10 !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+}
+
+.reward-float-left {
+    left: 4px !important;
+}
+
+.reward-float-right {
+    right: 4px !important;
 }
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
