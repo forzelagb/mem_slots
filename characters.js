@@ -163,20 +163,84 @@ function renderCards() {
     cards.appendChild(card);
   });
 }
+function getSave() {
+  return JSON.parse(localStorage.getItem("mccSave")) || {
+    nickname: "PLAYER",
+    level: 1,
+    gold: 0,
+    gems: 0,
+    energy: 100,
+    maxEnergy: 100,
+    selectedCharacter: "helin"
+  };
+}
+
+function setSave(save) {
+  localStorage.setItem("mccSave", JSON.stringify(save));
+}
+
+function updateHeaderFromSave() {
+  const save = getSave();
+
+  document.querySelectorAll(".js-gold").forEach(el => {
+    el.textContent = save.gold || 0;
+  });
+
+  document.querySelectorAll(".js-gems").forEach(el => {
+    el.textContent = save.gems || 0;
+  });
+
+  document.querySelectorAll(".js-energy").forEach(el => {
+    el.textContent = `${save.energy || 0}/${save.maxEnergy || 100}`;
+  });
+
+  document.querySelectorAll(".js-player-name").forEach(el => {
+    el.textContent = save.nickname || "PLAYER";
+  });
+
+  document.querySelectorAll(".js-level").forEach(el => {
+    el.textContent = save.level || 1;
+  });
+}
 
 mainBtn.addEventListener("click", () => {
   const char = characters[currentIndex];
+  const save = getSave();
 
   if (!char.unlocked) {
+    if ((save.gold || 0) < char.price) {
+      alert("Недостаточно золота!");
+      return;
+    }
+
+    save.gold -= char.price;
+
     char.unlocked = true;
+    characters.forEach(c => c.selected = false);
+    char.selected = true;
+
+    save.selectedCharacter = char.folder;
+
+    setSave(save);
+    saveCharactersState();
+    updateHeaderFromSave();
+
     alert(`${char.name} куплен!`);
   } else {
     characters.forEach(c => c.selected = false);
     char.selected = true;
+
+    save.selectedCharacter = char.folder;
+
+    setSave(save);
+    saveCharactersState();
   }
 
   renderCharacter();
+  updateHeaderFromSave();
 });
+
+updateHeaderFromSave();
 
 document.getElementById("prevBtn").addEventListener("click", () => {
   currentIndex--;
