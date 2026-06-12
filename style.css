@@ -98,7 +98,7 @@ body::before {
     to { opacity: 1; transform: translateY(0); } 
 }
 
-/* HEADER */
+
 .header-bar,
 .game-header {
     width: 100%;
@@ -21065,7 +21065,7 @@ body.gl-compact .screen {
 .theme-card {
     cursor: pointer !important;
 }
-/* === ABSOLUTE FINAL HOME LOWER FIX === */
+
 
 .gl-home-section-intro,
 .featured-themes,
@@ -22187,7 +22187,7 @@ body.gl-compact .screen {
         transform: scale(1.55);
     }
 }
-/* === FIX collect UI: только картинки без лишних рамок === */
+
 
 .collect-side-menu {
     left: 28px !important;
@@ -22248,7 +22248,7 @@ body.gl-compact .screen {
     top: 50% !important;
     font-size: 34px !important;
 }
-/* === FIX dice: всегда в центре портала === */
+
 
 .collect-dice-img {
     position: absolute !important;
@@ -22579,7 +22579,7 @@ body.gl-compact .screen {
     width: 450px;
     max-width: 90%;
 }
-/* === PROFILE PAGE === */
+
 
 .profile-page {
     width: 100%;
@@ -23040,9 +23040,7 @@ body.gl-compact .screen {
     width: 300px;
     height: 75px;
 }
-/* ========================================
-   COLLECTION PAGE
-======================================== */
+
 
 .collection-page{
     font-family:'Russo One',sans-serif;
@@ -23277,9 +23275,7 @@ body.gl-compact .screen {
         transparent 100%
     );
 }
-/* ========================================
-   COLLECTION MODAL
-======================================== */
+
 
 .collection-modal{
     display:none;
@@ -23505,7 +23501,6 @@ grid-template-columns:340px 1fr;
         grid-template-columns:repeat(2,1fr);
     }
 }
-/* COLLECTION REWARDS TAB */
 
 .collection-rewards-tab{
     display:none;
@@ -24527,7 +24522,7 @@ body {
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }
 .equipped-achievement-badge.medal-epic { border-color: #b93dff; }
 .equipped-achievement-badge.medal-legendary { border-color: #ff9f1c; }
-/* цвета редкости */
+
 .rarity-common { background: #555; }
 .rarity-rare { background: #1e90ff; }
 .rarity-epic { background: #8a2be2; }
@@ -24537,7 +24532,7 @@ body {
 .kaka-bg { background: url('image/kaka/1.jpg') center/cover; }
 .zidane-bg { background: url('image/zidane/1.jpg') center/cover; }
 
-/* Фоны для карточек */
+
 .brain-bg { background: url('image/brain/1.jpg') center/cover; }
 .helin-bg { background: url('image/helin/1.jpg') center/cover; }
 .lexapaws-bg { background: url('image/lexapaws/1.jpg') center/cover; }

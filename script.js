@@ -2673,7 +2673,6 @@ function updateVIPZoneUI() {
 }
 
 
-/* === VIP STORE: STATUS + PROMOCODES === */
 let currentVIPLevel = parseInt(localStorage.getItem('memeVIPLevel')) || 0;
 
 const vipLevelNames = {
@@ -2759,7 +2758,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/* === VIP ZONE ACCESS === */
+
 function updateVIPZoneAccess() {
     const lockedEl = document.getElementById('vip-zone-locked');
     const contentEl = document.getElementById('vip-zone-content');
@@ -2797,7 +2796,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-/* === VIP ZONE SLOTS === */
+
 const vipSlotsConfig = [
     {
         level: 1,
@@ -2919,7 +2918,7 @@ updateVIPZoneAccess = function() {
     renderVIPZoneSlots();
 };
 
-/* === VIP 30-DAY REWARDS CALENDAR === */
+
 let selectedVIPRewardDay = null;
 
 const vipRewardTables = {
@@ -3104,7 +3103,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 
-/* === VIP REWARDS: ONCE PER DAY === */
+
 function getTodayDateKey() {
     const now = new Date();
     const year = now.getFullYear();
@@ -3142,7 +3141,7 @@ function showVIPSlotMessage(text) {
 
 
 
-/* === APPLY VIP SLOT THEME === */
+
 function applyVIPTheme(mode) {
 document.body.classList.remove(
     'vip-theme-ronaldo',
@@ -10843,10 +10842,6 @@ function selectCurrentCharacter() {
     loadProfileCharacter();
     closeCharacterModal();
 }
-/* ========================================
-   COLLECTION PAGE
-======================================== */
-
 const collectionCharacters = [
     {
         name: "HELIN",

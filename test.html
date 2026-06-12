@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Test</title>
+</head>
+<body>
+
+<h1>Тест подключения</h1>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://kmaqaiwpcwdouqjbywkb.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_KI675YDMhEM5DAPOcMP66g_n9SXIxvd";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+);
+
+console.log("Supabase подключен");
+</script>
+
+</body>
+</html>
