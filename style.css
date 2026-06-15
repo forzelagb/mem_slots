@@ -24530,6 +24530,20 @@ body {
     height: auto;
     display: block;
 }
+.profile-logout-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto;
+    padding: 0;
+}
+
+.profile-logout-btn img {
+    width: 180px;
+    height: auto;
+    display: block;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

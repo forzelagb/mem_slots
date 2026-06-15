@@ -11430,7 +11430,14 @@ window.onload = () => {
         marketInterval = setInterval(simulateMarket, 3000);
     }
 };
+const logoutProfileBtn = document.getElementById("logoutProfileBtn");
 
+if (logoutProfileBtn) {
+    logoutProfileBtn.addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = "auth/auth.html";
+    });
+}
 function setBet(bet) {
     currentBet = bet;
     updateUI();
