@@ -11399,45 +11399,6 @@ function scrollRewardRoad(direction) {
         behavior: "smooth"
     });
 }
-
-//  ЗАПУСК
-window.onload = () => {
-    currentVIPLevel = vipLevel;
-
-    if (typeof loadPlayer === "function") loadPlayer();
-    if (typeof createGrid === "function") createGrid();
-    if (typeof updateUI === "function") updateUI();
-
-    if (typeof updateLeaderboardUI === "function") updateLeaderboardUI();
-    if (typeof updateDailyRewardUI === "function") updateDailyRewardUI();
-    if (typeof updateBlackMarketUI === "function") updateBlackMarketUI();
-    if (typeof updateWheelUI === "function") updateWheelUI();
-    if (typeof renderWheelTrack === "function") renderWheelTrack();
-    if (typeof updateVIPZoneUI === "function") updateVIPZoneUI();
-    if (typeof updatePlayerLevelUI === "function") updatePlayerLevelUI();
-
-    if (typeof loadPassState === "function") loadPassState();
-    if (typeof renderBattlePass === "function") renderBattlePass();
-    if (typeof loadAchievements === "function") loadAchievements();
-    if (typeof loadQuestState === "function") loadQuestState();
-    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
-    if (typeof updateEquippedAchievementBadge === "function") {
-    updateEquippedAchievementBadge();
-    }
-
-
-    if (typeof simulateMarket === "function") {
-        marketInterval = setInterval(simulateMarket, 3000);
-    }
-};
-const logoutProfileBtn = document.getElementById("logoutProfileBtn");
-
-if (logoutProfileBtn) {
-    logoutProfileBtn.addEventListener("click", async () => {
-        await supabaseClient.auth.signOut();
-        window.location.href = "auth/auth.html";
-    });
-}
 function setBet(bet) {
     currentBet = bet;
     updateUI();
@@ -11472,5 +11433,56 @@ async function checkHeaderAuth() {
 document.getElementById("headerLoginBtn").addEventListener("click", () => {
     window.location.href = "auth/auth.html";
 });
+const headerUser = document.getElementById("headerUser");
+const headerLoginBtn = document.getElementById("headerLoginBtn");
+
+if (currentUser) {
+    headerUser.style.display = "flex";
+    headerLoginBtn.style.display = "none";
+} else {
+    headerUser.style.display = "none";
+    headerLoginBtn.style.display = "flex";
+}
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await supabase.auth.signOut();
+
+    localStorage.clear();
+
+    window.location.href = "auth/auth.html";
+});
+headerLoginBtn.addEventListener("click", () => {
+    window.location.href = "auth/auth.html";
+});
+
+//  ЗАПУСК
+window.onload = () => {
+    currentVIPLevel = vipLevel;
+
+    if (typeof loadPlayer === "function") loadPlayer();
+    if (typeof createGrid === "function") createGrid();
+    if (typeof updateUI === "function") updateUI();
+
+    if (typeof updateLeaderboardUI === "function") updateLeaderboardUI();
+    if (typeof updateDailyRewardUI === "function") updateDailyRewardUI();
+    if (typeof updateBlackMarketUI === "function") updateBlackMarketUI();
+    if (typeof updateWheelUI === "function") updateWheelUI();
+    if (typeof renderWheelTrack === "function") renderWheelTrack();
+    if (typeof updateVIPZoneUI === "function") updateVIPZoneUI();
+    if (typeof updatePlayerLevelUI === "function") updatePlayerLevelUI();
+
+    if (typeof loadPassState === "function") loadPassState();
+    if (typeof renderBattlePass === "function") renderBattlePass();
+    if (typeof loadAchievements === "function") loadAchievements();
+    if (typeof loadQuestState === "function") loadQuestState();
+    if (typeof renderQuestsScreen === "function") renderQuestsScreen();
+    if (typeof updateEquippedAchievementBadge === "function") {
+    updateEquippedAchievementBadge();
+    }
+
+
+    if (typeof simulateMarket === "function") {
+        marketInterval = setInterval(simulateMarket, 3000);
+    }
+};
 
 checkHeaderAuth();
