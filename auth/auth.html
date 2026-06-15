@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCC | Авторизация</title>
+
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+<div class="auth-container">
+
+    <img
+        id="authCard"
+        src="../image/ui/gl/login-card.png"
+        class="auth-card"
+    >
+
+<input
+    type="email"
+    class="auth-input email-input"
+    placeholder="Email"
+>
+
+<input
+    type="password"
+    class="auth-input password-input"
+    placeholder="Пароль"
+>
+
+<input
+    type="password"
+    class="auth-input repeat-input"
+    placeholder="Повторите пароль"
+>
+
+    <!-- Кнопка вход -->
+    <button class="hotspot login-tab"></button>
+
+    <!-- Кнопка регистрация -->
+    <button class="hotspot register-tab"></button>
+
+    <!-- Главная кнопка -->
+    <button class="hotspot main-btn"></button>
+
+    <a class="hotspot back-btn" href="../index.html"></a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase.js"></script>
+<script src="auth.js"></script>
+
+</body> 
+</html>

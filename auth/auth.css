@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #050510;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+.auth-screen img {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.hotspot {
+    position: absolute;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.auth-input {
+    position: absolute;
+    left: 28.5%;
+    width: 43%;
+    height: 7%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 22px;
+    padding-left: 55px;
+}
+
+.email-input {
+    top: 49%;
+}
+
+.password-input {
+    top: 58%;
+}
+
+.repeat-input {
+    top: 67%;
+}
+
+.login-tab {
+    left: 28.5%;
+    top: 40%;
+    width: 21.5%;
+    height: 6.5%;
+}
+
+.register-tab {
+    left: 50%;
+    top: 40%;
+    width: 21.5%;
+    height: 6.5%;
+}
+
+.main-btn {
+    left: 28.5%;
+    top: 76%;
+    width: 43%;
+    height: 8%;
+}
+
+.back-link {
+    left: 38%;
+    top: 89%;
+    width: 24%;
+    height: 5%;
+}
+body{
+    margin:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+
+    background:url("../image/ui/gl/auth-bg.png");
+    background-size:cover;
+    background-position:center;
+}
+.auth-container{
+    width:100vw;
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+}
+
+.auth-card{
+    width:400px;
+    max-width:90vw;
+}
+.hotspot {
+    position: absolute;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.login-tab {
+    left: 19%;
+    top: 36%;
+    width: 31%;
+    height: 6%;
+}
+
+.register-tab {
+    left: 50%;
+    top: 36%;
+    width: 31%;
+    height: 6%;
+}
+
+.main-btn {
+    left: 19%;
+    top: 70%;
+    width: 62%;
+    height: 7%;
+}
+.auth-input {
+    position: absolute;
+    left: 39%;
+    width: 22%;
+    height: 6%;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    color: white;
+    font-size: 16px;
+    padding-left: 45px;
+}
+
+.email-input {
+    top: 50.5%;
+}
+
+.password-input {
+    top: 59%;
+}
+
+.repeat-input {
+    top: 65.8%;
+}
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    transition: background-color 9999s ease-in-out 0s;
+}
+input {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 1px solid red !important;
+}
+.hotspot {
+    position: absolute;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.login-tab {
+    left: 39.4%;
+    top: 42%;
+    width: 10%;
+    height: 5%;
+}
+
+.register-tab {
+    left: 51%;
+    top: 42%;
+    width: 10%;
+    height: 5%;
+}
+
+.main-btn {
+    left: 39%;
+    top: 68.3%;
+    width: 22%;
+    height: 6%;
+}
+
+.back-link-hotspot {
+    left: 43%;
+    top: 50%;
+    width: 15%;
+    height: 4%;
+    
+}
+.back-btn {
+    left: 43.3%;
+    top: 81%;
+    width: 13%;
+    height: 5%;
+}
+.hotspot {
+    border: 1px solid red;
+}
