@@ -11435,3 +11435,35 @@ function setBet(bet) {
     currentBet = bet;
     updateUI();
 }
+async function checkHeaderAuth() {
+    const headerUser = document.getElementById("headerUser");
+    const headerLoginBtn = document.getElementById("headerLoginBtn");
+    const headerUsername = document.querySelector(".js-player-name");
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+
+    if (!user) {
+        headerUser.style.display = "none";
+        headerLoginBtn.style.display = "block";
+        return;
+    }
+
+    headerUser.style.display = "flex";
+    headerLoginBtn.style.display = "none";
+
+    const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+    if (profile) {
+        headerUsername.textContent = profile.username;
+    }
+}
+
+document.getElementById("headerLoginBtn").addEventListener("click", () => {
+    window.location.href = "auth/auth.html";
+});
+
+checkHeaderAuth();

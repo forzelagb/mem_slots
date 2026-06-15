@@ -173,7 +173,6 @@ body{
 input {
     background: transparent !important;
     background-color: transparent !important;
-    border: 1px solid red !important;
 }
 .hotspot {
     position: absolute;
@@ -216,6 +215,130 @@ input {
     width: 13%;
     height: 5%;
 }
-.hotspot {
-    border: 1px solid red;
+/* ВХОД */
+.login-mode .email-input {
+    top: 50.5%;
+}
+
+.login-mode .password-input {
+    top: 59.1%;
+}
+
+.login-mode .repeat-input {
+    display: none;
+}
+
+.login-mode .main-btn {
+    top: 68.5%;
+}
+
+/* РЕГИСТРАЦИЯ */
+.register-mode .login-tab{
+    left:39%;
+    top:38.5%;
+}
+.register-mode .register-tab{
+    left: 50.5%;
+    top: 38.5%;
+}
+.register-mode .email-input {
+    top: 47%;
+}
+
+.register-mode .password-input {
+    top: 56%;
+}
+
+.register-mode .repeat-input {
+    top: 64.5%;
+    display: block;
+}
+
+.register-mode .main-btn {
+    top: 73.5%;
+}
+.register-mode .back-btn {
+    top:86%;
+}
+.resend-btn {
+    display: none;
+    left: 50.5%;
+    top: 66%;
+    width: 31%;
+    height: 8%;
+}
+
+.change-data-btn {
+    display: none;
+    left: 19%;
+    top: 81%;
+    width: 62%;
+    height: 7%;
+}
+
+.verify-mode .email-input,
+.verify-mode .password-input,
+.verify-mode .repeat-input,
+.verify-mode .login-tab,
+.verify-mode .register-tab {
+    display: none;
+}
+
+.verify-mode .resend-btn,
+.verify-mode .change-data-btn {
+    display: block;
+}
+
+.verify-mode .main-btn {
+    left: 18%;
+    top: 66%;
+    width: 31%;
+    height: 8%;
+}
+.verify-mode .email-input,
+.verify-mode .password-input,
+.verify-mode .repeat-input,
+.verify-mode .login-tab,
+.verify-mode .register-tab,
+.verify-mode .main-btn {
+    display: none;
+}
+
+.verify-mode .change-data-btn {
+    display: block;
+    left: 39%;
+    top: 80.5%;
+    width: 22%;
+    height: 6%;
+}
+.change-data-btn {
+    display: none;
+}
+.verify-mode .change-data-btn {
+    display: block;
+    left: 39%;
+    top: 80.5%;
+    width: 22%;
+    height: 6%;
+}
+.login-mode .change-data-btn,
+.register-mode .change-data-btn {
+    display: none;
+}
+.verify-mode .auth-input {
+    display: none !important;
+}
+
+.verify-mode .email-input,
+.verify-mode .password-input,
+.verify-mode .repeat-input {
+    display: none !important;
+}
+.verify-mode .change-data-btn {
+    display: block !important;
+    left: 39%;
+    top: 80.5%;
+    width: 22%;
+    height: 6%;
+    z-index: 10;
 }

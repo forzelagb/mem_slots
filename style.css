@@ -24517,6 +24517,19 @@ body {
 .social-card:hover {
     transform: translateY(-5px);
 }
+.header-login-btn {
+    display: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.header-login-btn img {
+    width: 150px;
+    height: auto;
+    display: block;
+}
 .equipped-achievement-badge.medal-bronze { border-color: #b87333; }
 .equipped-achievement-badge.medal-silver { border-color: #c0c0c0; }
 .equipped-achievement-badge.medal-gold { border-color: #ffd36a; }

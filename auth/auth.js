@@ -9,11 +9,19 @@ const passwordInput = document.querySelector(".password-input");
 const repeatInput = document.querySelector(".repeat-input");
 
 let isRegisterMode = false;
+const changeDataBtn = document.querySelector(".change-data-btn");
 
+let isVerifyMode = false;
+let pendingEmail = "";
+let pendingPassword = "";
+document.body.classList.add("login-mode");
 repeatInput.style.display = "none";
 
 loginTab.addEventListener("click", () => {
     isRegisterMode = false;
+
+    document.body.classList.remove("register-mode");
+    document.body.classList.add("login-mode");
 
     authCard.src = "../image/ui/gl/login-card.png";
 
@@ -26,6 +34,9 @@ loginTab.addEventListener("click", () => {
 
 registerTab.addEventListener("click", () => {
     isRegisterMode = true;
+
+    document.body.classList.remove("login-mode");
+    document.body.classList.add("register-mode");
 
     authCard.src = "../image/ui/gl/register-card.png";
 
@@ -57,42 +68,34 @@ mainBtn.addEventListener("click", async () => {
         await loginUser(email, password);
     }
 });
+
 async function registerUser(email, password) {
-    const { data, error } = await supabaseClient.auth.signUp({
+    mainBtn.disabled = true;
+
+    const { error } = await supabaseClient.auth.signUp({
         email,
         password
     });
 
     if (error) {
         alert("Ошибка регистрации: " + error.message);
+        mainBtn.disabled = false;
         return;
     }
 
-    const userId = data.user.id;
+    pendingEmail = email;
+pendingPassword = password;
+isVerifyMode = true;
 
-    const { error: profileError } = await supabaseClient
-        .from("profiles")
-        .insert([
-            {
-                id: userId,
-                username: "NewPlayer",
-                gold: 0,
-                gems: 0,
-                energy: 100,
-                selected_character: "helin"
-            }
-        ]);
-
-    if (profileError) {
-        alert("Ошибка создания профиля: " + profileError.message);
-        return;
-    }
-
-    alert("Аккаунт создан!");
-    window.location.href = "../index.html";
+document.body.classList.remove("register-mode");
+document.body.classList.add("verify-mode");
+authCard.src = "../image/ui/gl/code.png";
+mainBtn.disabled = false;
 }
 
 async function loginUser(email, password) {
+    mainBtn.disabled = true;
+
     const { error } = await supabaseClient.auth.signInWithPassword({
         email,
         password
@@ -100,9 +103,60 @@ async function loginUser(email, password) {
 
     if (error) {
         alert("Ошибка входа: " + error.message);
+        mainBtn.disabled = false;
         return;
     }
+
+    const {
+        data: { user }
+    } = await supabaseClient.auth.getUser();
+
+    await createProfileIfNotExists(user);
 
     alert("Вход выполнен!");
     window.location.href = "../index.html";
 }
+
+async function createProfileIfNotExists(user) {
+    const { data: existingProfile } = await supabaseClient
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+    if (existingProfile) {
+        return;
+    }
+
+    const username = user.email.split("@")[0];
+
+    const { error } = await supabaseClient
+        .from("profiles")
+        .insert([
+            {
+                id: user.id,
+                username: username,
+                gold: 0,
+                gems: 0,
+                energy: 100,
+                selected_character: "helin"
+            }
+        ]);
+
+    if (error) {
+        alert("Ошибка создания профиля: " + error.message);
+    }
+}   
+
+changeDataBtn.addEventListener("click", () => {
+    isVerifyMode = false;
+
+    document.body.classList.remove("verify-mode");
+    document.body.classList.add("register-mode");
+
+    authCard.src = "../image/ui/gl/register-card.png";
+
+emailInput.value = "";
+passwordInput.value = "";
+repeatInput.value = "";
+});

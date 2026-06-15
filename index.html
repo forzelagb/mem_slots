@@ -39,16 +39,20 @@ onclick="window.location.href='characters.html'">
 </aside>
 
 <header class="game-topbar">
-    <div class="game-user">
-        <div class="game-avatar js-player-letter">P</div>
+<div class="game-user" id="headerUser">
+    <div class="game-avatar js-player-letter">P</div>
 
-        <div>
-            <div class="game-name js-player-name">PLAYER</div>
-            <div class="game-role">
-                Коллекционер • Ур. <span class="js-level">1</span>
-            </div>
+    <div>
+        <div class="game-name js-player-name">PLAYER</div>
+        <div class="game-role">
+            Коллекционер • Ур. <span class="js-level">1</span>
         </div>
     </div>
+</div>
+
+<button id="headerLoginBtn" class="header-login-btn">
+    <img src="image/ui/gl/log.png" alt="Войти">
+</button>
 
 <div class="game-resources">
     <div class="game-resource-item">
@@ -708,82 +712,6 @@ onclick="window.location.href='collection.html'">
 
     </section>
 </div>
-<!-- ЭКРАН ПЕРСОНАЖЕЙ -->
-<!-- ЭКРАН ПЕРСОНАЖЕЙ
-<div id="characters-screen" class="screen">
-    <button class="characters-back-btn" onclick="goHome()">← Назад</button>
-
-    <div class="characters-container">
-
-         ЛЕВАЯ ПАНЕЛЬ: ВЫБОР ПЕРСОНАЖА 
-        <div class="characters-sidebar">
-            <button class="characters-arrow" onclick="scrollCharacters(-1)">▲</button>
-
-            <div class="characters-list-window">
-    <div id="characters-list"></div>
-</div>
-
-            <button class="characters-arrow" onclick="scrollCharacters(1)">▼</button>
-        </div>
-
- ЦЕНТР: ПЕРСОНАЖ + ПИТОМЕЦ 
-<div class="character-stage">
-    <img id="active-character" src="" alt="">
-
-    <div class="active-pet">
-        <img src="image/pets/pony/default.png" alt="Pony">
-        <div class="pet-shadow"></div>
-    </div>
-</div>
-
-         ПРАВАЯ ПАНЕЛЬ: СВИТОК
-        <div class="character-info-scroll">
-            <div class="scroll-title">ПЕРСОНАЖ</div>
-
-            <div class="scroll-character-name" id="character-info-name">
-                Mellstroy
-            </div>
-
-            <div class="scroll-divider"></div>
-
-            <div class="scroll-section-title">Характеристики</div>
-
-            <div class="scroll-empty-text">
-                Скоро здесь будут сила, удача, энергия и бонусы.
-            </div>
-
-            <div class="scroll-divider"></div>
-
-            <div class="scroll-section-title">Аксессуары</div>
-
-            <div class="equipment-slots">
-                <div class="equipment-slot active">
-                    <span>+</span>
-                    <small>Акс 1</small>
-                </div>
-
-                <div class="equipment-slot locked">
-                    <span>🔒</span>
-                    <small>LVL 5</small>
-                </div>
-
-                <div class="equipment-slot locked">
-                    <span>🔒</span>
-                    <small>LVL 10</small>
-                </div>
-            </div>
-
-            <div class="scroll-section-title">Питомец</div>
-
-            <div class="pet-slot">
-                <span>🐾</span>
-                <small>Выбрать питомца позже</small>
-            </div>
-        </div>
-
-    </div>
-</div>
- -->
 <div id="game-screen" class="screen">
 
   <div class="game-header">
@@ -824,80 +752,6 @@ onclick="window.location.href='collection.html'">
     </div>
 </div>
 
-    <!-- ОКНО ВЫИГРЫША -->
-    <div id="win-modal" class="modal">
-        <div class="modal-content">
-            <h1 class="win-title">BIG WIN!</h1>
-            <div class="win-amount" id="modal-amount">0</div>
-            <div class="win-subtitle">GEMS</div>
-            <button class="btn-collect" onclick="closeModal()">ЗАБРАТЬ</button>
-        </div>
-    </div>
-    <!-- === VIP DAILY REWARDS MODAL === -->
-<div id="vip-rewards-modal" class="vip-rewards-modal">
-    <div class="vip-rewards-overlay" onclick="closeVIPRewardsModal()"></div>
-
-    <div class="vip-rewards-content">
-        <div class="vip-rewards-header">
-            <div>
-                <div class="vip-rewards-badge">👑 VIP DAILY REWARDS</div>
-                <h2 class="vip-rewards-title">Ежедневные VIP-награды</h2>
-                <p class="vip-rewards-subtitle">
-                    Календарь наград на 30 дней. Каждый день можно забрать один приз.
-                </p>
-            </div>
-
-            <button class="vip-rewards-close" onclick="closeVIPRewardsModal()">✕</button>
-        </div>
-
-        <div class="vip-rewards-topbar">
-            <div class="vip-rewards-level">
-                Текущий уровень:
-                <span id="vip-rewards-level-name">Без VIP</span>
-            </div>
-
-            <div class="vip-rewards-current-day">
-                День:
-                <span id="vip-rewards-current-day">1</span> / 30
-            </div>
-        </div>
-
-        <div id="vip-rewards-grid" class="vip-rewards-grid"></div>
-
-        <div class="vip-rewards-footer">
-            <div id="vip-rewards-selected-text" class="vip-rewards-selected-text">
-                Выбери доступный день
-            </div>
-
-            <button id="vip-rewards-claim-btn" class="vip-rewards-claim-btn" onclick="claimVIPCalendarReward()">
-                Забрать награду
-            </button>
-        </div>
-    </div>
-</div>
-<div id="daily-calendar-modal" class="modal">
-    <div class="modal-content daily-calendar-content">
-        <button class="daily-close-btn" onclick="closeDailyCalendar()">✕</button>
-
-        <div class="daily-calendar-header">
-            <div class="daily-calendar-badge">🎁 DAILY REWARDS</div>
-            <h2>Ежедневные награды</h2>
-            <p>Заходи каждый день, чтобы увеличивать серию. Пропуск сбрасывает прогресс.</p>
-        </div>
-
-        <div class="daily-calendar-topbar">
-            <div id="daily-streak-label">Серия: 1 день</div>
-            <div id="daily-next-label">День: 1 / 30</div>
-        </div>
-
-        <div id="daily-calendar-grid" class="daily-calendar-grid"></div>
-
-        <div class="daily-calendar-footer">
-            <p class="daily-vip-hint">👑 Хочешь больше наград? VIP открывает отдельный премиум-календарь.</p>
-        </div>
-    </div>
-</div>
-
 <div id="purchase-confirm-modal" class="modal">
     <div class="modal-content purchase-confirm-content">
         <button class="purchase-confirm-close" onclick="closePurchaseConfirm()">✕</button>
@@ -924,26 +778,7 @@ onclick="window.location.href='collection.html'">
     </div>
 </div>
 </div>
-<div id="auth-modal" class="modal">
-    <div class="modal-content auth-modal-content">
-        <button class="auth-close" onclick="closeAuthModal()">✕</button>
 
-        <div class="auth-header">
-            <div class="auth-badge">👤 PLAYER ACCOUNT</div>
-            <h2>Личный кабинет</h2>
-            <p>Войди или создай аккаунт, чтобы сохранить прогресс</p>
-        </div>
-
-        <div class="auth-form">
-            <input id="auth-nickname" type="text" placeholder="Твой ник">
-            <input id="auth-email" type="email" placeholder="Email">
-            <input id="auth-password" type="password" placeholder="Пароль">
-
-            <button class="auth-btn" onclick="registerPlayer()">Создать аккаунт</button>
-            <button class="auth-btn auth-btn-secondary" onclick="loginPlayer()">Войти</button>
-        </div>
-    </div>
-</div>
 <div id="card-path-modal" class="card-path-modal">
     <div class="card-path-modal__overlay" onclick="closeCardPath()"></div>
 
@@ -1394,5 +1229,7 @@ onclick="window.location.href='collection.html'">
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
 </body>
 </html>
