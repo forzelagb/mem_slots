@@ -74,7 +74,10 @@ async function registerUser(email, password) {
 
     const { error } = await supabaseClient.auth.signUp({
         email,
-        password
+        password,
+        options: {
+            emailRedirectTo: "https://meme-collection-club.pages.dev/auth/auth.html"
+        }
     });
 
     if (error) {
@@ -150,13 +153,14 @@ const username = "PLAYER";
 
 changeDataBtn.addEventListener("click", () => {
     isVerifyMode = false;
+    isRegisterMode = false;
 
-    document.body.classList.remove("verify-mode");
-    document.body.classList.add("register-mode");
+    document.body.classList.remove("verify-mode", "register-mode");
+    document.body.classList.add("login-mode");
 
-    authCard.src = "../image/ui/gl/register-card.png";
+    authCard.src = "../image/ui/gl/card.png";
 
-emailInput.value = "";
-passwordInput.value = "";
-repeatInput.value = "";
+    emailInput.value = "";
+    passwordInput.value = "";
+    repeatInput.value = "";
 });

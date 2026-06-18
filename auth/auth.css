@@ -342,3 +342,25 @@ input {
     height: 6%;
     z-index: 10;
 }
+.verify-mode .auth-card {
+    width: 760px;
+    max-width: 90vw;
+}
+
+.verify-mode .change-data-btn {
+    display: block !important;
+    left: 31.5%;
+    top: 76.5%;
+    width: 20%;
+    height: 8%;
+    z-index: 20;
+}
+
+.verify-mode .back-btn {
+    display: block !important;
+    left: 55%;
+    top: 76.5%;
+    width: 20%;
+    height: 8%;
+    z-index: 20;
+}
