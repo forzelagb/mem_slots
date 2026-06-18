@@ -4135,17 +4135,139 @@ clothFragments: {
     }
 };
 
+let cloudSaveTimer = null;
+
 function savePlayer() {
-    localStorage.setItem("mcc_player", JSON.stringify(playerData));
+    localStorage.setItem("playerData", JSON.stringify(playerData));
+
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(savePlayerToSupabase, 700);
+}
+
+async function savePlayerToSupabase() {
+    console.log("Пробую сохранить прогресс...");
+
+    if (typeof supabaseClient === "undefined") {
+        console.error("supabaseClient не найден");
+        return;
+    }
+
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+
+    console.log("Текущий user:", user);
+    console.log("Ошибка user:", userError);
+
+    if (!user) {
+        console.error("Нет пользователя, сохранять некуда");
+        return;
+    }
+
+    const fullProgress = {
+        playerData: playerData,
+        mccSave: JSON.parse(localStorage.getItem("mccSave") || "{}"),
+        achievements: JSON.parse(localStorage.getItem("memeAchievementsV1") || "{}"),
+        quests: JSON.parse(localStorage.getItem("memeQuestStateV1") || "{}")
+    };
+
+    console.log("Сохраняю вот это:", fullProgress);
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .update({
+            progress: fullProgress,
+            updated_at: new Date().toISOString()
+        })
+        .eq("id", user.id)
+        .select();
+
+    console.log("Ответ Supabase:", data);
+    console.log("Ошибка Supabase:", error);
+
+    if (error) {
+        console.error("Ошибка сохранения прогресса:", error.message);
+    } else {
+        console.log("Прогресс сохранён в Supabase");
+    }
 }
 
 function loadPlayer() {
-    const save = localStorage.getItem("mcc_player");
+    const saved = localStorage.getItem("playerData");
 
-    if (save) {
-        const parsed = JSON.parse(save);
-        Object.assign(playerData, parsed);
+    if (saved) {
+        try {
+            Object.assign(playerData, JSON.parse(saved));
+        } catch (e) {
+            console.error("Ошибка загрузки localStorage");
+        }
     }
+
+    loadPlayerFromSupabase();
+}
+
+async function loadPlayerFromSupabase() {
+    if (typeof supabaseClient === "undefined") return;
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) return;
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("progress")
+        .eq("id", user.id)
+        .single();
+
+    if (error) {
+        console.error("Ошибка загрузки прогресса:", error.message);
+        return;
+    }
+
+    const progress = data?.progress;
+
+    if (!progress || Object.keys(progress).length === 0) return;
+
+    if (progress.playerData) {
+        Object.assign(playerData, progress.playerData);
+        localStorage.setItem("playerData", JSON.stringify(playerData));
+    }
+
+if (progress.mccSave) {
+    localStorage.setItem("mccSave", JSON.stringify(progress.mccSave));
+
+    const save = progress.mccSave;
+
+    if (playerData.resources) {
+        playerData.resources.gold = save.gold ?? 0;
+        playerData.resources.premiumTokens = save.gems ?? 0;
+        playerData.resources.energy = save.energy ?? 100;
+    }
+
+    document.querySelectorAll(".js-gold, #header-gold").forEach(el => {
+        el.textContent = save.gold ?? 0;
+    });
+
+    document.querySelectorAll(".js-gems, #header-premium-tokens").forEach(el => {
+        el.textContent = save.gems ?? 0;
+    });
+
+    document.querySelectorAll(".js-player-name").forEach(el => {
+        el.textContent = save.nickname || "PLAYER";
+    });
+}
+    if (typeof loadHeaderProfile === "function") loadHeaderProfile();
+
+    if (progress.achievements) {
+        localStorage.setItem("memeAchievementsV1", JSON.stringify(progress.achievements));
+    }
+
+    if (progress.quests) {
+        localStorage.setItem("memeQuestStateV1", JSON.stringify(progress.quests));
+    }
+
+    if (typeof updateUI === "function") updateUI();
+    if (typeof renderProfile === "function") renderProfile();
+    if (typeof checkHeaderAuth === "function") checkHeaderAuth();
+
+    console.log("Прогресс загружен из Supabase");
 }
 
 function regenEnergy() {
@@ -5644,21 +5766,6 @@ if (selectedStyle.unlocked) {
 
         alert("Стиль открыт!");
     };
-}
-function savePlayer() {
-    localStorage.setItem('playerData', JSON.stringify(playerData));
-}
-
-function loadPlayer() {
-    const saved = localStorage.getItem('playerData');
-    if (saved) {
-        try {
-            const data = JSON.parse(saved);
-            Object.assign(playerData, data);
-        } catch (e) {
-            console.error("Ошибка загрузки сохранения");
-        }
-    }
 }
 function openShopTab(tab) {
     const content = document.getElementById("shop-content");
@@ -10567,9 +10674,21 @@ function saveProfileNickname() {
     setPlayerSave({
         nickname: newName
     });
+    if (typeof supabaseClient !== "undefined") {
+    supabaseClient.auth.getUser().then(({ data }) => {
+        const user = data.user;
+        if (!user) return;
+
+        supabaseClient
+            .from("profiles")
+            .update({ username: newName })
+            .eq("id", user.id);
+    });
+}
 
     loadProfileNickname();
     closeChangeNameModal();
+    saveAllProgress();
 }
 
 const nicknameInput = document.getElementById("nicknameInput");
@@ -11425,40 +11544,50 @@ async function checkHeaderAuth() {
         .eq("id", user.id)
         .single();
 
-    if (profile) {
-        headerUsername.textContent = profile.username;
-    }
+if (profile) {
+    const localSave = JSON.parse(localStorage.getItem("mccSave") || "{}");
+    headerUsername.textContent = localSave.nickname || profile.username || "PLAYER";
 }
-
-document.getElementById("headerLoginBtn").addEventListener("click", () => {
-    window.location.href = "auth/auth.html";
-});
-const headerUser = document.getElementById("headerUser");
+}
 const headerLoginBtn = document.getElementById("headerLoginBtn");
-
-if (currentUser) {
-    headerUser.style.display = "flex";
-    headerLoginBtn.style.display = "none";
-} else {
-    headerUser.style.display = "none";
-    headerLoginBtn.style.display = "flex";
+if (headerLoginBtn) {
+    headerLoginBtn.addEventListener("click", () => {
+        window.location.href = "auth/auth.html";
+    });
 }
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await supabase.auth.signOut();
+const logoutProfileBtn = document.getElementById("logoutProfileBtn");
 
-    localStorage.clear();
+if (logoutProfileBtn) {
+    logoutProfileBtn.addEventListener("click", async () => {
+        await supabaseClient.auth.signOut();
+        localStorage.clear();
+        window.location.href = "index.html";
+    });
+}
+if (document.getElementById("headerUser")) {
+    checkHeaderAuth();
+}
+function saveAllProgress() {
+    savePlayer();
+}
+async function loadPlayer() {
+    const saved = localStorage.getItem("playerData");
 
-    window.location.href = "auth/auth.html";
-});
-headerLoginBtn.addEventListener("click", () => {
-    window.location.href = "auth/auth.html";
-});
+    if (saved) {
+        try {
+            Object.assign(playerData, JSON.parse(saved));
+        } catch (e) {
+            console.error("Ошибка загрузки localStorage");
+        }
+    }
 
+    await loadPlayerFromSupabase();
+}
 //  ЗАПУСК
-window.onload = () => {
+window.onload = async () => {
     currentVIPLevel = vipLevel;
 
-    if (typeof loadPlayer === "function") loadPlayer();
+    if (typeof loadPlayer === "function") await loadPlayer();
     if (typeof createGrid === "function") createGrid();
     if (typeof updateUI === "function") updateUI();
 
@@ -11484,5 +11613,6 @@ window.onload = () => {
         marketInterval = setInterval(simulateMarket, 3000);
     }
 };
-
-checkHeaderAuth();
+if (document.getElementById("headerUser")) {
+    checkHeaderAuth();
+}

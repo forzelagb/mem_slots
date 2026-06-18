@@ -128,7 +128,7 @@ async function createProfileIfNotExists(user) {
         return;
     }
 
-    const username = user.email.split("@")[0];
+const username = "PLAYER";
 
     const { error } = await supabaseClient
         .from("profiles")
